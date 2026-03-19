@@ -1,0 +1,15 @@
+.gradle/
+.idea/
+build/
+**/build/
+local.properties
+*.iml
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.ap_
+dataset_cache/
+app_demo_current.png
+demo_ui_dump.xml
+demo_ui_top.xml

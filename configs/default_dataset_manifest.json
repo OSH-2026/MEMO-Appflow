@@ -1,0 +1,10 @@
+{
+  "name": "sample_local",
+  "description": "Sample local replay dataset",
+  "sourceType": "local",
+  "localPath": "dataset_cache/sample_usage.csv",
+  "cacheFileName": "sample_usage.csv",
+  "format": "CSV",
+  "parserKey": "simple_csv_usage",
+  "normalizerKey": "simple_csv_usage"
+}

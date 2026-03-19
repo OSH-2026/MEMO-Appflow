@@ -1,0 +1,29 @@
+<resources>
+    <color name="launcher_bg">#0B1F3A</color>
+    <color name="launcher_fg">#F6B24D</color>
+    <color name="memo_bg_top">#F4F7FB</color>
+    <color name="memo_bg_bottom">#EAF0F8</color>
+    <color name="memo_card">#FFFFFFFF</color>
+    <color name="memo_card_soft">#F7FAFE</color>
+    <color name="memo_line">#D7E1EE</color>
+    <color name="memo_text_primary">#0F172A</color>
+    <color name="memo_text_secondary">#5B6780</color>
+    <color name="memo_hero_start">#103B73</color>
+    <color name="memo_hero_end">#1A73E8</color>
+    <color name="memo_accent">#1A73E8</color>
+    <color name="memo_accent_dark">#1557B0</color>
+    <color name="memo_chip_bg">#E8F0FE</color>
+    <color name="memo_chip_text">#174EA6</color>
+    <color name="memo_success_bg">#E6F4EA</color>
+    <color name="memo_success_text">#0D652D</color>
+    <color name="memo_warning_bg">#FFF4E5</color>
+    <color name="memo_warning_text">#8C4B00</color>
+    <color name="memo_chart_track">#DCE6F3</color>
+    <color name="memo_keep_fill">#1557B0</color>
+    <color name="memo_prewarm_fill">#1F8F46</color>
+    <color name="memo_hint_fill">#D97706</color>
+    <color name="memo_metric_neutral_bg">#EEF4FB</color>
+    <color name="memo_widget_panel">#1D4F91</color>
+    <color name="memo_widget_soft">#2A66B2</color>
+    <color name="memo_widget_text_dim">#D6E6FF</color>
+</resources>
