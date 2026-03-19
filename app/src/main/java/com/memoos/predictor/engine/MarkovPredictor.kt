@@ -59,6 +59,7 @@ class MarkovPredictor(
         val rawScores = packages.map { weightedScores.getValue(it) }.toFloatArray()
         val normalizedScores = if (useNativeNormalization && rawScores.isNotEmpty()) {
             NativeScoreBridge.normalize(rawScores)
+            rawScores
         } else {
             rawScores
         }

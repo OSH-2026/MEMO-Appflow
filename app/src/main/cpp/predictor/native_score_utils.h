@@ -5,6 +5,6 @@
 
 namespace memoos {
 std::vector<float> normalize_scores(const std::vector<float>& scores);
+void normalize(int length,float* values);
 }
-
 #endif

@@ -1,4 +1,5 @@
 #include "predictor/native_score_utils.h"
+#include "util/native_logger.h"
 #include <numeric>
 
 namespace memoos {
@@ -13,5 +14,18 @@ std::vector<float> normalize_scores(const std::vector<float>& scores) {
         normalized.push_back(score / total);
     }
     return normalized;
+}
+void normalize(int length,float* values){
+    memoos::log_info("Normalizing score vector in native bridge");
+    if(length==0){
+        return;
+    }
+    float sum=0;
+    for(int i=0;i<length;++i){
+        sum+=values[i];
+    }
+    for(int i=0;i<length;++i){
+        values[i]/=sum;
+    }
 }
 }
