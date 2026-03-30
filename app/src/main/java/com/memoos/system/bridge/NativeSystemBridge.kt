@@ -12,7 +12,10 @@ class NativeSystemBridge : SystemBridge {
             NativeScoreBridge.normalize(ranking)
             ranking.toList()
         }
-        Log.d("MemoOS", "Native bridge placeholder normalized=$normalized policy=${decision.policyName}")
+        Log.d(
+            "MemoOS",
+            "Native bridge placeholder normalized=$normalized policy=${decision.policyName} mode=${decision.reclaimMode} protected=${decision.protectedPackages}",
+        )
         return SystemExecutionReport(
             retainedPackages = decision.keepAlivePackages,
             prewarmedPackages = decision.prewarmPackages,

@@ -15,6 +15,10 @@ class ConfigRepository(
             prewarmThreshold = sharedPreferences.getFloat(KEY_PREWARM_THRESHOLD, 0.55f),
             keepAliveThreshold = sharedPreferences.getFloat(KEY_KEEP_ALIVE_THRESHOLD, 0.70f),
             hintThreshold = sharedPreferences.getFloat(KEY_HINT_THRESHOLD, 0.35f),
+            appFlowPreloadBudgetMb = sharedPreferences.getInt(KEY_APPFLOW_PRELOAD_BUDGET_MB, 100),
+            appFlowRecentUseWindowMinutes = sharedPreferences.getLong(KEY_APPFLOW_RECENT_WINDOW_MINUTES, 30L),
+            appFlowBurstWindowMinutes = sharedPreferences.getLong(KEY_APPFLOW_BURST_WINDOW_MINUTES, 5L),
+            appFlowKillCandidateLimit = sharedPreferences.getInt(KEY_APPFLOW_KILL_CANDIDATE_LIMIT, 3),
             collectionIntervalMinutes = sharedPreferences.getLong(KEY_COLLECTION_INTERVAL, 15L),
             replayModeEnabled = sharedPreferences.getBoolean(KEY_REPLAY_MODE_ENABLED, false),
             datasetMode = sharedPreferences.getBoolean(KEY_DATASET_MODE, false),
@@ -48,6 +52,10 @@ class ConfigRepository(
             .putFloat(KEY_PREWARM_THRESHOLD, updated.prewarmThreshold)
             .putFloat(KEY_KEEP_ALIVE_THRESHOLD, updated.keepAliveThreshold)
             .putFloat(KEY_HINT_THRESHOLD, updated.hintThreshold)
+            .putInt(KEY_APPFLOW_PRELOAD_BUDGET_MB, updated.appFlowPreloadBudgetMb)
+            .putLong(KEY_APPFLOW_RECENT_WINDOW_MINUTES, updated.appFlowRecentUseWindowMinutes)
+            .putLong(KEY_APPFLOW_BURST_WINDOW_MINUTES, updated.appFlowBurstWindowMinutes)
+            .putInt(KEY_APPFLOW_KILL_CANDIDATE_LIMIT, updated.appFlowKillCandidateLimit)
             .putLong(KEY_COLLECTION_INTERVAL, updated.collectionIntervalMinutes)
             .putBoolean(KEY_REPLAY_MODE_ENABLED, updated.replayModeEnabled)
             .putBoolean(KEY_DATASET_MODE, updated.datasetMode)
@@ -73,6 +81,10 @@ class ConfigRepository(
         private const val KEY_PREWARM_THRESHOLD = "config.prewarm_threshold"
         private const val KEY_KEEP_ALIVE_THRESHOLD = "config.keep_alive_threshold"
         private const val KEY_HINT_THRESHOLD = "config.hint_threshold"
+        private const val KEY_APPFLOW_PRELOAD_BUDGET_MB = "config.appflow_preload_budget_mb"
+        private const val KEY_APPFLOW_RECENT_WINDOW_MINUTES = "config.appflow_recent_window_minutes"
+        private const val KEY_APPFLOW_BURST_WINDOW_MINUTES = "config.appflow_burst_window_minutes"
+        private const val KEY_APPFLOW_KILL_CANDIDATE_LIMIT = "config.appflow_kill_candidate_limit"
         private const val KEY_COLLECTION_INTERVAL = "config.collection_interval"
         private const val KEY_REPLAY_MODE_ENABLED = "config.replay_mode_enabled"
         private const val KEY_DATASET_MODE = "config.dataset_mode"

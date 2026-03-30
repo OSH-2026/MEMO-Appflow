@@ -1,6 +1,6 @@
 # Dataset
 
-Public dataset support is a first-class feature in MEMO-OS, not an optional add-on.
+Public dataset support is a first-class feature in MEMO-Appflow, not an optional add-on.
 
 ## Supported Sources
 

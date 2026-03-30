@@ -30,7 +30,7 @@ Event types reported by the source repository:
 - `User Interaction`
 - `Broken`
 
-Why it matters for MEMO-OS:
+Why it matters for MEMO-Appflow:
 - LSApp is a strong fit for our offline replay and benchmark track.
 - It provides real sequential app usage events suitable for prediction evaluation.
 - It can be normalized into our internal `AppEvent` schema before entering replay, predictor, policy, and evaluation pipelines.
@@ -40,7 +40,7 @@ Compatibility note:
 - That makes it ideal for offline public-dataset replay.
 - It is not a direct replacement for online device-mode execution that expects real launchable Android packages.
 
-Suggested mapping into MEMO-OS:
+Suggested mapping into MEMO-Appflow:
 - `timestamp` -> `AppEvent.timestamp`
 - `app_name` -> normalized internal app identifier
 - `user_id` -> metadata

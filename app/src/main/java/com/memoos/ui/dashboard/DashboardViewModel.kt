@@ -142,7 +142,7 @@ class DashboardViewModel(
         val cachedFile = manifest.cacheFileName?.let { File(cacheDir, it) }
         val hasPreviewableFile = (localFile?.exists() == true) || (cachedFile?.exists() == true)
         if (!hasPreviewableFile && manifest.url != null) {
-            return "Preview is unavailable until you tap Prepare dataset. MEMO-OS will download the file once and cache it at ${cacheDir.absolutePath}."
+            return "Preview is unavailable until you tap Prepare dataset. MEMO-Appflow will download the file once and cache it at ${cacheDir.absolutePath}."
         }
         return runCatching {
             val prepared = datasetManager.prepareDataset(config.datasetName, cacheDir, config.datasetUrl)
@@ -224,7 +224,7 @@ class DashboardViewModel(
 
         fun humanizePackage(packageName: String): String {
             return when (packageName) {
-                "com.memoos" -> "MEMO-OS"
+                "com.memoos" -> "MEMO-Appflow"
                 "com.google.android.apps.nexuslauncher" -> "Pixel Launcher"
                 "com.android.chrome" -> "Chrome"
                 "com.android.settings" -> "Settings"

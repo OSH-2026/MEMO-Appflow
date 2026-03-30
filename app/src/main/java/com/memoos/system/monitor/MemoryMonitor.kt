@@ -39,6 +39,10 @@ class MemoryMonitor(
             append(";keepCount=").append(decision.keepAlivePackages.size)
             append(";prewarmCount=").append(decision.prewarmPackages.size)
             append(";hintCount=").append(decision.hintPackages.size)
+            append(";reclaimMode=").append(decision.reclaimMode)
+            append(";protectedCount=").append(decision.protectedPackages.size)
+            append(";deferredKillCount=").append(decision.deferredKillPackages.size)
+            append(";killCandidateCount=").append(decision.killCandidatePackages.size)
             append(";headroomMb=").append((after.availableMb - after.thresholdMb).coerceAtLeast(0))
             append(";pressure=").append(
                 when {

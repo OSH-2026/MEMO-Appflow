@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.room.Room
+import com.memoos.appflow.profile.LaunchProfileRepository
 import com.memoos.core.config.ExecutionMode
 import com.memoos.core.model.DatasetFormat
 import com.memoos.core.model.DatasetManifest
@@ -40,7 +41,7 @@ import com.memoos.orchestration.PolicyPipeline
 import com.memoos.orchestration.PredictPipeline
 import com.memoos.orchestration.ReplayPipeline
 import com.memoos.orchestration.ReplayRunSummary
-import com.memoos.policy.engine.ThresholdPolicyEngine
+import com.memoos.policy.engine.AppFlowPolicyEngine
 import com.memoos.policy.service.ResourcePolicyService
 import com.memoos.predictor.engine.FrequencyPredictor
 import com.memoos.predictor.engine.MarkovPredictor
@@ -144,7 +145,11 @@ class MemoGraph private constructor(
                 ),
                 predictionRepository = predictionRepository,
             )
-            val policyService = ResourcePolicyService(ThresholdPolicyEngine())
+            val policyService = ResourcePolicyService(
+                AppFlowPolicyEngine(
+                    launchProfileRepository = LaunchProfileRepository(),
+                ),
+            )
             val systemFacade = MemoSystemServiceFacade(
                 appLevelSystemBridge = AppLevelSystemBridge(PrewarmController(), RetentionController()),
                 nativeSystemBridge = NativeSystemBridge(),
@@ -155,7 +160,13 @@ class MemoGraph private constructor(
                 batteryMonitor = batteryMonitor,
             )
             val predictPipeline = PredictPipeline(appEventRepository, predictionService)
-            val policyPipeline = PolicyPipeline(policyService, systemFacade, systemStatusRepository)
+            val policyPipeline = PolicyPipeline(
+                resourcePolicyService = policyService,
+                memoSystemServiceFacade = systemFacade,
+                systemStatusRepository = systemStatusRepository,
+                appEventRepository = appEventRepository,
+                memoryMonitor = memoryMonitor,
+            )
             val evaluationPipeline = EvaluationPipeline(experimentRecorder)
 
             return MemoGraph(
@@ -299,7 +310,7 @@ class MemoGraph private constructor(
                 collectedEvents = collectedEvents.size,
                 predictionCount = 0,
                 bridgeName = null,
-                status = "No predictions yet. Use a few apps on this Android device, then MEMO-OS will refresh again.",
+                status = "No predictions yet. Use a few apps on this Android device, then MEMO-Appflow will refresh again.",
             )
         }
         Log.d(
@@ -307,7 +318,7 @@ class MemoGraph private constructor(
             "online.predictions count=${batch.predictions.size} top=${batch.predictions.joinToString { it.packageName }}",
         )
         val memoryBefore = memoryMonitor.snapshot()
-        val execution = policyPipeline.run(batch, config)
+        val execution = policyPipeline.run(batch, config, sanitizedHistory)
         val memoryAfter = memoryMonitor.snapshot()
         evaluationPipeline.run(
             mode = ExecutionMode.ONLINE_DEVICE,

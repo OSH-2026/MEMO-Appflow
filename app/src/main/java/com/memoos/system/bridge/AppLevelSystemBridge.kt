@@ -12,7 +12,10 @@ class AppLevelSystemBridge(
     override fun execute(decision: ResourceDecision): SystemExecutionReport {
         val retained = retentionController.retain(decision.keepAlivePackages)
         val prewarmed = prewarmController.prewarm(decision.prewarmPackages)
-        Log.d("MemoOS", "App bridge retained=$retained prewarmed=$prewarmed hints=${decision.hintPackages}")
+        Log.d(
+            "MemoOS",
+            "App bridge mode=${decision.reclaimMode} retained=$retained prewarmed=$prewarmed protected=${decision.protectedPackages} deferredKill=${decision.deferredKillPackages} hints=${decision.hintPackages}",
+        )
         return SystemExecutionReport(
             retainedPackages = retained,
             prewarmedPackages = prewarmed,

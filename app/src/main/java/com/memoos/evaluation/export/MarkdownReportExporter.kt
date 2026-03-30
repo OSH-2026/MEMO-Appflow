@@ -25,7 +25,7 @@ class MarkdownReportExporter {
         target.parentFile?.mkdirs()
         target.writeText(
             buildString {
-                appendLine("# MEMO-OS Experiment Report")
+                appendLine("# MEMO-Appflow Experiment Report")
                 appendLine()
                 appendLine("- Generated at: $generatedAt")
                 appendLine("- Current mode: $currentMode")
@@ -61,7 +61,7 @@ class MarkdownReportExporter {
                 }
                 appendLine()
                 appendLine("## Interpretation")
-                appendLine("- MEMO-OS is optimized around the chain prediction -> policy -> system-facing execution.")
+                appendLine("- MEMO-Appflow is optimized around the chain prediction -> policy -> system-facing execution.")
                 appendLine("- The user-facing surface is downstream: the dashboard and widget expose the result of those decisions.")
                 appendLine("- Replay mode remains available for reproducible benchmarking, while online mode reflects live behavior on this Android device.")
             },

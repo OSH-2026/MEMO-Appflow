@@ -3,13 +3,14 @@ package com.memoos.policy.engine
 import com.memoos.core.config.MemoConfig
 import com.memoos.core.model.PredictionBatch
 import com.memoos.core.model.ResourceDecision
+import com.memoos.policy.api.PolicyContext
 import com.memoos.policy.api.PolicyEngine
 import com.memoos.system.bridge.NativeScoreBridge
 
 class ThresholdPolicyEngine : PolicyEngine {
     override val name: String = "threshold_policy"
 
-    override fun evaluate(batch: PredictionBatch, config: MemoConfig): ResourceDecision {
+    override fun evaluate(batch: PredictionBatch, config: MemoConfig, context: PolicyContext): ResourceDecision {
         val ranked = batch.predictions
             .sortedByDescending { it.score }
             .take(config.topK)

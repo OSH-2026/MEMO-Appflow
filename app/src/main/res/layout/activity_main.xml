@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:lineSpacingExtra="3dp"
-                android:text="MEMO-OS watches live app usage on this Android device, predicts the next top-3 apps, turns that prediction into system policy, and shows what the system is trying to keep active, prewarm, and hint."
+                android:text="MEMO-Appflow watches live app usage on this Android device, predicts the next top-3 apps, turns that prediction into system policy, and shows what the system is trying to keep active, prewarm, and hint."
                 android:textColor="#EAF3FF"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:lineSpacingExtra="3dp"
-                android:text="1. Enable Usage Access. 2. Use a few apps on this Android device. 3. Come back here and MEMO-OS will refresh automatically."
+                android:text="1. Enable Usage Access. 2. Use a few apps on this Android device. 3. Come back here and MEMO-Appflow will refresh automatically."
                 android:textColor="@color/memo_text_secondary"
                 android:textSize="15sp" />
 
@@ -194,7 +194,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Next Apps MEMO-OS Predicts"
+                android:text="Next Apps MEMO-Appflow Predicts"
                 android:textColor="@color/memo_text_primary"
                 android:textSize="24sp"
                 android:textStyle="bold" />
@@ -385,7 +385,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="What MEMO-OS Is Doing Now"
+                android:text="What MEMO-Appflow Is Doing Now"
                 android:textColor="@color/memo_text_primary"
                 android:textSize="24sp"
                 android:textStyle="bold" />

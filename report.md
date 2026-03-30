@@ -1,8 +1,8 @@
-# MEMO-OS Improvement Report
+# MEMO-Appflow Improvement Report
 
 ## Scope
 
-This pass focused on improving the existing MEMO-OS repository without changing the architecture. The priorities were:
+This pass focused on improving the existing MEMO-Appflow repository without changing the architecture. The priorities were:
 
 - stop real crashes
 - make the online experience understandable
@@ -28,7 +28,7 @@ This pass focused on improving the existing MEMO-OS repository without changing 
 
 ### 3. Noise reduction in live prediction
 
-- Filtered MEMO-OS itself and launcher packages out of the online history.
+- Filtered MEMO-Appflow itself and launcher packages out of the online history.
 - Filtered non-launchable/system-service noise out of online collection so the model no longer drifts toward packages like Google Play services.
 - Kept live prediction focused on apps a user actually opens on this Android device.
 
@@ -102,7 +102,7 @@ Observed log evidence after opening Chrome, Maps, and Calendar:
 - `online.history collected=5 sanitized=... packages=com.android.chrome, com.google.android.apps.maps, com.google.android.calendar, ...`
 - `online.predictions count=2 top=com.android.chrome, com.google.android.apps.maps`
 
-This is an important improvement over the earlier broken state where predictions were being polluted by MEMO-OS itself, the launcher, or background service packages.
+This is an important improvement over the earlier broken state where predictions were being polluted by MEMO-Appflow itself, the launcher, or background service packages.
 
 ### System-facing execution verified
 
@@ -146,11 +146,11 @@ That makes the “system optimization” story much more concrete for a demo, ev
 
 Use this sequence:
 
-1. Open MEMO-OS.
+1. Open MEMO-Appflow.
 2. Show the home screen and explain:
-   `what you open -> what MEMO-OS predicts -> what system plan it applies`
+   `what you open -> what MEMO-Appflow predicts -> what system plan it applies`
 3. Open a few apps on this Android device.
-4. Return to MEMO-OS and wait for the automatic refresh or tap `Refresh Live Prediction`.
+4. Return to MEMO-Appflow and wait for the automatic refresh or tap `Refresh Live Prediction`.
 5. Show:
    - recent activity timeline
    - predicted next apps

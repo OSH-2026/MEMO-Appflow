@@ -34,7 +34,7 @@ class WidgetStateRepository(
                 snapshot.predictions.isNotEmpty() ->
                     "Top-3 prediction ready"
                 else ->
-                    "Use a few apps, then refresh MEMO-OS"
+                    "Use a few apps, then refresh MEMO-Appflow"
             },
             updatedAt = if (systemStatus.executionTimestamp > 0L) {
                 "Updated ${formatClock(systemStatus.executionTimestamp)}"
@@ -47,7 +47,7 @@ class WidgetStateRepository(
             items = mapped.ifEmpty {
                 listOf(
                     WidgetPredictionItem(null, "Open a few apps", 1, "Live capture"),
-                    WidgetPredictionItem(null, "Return to MEMO-OS", 2, "Refresh online cycle"),
+                    WidgetPredictionItem(null, "Return to MEMO-Appflow", 2, "Refresh online cycle"),
                     WidgetPredictionItem(null, "Top-3 appears here", 3, "Tap rows to launch"),
                 )
             }.let { items ->
@@ -69,7 +69,9 @@ class WidgetStateRepository(
         val labels = buildList {
             if (packageName in systemStatus.keepAlivePackages) add("Keep active")
             if (packageName in systemStatus.prewarmPackages) add("Prewarmed")
+            if (packageName in systemStatus.protectedPackages) add("Protected")
             if (packageName in systemStatus.hintPackages) add("Launch hint")
+            if (packageName in systemStatus.deferredKillPackages) add("Kill deferred")
         }
         return if (labels.isEmpty()) "Predicted" else labels.joinToString(" + ")
     }
@@ -87,7 +89,7 @@ class WidgetStateRepository(
 
 private fun String.humanizePackage(): String {
     return when (this) {
-        "com.memoos" -> "MEMO-OS"
+        "com.memoos" -> "MEMO-Appflow"
         "com.google.android.apps.nexuslauncher" -> "Pixel Launcher"
         "com.android.chrome" -> "Chrome"
         "com.android.settings" -> "Settings"

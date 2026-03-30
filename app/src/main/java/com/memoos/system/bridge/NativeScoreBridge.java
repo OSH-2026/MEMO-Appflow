@@ -1,11 +1,64 @@
 package com.memoos.system.bridge;
+
 import dalvik.annotation.optimization.CriticalNative;
+
 public class NativeScoreBridge {
-    static{
-        System.loadLibrary("memo-native");
+    private static final boolean NATIVE_AVAILABLE;
+
+    static {
+        boolean loaded = false;
+        try {
+            System.loadLibrary("memo-native");
+            loaded = true;
+        } catch (Throwable ignored) {
+            loaded = false;
+        }
+        NATIVE_AVAILABLE = loaded;
     }
+
+    public static void normalize(float[] score) {
+        if (score == null || score.length == 0) {
+            return;
+        }
+        if (NATIVE_AVAILABLE) {
+            normalizeNative(score);
+            return;
+        }
+        float sum = 0f;
+        for (float value : score) {
+            if (value > 0f) {
+                sum += value;
+            }
+        }
+        if (sum <= 0f) {
+            float uniform = 1f / score.length;
+            for (int i = 0; i < score.length; i++) {
+                score[i] = uniform;
+            }
+            return;
+        }
+        for (int i = 0; i < score.length; i++) {
+            score[i] = Math.max(score[i], 0f) / sum;
+        }
+    }
+
+    public static float mergeThresholds(float[] thresholds) {
+        if (thresholds == null || thresholds.length == 0) {
+            return 0f;
+        }
+        if (NATIVE_AVAILABLE) {
+            return mergeThresholdsNative(thresholds);
+        }
+        float merged = thresholds[0];
+        for (int i = 1; i < thresholds.length; i++) {
+            merged = Math.min(merged, thresholds[i]);
+        }
+        return merged;
+    }
+
     @CriticalNative
-    public static native void normalize(float[] score);
+    private static native void normalizeNative(float[] score);
+
     @CriticalNative
-    public static native float mergeThresholds(float[] thresholds);
+    private static native float mergeThresholdsNative(float[] thresholds);
 }

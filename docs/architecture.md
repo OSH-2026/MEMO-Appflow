@@ -1,6 +1,6 @@
 # Architecture
 
-MEMO-OS keeps a responsibility-based architecture that already reads like a system project even though the current runnable prototype is still inside the Android app sandbox.
+MEMO-Appflow keeps a responsibility-based architecture that already reads like a system project even though the current runnable prototype is still inside the Android app sandbox.
 
 ## Central Execution Chain
 

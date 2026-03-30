@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "MemoOS"
+rootProject.name = "MEMO-Appflow"
 include(":app")

@@ -24,10 +24,10 @@ DBLP record:
 Author-hosted PDF:
 - https://sites.ucmerced.edu/files/wdu/files/2021dcoss_-_atpp.pdf
 
-Why it matters for MEMO-OS:
+Why it matters for MEMO-Appflow:
 - ATPP frames next-app prediction as a marked temporal point process.
 - It predicts both next app identity and next open time.
-- That is directly relevant to `MEMO-OS`, because prewarming and retention decisions benefit from both app identity prediction and timing awareness.
+- That is directly relevant to `MEMO-Appflow`, because prewarming and retention decisions benefit from both app identity prediction and timing awareness.
 - It is a strong future reference for extending our current Markov-style baseline toward time-aware sequence modeling.
 
 Project note:

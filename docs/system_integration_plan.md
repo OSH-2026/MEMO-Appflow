@@ -1,6 +1,6 @@
 # System Integration Plan
 
-MEMO-OS already separates prediction from system-facing execution so the current app-level prototype can evolve toward deeper Android integration without rewriting the whole project.
+MEMO-Appflow already separates prediction from system-facing execution so the current app-level prototype can evolve toward deeper Android integration without rewriting the whole project.
 
 ## Current Runnable Path
 

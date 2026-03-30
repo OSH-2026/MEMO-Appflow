@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         setControlsEnabled(false)
         binding.modeBadgeText.text = "Live online mode"
         binding.modelBadgeText.text = "Loading model"
-        binding.statusText.text = "Preparing the MEMO-OS live optimization loop..."
+        binding.statusText.text = "Preparing the MEMO-Appflow live optimization loop..."
 
         binding.runOnlineButton.setOnClickListener {
             lifecycleScope.launch {
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
             runCatching {
                 startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
                 binding.statusText.text =
-                    "Allow Usage Access for MEMO-OS, then come back. Live refresh will resume automatically."
+                    "Allow Usage Access for MEMO-Appflow, then come back. Live refresh will resume automatically."
             }.onFailure { error ->
                 binding.statusText.text = "Unable to open Usage Access settings: ${error.userFacingMessage()}"
             }
@@ -71,16 +71,16 @@ class MainActivity : AppCompatActivity() {
             val graph = graph ?: return@setOnClickListener showInitializingMessage()
             graph.settingsRepository.cyclePredictor()
             binding.statusText.text =
-                "Prediction algorithm changed. MEMO-OS will use the new model on the next live refresh."
+                "Prediction algorithm changed. MEMO-Appflow will use the new model on the next live refresh."
             refreshSummary()
         }
 
         binding.pinWidgetButton.setOnClickListener {
             val pinned = RecommendationWidgetUpdater.requestPin(this)
             binding.statusText.text = if (pinned) {
-                "Launcher pin request sent. Confirm it and MEMO-OS Top 3 will appear on the home screen."
+                "Launcher pin request sent. Confirm it and MEMO-Appflow Top 3 will appear on the home screen."
             } else {
-                "This launcher does not support one-tap pinning. Add MEMO-OS Top 3 from the widget picker."
+                "This launcher does not support one-tap pinning. Add MEMO-Appflow Top 3 from the widget picker."
             }
         }
 
@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         if (!hasUsageAccess()) {
             if (initiatedByUser) {
                 binding.statusText.text =
-                    "Turn on Usage Access first. MEMO-OS needs recent launch history from this Android device."
+                    "Turn on Usage Access first. MEMO-Appflow needs recent launch history from this Android device."
             }
             refreshSummary()
             return
@@ -222,7 +222,7 @@ class MainActivity : AppCompatActivity() {
             binding.modelBadgeText.text = "Model: ${config.predictorType.displayName()}"
             binding.switchModelButton.text = "Use ${config.predictorType.next().displayName()}"
             binding.onlineGuideText.text = if (hasUsageAccess()) {
-                "MEMO-OS keeps collecting app launches for this Android device. Use a few apps, return here, and the online predictor refreshes automatically every few seconds while this screen is visible. Tap Refresh now if you want an immediate cycle."
+                "MEMO-Appflow keeps collecting app launches for this Android device. Use a few apps, return here, and the online predictor refreshes automatically every few seconds while this screen is visible. Tap Refresh now if you want an immediate cycle."
             } else {
                 "Turn on Usage Access first. Without it, Android will not expose the launch history needed for live prediction."
             }
@@ -336,7 +336,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun buildTimelineText(recentHistory: List<AppEvent>): String {
         if (recentHistory.isEmpty()) {
-            return "No launches captured yet.\nKeep MEMO-OS open, use a few apps on this Android device, and return here."
+            return "No launches captured yet.\nKeep MEMO-Appflow open, use a few apps on this Android device, and return here."
         }
         val recentSteps = recentHistory.takeLast(6).joinToString("\n") { event ->
             "${formatClock(event.timestamp)}    ${packageLabel(event.packageName)}"
@@ -355,7 +355,12 @@ class MainActivity : AppCompatActivity() {
         return buildString {
             appendLine("Keep active: ${packageListText(systemStatus.keepAlivePackages)}")
             appendLine("Prewarm ready: ${packageListText(systemStatus.prewarmPackages)}")
+            appendLine("Protected preload: ${packageListText(systemStatus.protectedPackages)}")
             appendLine("Launch hints: ${packageListText(systemStatus.hintPackages)}")
+            appendLine("Reclaim mode: ${systemStatus.reclaimMode.prettyPressure()}")
+            appendLine("Deferred kill: ${packageListText(systemStatus.deferredKillPackages)}")
+            appendLine("Kill candidates: ${packageListText(systemStatus.killCandidatePackages)}")
+            appendLine("Preload budget: ${systemStatus.preloadBudgetMb} MB | Estimated saved launch time: ${systemStatus.predictedLaunchBenefitMs} ms")
             appendLine("Bridge: ${systemStatus.bridgeName.prettyBridgeName()}")
             append("Policy: ${systemStatus.policyName.prettyPolicyName()}")
         }
@@ -368,7 +373,7 @@ class MainActivity : AppCompatActivity() {
         return if (telemetry == null) {
             buildString {
                 appendLine("Memory telemetry appears after the first completed online cycle.")
-                appendLine("Live evaluation starts once MEMO-OS can match a prior prediction to the next confirmed launch.")
+                appendLine("Live evaluation starts once MEMO-Appflow can match a prior prediction to the next confirmed launch.")
                 append(accuracyNarrative(summary))
             }
         } else {
@@ -411,7 +416,10 @@ class MainActivity : AppCompatActivity() {
         val labels = buildList {
             if (packageName in systemStatus.keepAlivePackages) add("Keep active")
             if (packageName in systemStatus.prewarmPackages) add("Prewarmed")
+            if (packageName in systemStatus.protectedPackages) add("Protected preload")
             if (packageName in systemStatus.hintPackages) add("Launch hint")
+            if (packageName in systemStatus.deferredKillPackages) add("Kill deferred")
+            if (packageName in systemStatus.killCandidatePackages) add("Kill candidate")
         }
         return if (labels.isEmpty()) "Predicted candidate" else labels.joinToString(" + ")
     }
@@ -441,7 +449,7 @@ class MainActivity : AppCompatActivity() {
             if (summary.pendingCount > 0) {
                 "Live validation is waiting for the next confirmed app launch. Pending predictions: ${summary.pendingCount}."
             } else {
-                "No validated launches yet. Open a few apps and return so MEMO-OS can compare a prediction against what you actually opened next."
+                "No validated launches yet. Open a few apps and return so MEMO-Appflow can compare a prediction against what you actually opened next."
             }
         } else {
             "Live accuracy so far: Hit@1 ${format(summary.hitAt1)}, Hit@3 ${format(summary.hitAt3)}, MRR ${String.format(Locale.US, "%.2f", summary.mrr)} across ${summary.evaluatedCount} verified next-launch events."
@@ -484,7 +492,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showInitializingMessage() {
-        binding.statusText.text = "MEMO-OS is still initializing. Try again in a moment."
+        binding.statusText.text = "MEMO-Appflow is still initializing. Try again in a moment."
     }
 
     private fun hasUsageAccess(): Boolean {
@@ -611,6 +619,7 @@ private fun String.prettyBridgeName(): String {
 private fun String.prettyPolicyName(): String {
     return when (this) {
         "threshold_policy" -> "Adaptive threshold policy"
+        "appflow_paper_policy" -> "AppFlow paper policy"
         "" -> "Policy idle"
         else -> replace('_', ' ').trim().replaceFirstChar { it.uppercase() }
     }

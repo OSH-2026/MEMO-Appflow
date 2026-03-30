@@ -1,6 +1,6 @@
 # Experiment Protocol
 
-MEMO-OS supports two formal experiment tracks.
+MEMO-Appflow supports two formal experiment tracks.
 
 ## Track A: Public Dataset Replay
 
@@ -47,6 +47,77 @@ Procedure:
 5. inspect dashboard, widget, logs, and exports
 
 The official emulator presentation path should use this mode, not a separate fake demo subsystem.
+
+## Track C: AppFlow Paper Reproduction
+
+This repository now includes an AppFlow-style policy path that approximates the paper's three coordinated modules inside a normal Android app:
+
+- selective file preloading as package-level preload planning
+- adaptive memory reclamation as pressure-mode switching
+- context-aware killing as recency deferment plus kill-candidate ranking
+
+Because a normal APK cannot modify Android framework and Linux kernel reclaim behavior, this track should be reported as an app-side reproduction of the paper's scheduler logic, not as a full system-level duplicate.
+
+### Baselines
+
+Use at least these two baselines when reporting:
+
+1. `ThresholdPolicyEngine`
+2. `AppFlowPolicyEngine`
+
+If a rooted or AOSP-enabled branch is later added, report it separately as a privileged follow-up rather than mixing it into the app-only numbers.
+
+### Workloads
+
+Reuse the paper's workload structure as closely as the repository allows:
+
+1. low workload: 5 light background apps plus one predicted target app
+2. medium workload: 15 light background apps plus one predicted target app
+3. high workload: 15 light background apps plus 2 GB-scale targets or their replay/profile equivalents
+
+For replay mode, map these conditions into:
+
+- sparse switch traces
+- medium-density switch traces
+- bursty traces with repeated returns to memory-heavy apps
+
+For live mode, use the same device and repeat the launch sequence at least 5 times per condition.
+
+### Metrics
+
+Keep the existing metrics and add AppFlow-oriented ones:
+
+- `Hit@1`
+- `Hit@3`
+- `MRR`
+- keep-alive count
+- prewarm count
+- protected preload count
+- deferred-kill count
+- kill-candidate count
+- reclaim mode transitions
+- estimated saved launch time
+- replay cold-relaunch count
+
+### Paper-Aligned Procedure
+
+For each workload:
+
+1. clear prior app state as much as Android permissions allow
+2. run the threshold baseline and export results
+3. run the AppFlow policy and export results
+4. compare decision counts, estimated launch benefit, and replay hit metrics
+5. for live experiments, record memory headroom and policy mode transitions from dashboard telemetry
+
+### Reporting Guidance
+
+When writing results, distinguish clearly between:
+
+- true measured quantities from replay and live traces
+- policy-planned quantities such as preload protection and kill ranking
+- paper-derived estimates such as saved cold-launch time
+
+This makes the reproduction honest while still letting the app reuse the paper's experiment design and scheduler structure.
 
 ## Shared Task Definition
 

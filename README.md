@@ -1,6 +1,6 @@
-# MEMO-OS
+# MEMO-Appflow
 
-MEMO-OS is an Android operating-systems-oriented project for prediction-guided resource management. It predicts the next likely apps a user will open, converts those predictions into resource decisions, and pushes those decisions through a system-facing execution layer. The widget and dashboard are downstream observability and control surfaces, not the core contribution.
+MEMO-Appflow is an Android operating-systems-oriented project for prediction-guided resource management. It predicts the next likely apps a user will open, converts those predictions into resource decisions, and pushes those decisions through a system-facing execution layer. The widget and dashboard are downstream observability and control surfaces, not the core contribution.
 
 The central chain in this repository is:
 
@@ -149,10 +149,10 @@ Use this when you want the live systems demo.
 
 From the app:
 
-1. Open MEMO-OS
+1. Open MEMO-Appflow
 2. Enable Usage Access if needed
 3. Use a few apps on this Android device
-4. Return to MEMO-OS
+4. Return to MEMO-Appflow
 5. Wait for the automatic refresh or tap `Refresh Live Prediction`
 
 What happens internally:

@@ -30,7 +30,7 @@ class ReplayPipeline(
         replayEngine.slice(testEvents, replayConfig).forEach { candidateEvents ->
             replayEventStream.temporalWindows(candidateEvents, config.historyWindowSize).forEach { window ->
                 val batch = predictPipeline.run(window.history, config)
-                val execution = policyPipeline.run(batch, config)
+                val execution = policyPipeline.run(batch, config, window.history)
                 evaluationPipeline.run(
                     mode = if (config.executionMode == ExecutionMode.LOCAL_REPLAY) {
                         ExecutionMode.LOCAL_REPLAY

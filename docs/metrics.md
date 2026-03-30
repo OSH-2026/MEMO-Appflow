@@ -1,6 +1,6 @@
 # Metrics
 
-MEMO-OS records both prediction quality and system-facing decision statistics.
+MEMO-Appflow records both prediction quality and system-facing decision statistics.
 
 ## Prediction Metrics
 
@@ -19,7 +19,7 @@ These come from `ExperimentRecord` entries produced by replay or online executio
 - optional memory snapshot reference
 - optional battery snapshot reference
 
-These matter because MEMO-OS is not just scoring predictions. It is turning predictions into system-facing resource intent.
+These matter because MEMO-Appflow is not just scoring predictions. It is turning predictions into system-facing resource intent.
 
 ## Export Columns
 

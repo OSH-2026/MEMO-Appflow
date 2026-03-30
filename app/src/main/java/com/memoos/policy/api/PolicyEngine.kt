@@ -6,5 +6,9 @@ import com.memoos.core.model.ResourceDecision
 
 interface PolicyEngine {
     val name: String
-    fun evaluate(batch: PredictionBatch, config: MemoConfig): ResourceDecision
+    fun evaluate(
+        batch: PredictionBatch,
+        config: MemoConfig,
+        context: PolicyContext = PolicyContext(),
+    ): ResourceDecision
 }

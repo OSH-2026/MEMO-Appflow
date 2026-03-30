@@ -3,12 +3,13 @@ package com.memoos.policy.engine
 import com.memoos.core.config.MemoConfig
 import com.memoos.core.model.PredictionBatch
 import com.memoos.core.model.ResourceDecision
+import com.memoos.policy.api.PolicyContext
 import com.memoos.policy.api.PolicyEngine
 
 class EnergyAwarePolicyEngine : PolicyEngine {
     override val name: String = "energy_aware_policy"
 
-    override fun evaluate(batch: PredictionBatch, config: MemoConfig): ResourceDecision {
+    override fun evaluate(batch: PredictionBatch, config: MemoConfig, context: PolicyContext): ResourceDecision {
         val highConfidence = batch.predictions.filter { it.score >= config.keepAliveThreshold }
         return ResourceDecision(
             keepAlivePackages = emptyList(),
