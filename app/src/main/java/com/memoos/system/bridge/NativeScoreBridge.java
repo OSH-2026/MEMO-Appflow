@@ -3,24 +3,16 @@ package com.memoos.system.bridge;
 import dalvik.annotation.optimization.CriticalNative;
 
 public class NativeScoreBridge {
-    private static final boolean NATIVE_AVAILABLE;
 
-    static {
-        boolean loaded = false;
-        try {
-            System.loadLibrary("memo-native");
-            loaded = true;
-        } catch (Throwable ignored) {
-            loaded = false;
-        }
-        NATIVE_AVAILABLE = loaded;
+    static{
+        NativeLibrary.load();
     }
 
     public static void normalize(float[] score) {
         if (score == null || score.length == 0) {
             return;
         }
-        if (NATIVE_AVAILABLE) {
+        if (NativeLibrary.NATIVE_LIBRARY_AVAILABLE) {
             normalizeNative(score);
             return;
         }
@@ -46,7 +38,7 @@ public class NativeScoreBridge {
         if (thresholds == null || thresholds.length == 0) {
             return 0f;
         }
-        if (NATIVE_AVAILABLE) {
+        if (NativeLibrary.NATIVE_LIBRARY_AVAILABLE) {
             return mergeThresholdsNative(thresholds);
         }
         float merged = thresholds[0];

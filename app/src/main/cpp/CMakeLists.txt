@@ -17,12 +17,10 @@ add_library(
     util/native_logger.cpp
     TransformerPredictor/src/tensor.cpp
     TransformerPredictor/src/ops.cpp
-    TransformerPredictor/src/ops_omp.cpp
     TransformerPredictor/src/weight_loader.cpp
     TransformerPredictor/src/model.cpp
     TransformerPredictor/src/inferencer.cpp
     TransformerPredictor/src/transformer_predictor.cpp
-    TransformerPredictor/src/baseline_predictors.cpp
 )
 
 find_library(log-lib log)

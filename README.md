@@ -273,6 +273,7 @@ Future replacement path:
 - native daemon / service process
 - launch hints deeper in framework paths
 - privileged memory and process management hooks
+- eBPF applications (to gather useful information, if `root` is enabled)
 - AOSP integration with the predictor/policy interfaces kept stable
 
 ## Key Files To Start From
