@@ -6,7 +6,10 @@
 
 ## 作者
 
-樊澄宇 陈可为 郭璟仪 黄漠沙
+- 陈可为（javaherobrine）
+- 樊澄宇（fancyovo）
+- 郭璟仪（place-bot）
+- 黄漠沙（AndyHuang-hub）
 
 ---
 
