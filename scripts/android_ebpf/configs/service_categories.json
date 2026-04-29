@@ -1,0 +1,90 @@
+{
+  "schema_version": "memo.ebpf_service_categories.v1",
+  "service_keywords": {
+    "camera": [
+      "camera",
+      "cameraserver",
+      "cameraprovider"
+    ],
+    "audio": [
+      "audio",
+      "audioserver",
+      "media",
+      "music",
+      "sound"
+    ],
+    "location": [
+      "location",
+      "gps",
+      "gnss",
+      "maps",
+      "geofence"
+    ],
+    "sensor": [
+      "sensor",
+      "sensors"
+    ],
+    "input": [
+      "input",
+      "inputflinger",
+      "keyboard",
+      "touch"
+    ],
+    "window": [
+      "window",
+      "surfaceflinger",
+      "launcher",
+      "activitytask",
+      "system_server"
+    ],
+    "package": [
+      "package",
+      "installd",
+      "dex2oat",
+      "zygote"
+    ]
+  },
+  "path_categories": {
+    "dex": [
+      ".dex",
+      ".vdex",
+      ".oat",
+      ".art",
+      "/dalvik-cache/"
+    ],
+    "so": [
+      ".so",
+      "/lib/"
+    ],
+    "asset": [
+      ".apk",
+      ".arsc",
+      "/assets/",
+      "/res/"
+    ],
+    "database": [
+      ".db",
+      ".sqlite",
+      ".sqlite3",
+      "/databases/"
+    ],
+    "cache": [
+      "/cache/",
+      "/tmp/",
+      ".tmp"
+    ],
+    "model": [
+      "model",
+      "weights",
+      ".tflite",
+      ".onnx",
+      ".gguf",
+      ".bin"
+    ]
+  },
+  "privacy_levels": {
+    "P0": "Counts, timestamps, pressure levels, and durations only.",
+    "P1": "UID plus path category or hashed app ID. No raw path is emitted in normalized JSONL.",
+    "P2": "Service category plus Binder transaction code. Binder payloads are never parsed."
+  }
+}

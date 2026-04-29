@@ -1,0 +1,14 @@
+MEMO	0	status	0	0	0	memo	0	0	0	0	collector_started
+MEMO	1000000000	binder	10123	2401	2401	system_server	14	0	145	0	-
+MEMO	1050000000	binder	10123	2401	2401	cameraserver	3	0	145	0	-
+MEMO	1100000000	file	10123	2401	2401	camera	0	0	0	0	/data/app/com.android.camera/base.apk
+MEMO	1200000000	file	10123	2401	2401	camera	0	0	0	0	/data/app/com.android.camera/lib/arm64/libcamera_client.so
+MEMO	1500000000	file	10123	2401	2401	camera	0	0	0	0	/data/user/0/com.android.camera/databases/settings.db
+MEMO	1900000000	memory	0	128	128	kswapd0	3	0	0	0	kswapd_wake
+MEMO	2200000000	memory	10123	2401	2401	camera	1	0	0	0	direct_reclaim_begin
+MEMO	2400000000	memory	10123	2401	2401	camera	2	0	0	0	direct_reclaim_end
+MEMO	6200000000	binder	10124	3100	3100	maps	8	0	145	0	-
+MEMO	6300000000	binder	10124	3100	3100	location	44	0	145	0	-
+MEMO	6400000000	file	10124	3100	3100	maps	0	0	0	0	/data/app/com.google.android.apps.maps/base.apk
+MEMO	6500000000	file	10124	3100	3100	maps	0	0	0	0	/data/user/0/com.google.android.apps.maps/cache/tiles.tmp
+MEMO	0	status	0	0	0	memo	0	0	0	0	collector_stopped

@@ -1,17 +1,12 @@
-## About Platforms
-Because `place-bot` uses `Microsoft Windows` but `Java_Herobrine` uses `Kali Linux`, there are some tips for the scripts:
+# Scripts
 
-### Linux only
+The scripts directory is now focused on Android eBPF evidence collection and
+MAPLE integration.
 
-- trace_exec.bt (it's a `bpftrace` script, which can only be run in Linux)
+Primary entry points:
 
-### Unix-like only
+- `android_ebpf/android_ebpf_collect.py`
+- `android_ebpf/maple_context_from_ebpf.py`
 
-- trace_exec.d (it's a `dtrace` script, only unix-like systems like macOS & Linux support `dtrace`)
-
-### Cross-platform scripts
-
-Oh my god, powershell is an open-source and cross-platform shell!
-
-- analyze\_replay\_results.ps1
-- seed\_sample\_dataset.ps1
+The old app-sequence replay, macOS tracing, and dataset helper scripts were
+removed because they are not part of the current eBPF-first direction.

@@ -1,11 +1,7 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.MemoOS" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/memo_hero_end</item>
-        <item name="colorSecondary">@color/memo_accent</item>
-        <item name="android:statusBarColor" tools:targetApi="l">@color/memo_hero_start</item>
-        <item name="android:navigationBarColor">@color/memo_bg_bottom</item>
-        <item name="android:windowBackground">@drawable/screen_bg</item>
-        <item name="fontFamily">@font/manrope_variable</item>
-        <item name="android:fontFamily">@font/manrope_variable</item>
+<resources>
+    <style name="Theme.MemoOS" parent="@android:style/Theme.Material.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/memo_status</item>
+        <item name="android:navigationBarColor">@color/memo_nav</item>
+        <item name="android:windowBackground">@color/memo_bg</item>
     </style>
 </resources>

@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://memo-appflow.local/schema/memo.llm_context.v1.json",
+  "title": "MEMO Appflow LLM Context Window",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "window_id",
+    "scenario_id",
+    "prediction_contract",
+    "context",
+    "prompt_lines"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "memo.llm_context.v1"
+    },
+    "window_id": {
+      "type": "integer"
+    },
+    "scenario_id": {
+      "type": "string"
+    },
+    "resource_phase": {
+      "type": "string",
+      "enum": [
+        "cold_launch",
+        "foreground",
+        "background_sync",
+        "hardware_active",
+        "memory_pressure",
+        "idle"
+      ]
+    },
+    "current_app_id_hash": {
+      "type": "string"
+    },
+    "current_app_package": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "prediction_contract": {
+      "type": "object",
+      "required": [
+        "stage_1",
+        "stage_2"
+      ],
+      "properties": {
+        "stage_1": {
+          "type": "object",
+          "description": "ATP: app type prediction, matching the midterm presentation.",
+          "required": [
+            "name",
+            "question",
+            "output_format"
+          ]
+        },
+        "stage_2": {
+          "type": "object",
+          "description": "NTP: next app prediction, matching the midterm presentation.",
+          "required": [
+            "name",
+            "question",
+            "output_format"
+          ]
+        }
+      }
+    },
+    "context": {
+      "type": "object",
+      "required": [
+        "recent_app_ids",
+        "service_segments",
+        "cold_launch_file_profiles",
+        "memory_pressure",
+        "resource_decision_constraints"
+      ],
+      "properties": {
+        "recent_app_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "service_segments": {
+          "type": "array"
+        },
+        "cold_launch_file_profiles": {
+          "type": "array"
+        },
+        "memory_pressure": {
+          "type": "object",
+          "required": [
+            "pressure_level",
+            "allow_prewarm"
+          ]
+        },
+        "resource_decision_constraints": {
+          "type": "object",
+          "required": [
+            "allow_prewarm",
+            "blocked_actions"
+          ]
+        }
+      }
+    },
+    "prompt_lines": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

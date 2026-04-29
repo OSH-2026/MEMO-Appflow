@@ -1,9 +1,5 @@
 # MEMO-Appflow
 
-本仓库为**中国科学技术大学 OSH-2026 课程大作业**仓库，用于记录实验代码、报告与项目成果展示。
-
----
-
 ## 作者
 
 - 陈可为（javaherobrine）
@@ -11,62 +7,76 @@
 - 郭璟仪（place-bot）
 - 黄漠沙（AndyHuang-hub）
 
----
+## 项目简介
+
+MEMO-Appflow 是 OSH 2026 课程项目，目标是探索 Android 场景下基于系统证据和大模型推理的资源/内存调度。仓库当前保留四部分：
+
+- 轻量 Android 展示 app：用于安装和演示项目入口，不承担主要算法逻辑。
+- Android eBPF 证据采集：在 emulator/userdebug 环境中观察 Binder、文件访问、调度、内存压力等系统行为。
+- MAPLE 本地推理模块：使用组员提供的 MAPLE engine，把结构化系统证据接到大模型推理流程。
+- 文档与版本报告：记录从早期 AppFlow/app-sequence 原型到当前系统证据与推理调度方向的演进。
+
+频率统计、Markov、应用序列等内容只适合作为 baseline。当前重点不是简单预测用户下一个打开哪个 app，而是把更底层的系统行为整理成可解释证据，再交给推理模块辅助判断资源需求和内存调度方向。
 
 ## 目录结构
 
-```
-MEMO-Appflow/
-├── app/                    # Android 应用主代码（Kotlin/Java + C++）
-├── docs/                   # 报告、文档以及会议记录
-├── benchmark/              # 性能基准测试
-├── configs/                # 数据集与配置示例
-├── scripts/                # 辅助脚本（PowerShell、bpftrace、dtrace）
-├── build.gradle.kts        # 项目构建配置
-├── gradlew / gradlew.bat   # Gradle 包装器
-└── README.md               # 项目说明文件
+```text
+app/                    轻量 Android 展示 app
+scripts/android_ebpf/   Android eBPF 采集、解析、MAPLE 场景转换脚本
+llm/maple/              组员提供的 MAPLE engine、demo 和本地模型目录
+docs/                   当前报告与说明文档
+docs/report_versions/   不同阶段的项目报告版本
+dataset_cache/          本地实验缓存目录，默认不随轻量提交上传
 ```
 
----
+## 当前流水线
 
-## 说明
+```text
+Android emulator 用户动作
+-> eBPF/tracepoint 系统事件
+-> JSONL 结构化证据
+-> MAPLE scenario
+-> MAPLE 本地推理
+-> 面向资源/内存调度的解释和预测结果
+```
 
-- **`app/`**：存放 Android 应用源代码，包含 Kotlin 业务逻辑、C++ 原生预测器与 JNI 桥接
-- **`docs/`**：存放实验报告、设计文档、会议记录及参考材料
-- **`benchmark/`**：存放性能基准测试相关说明
-- **`configs/`**：存放数据集清单与配置示例
-- **`scripts/`**：存放辅助脚本，包括 Replay 结果分析、数据集生成及跨平台追踪工具
-- **`build.gradle.kts` / `gradlew`**：Gradle 构建配置与包装器
+最新本地端到端验证使用修复后的 Android 14 custom kernel，在同一个 emulator 中同时满足 UI 展示、SurfaceFlinger 正常启动、`CONFIG_FTRACE_SYSCALLS=y` 和 eBPF 采集。
 
----
+## 快速验证
 
-## 项目简介
+Python 单元测试：
 
-**MEMO-Appflow** 是一个面向 Android 的上下文感知智能资源管理系统。项目旨在构建一套融合多模态用户行为语义的预测与决策框架：不仅捕捉应用间的切换时序，更深入挖掘时间规律、系统状态、用户交互模式与场景上下文等多维语义信息，从而实现对用户意图的深度理解。基于这种深层语义洞察，系统在恰当的时机主动预加载应用、优化内存保活策略、调度系统资源，最终达成"系统随用户意图而动"的智能协同目标，实现采集-理解-预测-决策-执行的全链路闭环。
+```powershell
+python -m unittest `
+  scripts.android_ebpf.tests.test_android_ebpf_collect `
+  scripts.android_ebpf.tests.test_maple_context_from_ebpf
+```
 
-**实现方法简述**：
-- **数据采集**：在线通过 Android `UsageStats` 采集应用启动事件，离线支持公开数据集（CSV/JSON）的回放与评估
-- **预测模型**：以 Markov 转移矩阵为基线，引入 Transformer 时序模型捕捉长程依赖，并逐步融合多模态行为语义提升预测精度
-- **策略引擎**：基于 Threshold 阈值策略与 AppFlow 论文调度逻辑，将预测结果转化为 `keep-alive` / `prewarm` / `hint` 等资源决策
-- **系统执行**：通过 `MemoSystemServiceFacade` 协调 `AppLevelSystemBridge` 与 `NativeSystemBridge`，在 Android 端完成应用启动与资源控制，并保留向系统层扩展的接口
+Android 展示 app：
 
----
+```powershell
+.\gradlew.bat :app:assembleDebug
+```
 
-## 项目文档
+MAPLE engine 构建：
 
-项目的技术调研与可行性分析已形成正式文档，存放于 `docs/` 目录下：
+```powershell
+wsl.exe bash -lc "cd /mnt/c/Users/gjy20/Desktop/26sp/osh/appflow/MEMO-Appflow/llm/maple/llama.cpp && cmake -B build && cmake --build build -j$(nproc)"
+wsl.exe bash -lc "cd /mnt/c/Users/gjy20/Desktop/26sp/osh/appflow/MEMO-Appflow/llm/maple/maple_engine && cmake -B build && cmake --build build -j$(nproc)"
+```
 
-- **[调研报告](docs/research-report.md)**：涵盖 AppFlow、ATPP 等论文综述，Android 系统机制、采集技术、预测模型与数据集调研结论
-- **[可行性报告](docs/feasibility-report.md)**：评估操作系统层面的技术可行性与已实现功能，分析当前沙箱原型向系统级扩展的路径
+## 文档
 
----
+- `docs/ebpf_report.md`：当前 eBPF 证据采集、MAPLE 接入和真实 emulator 数据示例。
+- `docs/report_versions/`：按时间保存的阶段报告，记录项目方向变化。
+- `scripts/android_ebpf/README.md`：采集脚本、MAPLE 转换脚本和验证命令。
 
 ## 会议记录
 
 组会纪要集中在此，便于新成员对齐背景；后续会议将按时间顺序续写。
 
 | 次数 | 日期 | 主题与结论摘要 |
-|:---:|:---:|:---|
+| --- | --- | --- |
 | 1 | 2026-03-04 | 会前邀请学过 OSH 的学长学姐参与讨论。会上成员互相认识，详细沟通了项目目标：在 Android 上实现类似 MEMO 的预测与预加载系统，基本形态为推荐 Top-3 应用并预加载第一个。 |
 | 2 | 2026-03-11 | 李思源离开，陈可为加入。讨论并对比了 RNN、CNN 与 Transformer，决定使用 Transformer 作为神经网络。明确分工：樊澄宇负责 AI 训练，黄漠沙负责调研并辅助 AI，郭璟仪用 Codex 构建软件，陈可为审查 AI 代码并提供技术支持。 |
 | 3 | 2026-03-18 | 郭璟仪展示了 MEMO-OS 的首个 demo。黄漠沙与樊澄宇展示了一组论文，确定以进程序列作为问题切入点。陈可为探索了 Android Emulator 方案，包括全平台的 Android Studio、Linux 的 Waydroid 与 Redroid、以及 Windows 的 WSA Builds。 |
@@ -75,3 +85,9 @@ MEMO-Appflow/
 | 6 | 2026-04-01 | 黄漠沙调研指出必须追踪进程的启动与终止及其时间戳。陈可为总结 eBPF 可用于追踪进程和其他系统调用。樊澄宇展示了一张数据表，汇报在公开数据集上的 AI 训练结果。 |
 | 7 | 2026-04-08 | 陈可为展示了基于 bpftrace 的 eBPF 程序。为获取更多信息并适配 macOS，他将程序移植为 dtrace 版本。黄漠沙同步推进数据集与特征工程，等待樊澄宇的模型结果进行后续集成。 |
 | 8 | 2026-04-15 | 邢老师指出仅收集进程事件（fork/exec/exit）的精度方向存在偏差。黄漠沙起初未能完全理解，陈可为解释后全组达成共识：必须综合考虑用户行为与系统状态。会后决定重新调整调研方向。 |
+| 9 | 2026-04-29 | 线上讨论：继续调整项目重点，尝试加入更深层的 Android eBPF 系统证据采集，并把采集结果对接到组员提供的 MAPLE 大模型推理模块。同步修复 Android 14 emulator custom kernel 的 SurfaceFlinger 图形通道，使 UI 展示、`CONFIG_FTRACE_SYSCALLS` 和 eBPF 采集可以在同一虚拟机上演示。 |
+
+## 当前注意事项
+
+- 模型侧以 MAPLE engine 为准。
+- Android app 保持轻量，项目核心逻辑主要在 host 侧脚本、custom kernel/eBPF 采集和 MAPLE 推理模块中。

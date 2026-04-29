@@ -10,7 +10,16 @@ captures/
 *.apk
 *.ap_
 dataset_cache/
+llm/maple/models/
+*.gguf
+*.ggml
+__pycache__/
+*.pyc
 app_demo_current.png
 demo_ui_dump.xml
 demo_ui_top.xml
 .DS_Store
+MAPLE.zip
+llm/maple/**/build/
+llm/maple/**/CMakeFiles/
+llm/maple/**/CMakeCache.txt

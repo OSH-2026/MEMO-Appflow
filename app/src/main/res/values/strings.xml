@@ -1,16 +1,3 @@
 <resources>
     <string name="app_name">MEMO-Appflow</string>
-    <string name="main_status_idle">Live capture is on. Use this Android device normally and MEMO-Appflow will refresh when you come back.</string>
-    <string name="run_online_cycle">Refresh Live Prediction</string>
-    <string name="open_dashboard">Open Replay Lab</string>
-    <string name="open_settings">View Technical Config</string>
-    <string name="dashboard_title">Replay Lab &amp; Reports</string>
-    <string name="dashboard_loading">Loading...</string>
-    <string name="export_logs">Export CSV, JSON, report.md</string>
-    <string name="settings_title">System Config Snapshot</string>
-    <string name="settings_summary">Current configuration is sourced from the repository-backed MemoConfig.</string>
-    <string name="widget_title">MEMO-Appflow Top 3</string>
-    <string name="grant_usage_access">Enable Usage Access</string>
-    <string name="pin_widget">Pin Top-3 Widget</string>
-    <string name="switch_model">Switch Algorithm</string>
 </resources>

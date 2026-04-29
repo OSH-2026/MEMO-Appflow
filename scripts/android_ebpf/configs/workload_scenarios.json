@@ -1,0 +1,136 @@
+{
+  "schema_version": "memo.ebpf_workload_scenarios.v1",
+  "package_aliases": {
+    "settings": [
+      "com.android.settings"
+    ],
+    "camera": [
+      "com.google.android.GoogleCamera",
+      "com.android.camera2",
+      "com.android.camera"
+    ],
+    "maps": [
+      "com.google.android.apps.maps",
+      "com.android.maps"
+    ],
+    "browser": [
+      "com.android.chrome",
+      "com.google.android.apps.chrome",
+      "org.chromium.webview_shell"
+    ],
+    "music": [
+      "com.google.android.apps.youtube.music",
+      "com.google.android.youtube",
+      "com.android.music"
+    ],
+    "calendar": [
+      "com.google.android.calendar",
+      "com.android.calendar"
+    ],
+    "clock": [
+      "com.google.android.deskclock",
+      "com.android.deskclock"
+    ],
+    "messages": [
+      "com.google.android.apps.messaging",
+      "com.android.messaging",
+      "com.android.mms"
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "mixed_daily",
+      "description": "A repeatable sequence that exercises settings, browser, maps, camera, media, and communication-like app paths.",
+      "steps": [
+        {
+          "alias": "settings",
+          "action": "open_settings",
+          "resource_phase": "cold_launch",
+          "gestures": [
+            "input swipe 500 1400 500 500 250"
+          ]
+        },
+        {
+          "alias": "browser",
+          "action": "open_browser",
+          "resource_phase": "cold_launch",
+          "gestures": [
+            "input tap 540 960"
+          ]
+        },
+        {
+          "alias": "maps",
+          "action": "open_maps",
+          "resource_phase": "hardware_active",
+          "gestures": [
+            "input tap 500 1100",
+            "input swipe 850 1200 200 1200 300"
+          ]
+        },
+        {
+          "alias": "camera",
+          "action": "open_camera",
+          "resource_phase": "hardware_active",
+          "gestures": [
+            "input tap 540 1700"
+          ]
+        },
+        {
+          "alias": "music",
+          "action": "open_music",
+          "resource_phase": "foreground",
+          "gestures": [
+            "input tap 540 1200"
+          ]
+        },
+        {
+          "alias": "messages",
+          "action": "open_messages",
+          "resource_phase": "foreground",
+          "gestures": [
+            "input tap 540 900"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "commute_morning",
+      "description": "PPTX-aligned commute scenario: communication, navigation, browser, and music/media.",
+      "steps": [
+        {
+          "alias": "messages",
+          "action": "check_messages",
+          "resource_phase": "cold_launch",
+          "gestures": [
+            "input tap 540 900"
+          ]
+        },
+        {
+          "alias": "maps",
+          "action": "check_route",
+          "resource_phase": "hardware_active",
+          "gestures": [
+            "input tap 500 1100",
+            "input swipe 800 1300 250 1300 300"
+          ]
+        },
+        {
+          "alias": "browser",
+          "action": "open_browser",
+          "resource_phase": "foreground",
+          "gestures": [
+            "input tap 540 960"
+          ]
+        },
+        {
+          "alias": "music",
+          "action": "open_music",
+          "resource_phase": "foreground",
+          "gestures": [
+            "input tap 540 1200"
+          ]
+        }
+      ]
+    }
+  ]
+}

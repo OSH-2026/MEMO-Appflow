@@ -1,0 +1,174 @@
+{
+  "scenarios": [
+    {
+      "id": "commute_morning",
+      "description": "Morning commute, user checking communication apps",
+      "context": {
+        "historical_app_categories": ["Communication", "Navigation"],
+        "historical_app_ids": [1, 5],
+        "prediction_time": "Monday 08:30AM",
+        "points_of_interest": ["subway station", "coffee shop"],
+        "installed_apps": {
+          "Communication": [1, 2, 3],
+          "Navigation": [5, 6],
+          "Social": [7, 8]
+        },
+        "user_age": "28",
+        "user_gender": "male"
+      }
+    },
+    {
+      "id": "lunch_break_social",
+      "description": "Lunch break at office, likely social media",
+      "context": {
+        "historical_app_categories": ["Social", "Food Delivery"],
+        "historical_app_ids": [7, 12],
+        "prediction_time": "Wednesday 12:15PM",
+        "points_of_interest": ["office building", "food court"],
+        "installed_apps": {
+          "Social": [7, 8, 9],
+          "Food Delivery": [12, 13],
+          "Entertainment": [15, 16]
+        },
+        "user_age": "32",
+        "user_gender": "female"
+      }
+    },
+    {
+      "id": "evening_entertainment",
+      "description": "Evening at home, entertainment apps",
+      "context": {
+        "historical_app_categories": ["Entertainment", "Social"],
+        "historical_app_ids": [15, 7],
+        "prediction_time": "Friday 08:00PM",
+        "points_of_interest": ["residential area"],
+        "installed_apps": {
+          "Entertainment": [15, 16, 17],
+          "Social": [7, 8],
+          "Communication": [1, 2]
+        },
+        "user_age": "24",
+        "user_gender": "male"
+      }
+    },
+    {
+      "id": "weekend_shopping",
+      "description": "Weekend shopping, travel/navigation likely",
+      "context": {
+        "historical_app_categories": ["Shopping", "Navigation"],
+        "historical_app_ids": [20, 5],
+        "prediction_time": "Saturday 02:00PM",
+        "points_of_interest": ["shopping mall", "parking lot"],
+        "installed_apps": {
+          "Shopping": [20, 21],
+          "Navigation": [5, 6],
+          "Payment": [25, 26]
+        },
+        "user_age": "35",
+        "user_gender": "female"
+      }
+    },
+    {
+      "id": "late_night_reading",
+      "description": "Late night, reading/productivity apps",
+      "context": {
+        "historical_app_categories": ["Productivity", "Reading"],
+        "historical_app_ids": [30, 32],
+        "prediction_time": "Sunday 11:00PM",
+        "points_of_interest": ["bedroom"],
+        "installed_apps": {
+          "Productivity": [30, 31],
+          "Reading": [32, 33],
+          "Entertainment": [15, 16]
+        },
+        "user_age": "29",
+        "user_gender": "female"
+      }
+    },
+    {
+      "id": "gym_workout",
+      "description": "At gym, music/health apps",
+      "context": {
+        "historical_app_categories": ["Music", "Health"],
+        "historical_app_ids": [40, 42],
+        "prediction_time": "Tuesday 06:30PM",
+        "points_of_interest": ["gym", "sports center"],
+        "installed_apps": {
+          "Music": [40, 41],
+          "Health": [42, 43],
+          "Social": [7, 8]
+        },
+        "user_age": "26",
+        "user_gender": "male"
+      }
+    },
+    {
+      "id": "airport_travel",
+      "description": "At airport, travel/entertainment",
+      "context": {
+        "historical_app_categories": ["Travel", "Entertainment"],
+        "historical_app_ids": [50, 15],
+        "prediction_time": "Thursday 10:00AM",
+        "points_of_interest": ["airport terminal", "duty free"],
+        "installed_apps": {
+          "Travel": [50, 51],
+          "Entertainment": [15, 16, 17],
+          "Communication": [1, 2]
+        },
+        "user_age": "41",
+        "user_gender": "male"
+      }
+    },
+    {
+      "id": "study_session",
+      "description": "Library study, productivity apps",
+      "context": {
+        "historical_app_categories": ["Productivity", "Education"],
+        "historical_app_ids": [30, 55],
+        "prediction_time": "Wednesday 03:00PM",
+        "points_of_interest": ["library", "university campus"],
+        "installed_apps": {
+          "Productivity": [30, 31],
+          "Education": [55, 56],
+          "Communication": [1, 2]
+        },
+        "user_age": "21",
+        "user_gender": "female"
+      }
+    },
+    {
+      "id": "dinner_restaurant",
+      "description": "At restaurant, food/photo apps",
+      "context": {
+        "historical_app_categories": ["Food", "Photo"],
+        "historical_app_ids": [60, 62],
+        "prediction_time": "Friday 07:30PM",
+        "points_of_interest": ["restaurant", "shopping district"],
+        "installed_apps": {
+          "Food": [60, 61],
+          "Photo": [62, 63],
+          "Social": [7, 8]
+        },
+        "user_age": "30",
+        "user_gender": "female"
+      }
+    },
+    {
+      "id": "cold_start_new_user",
+      "description": "New user, no history, only installed apps and location",
+      "context": {
+        "historical_app_categories": [],
+        "historical_app_ids": [],
+        "prediction_time": "Saturday 10:00AM",
+        "points_of_interest": ["park", "cafe"],
+        "installed_apps": {
+          "Social": [7, 8, 9],
+          "Photo": [62, 63],
+          "Navigation": [5, 6]
+        },
+        "user_age": "",
+        "user_gender": ""
+      }
+    }
+  ]
+}
