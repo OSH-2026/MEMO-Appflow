@@ -10,6 +10,7 @@ static std::string read_file(const std::string& path) {
     if (!f) return "";
     std::ostringstream ss;
     ss << f.rdbuf();
+    f.close();
     return ss.str();
 }
 
