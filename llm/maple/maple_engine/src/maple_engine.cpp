@@ -305,4 +305,38 @@ int maple_predict_next_app(maple_engine_t engine,
     }
 }
 
+int maple_build_app_type_prompt(maple_engine_t engine,
+                                const char* context_json,
+                                char* out_buf, size_t out_buf_size) {
+    if (!engine || !context_json || !out_buf || out_buf_size == 0) return -1;
+    try {
+        maple::UserContext ctx = maple::parse_user_context(context_json);
+        std::string prompt = static_cast<maple::MAPLEEngine*>(engine)->preview_app_type_prompt(ctx);
+        if (prompt.size() >= out_buf_size) {
+            return -2;
+        }
+        std::memcpy(out_buf, prompt.c_str(), prompt.size() + 1);
+        return 0;
+    } catch (...) {
+        return -3;
+    }
+}
+
+int maple_build_prompt_standalone(const char* context_json,
+                                  char* out_buf, size_t out_buf_size) {
+    if (!context_json || !out_buf || out_buf_size == 0) return -1;
+    try {
+        maple::UserContext ctx = maple::parse_user_context(context_json);
+        maple::PromptBuilder builder(maple::FeatureFlags::ALL);
+        std::string prompt = builder.build_app_type_prompt(ctx);
+        if (prompt.size() >= out_buf_size) {
+            return -2;
+        }
+        std::memcpy(out_buf, prompt.c_str(), prompt.size() + 1);
+        return 0;
+    } catch (...) {
+        return -3;
+    }
+}
+
 } // extern "C"

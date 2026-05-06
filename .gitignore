@@ -23,3 +23,5 @@ MAPLE.zip
 llm/maple/**/build/
 llm/maple/**/CMakeFiles/
 llm/maple/**/CMakeCache.txt
+dataset_synthetic/
+docs/ablation_results*.md

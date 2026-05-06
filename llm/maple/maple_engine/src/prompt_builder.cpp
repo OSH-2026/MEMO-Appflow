@@ -129,19 +129,21 @@ std::string PromptBuilder::build_app_type_prompt(const UserContext& ctx) const {
     const bool evidence_driven = is_evidence_driven(ctx);
     if (evidence_driven) {
         oss << "You are MAPLE's adapter for MEMO Android eBPF evidence. Based on the system evidence, predict the most likely resource-demand category for the next scheduling decision.\n";
-        oss << "Be concise. Output ONLY the category name and percentage.\n";
-        oss << "Example format: Android Service IPC (70%), Display Composition (20%), Native Runtime Loading (10%)\n";
+        oss << "Look at the evidence counts carefully. The category with the highest event count in the Low-level eBPF evidence is the dominant one.\n";
+        oss << "Output ONLY the exact category name from the candidate list below, followed by a percentage.\n";
+        oss << "Example format (these are placeholder names, do NOT output them): ExampleCategoryA (70%), ExampleCategoryB (20%), ExampleCategoryC (10%)\n";
     } else {
         oss << "You are a mobile app usage predictor. Based on the user's context, predict the most likely app category they will use next.\n";
         oss << "Be concise. Output ONLY the predicted category name and percentage.\n";
-        oss << "Example format: Communication app (70%), Social app (20%), Navigation app (10%)\n";
+        oss << "Example format (these are placeholder names, do NOT output them): PlaceholderA (70%), PlaceholderB (20%), PlaceholderC (10%)\n";
     }
     oss << "The percentage must be from 0% to 100%. Candidate app IDs are labels, not confidence values.\n";
     oss << "Do not include reasoning, markdown, XML tags, or <think> blocks.\n";
     oss << "\n";
     oss << "Context:\n";
-    const bool include_id_context = !evidence_driven;
-    append_context(oss, ctx, include_id_context, include_id_context);
+    // In evidence-driven mode, still show candidate categories so the model
+    // knows exactly which names to pick from (critical for small models).
+    append_context(oss, ctx, /*include_app_ids=*/true, /*include_installed_apps=*/true);
 
     oss << "\nPrediction:\n";
     oss << "Based on the global information, the next app will be a ";

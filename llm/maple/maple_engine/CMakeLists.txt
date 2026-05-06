@@ -31,6 +31,7 @@ set(LLAMA_LIBS
     ${LLAMA_BUILD}/ggml/src/libggml.a
     ${LLAMA_BUILD}/ggml/src/libggml-base.a
     ${LLAMA_BUILD}/ggml/src/libggml-cpu.a
+    ${LLAMA_BUILD}/ggml/src/ggml-cuda/libggml-cuda.a
 )
 
 # Check if all llama libs exist
@@ -60,7 +61,16 @@ else()
     find_package(Threads REQUIRED)
     target_link_libraries(maple_engine PRIVATE Threads::Threads ${CMAKE_DL_LIBS})
     target_link_libraries(maple_engine_static PRIVATE Threads::Threads ${CMAKE_DL_LIBS})
-    
+
+    # CUDA (if available)
+    find_package(CUDAToolkit)
+    if(CUDAToolkit_FOUND)
+        target_link_libraries(maple_engine PRIVATE CUDA::cudart CUDA::cublas CUDA::cuda_driver)
+        target_link_libraries(maple_engine_static PRIVATE CUDA::cudart CUDA::cublas CUDA::cuda_driver)
+        target_compile_definitions(maple_engine PRIVATE GGML_USE_CUDA)
+        target_compile_definitions(maple_engine_static PRIVATE GGML_USE_CUDA)
+    endif()
+
     # OpenMP
     find_package(OpenMP)
     if(OpenMP_C_FOUND)

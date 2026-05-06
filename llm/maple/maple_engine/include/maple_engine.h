@@ -92,4 +92,16 @@ int maple_predict_next_app(maple_engine_t engine,
                            const char* stage1_json,
                            char* out_buf, size_t out_buf_size);
 
+// Build the Stage 1 prompt for a given context (for external LLM callers).
+// Returns 0 on success, -1 on error, -2 if buffer too small.
+int maple_build_app_type_prompt(maple_engine_t engine,
+                                const char* context_json,
+                                char* out_buf, size_t out_buf_size);
+
+// Build Stage 1 prompt from context JSON WITHOUT loading a model.
+// Standalone function for external LLM callers (e.g. DeepSeek API).
+// Returns 0 on success, -1 on parse error, -2 if buffer too small.
+int maple_build_prompt_standalone(const char* context_json,
+                                  char* out_buf, size_t out_buf_size);
+
 } // extern "C"
