@@ -2,7 +2,7 @@
 
 GitHub 仓库：<https://github.com/OSH-2026/MEMO-Appflow>
 
-对应提交：`ef0b709`
+核心实现提交：`ef0b709`
 
 ## 一句话总结
 
@@ -82,6 +82,22 @@ App 在 Android emulator/rooted device 内部启动 bpftrace，并在真实 Andr
 - camera/media：`cameraserver`、MediaCodec、audio/media 状态；
 - display/UI：SurfaceFlinger、RenderThread、input/render 活动；
 - process/service：前台 app、关键系统服务 PID、Binder 活动。
+
+### 什么是“真实用户操作实验”
+
+这里的“真实用户操作实验”不是说一定要人工拿着手机连续使用很久，而是说证据必须来自 Android 系统在真实 app 操作中自然产生的内核/系统行为。实验时 collector 先在 emulator/rooted device 里挂上 eBPF，然后启动真实安装的 Android app，并让系统自然产生进程启动、Binder、文件访问、display、network、camera/media 等事件。
+
+所以这个实验和 synthetic demo 的区别是：
+
+| 对比项 | Synthetic demo | 真实用户操作实验 |
+| --- | --- | --- |
+| 事件来源 | 手写 JSON、手写 trace、host Python 构造 | Android 内部真实 bpftrace/eBPF 输出 |
+| app 来源 | 可以是假名字或固定序列 | 设备上真实安装、可启动的 app |
+| 系统状态 | 通常是伪造字段 | 从 `/proc`、`dumpsys`、battery/network/display/service 等设备状态读取 |
+| MAPLE 输入 | 人工设计的 scenario | 由真实 trace 解析、聚合出的 scenario |
+| 调度动作 | 不一定执行 | Android app 内部根据 MAPLE 结果执行/规划动作 |
+
+如果实验里用了 `adb shell input` 或 service action，它只是模拟用户点击、滑动、启动 app 这些动作；它不直接写 eBPF 记录，也不伪造证据。eBPF 行仍然来自系统运行时自然产生的 trace。
 
 ### 真实 trace 例子
 
@@ -178,6 +194,22 @@ if (std::regex_search(result.reasoning, match, re_app)) {
 }
 ```
 
+### 什么是 JNI，这里为什么会出现 JNI
+
+JNI 是 Java Native Interface。简单说，它是 Android/Kotlin/Java 调用 C/C++ 代码的桥。Android app 主体是 Kotlin 写的，但 MAPLE engine 和 llama.cpp 是 C++ 代码，所以如果要让 app 进程直接调用 C++ 推理引擎，中间就需要 JNI。
+
+在我们项目里的关系是：
+
+```text
+Kotlin Android app
+-> MapleNative.kt
+-> JNI wrapper: maple_jni.cpp
+-> C++ MAPLE engine / llama.cpp
+-> 返回 category、App <id>、reasoning 文本
+```
+
+这次真实 run 里已经验证的主路径是 `MapleShellBackend.kt` 调设备内 `/data/local/tmp/memo/maple_demo`，也就是在 Android 设备内部用 shell backend 跑 MAPLE。`maple_jni.cpp` 是后续更正式的 app-native 集成接口：目标是把 MAPLE 作为 `.so` 直接加载进 Android app，而不是长期依赖启动外部 executable。
+
 ## 5. Top-3 真实 App 推荐
 
 ### 做了什么
@@ -234,6 +266,32 @@ binder_service_policy -> Binder/system-service evidence kept as MAPLE scheduling
 warm_launch -> skipped in non-intrusive background mode
 ```
 
+### 这些系统动作是怎么实现的
+
+实现上，`EBPFCollectorService` 在 MAPLE 返回后，把 `scenario + prediction + Top-3 recommendations + system state` 交给 `ActionExecutor`。`ActionExecutor` 不重新预测，只做动作决策：根据 MAPLE 判断出的资源类别、设备状态和 Top-3 app，决定哪些动作可以执行、哪些动作应该降低强度、哪些动作只记录为调度计划。
+
+需要 root 的动作通过 `RootShell` 执行，命令形式是：
+
+```text
+su 0 sh -c "<command>"
+```
+
+这和未来真机迁移的假设一致：真机需要 root/Magisk/可执行 bpftrace 权限，否则不能完整跑 eBPF 和部分系统调度动作。
+
+各个动作在系统层面的含义是：
+
+| 动作 | 系统级别做了什么 | 为什么有用 |
+| --- | --- | --- |
+| `widget_update` | 用 `MemoWidgetProvider` / `AppWidgetManager` 发布 Top-3 真实 app。 | 用户看到的是可点击 app 推荐，而不是 eBPF debug JSON。 |
+| `latency_policy` | MAPLE 在后台线程异步跑，前台用户继续使用设备。 | 推理慢也不阻塞用户操作；结果回来后再更新推荐和动作。 |
+| `memory_policy` | 根据 memory pressure 调整 warm launch 激进程度；必要时触发 `cmd activity idle-maintenance`、`am send-trim-memory`，critical 时可做 page-cache 级 `drop_caches`。 | 内存紧张时不要为了预热把系统压垮；优先保留主推荐，压低次要预热。 |
+| `thermal_policy` | 根据 battery/thermal 状态降低预热强度，root 可尝试关闭 fixed performance mode。 | 避免设备发热、电量状态差时继续做重调度。 |
+| `network_candidate_priority` | 当 eBPF 看到 UDP `sendto/recvfrom` 或 network evidence 时，把 network-capable app 放进更高推荐/调度优先级；root 下可刷新 `dumpsys netstats`。 | 这不是 Linux QoS 改包优先级，而是产品调度层面的候选 app 优先级。 |
+| `camera_media_candidate` | 当 camera/media evidence 明显时，挑选 Camera/Media 类 app 作为后续 warm-launch 候选。 | 例如用户在通信/照片流程后，很可能进入拍摄、预览、分享。 |
+| `display_ui_policy` | 当 SurfaceFlinger/RenderThread/input 活跃时，减少预热数量。 | 用户正在滚动/刷新 UI 时，过度 warm launch 可能引入 jank。 |
+| `binder_service_policy` | Binder/system-service evidence 保留为 MAPLE 和 action context；root 下可查询 `service list`。 | Binder 活跃说明系统服务参与度高，适合影响调度而不是直接展示给用户。 |
+| `warm_launch` | 如果允许可见预热，会执行 `am start -W -n <component>; sleep 1; HOME`，让 app 进入缓存；本次真实 run 是 non-intrusive mode，所以跳过。 | 预热能降低后续启动冷启动成本，但真实用户实验里默认不打断用户界面。 |
+
 这里的重点是：MAPLE 结果已经能影响系统调度策略，而不只是输出一句预测。
 
 ## 7. Widget 和产品展示
@@ -266,6 +324,50 @@ warm_launch -> skipped in non-intrusive background mode
 - `counters_only`
 - `app_sequence_baseline`
 
+### 实验背景：这次模拟了什么
+
+这次 ablation 不是泛泛地测一个离线模型，而是围绕一个具体产品场景：用户在 Android 设备上打开真实 camera/photo-capable app，系统自然产生 camera/media、display/UI、network、Binder/service、memory 等证据，然后 MEMO-Appflow 根据这些证据判断下一步更应该为哪些真实 app 和资源做准备。
+
+本次最新结果的 source scenario 是 `real_user_camera_photo_usage`。从结果 JSON 里的描述看，目标 app 是设备上真实安装的 Camera：
+
+```text
+Target app: Camera (com.android.camera2)
+Raw trace: /sdcard/MEMO/logs/real_user_1778095657670.trace
+```
+
+也就是说，它模拟的是一个常见 camera/photo workflow：
+
+```text
+用户打开 Camera / photo-capable app
+-> Android 启动真实 app 和相关系统服务
+-> eBPF 捕捉进程、Binder、文件、display、network、camera/media 证据
+-> Android 端构造 MAPLE scenario
+-> MAPLE 判断下一步资源/app 倾向
+-> AppIdMapping 转成 Top-3 真实 app
+-> ActionExecutor 规划 widget、预热、内存、网络、display、service 动作
+```
+
+这个实验想验证的不是“能不能识别用户刚打开了 Camera”，而是：加入深层 eBPF 系统证据后，MAPLE 是否能给出更适合资源调度的预测；删掉某类证据后，预测和动作会不会改变。
+
+### 实验环境
+
+本次结果按 Android emulator 端侧产品部署方式运行，环境假设和未来 rooted Android 真机一致：
+
+| 项 | 本次实验环境 |
+| --- | --- |
+| 运行设备 | Android emulator，按 rooted Android 真机路径部署 |
+| 产品 app | `com.memoos` Android app |
+| 权限模型 | `su 0 sh -c ...` 执行 eBPF、MAPLE executable 和部分系统动作 |
+| eBPF 工具路径 | `/data/local/tmp/memo/bpftrace`、`/data/local/tmp/memo/bpftool` |
+| trace 脚本路径 | `/data/local/tmp/memo/memo_appflow_generated.bt` |
+| 原始 trace 输出 | `/sdcard/MEMO/logs/real_user_*.trace` |
+| MAPLE executable | `/data/local/tmp/memo/maple_demo` |
+| MAPLE model | `/data/local/tmp/memo/models/Qwen3.5-0.8B-Q4_K_M.gguf` |
+| scenario 输出 | `/sdcard/MEMO/scenarios/latest_maple_scenario.json` 和 app external files |
+| host 的作用 | 安装 APK、触发 service、拉取结果文件；不负责产品逻辑 |
+
+所以这次实验不是“电脑上 Python 处理完再给 Android 看结果”。采集、解析、scenario、MAPLE、Top-3、ActionExecutor 都在 Android 侧路径里完成。
+
 ### 对应 GitHub 文件
 
 | 作用 | 文件 |
@@ -275,6 +377,23 @@ warm_launch -> skipped in non-intrusive background mode
 | 消融结果 JSON | [`docs/real_device_experiments/real_ebpf_ablation/latest_real_ablation.json`](https://github.com/OSH-2026/MEMO-Appflow/blob/main/docs/real_device_experiments/real_ebpf_ablation/latest_real_ablation.json) |
 | 结果解读文档 | [`docs/real_device_experiments/real_ebpf_ablation/real_ebpf_ablation_result_interpretation.md`](https://github.com/OSH-2026/MEMO-Appflow/blob/main/docs/real_device_experiments/real_ebpf_ablation/real_ebpf_ablation_result_interpretation.md) |
 | 原始 eBPF trace | [`docs/real_device_experiments/real_ebpf_ablation/real_user_1778095657670.trace`](https://github.com/OSH-2026/MEMO-Appflow/blob/main/docs/real_device_experiments/real_ebpf_ablation/real_user_1778095657670.trace) |
+
+### 消融实验 metrics 解释
+
+这次 metrics 不是只看传统“预测准确率”，而是围绕产品闭环设计：MAPLE 预测是否变化、推荐给用户的真实 app 是否变化、系统动作是否变化、耗时是否可接受。
+
+| Metric | 含义 | 为什么要看 |
+| --- | --- | --- |
+| `Predicted id` | MAPLE Stage 2 输出的 `App <id>`。 | 看删掉某类 eBPF 证据后，模型最终预测对象是否改变。 |
+| `Stage 1` | MAPLE Stage 1 输出的资源/系统需求类别，例如 `Display Composition`、`Camera Service`。 | 我们关注的是资源感知调度，不只是 app 序列，所以 Stage 1 很关键。 |
+| `Top-1 app` | `AppIdMapping` 把 MAPLE 输出映射到设备真实 app 后的第一推荐。 | 用户实际看到和能点击的是 app，不是 MAPLE 内部 id。 |
+| `Predicted domains` | 把 Stage 1 / Top-3 category 归一化成 `display_ui`、`network`、`camera_media` 等调度 domain。 | 用来判断系统动作该偏向显示、网络、相机、内存还是服务侧。 |
+| `MAPLE latency` | 设备侧 MAPLE 推理耗时。 | 用户使用时推理可以异步，但耗时仍影响推荐更新速度。 |
+| `End-to-end latency` | MAPLE 推理 + app mapping + action planning 的总耗时。 | 这是从证据变成可用产品结果的完整延迟。 |
+| `Stage1 overlap vs full` | 当前 ablation 的 Stage 1 和 full eBPF Stage 1 的重合度。 | 衡量删掉证据后是否偏离完整 eBPF 判断。 |
+| `Top-3 overlap vs full` | 当前 ablation 的 Top-3 真实 app 和 full eBPF Top-3 的 Jaccard overlap。 | 衡量用户最终看到的推荐集合是否稳定。 |
+| `Task-domain hit rate` | 对 camera/photo 任务，预测 domain 是否覆盖 expected domains：`camera_media`、`display_ui`、`network`。 | 没有人工 next-app label 时，用它衡量预测是否覆盖该任务需要的关键资源。 |
+| `scheduler/action metrics` | action 数量、状态、耗时、action domain 和 full eBPF 的 overlap。 | 调度动作虽然难用一个“准确率”衡量，但可以看动作是否执行、是否跳过、是否和预测 domain 对齐。 |
 
 ## 9. 实验结果与结果分析
 
@@ -352,6 +471,14 @@ End-to-end: 41.991s -> 59.676s
 ### 9.4 关于预测准确率
 
 这次是真实用户操作实验，没有人工标注的“下一步 app ground truth”，所以不能伪造传统 supervised accuracy。
+
+为什么没有 ground truth：
+
+1. 真实用户操作窗口只记录“这段时间系统发生了什么”，并没有要求用户在窗口结束后必须打开某一个指定 app。
+2. camera/photo workflow 的合理后续可能不止一个：继续拍照、打开相册、分享、浏览网络内容都可能成立。
+3. 如果我们事后硬指定一个唯一正确答案，会把真实系统实验变成主观标注实验，反而削弱 eBPF 证据的意义。
+
+所以这里的结论不能写成“Full eBPF 的 next-app accuracy 是多少”。更严谨的写法是：在没有人工 next-app label 的真实用户操作实验中，我们比较 full eBPF 和各个 ablation 在资源 domain、Top-3 推荐、Stage 1 判断、动作 domain 和延迟上的差异。
 
 我们用了两个更适合这个实验的指标：
 
@@ -439,4 +566,3 @@ eBPF evidence
 ```
 
 这条链路现在已经作为 Android emulator 内部产品路径跑通，并用真实 eBPF 消融实验验证：在当前 camera/photo 场景中，真实 eBPF 证据比浅层 app-sequence baseline 更能支撑资源感知预测与调度。
-
