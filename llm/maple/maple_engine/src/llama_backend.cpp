@@ -36,6 +36,8 @@ LlamaBackend::LlamaBackend(const Config& cfg) : cfg_(cfg) {
 bool LlamaBackend::create_context() {
     llama_context_params cparams = llama_context_default_params();
     cparams.n_ctx = cfg_.n_ctx;
+    cparams.n_batch = cfg_.n_ctx;
+    cparams.n_ubatch = std::min(cfg_.n_ctx, 256);
     cparams.n_threads = cfg_.n_threads;
     cparams.n_threads_batch = cfg_.n_threads;
     cparams.no_perf = true;
@@ -77,10 +79,7 @@ std::string LlamaBackend::generate(const std::string& prompt) {
     if (!is_loaded()) return "";
 
     // Recreate context for each generation to avoid KV cache overflow
-    destroy_context();
-    if (!create_context()) {
-        return "";
-    }
+    llama_memory_clear(llama_get_memory(ctx_), true);
 
     std::string full_prompt = apply_chat_template(prompt);
 
@@ -126,10 +125,14 @@ std::string LlamaBackend::generate(const std::string& prompt) {
     sparams.no_perf = true;
     llama_sampler* sampler = llama_sampler_chain_init(sparams);
 
-    llama_sampler_chain_add(sampler, llama_sampler_init_top_k(cfg_.top_k));
-    llama_sampler_chain_add(sampler, llama_sampler_init_top_p(cfg_.top_p, 1));
-    llama_sampler_chain_add(sampler, llama_sampler_init_temp(cfg_.temperature));
-    llama_sampler_chain_add(sampler, llama_sampler_init_dist(LLAMA_DEFAULT_SEED));
+    if (cfg_.temperature <= 0.0f) {
+        llama_sampler_chain_add(sampler, llama_sampler_init_greedy());
+    } else {
+        llama_sampler_chain_add(sampler, llama_sampler_init_top_k(cfg_.top_k));
+        llama_sampler_chain_add(sampler, llama_sampler_init_top_p(cfg_.top_p, 1));
+        llama_sampler_chain_add(sampler, llama_sampler_init_temp(cfg_.temperature));
+        llama_sampler_chain_add(sampler, llama_sampler_init_dist(LLAMA_DEFAULT_SEED));
+    }
 
     // Prepare batch for prompt
     llama_batch batch = llama_batch_get_one(prompt_tokens.data(), prompt_tokens.size());

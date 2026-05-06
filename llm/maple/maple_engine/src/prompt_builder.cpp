@@ -1,6 +1,7 @@
 #include "prompt_builder.h"
 #include <sstream>
 #include <algorithm>
+#include <cctype>
 
 namespace maple {
 
@@ -69,13 +70,50 @@ void PromptBuilder::append_evidence(std::ostringstream& oss, const UserContext& 
     }
     if (!ctx.system_evidence.empty()) {
         oss << "- Low-level eBPF evidence:\n";
+        size_t emitted = 0;
         for (const auto& evidence : ctx.system_evidence) {
+            if (emitted >= 8) break;
             oss << "  * " << evidence << "\n";
+            ++emitted;
         }
     }
     if (!ctx.scheduler_goal.empty()) {
         oss << "- Scheduler goal: " << ctx.scheduler_goal << "\n";
     }
+}
+
+static std::string evidence_count_for_category(const UserContext& ctx, const std::string& category) {
+    const std::string marker = "category " + category + ": count=";
+    for (const auto& evidence : ctx.system_evidence) {
+        const auto pos = evidence.find(marker);
+        if (pos == std::string::npos) continue;
+        std::string value = evidence.substr(pos + marker.size());
+        const auto end = value.find_first_not_of("0123456789");
+        if (end != std::string::npos) value = value.substr(0, end);
+        if (!value.empty()) return value;
+    }
+    return "";
+}
+
+static std::string compact_target_evidence(const UserContext& ctx) {
+    for (const auto& evidence : ctx.system_evidence) {
+        if (evidence.find("observed user action target app=") != std::string::npos) {
+            return evidence;
+        }
+    }
+    return "";
+}
+
+static std::string top_event_evidence(const UserContext& ctx, size_t limit) {
+    std::ostringstream oss;
+    size_t emitted = 0;
+    for (const auto& evidence : ctx.system_evidence) {
+        if (evidence.find("event_type ") == std::string::npos) continue;
+        if (emitted > 0) oss << "; ";
+        oss << evidence;
+        if (++emitted >= limit) break;
+    }
+    return oss.str();
 }
 
 void PromptBuilder::append_context(std::ostringstream& oss,
@@ -128,10 +166,30 @@ std::string PromptBuilder::build_app_type_prompt(const UserContext& ctx) const {
     std::ostringstream oss;
     const bool evidence_driven = is_evidence_driven(ctx);
     if (evidence_driven) {
-        oss << "You are MAPLE's adapter for MEMO Android eBPF evidence. Based on the system evidence, predict the most likely resource-demand category for the next scheduling decision.\n";
-        oss << "Look at the evidence counts carefully. The category with the highest event count in the Low-level eBPF evidence is the dominant one.\n";
-        oss << "Output ONLY the exact category name from the candidate list below, followed by a percentage.\n";
-        oss << "Example format (these are placeholder names, do NOT output them): ExampleCategoryA (70%), ExampleCategoryB (20%), ExampleCategoryC (10%)\n";
+        oss << "Pick the next Android resource-demand category from real MEMO eBPF evidence.\n";
+        oss << "Answer exactly: <Category> (<percent>%).\n";
+        oss << "Use only one category name from Candidates.\n";
+        oss << "Candidates: " << join_categories(ctx.historical_app_categories) << ".\n";
+        oss << "Counts: ";
+        bool emitted = false;
+        for (const auto& category : ctx.historical_app_categories) {
+            const auto count = evidence_count_for_category(ctx, category);
+            if (count.empty()) continue;
+            if (emitted) oss << "; ";
+            oss << category << "=" << count;
+            emitted = true;
+        }
+        if (!emitted) oss << top_event_evidence(ctx, 4);
+        oss << ".\n";
+        const auto target = compact_target_evidence(ctx);
+        if (!target.empty()) {
+            oss << "Observed action: " << target << ".\n";
+        }
+        if (!ctx.memory_pressure.empty()) {
+            oss << "Memory: " << ctx.memory_pressure << ".\n";
+        }
+        oss << "Prediction:\n";
+        return oss.str();
     } else {
         oss << "You are a mobile app usage predictor. Based on the user's context, predict the most likely app category they will use next.\n";
         oss << "Be concise. Output ONLY the predicted category name and percentage.\n";
@@ -141,9 +199,7 @@ std::string PromptBuilder::build_app_type_prompt(const UserContext& ctx) const {
     oss << "Do not include reasoning, markdown, XML tags, or <think> blocks.\n";
     oss << "\n";
     oss << "Context:\n";
-    // In evidence-driven mode, still show candidate categories so the model
-    // knows exactly which names to pick from (critical for small models).
-    append_context(oss, ctx, /*include_app_ids=*/true, /*include_installed_apps=*/true);
+    append_context(oss, ctx, true, true);
 
     oss << "\nPrediction:\n";
     oss << "Based on the global information, the next app will be a ";
@@ -155,8 +211,35 @@ std::string PromptBuilder::build_next_app_prompt(const UserContext& ctx,
     std::ostringstream oss;
     const bool evidence_driven = is_evidence_driven(ctx);
     if (evidence_driven) {
-        oss << "You are MAPLE's ID selector for MEMO Android eBPF evidence. Choose exactly one MAPLE candidate ID for the resource-demand category.\n";
-        oss << "These IDs are bridge labels for evidence/resource classes, not raw Android package names.\n";
+        const std::string predicted_category =
+            stage1.top_categories.empty() ? "" : stage1.top_categories[0].first;
+        std::vector<int> candidate_ids;
+        oss << "Choose one MAPLE candidate ID for this eBPF category.\n";
+        oss << "Return one complete valid answer. Do not print the literal string <id>.\n";
+        if (!predicted_category.empty()) {
+            oss << "Predicted category: " << predicted_category << ".\n";
+            auto it = ctx.installed_apps.find(predicted_category);
+            if (it != ctx.installed_apps.end() && !it->second.empty()) {
+                candidate_ids = it->second;
+                oss << "Candidate IDs: " << join_app_ids(candidate_ids) << ".\n";
+            }
+        }
+        if (!ctx.historical_app_ids.empty()) {
+            oss << "Recent IDs: " << join_app_ids(ctx.historical_app_ids) << ".\n";
+        }
+        if (!candidate_ids.empty()) {
+            oss << "Valid answers:\n";
+            for (const auto id : candidate_ids) {
+                oss << "- This user will use App " << id << ".\n";
+            }
+        } else if (!ctx.historical_app_ids.empty()) {
+            oss << "Valid answers:\n";
+            for (const auto id : ctx.historical_app_ids) {
+                oss << "- This user will use App " << id << ".\n";
+            }
+        }
+        oss << "Prediction:\n";
+        return oss.str();
     } else {
         oss << "You are a mobile app usage predictor. Based on the predicted app category and additional user context, choose exactly one specific app ID.\n";
     }

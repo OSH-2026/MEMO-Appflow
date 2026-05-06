@@ -1,0 +1,127 @@
+{
+  "schema_version": "memo.maple_scenarios.v1",
+  "generated_at": "2026-05-07T03:28:27.53345+08:00",
+  "scenarios": [
+    {
+      "id": "real_user_camera_photo_usage",
+      "description": "Launch a real installed camera\/photo-capable app and record camera\/media\/display\/process evidence from the device. Target app: Camera (com.android.camera2). Raw trace: \/sdcard\/MEMO\/logs\/real_user_1778095657670.trace.",
+      "source": "android_device_side",
+      "context": {
+        "historical_app_categories": [
+          "Network IO",
+          "Camera Service",
+          "Display Composition",
+          "Android Service IPC",
+          "Android System Services",
+          "APEX Runtime Loading"
+        ],
+        "historical_app_ids": [
+          245,
+          250,
+          115,
+          110,
+          290,
+          150
+        ],
+        "prediction_time": "2026-05-07T03:28:21.616289+08:00",
+        "points_of_interest": [
+          "camera or photo workflow",
+          "active network communication",
+          "active UI rendering or scrolling",
+          "memory-pressure-aware scheduling"
+        ],
+        "installed_apps": {
+          "Network IO": [
+            245,
+            246
+          ],
+          "Camera Service": [
+            250,
+            251,
+            252
+          ],
+          "Display Composition": [
+            115
+          ],
+          "Communication": [
+            110,
+            111
+          ],
+          "Android System Services": [
+            290
+          ],
+          "APEX Runtime Loading": [
+            150
+          ],
+          "App Process Runtime": [
+            280,
+            281,
+            282,
+            283,
+            284,
+            285
+          ],
+          "Navigation\/Location": [
+            270
+          ],
+          "Media Codec": [
+            260,
+            261,
+            262
+          ]
+        },
+        "system_evidence": [
+          "4000 device-side eBPF records in the observed Android window",
+          "observed user action target app=com.android.camera2 categories=Camera Service, Media Codec, Display Composition",
+          "event_type MEMO_SCHED: count=1552",
+          "event_type MEMO_BINDER: count=924",
+          "event_type MEMO_OPENAT: count=730",
+          "event_type MEMO_RECVFROM: count=546",
+          "event_type MEMO_SENDTO: count=206",
+          "event_type MEMO_PROCESS_FORK: count=28",
+          "event_type MEMO_PROCESS_EXIT: count=12",
+          "event_type MEMO_STATUS: count=1",
+          "MAPLE evidence\/resource category Network IO: count=720",
+          "MAPLE evidence\/resource category Display Composition: count=420",
+          "MAPLE evidence\/resource category Camera Service: count=420",
+          "MAPLE evidence\/resource category Android System Services: count=360"
+        ],
+        "memory_pressure": "critical: low available memory or memory PSI pressure observed; reclaim_events=1",
+        "scheduler_goal": "Use device-side eBPF and system-state evidence to infer near-future Android app\/resource demand, then choose safe warm-launch, cache, memory, network, camera\/media, and UI scheduling actions."
+      },
+      "ebpf_summary": {
+        "event_counts": {
+          "MEMO_STATUS": 1,
+          "MEMO_OPENAT": 730,
+          "MEMO_SENDTO": 206,
+          "MEMO_RECVFROM": 546,
+          "MEMO_PROCESS_FORK": 28,
+          "MEMO_SCHED": 1552,
+          "MEMO_PROCESS_EXIT": 12,
+          "MEMO_BINDER": 924,
+          "MEMO_KSWAPD_WAKE": 1
+        },
+        "category_counts": {
+          "Other File Access": 106,
+          "Kernel Trace Setup": 30,
+          "Network IO": 720,
+          "Android System Services": 360,
+          "Process State Inspection": 40,
+          "App Process Runtime": 180,
+          "System Property Access": 133,
+          "Native Runtime Loading": 180,
+          "APEX Runtime Loading": 180,
+          "Android Service IPC": 360,
+          "Device\/IPC Node Access": 15,
+          "Memory Management": 96,
+          "Display Composition": 420,
+          "Camera Service": 420,
+          "Input Interaction": 3,
+          "Media Codec": 180
+        },
+        "memory_pressure": "critical: low available memory or memory PSI pressure observed; reclaim_events=1",
+        "foreground_package": null
+      }
+    }
+  ]
+}

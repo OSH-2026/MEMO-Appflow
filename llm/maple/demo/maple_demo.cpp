@@ -59,31 +59,21 @@ static bool is_ebpf_context(const maple::UserContext& ctx) {
 int main(int argc, char** argv) {
     std::string model_path = "models/Qwen3.5-0.8B-Q4_K_M.gguf";
     std::string scenarios_path = "examples/scenarios.json";
+    bool stage1_only = false;
 
     for (int i = 1; i < argc; ++i) {
         if (std::strcmp(argv[i], "--model") == 0 && i + 1 < argc) {
             model_path = argv[++i];
         } else if (std::strcmp(argv[i], "--scenarios") == 0 && i + 1 < argc) {
             scenarios_path = argv[++i];
+        } else if (std::strcmp(argv[i], "--stage1-only") == 0) {
+            stage1_only = true;
         }
     }
 
     print_banner("MAPLE Inference Demo");
     std::cout << "Model:     " << model_path << "\n";
     std::cout << "Scenarios: " << scenarios_path << "\n";
-
-    maple::MAPLEEngine::Config cfg;
-    cfg.model_path = model_path;
-    cfg.n_ctx = 2048;
-    cfg.n_threads = 4;
-    cfg.temperature = 0.3f;
-    cfg.max_tokens = 64;
-
-    maple::MAPLEEngine engine(cfg);
-    if (!engine.is_ready()) {
-        std::cerr << "Failed to initialize MAPLE engine.\n";
-        return 1;
-    }
 
     std::string scenarios_json = read_file(scenarios_path);
     if (scenarios_json.empty()) {
@@ -119,6 +109,19 @@ int main(int argc, char** argv) {
 
     maple::UserContext ctx = maple::parse_user_context(ctx_json);
     bool ebpf_context = is_ebpf_context(ctx);
+
+    maple::MAPLEEngine::Config cfg;
+    cfg.model_path = model_path;
+    cfg.n_ctx = ebpf_context ? 384 : 768;
+    cfg.n_threads = 4;
+    cfg.temperature = 0.0f;
+    cfg.max_tokens = 8;
+
+    maple::MAPLEEngine engine(cfg);
+    if (!engine.is_ready()) {
+        std::cerr << "Failed to initialize MAPLE engine.\n";
+        return 1;
+    }
     engine.set_feature_flags(maple::FeatureFlags::ALL);
 
     print_banner("Scenario: " + id);
@@ -175,8 +178,10 @@ int main(int argc, char** argv) {
         std::cout << "    Scheduler goal:            " << ctx.scheduler_goal << "\n";
     }
 
+    std::string stage1_prompt = engine.preview_app_type_prompt(ctx);
     std::cout << "\n[2] PROMPT sent to model:\n";
-    std::cout << engine.preview_app_type_prompt(ctx) << "\n";
+    std::cout << stage1_prompt << "\n";
+    std::cout << "[prompt_chars] " << stage1_prompt.size() << "\n";
 
     auto stage1 = engine.predict_app_type(ctx);
 
@@ -194,6 +199,17 @@ int main(int argc, char** argv) {
         }
     } else {
         std::cout << "    (no category parsed)\n";
+    }
+
+    if (stage1_only) {
+        print_banner("FINAL PREDICTION SUMMARY");
+        std::cout << "  Scenario:  " << desc << "\n";
+        if (!stage1.top_categories.empty()) {
+            std::cout << "  App Type:  \"" << stage1.top_categories[0].first << "\"\n";
+        }
+        std::cout << "  Stage 2:   skipped by --stage1-only for device-side latency\n";
+        std::cout << std::string(60, '=') << "\n";
+        return 0;
     }
 
     // ============================================================
@@ -226,8 +242,10 @@ int main(int argc, char** argv) {
         std::cout << "\n";
     }
 
+    std::string stage2_prompt = engine.preview_next_app_prompt(ctx, stage1);
     std::cout << "\n[2] PROMPT sent to model:\n";
-    std::cout << engine.preview_next_app_prompt(ctx, stage1) << "\n";
+    std::cout << stage2_prompt << "\n";
+    std::cout << "[prompt_chars] " << stage2_prompt.size() << "\n";
 
     auto stage2 = engine.predict_next_app(ctx, stage1);
 

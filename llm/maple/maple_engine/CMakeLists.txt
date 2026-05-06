@@ -7,7 +7,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # llama.cpp paths
 set(LLAMA_CPP_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../llama.cpp)
-set(LLAMA_BUILD ${LLAMA_CPP_ROOT}/build)
+set(LLAMA_BUILD ${LLAMA_CPP_ROOT}/build CACHE PATH "Path to the llama.cpp build directory")
 
 # Include directories
 include_directories(
@@ -27,12 +27,16 @@ set(SOURCES
 # Static libraries from llama.cpp build
 set(LLAMA_LIBS
     ${LLAMA_BUILD}/src/libllama.a
-    ${LLAMA_BUILD}/common/libllama-common.a
     ${LLAMA_BUILD}/ggml/src/libggml.a
     ${LLAMA_BUILD}/ggml/src/libggml-base.a
     ${LLAMA_BUILD}/ggml/src/libggml-cpu.a
-    ${LLAMA_BUILD}/ggml/src/ggml-cuda/libggml-cuda.a
 )
+if(EXISTS ${LLAMA_BUILD}/ggml/src/ggml-cuda/libggml-cuda.a)
+    list(APPEND LLAMA_LIBS ${LLAMA_BUILD}/ggml/src/ggml-cuda/libggml-cuda.a)
+endif()
+if(EXISTS ${LLAMA_BUILD}/common/libllama-common.a)
+    list(APPEND LLAMA_LIBS ${LLAMA_BUILD}/common/libllama-common.a)
+endif()
 
 # Check if all llama libs exist
 foreach(lib ${LLAMA_LIBS})
@@ -56,6 +60,10 @@ if(WIN32)
 elseif(APPLE)
     target_link_libraries(maple_engine PRIVATE "-framework Accelerate" "-framework Foundation" "-framework Metal" "-framework MetalKit")
     target_link_libraries(maple_engine_static PRIVATE "-framework Accelerate" "-framework Foundation" "-framework Metal" "-framework MetalKit")
+elseif(ANDROID)
+    find_package(Threads REQUIRED)
+    target_link_libraries(maple_engine PRIVATE Threads::Threads ${CMAKE_DL_LIBS})
+    target_link_libraries(maple_engine_static PRIVATE Threads::Threads ${CMAKE_DL_LIBS})
 else()
     # Linux
     find_package(Threads REQUIRED)

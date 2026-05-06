@@ -21,7 +21,9 @@ demo_ui_top.xml
 .DS_Store
 MAPLE.zip
 llm/maple/**/build/
+llm/maple/**/build-*/
 llm/maple/**/CMakeFiles/
 llm/maple/**/CMakeCache.txt
 dataset_synthetic/
 docs/ablation_results*.md
+app/src/main/jniLibs/

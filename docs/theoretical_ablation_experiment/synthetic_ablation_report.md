@@ -1,6 +1,8 @@
-# 合成数据 + 消融实验：完整 Pipeline 与结果报告
+﻿# 合成数据 + 消融实验：完整 Pipeline 与结果报告
 
 Date: 2026-05-06
+
+Experiment author: Chengyu Fan.
 
 ---
 
@@ -13,7 +15,7 @@ Date: 2026-05-06
 | `scripts/android_ebpf/dataset_synthesizer.py` | 合成数据生成器。7 维网格随机采样 + DeepSeek API 高并发生成 |
 | `scripts/android_ebpf/ablation_runner.py` | 消融实验跑分器。支持 `--local` (CPU MAPLE) 和 API 两种推理路径，15 组消融配置，`--configs` 增量运行 |
 | `scripts/android_ebpf/ablation_batch.cpp` | C++ 批量推理（备用方案，当前 pipeline 未使用，通过 MAPLE C API 完成推理） |
-| `docs/synthetic_ablation_report.md` | 本文档 |
+| `docs/theoretical_ablation_experiment/synthetic_ablation_report.md` | 本文档 |
 
 ### 修改文件
 

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MEMO-Appflow</string>
+    <string name="widget_app_icon">Recommended app icon</string>
 </resources>

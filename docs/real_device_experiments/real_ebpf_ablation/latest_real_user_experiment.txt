@@ -1,0 +1,9 @@
+id=camera_photo_usage
+title=Real camera or photo app usage
+target_package=com.android.camera2
+target_label=Camera
+desired_categories=Camera Service, Media Codec, Display Composition
+raw_trace_path=/sdcard/MEMO/logs/real_user_1778095657670.trace
+interaction_result=executed real Android interaction plan target=com.android.camera2
+parsed_events=4000
+description=Launch a real installed camera/photo-capable app and record camera/media/display/process evidence from the device. Target app: Camera (com.android.camera2). Raw trace: /sdcard/MEMO/logs/real_user_1778095657670.trace.

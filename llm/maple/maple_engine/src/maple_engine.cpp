@@ -196,6 +196,16 @@ AppTypeResult MAPLEEngine::predict_app_type(const UserContext& ctx) {
 
 NextAppResult MAPLEEngine::predict_next_app(const UserContext& ctx, const AppTypeResult& stage1) {
     if (!is_ready()) return NextAppResult{};
+    if (!stage1.top_categories.empty()) {
+        const auto it = ctx.installed_apps.find(stage1.top_categories[0].first);
+        if (it != ctx.installed_apps.end() && it->second.size() == 1) {
+            NextAppResult result;
+            result.predicted_app_id = it->second[0];
+            result.reasoning = "This user will use App " + std::to_string(result.predicted_app_id) + ".";
+            result.raw_output = result.reasoning;
+            return result;
+        }
+    }
     std::string prompt = prompt_builder_->build_next_app_prompt(ctx, stage1);
     std::string output = backend_->generate(prompt);
     return parser_->parse_next_app(output);

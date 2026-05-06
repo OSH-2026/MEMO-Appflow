@@ -1,0 +1,51 @@
+{
+  "mode": "real_user_ebpf_experiment:camera_photo_usage",
+  "started_at_ms": 1778095654225,
+  "total_ms": 280270,
+  "realtime_budget_ms": 30000,
+  "parsed_events": 4000,
+  "maple_timed_out": false,
+  "realtime_status": "too_slow_for_realtime",
+  "stages": [
+    {
+      "name": "capability_probe",
+      "duration_ms": 2184
+    },
+    {
+      "name": "experiment_plan",
+      "duration_ms": 378
+    },
+    {
+      "name": "ebpf_capture_parse",
+      "duration_ms": 40735
+    },
+    {
+      "name": "system_state",
+      "duration_ms": 4112
+    },
+    {
+      "name": "scenario_build",
+      "duration_ms": 5911
+    },
+    {
+      "name": "fast_app_mapping",
+      "duration_ms": 86
+    },
+    {
+      "name": "fast_action_execution",
+      "duration_ms": 4500
+    },
+    {
+      "name": "maple_inference",
+      "duration_ms": 213739
+    },
+    {
+      "name": "maple_app_mapping",
+      "duration_ms": 4690
+    },
+    {
+      "name": "maple_action_update",
+      "duration_ms": 3849
+    }
+  ]
+}
