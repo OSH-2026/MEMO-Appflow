@@ -188,22 +188,60 @@ def available_tracepoints(adb: str, *, su: bool = True) -> list[str]:
     return sorted({line.strip() for line in result.stdout.splitlines() if ":" in line})
 
 
-def probe(adb: str, *, su: bool, out: Path | None) -> dict[str, Any]:
+def first_device_executable(adb: str, candidates: list[str], *, su: bool) -> str:
+    quoted = " ".join(shlex.quote(candidate) for candidate in candidates)
+    result = adb_shell(
+        adb,
+        f"for p in {quoted}; do "
+        'if command -v "$p" >/dev/null 2>&1; then command -v "$p"; exit 0; fi; '
+        'if [ -x "$p" ]; then echo "$p"; exit 0; fi; '
+        "done",
+        su=su,
+        timeout=10,
+    )
+    return result.stdout.strip().splitlines()[0] if result.stdout.strip() else ""
+
+
+def probe(adb: str, *, su: bool, out: Path | None, bpftool: str | None = None) -> dict[str, Any]:
     tracepoints = available_tracepoints(adb, su=su)
+    bpftool_path = bpftool or first_device_executable(
+        adb,
+        [
+            "/data/local/tmp/memo/bpftool",
+            "/data/local/tmp/bpftool",
+            "/system/bin/bpftool",
+            "/vendor/bin/bpftool",
+            "bpftool",
+        ],
+        su=su,
+    )
     feature = adb_shell(
         adb,
-        "bpftool feature probe 2>/dev/null | head -80 || true",
+        f"{shlex.quote(bpftool_path)} feature probe kernel 2>/dev/null | head -80 || true"
+        if bpftool_path
+        else "true",
         su=su,
         timeout=25,
     )
-    bpftrace = adb_shell(adb, "command -v bpftrace || true", su=su, timeout=10)
+    bpftrace_path = first_device_executable(
+        adb,
+        [
+            "/data/local/tmp/memo/bpftrace",
+            "/data/local/tmp/bpftrace",
+            "/system/bin/bpftrace",
+            "/vendor/bin/bpftrace",
+            "bpftrace",
+        ],
+        su=su,
+    )
     result = {
         "generated_at": now_iso(),
         "adb": adb,
         "su": su,
         "tracepoint_count": len(tracepoints),
         "required_tracepoints": required_tracepoint_status(tracepoints),
-        "bpftrace_path": bpftrace.stdout.strip(),
+        "bpftrace_path": bpftrace_path,
+        "bpftool_path": bpftool_path,
         "bpftool_feature_head": feature.stdout.strip().splitlines(),
     }
     if out:
@@ -1228,7 +1266,7 @@ def collect(args: argparse.Namespace) -> CollectResult:
 
 
 def cmd_probe(args: argparse.Namespace) -> int:
-    result = probe(args.adb, su=args.su, out=args.out)
+    result = probe(args.adb, su=args.su, out=args.out, bpftool=args.bpftool)
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
 
@@ -1291,6 +1329,7 @@ def build_parser() -> argparse.ArgumentParser:
     probe_parser = subparsers.add_parser("probe", help="Probe target tracepoints and BPF support.")
     probe_parser.add_argument("--adb", default=os.environ.get("ADB", "adb"))
     probe_parser.add_argument("--su", action=argparse.BooleanOptionalAction, default=True)
+    probe_parser.add_argument("--bpftool", default=None)
     probe_parser.add_argument("--out", type=Path)
     probe_parser.set_defaults(func=cmd_probe)
 

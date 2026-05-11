@@ -29,12 +29,12 @@ object EBPFCapabilityProbe {
         if (traceFs == null) notes += "tracefs/debugfs not found"
 
         val bpftrace = if (root) firstExecutable(
-            listOf(DevicePaths.BPFTRACE, "/system/bin/bpftrace", "/vendor/bin/bpftrace", "bpftrace"),
+            listOf(DevicePaths.BPFTRACE, "/data/local/tmp/bpftrace", "/system/bin/bpftrace", "/vendor/bin/bpftrace", "bpftrace"),
         ) else null
         if (bpftrace == null) notes += "bpftrace not found on device"
 
         val bpftool = if (root) firstExecutable(
-            listOf(DevicePaths.BPFTOOL, "/system/bin/bpftool", "/vendor/bin/bpftool", "bpftool"),
+            listOf(DevicePaths.BPFTOOL, "/data/local/tmp/bpftool", "/system/bin/bpftool", "/vendor/bin/bpftool", "bpftool"),
         ) else null
         if (bpftool == null) notes += "bpftool not found on device"
 

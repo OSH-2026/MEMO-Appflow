@@ -1,0 +1,33 @@
+# Android kernel build/build.sh fragment for MEMO eBPF support.
+#
+# Use from the Pixel 5 kernel repo root with:
+#   BUILD_CONFIG_FRAGMENTS=../osh-2026/MEMO-OS/scripts/android_ebpf/kernel/memo_android_ebpf_build.fragment
+
+MEMO_ANDROID_EBPF_CONFIG=${MEMO_ANDROID_EBPF_CONFIG:-${ROOT_DIR}/../osh-2026/MEMO-OS/scripts/android_ebpf/kernel/memo_android_ebpf.config}
+# Pixel 5's 4.19 tree does not expose CONFIG_DEBUG_INFO_BTF, and the bundled
+# pahole can flood DWARF recoding warnings. Opt in explicitly if needed.
+GENERATE_VMLINUX_BTF=${GENERATE_VMLINUX_BTF:-0}
+
+function apply_memo_android_ebpf_config() {
+  if [ ! -r "${MEMO_ANDROID_EBPF_CONFIG}" ]; then
+    echo "ERROR: MEMO Android eBPF config not found: ${MEMO_ANDROID_EBPF_CONFIG}" >&2
+    return 1
+  fi
+
+  (
+    cd "${OUT_DIR}" && \
+      KCONFIG_CONFIG="${OUT_DIR}/.config" \
+      "${ROOT_DIR}/${KERNEL_DIR}/scripts/kconfig/merge_config.sh" \
+        -m -O "${OUT_DIR}" "${OUT_DIR}/.config" "${MEMO_ANDROID_EBPF_CONFIG}"
+  )
+
+  (
+    cd "${OUT_DIR}" && \
+      make O="${OUT_DIR}" \
+        CLANG_TRIPLE="${CLANG_TRIPLE}" \
+        CROSS_COMPILE="${CROSS_COMPILE}" \
+        "${TOOL_ARGS[@]}" "${MAKE_ARGS[@]}" olddefconfig
+  )
+}
+
+append_cmd POST_DEFCONFIG_CMDS apply_memo_android_ebpf_config
