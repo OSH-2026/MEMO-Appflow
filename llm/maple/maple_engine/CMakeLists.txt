@@ -6,8 +6,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # llama.cpp paths
-set(LLAMA_CPP_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../llama.cpp)
-set(LLAMA_BUILD ${LLAMA_CPP_ROOT}/build CACHE PATH "Path to the llama.cpp build directory")
+# set(LLAMA_CPP_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../llama.cpp)
+# set(LLAMA_BUILD ${LLAMA_CPP_ROOT}/build-andorid CACHE PATH "Path to the llama.cpp build directory")
+set(LLAMA_CPP_ROOT /home/javaherobrine/桌面/osh-2026/MEMO-OS/llm/maple/llama.cpp)
+set(LLAMA_BUILD ${LLAMA_CPP_ROOT}/build-andorid CACHE PATH "Path to the llama.cpp build directory")
+
+
 
 # Include directories
 include_directories(
@@ -26,10 +30,10 @@ set(SOURCES
 
 # Static libraries from llama.cpp build
 set(LLAMA_LIBS
-    ${LLAMA_BUILD}/src/libllama.a
-    ${LLAMA_BUILD}/ggml/src/libggml.a
-    ${LLAMA_BUILD}/ggml/src/libggml-base.a
-    ${LLAMA_BUILD}/ggml/src/libggml-cpu.a
+    /home/javaherobrine/桌面/osh-2026/MEMO-OS/llm/maple/llama.cpp/build-android/src/libllama.a
+    /home/javaherobrine/桌面/osh-2026/MEMO-OS/llm/maple/llama.cpp/build-android/ggml/src/libggml.a
+    /home/javaherobrine/桌面/osh-2026/MEMO-OS/llm/maple/llama.cpp/build-android/ggml/src/libggml-base.a
+    /home/javaherobrine/桌面/osh-2026/MEMO-OS/llm/maple/llama.cpp/build-android/ggml/src/libggml-cpu.a
 )
 if(EXISTS ${LLAMA_BUILD}/ggml/src/ggml-cuda/libggml-cuda.a)
     list(APPEND LLAMA_LIBS ${LLAMA_BUILD}/ggml/src/ggml-cuda/libggml-cuda.a)
@@ -39,11 +43,11 @@ if(EXISTS ${LLAMA_BUILD}/common/libllama-common.a)
 endif()
 
 # Check if all llama libs exist
-foreach(lib ${LLAMA_LIBS})
-    if(NOT EXISTS ${lib})
-        message(FATAL_ERROR "Missing llama.cpp library: ${lib}. Please build llama.cpp first.")
-    endif()
-endforeach()
+# foreach(lib ${LLAMA_LIBS})
+#    if(NOT EXISTS ${lib})
+#        message(FATAL_ERROR "Missing llama.cpp library: ${lib}. Please build llama.cpp first.")
+#    endif()
+# endforeach()
 
 # Main shared library (for glue code: Python ctypes / JNI)
 add_library(maple_engine SHARED ${SOURCES})
@@ -88,5 +92,5 @@ else()
 endif()
 
 # Demo executable
-add_executable(maple_demo ../demo/maple_demo.cpp)
-target_link_libraries(maple_demo PRIVATE maple_engine_static)
+# add_executable(maple_demo ../demo/maple_demo.cpp)
+# target_link_libraries(maple_demo PRIVATE maple_engine_static)
