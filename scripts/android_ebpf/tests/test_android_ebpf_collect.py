@@ -67,6 +67,24 @@ class AndroidEbpfCollectTest(unittest.TestCase):
         self.assertEqual(events[0]["detail"], "")
         self.assertEqual(events[0]["privacy_level"], "P1")
 
+    def test_program_uses_android_419_compatible_fallbacks(self):
+        program, enabled = collector.build_bpftrace_program(
+            [
+                "binder:binder_transaction",
+                "syscalls:sys_enter_openat",
+                "syscalls:sys_enter_recvfrom",
+            ],
+            traceable_functions=["input_event"],
+            syscall_abi="aarch64",
+        )
+
+        self.assertNotIn("BEGIN", program)
+        self.assertNotIn("sys_enter_openat2", program)
+        self.assertNotIn("str(args->filename)", program)
+        self.assertIn("args->size", program)
+        self.assertIn("kprobe:input_event", program)
+        self.assertIn("kprobe:input_event", enabled)
+
 
 if __name__ == "__main__":
     unittest.main()

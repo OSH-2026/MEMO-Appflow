@@ -188,6 +188,18 @@ def available_tracepoints(adb: str, *, su: bool = True) -> list[str]:
     return sorted({line.strip() for line in result.stdout.splitlines() if ":" in line})
 
 
+def available_traceable_functions(adb: str, *, su: bool = True) -> list[str]:
+    command = (
+        "cat /sys/kernel/tracing/available_filter_functions 2>/dev/null || "
+        "cat /sys/kernel/debug/tracing/available_filter_functions 2>/dev/null; "
+        "cat /data/local/tmp/traceable-functions.txt 2>/dev/null"
+    )
+    result = adb_shell(adb, command, su=su, timeout=20)
+    if result.returncode != 0:
+        return []
+    return sorted({line.split()[0] for line in result.stdout.splitlines() if line.split()})
+
+
 def first_device_executable(adb: str, candidates: list[str], *, su: bool) -> str:
     quoted = " ".join(shlex.quote(candidate) for candidate in candidates)
     result = adb_shell(
@@ -204,6 +216,7 @@ def first_device_executable(adb: str, candidates: list[str], *, su: bool) -> str
 
 def probe(adb: str, *, su: bool, out: Path | None, bpftool: str | None = None) -> dict[str, Any]:
     tracepoints = available_tracepoints(adb, su=su)
+    traceable_functions = available_traceable_functions(adb, su=su)
     bpftool_path = bpftool or first_device_executable(
         adb,
         [
@@ -240,6 +253,7 @@ def probe(adb: str, *, su: bool, out: Path | None, bpftool: str | None = None) -
         "su": su,
         "tracepoint_count": len(tracepoints),
         "required_tracepoints": required_tracepoint_status(tracepoints),
+        "input_event_kprobe": "input_event" in traceable_functions,
         "bpftrace_path": bpftrace_path,
         "bpftool_path": bpftool_path,
         "bpftool_feature_head": feature.stdout.strip().splitlines(),
@@ -346,8 +360,14 @@ def openat_syscall_ids(syscall_abi: str) -> list[int]:
     return []
 
 
-def build_bpftrace_program(tracepoints: Iterable[str], *, syscall_abi: str = "x86_64") -> tuple[str, list[str]]:
+def build_bpftrace_program(
+    tracepoints: Iterable[str],
+    *,
+    traceable_functions: Iterable[str] = (),
+    syscall_abi: str = "x86_64",
+) -> tuple[str, list[str]]:
     present = set(tracepoints)
+    functions = set(traceable_functions)
     probes: list[str] = []
     enabled: list[str] = []
 
@@ -357,8 +377,8 @@ def build_bpftrace_program(tracepoints: Iterable[str], *, syscall_abi: str = "x8
             r'''
 tracepoint:binder:binder_transaction
 {
-  printf("MEMO\t%llu\tbinder\t%d\t%d\t%d\t%s\t%d\t%d\t%d\t%d\t-\n",
-    nsecs, uid, pid, tid, comm, args->code, args->flags, args->to_proc, args->to_thread);
+  printf("MEMO\t%llu\tbinder\t0\t%d\t0\t-\t%d\t%d\t0\t0\t-\n",
+    nsecs, pid, args->code, args->flags);
 }
 '''.strip()
         )
@@ -370,8 +390,8 @@ tracepoint:binder:binder_transaction
                 f'''
 tracepoint:{event_name.replace(":", ":")}
 {{
-  printf("MEMO\\t%llu\\tfile\\t%d\\t%d\\t%d\\t%s\\t0\\t0\\t0\\t0\\t%s\\n",
-    nsecs, uid, pid, tid, comm, str(args->filename));
+  printf("MEMO\\t%llu\\tfile\\t0\\t%d\\t0\\t-\\t0\\t0\\t0\\t0\\topenat\\n",
+    nsecs, pid);
 }}
 '''.strip()
             )
@@ -389,8 +409,8 @@ tracepoint:{event_name.replace(":", ":")}
 tracepoint:raw_syscalls:sys_enter
 /{open_filter}/
 {{
-  printf("MEMO\\t%llu\\tfile\\t%d\\t%d\\t%d\\t%s\\t20\\t0\\t0\\t0\\t%s\\n",
-    nsecs, uid, pid, tid, comm, str(args->args[1]));
+  printf("MEMO\\t%llu\\tfile\\t0\\t%d\\t0\\t-\\t20\\t0\\t0\\t0\\traw_openat\\n",
+    nsecs, pid);
 }}
 '''.strip()
         )
@@ -407,8 +427,8 @@ tracepoint:raw_syscalls:sys_enter
                 f'''
 tracepoint:{event_name.replace(":", ":")}
 {{
-  printf("MEMO\\t%llu\\tfile\\t%d\\t%d\\t%d\\t%s\\t{code}\\t0\\t0\\t0\\t{detail}\\n",
-    nsecs, uid, pid, tid, comm);
+  printf("MEMO\\t%llu\\tfile\\t0\\t%d\\t0\\t-\\t{code}\\t0\\t0\\t0\\t{detail}\\n",
+    nsecs, pid);
 }}
 '''.strip()
             )
@@ -425,8 +445,8 @@ tracepoint:{event_name.replace(":", ":")}
                 f'''
 tracepoint:{event_name.replace(":", ":")}
 {{
-  printf("MEMO\\t%llu\\tmemory\\t%d\\t%d\\t%d\\t%s\\t{code}\\t0\\t0\\t0\\t{detail}\\n",
-    nsecs, uid, pid, tid, comm);
+  printf("MEMO\\t%llu\\tmemory\\t0\\t%d\\t0\\t-\\t{code}\\t0\\t0\\t0\\t{detail}\\n",
+    nsecs, pid);
 }}
 '''.strip()
             )
@@ -437,8 +457,8 @@ tracepoint:{event_name.replace(":", ":")}
             r'''
 tracepoint:sched:sched_process_fork
 {
-  printf("MEMO\t%llu\tprocess_fork\t%d\t%d\t%d\t%s\t%d\t%d\t0\t0\t%s\n",
-    nsecs, uid, pid, tid, comm, args->parent_pid, args->child_pid, str(args->child_comm));
+  printf("MEMO\t%llu\tprocess_fork\t0\t%d\t0\t-\t%d\t%d\t0\t0\tfork\n",
+    nsecs, pid, args->parent_pid, args->child_pid);
 }
 '''.strip()
         )
@@ -449,17 +469,17 @@ tracepoint:sched:sched_process_fork
             r'''
 tracepoint:sched:sched_process_exit
 {
-  printf("MEMO\t%llu\tprocess_exit\t%d\t%d\t%d\t%s\t0\t0\t0\t0\t%s\n",
-    nsecs, uid, pid, tid, comm, str(args->comm));
+  printf("MEMO\t%llu\tprocess_exit\t0\t%d\t0\t-\t0\t0\t0\t0\texit\n",
+    nsecs, pid);
 }
 '''.strip()
         )
 
-    for event_name, direction, code in (
-        ("syscalls:sys_enter_sendto", "send", 1),
-        ("syscalls:sys_enter_recvfrom", "recv", 2),
-        ("net:net_dev_queue", "tx_dev_queue", 3),
-        ("net:netif_receive_skb", "rx_netif_receive", 4),
+    for event_name, direction, code, size_field in (
+        ("syscalls:sys_enter_sendto", "send", 1, "len"),
+        ("syscalls:sys_enter_recvfrom", "recv", 2, "size"),
+        ("net:net_dev_queue", "tx_dev_queue", 3, "len"),
+        ("net:netif_receive_skb", "rx_netif_receive", 4, "len"),
     ):
         if event_name in present:
             enabled.append(event_name)
@@ -467,8 +487,8 @@ tracepoint:sched:sched_process_exit
                 f'''
 tracepoint:{event_name.replace(":", ":")}
 {{
-  printf("MEMO\\t%llu\\tnetwork\\t%d\\t%d\\t%d\\t%s\\t{code}\\t%d\\t0\\t0\\t{direction}\\n",
-    nsecs, uid, pid, tid, comm, args->len);
+  printf("MEMO\\t%llu\\tnetwork\\t0\\t%d\\t0\\t-\\t{code}\\t%d\\t0\\t0\\t{direction}\\n",
+    nsecs, pid, args->{size_field});
 }}
 '''.strip()
             )
@@ -479,8 +499,8 @@ tracepoint:{event_name.replace(":", ":")}
             r'''
 tracepoint:sched:sched_switch
 {
-  printf("MEMO\t%llu\tsched\t%d\t%d\t%d\t%s\t%d\t%d\t0\t0\tswitch\n",
-    nsecs, uid, pid, tid, comm, args->prev_pid, args->next_pid);
+  printf("MEMO\t%llu\tsched\t0\t%d\t0\t-\t%d\t%d\t0\t0\tswitch\n",
+    nsecs, pid, args->prev_pid, args->next_pid);
 }
 '''.strip()
         )
@@ -491,8 +511,8 @@ tracepoint:sched:sched_switch
             r'''
 tracepoint:sched:sched_wakeup
 {
-  printf("MEMO\t%llu\tsched\t%d\t%d\t%d\t%s\t%d\t%d\t0\t0\twakeup\n",
-    nsecs, uid, pid, tid, comm, args->pid, args->prio);
+  printf("MEMO\t%llu\tsched\t0\t%d\t0\t-\t%d\t%d\t0\t0\twakeup\n",
+    nsecs, pid, args->pid, args->prio);
 }
 '''.strip()
         )
@@ -511,8 +531,8 @@ tracepoint:sched:sched_wakeup
                 f'''
 tracepoint:{event_name.replace(":", ":")}
 {{
-  printf("MEMO\\t%llu\\tinput\\t%d\\t%d\\t%d\\t%s\\t0\\t0\\t0\\t0\\tinput_event\\n",
-    nsecs, uid, pid, tid, comm);
+  printf("MEMO\\t%llu\\tinput\\t0\\t%d\\t0\\t-\\t0\\t0\\t0\\t0\\tinput_event\\n",
+    nsecs, pid);
 }}
 '''.strip()
             )
@@ -521,15 +541,25 @@ tracepoint:{event_name.replace(":", ":")}
                 f'''
 tracepoint:{event_name.replace(":", ":")}
 {{
-  printf("MEMO\\t%llu\\tgraphics\\t%d\\t%d\\t%d\\t%s\\t0\\t0\\t0\\t0\\t{event_name}\\n",
-    nsecs, uid, pid, tid, comm);
+  printf("MEMO\\t%llu\\tgraphics\\t0\\t%d\\t0\\t-\\t0\\t0\\t0\\t0\\t{event_name}\\n",
+    nsecs, pid);
 }}
 '''.strip()
             )
 
-    header = 'BEGIN { printf("MEMO\\t0\\tstatus\\t0\\t0\\t0\\tmemo\\t0\\t0\\t0\\t0\\tcollector_started\\n"); }\n'
-    footer = 'END { printf("MEMO\\t0\\tstatus\\t0\\t0\\t0\\tmemo\\t0\\t0\\t0\\t0\\tcollector_stopped\\n"); }\n'
-    return header + "\n\n".join(probes) + "\n" + footer, enabled
+    if "input:input_event" not in present and "input_event" in functions:
+        enabled.append("kprobe:input_event")
+        probes.append(
+            r'''
+kprobe:input_event
+{
+  printf("MEMO\t%llu\tinput\t0\t%d\t0\t-\t0\t0\t0\t0\tinput_event\n",
+    nsecs, pid);
+}
+'''.strip()
+        )
+
+    return "\n\n".join(probes) + "\n", enabled
 
 
 def parse_trace_line(line: str) -> RawEvent | None:
@@ -1151,8 +1181,13 @@ def collect(args: argparse.Namespace) -> CollectResult:
     out_dir = args.out
     out_dir.mkdir(parents=True, exist_ok=True)
     tracepoints = available_tracepoints(args.adb, su=args.su)
+    traceable_functions = available_traceable_functions(args.adb, su=args.su)
     syscall_abi = args.syscall_abi or device_arch(args.adb)
-    program, enabled = build_bpftrace_program(tracepoints, syscall_abi=syscall_abi)
+    program, enabled = build_bpftrace_program(
+        tracepoints,
+        traceable_functions=traceable_functions,
+        syscall_abi=syscall_abi,
+    )
     if not enabled:
         raise RuntimeError("no supported tracepoints found; run the probe command first")
 
@@ -1160,7 +1195,7 @@ def collect(args: argparse.Namespace) -> CollectResult:
     local_program.write_text(program, encoding="utf-8")
     run([args.adb, "push", str(local_program), TRACE_REMOTE], timeout=30, check=False)
 
-    command = f"{args.bpftrace} -q {TRACE_REMOTE}"
+    command = f"{args.bpftrace} {TRACE_REMOTE}"
     popen_args = [args.adb, "shell", "su", "-c", command] if args.su else [args.adb, "shell", command]
     raw_trace = out_dir / "raw_trace.tsv"
     uid_map_path = out_dir / "uid_map.json"
@@ -1190,7 +1225,9 @@ def collect(args: argparse.Namespace) -> CollectResult:
                     continue
                 handle.write(line)
                 handle.flush()
-                if line.startswith("MEMO\t0\tstatus") and "collector_started" in line:
+                if line.startswith("Attached ") or (
+                    line.startswith("MEMO\t0\tstatus") and "collector_started" in line
+                ):
                     collector_ready.set()
 
     thread = threading.Thread(target=reader, daemon=True)
@@ -1204,7 +1241,7 @@ def collect(args: argparse.Namespace) -> CollectResult:
         stop_reader.set()
         thread.join(timeout=5)
         raise RuntimeError(
-            "bpftrace did not emit collector_started before timeout; "
+            "bpftrace did not report attached probes before timeout; "
             f"inspect {raw_trace} for compiler or attach errors"
         )
     time.sleep(args.warmup_seconds)
@@ -1370,7 +1407,7 @@ def build_parser() -> argparse.ArgumentParser:
     collect_parser.add_argument("--cold-launch-repeats", type=int, default=5)
     collect_parser.add_argument("--step-seconds", type=float, default=3.0)
     collect_parser.add_argument("--warmup-seconds", type=float, default=1.0)
-    collect_parser.add_argument("--collector-ready-timeout", type=float, default=45.0)
+    collect_parser.add_argument("--collector-ready-timeout", type=float, default=90.0)
     collect_parser.add_argument("--extra-seconds", type=float, default=2.0)
     collect_parser.add_argument("--drop-caches", action=argparse.BooleanOptionalAction, default=True)
     collect_parser.add_argument("--skip-workload", action="store_true")

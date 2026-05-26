@@ -13,6 +13,7 @@ data class EBPFCapabilityReport(
     val inputTracepointAvailable: Boolean,
     val networkSyscallsAvailable: Boolean,
     val availableEvents: Set<String>,
+    val traceableFunctions: Set<String>,
     val notes: List<String>,
 ) {
     val canRunBpftrace: Boolean get() = rootAvailable && traceFsPath != null && bpftracePath != null
@@ -48,6 +49,20 @@ object EBPFCapabilityProbe {
         } else {
             emptySet()
         }
+        val traceableFunctions = if (root && traceFs != null) {
+            RootShell.run(
+                "cat $traceFs/available_filter_functions 2>/dev/null; " +
+                    "cat /data/local/tmp/traceable-functions.txt 2>/dev/null",
+                timeoutMs = 5_000L,
+            )
+                .stdout
+                .lineSequence()
+                .mapNotNull { it.trim().split(Regex("\\s+")).firstOrNull() }
+                .filter { it.isNotEmpty() }
+                .toSet()
+        } else {
+            emptySet()
+        }
 
         val btf = root && RootShell.run("test -r /sys/kernel/btf/vmlinux", timeoutMs = 2_000L).ok
         val ftraceSyscalls = events.any { it.startsWith("syscalls:sys_enter_") }
@@ -55,11 +70,13 @@ object EBPFCapabilityProbe {
         val vmscan = events.any { it.startsWith("vmscan:") }
         val sched = events.any { it.startsWith("sched:") }
         val input = events.any { it.startsWith("input:") }
+        val inputKprobe = "input_event" in traceableFunctions
         val network = events.contains("syscalls:sys_enter_sendto") || events.contains("syscalls:sys_enter_recvfrom")
 
         if (!ftraceSyscalls) notes += "syscall tracepoints unavailable; openat/sendto/recvfrom eBPF coverage is limited"
         if (!binder) notes += "binder transaction tracepoint unavailable"
         if (!network) notes += "sendto/recvfrom tracepoints unavailable"
+        if (!input && !inputKprobe) notes += "input tracepoint and input_event kprobe unavailable"
 
         return EBPFCapabilityReport(
             rootAvailable = root,
@@ -74,6 +91,7 @@ object EBPFCapabilityProbe {
             inputTracepointAvailable = input,
             networkSyscallsAvailable = network,
             availableEvents = events,
+            traceableFunctions = traceableFunctions,
             notes = notes,
         )
     }

@@ -307,7 +307,7 @@ class EBPFCollectorService : Service() {
     private fun waitForCollectorStarted(rawTracePath: String) {
         val deadline = System.currentTimeMillis() + BPFTRACE_ATTACH_TIMEOUT_MS
         while (System.currentTimeMillis() < deadline) {
-            val ready = RootShell.run("grep -q 'collector_started' '$rawTracePath'", timeoutMs = 1_000L)
+            val ready = RootShell.run("grep -q '^Attached ' '$rawTracePath'", timeoutMs = 1_000L)
             if (ready.ok) return
             Thread.sleep(250L)
         }
@@ -353,8 +353,8 @@ class EBPFCollectorService : Service() {
         private const val CHANNEL_ID = "memo_pipeline"
         private const val WINDOW_MS = 8_000L
         private const val EXPERIMENT_WINDOW_MS = 14_000L
-        private const val BPFTRACE_STARTUP_SLACK_SECONDS = 70
-        private const val BPFTRACE_ATTACH_TIMEOUT_MS = 60_000L
+        private const val BPFTRACE_STARTUP_SLACK_SECONDS = 100
+        private const val BPFTRACE_ATTACH_TIMEOUT_MS = 90_000L
         private const val MAX_LINES = 12_000
         private const val REALTIME_PARSE_LINES = 4_000
     }
