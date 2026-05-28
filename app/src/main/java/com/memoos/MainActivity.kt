@@ -9,6 +9,8 @@ import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +34,14 @@ import java.util.Locale
 class MainActivity : Activity() {
     private lateinit var root: LinearLayout
     private var showDiagnostics = false
+    private val refreshHandler = Handler(Looper.getMainLooper())
+    private var lastRenderedSignature = ""
+    private val refreshRunnable = object : Runnable {
+        override fun run() {
+            refreshStateIfChanged()
+            refreshHandler.postDelayed(this, 2_000L)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +54,14 @@ class MainActivity : Activity() {
 
     override fun onResume() {
         super.onResume()
-        renderState()
+        renderState(force = true)
+        refreshHandler.removeCallbacks(refreshRunnable)
+        refreshHandler.post(refreshRunnable)
+    }
+
+    override fun onPause() {
+        refreshHandler.removeCallbacks(refreshRunnable)
+        super.onPause()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -61,50 +78,80 @@ class MainActivity : Activity() {
             setBackgroundColor(Color.rgb(246, 248, 251))
         }
         scroll.addView(root)
-        renderState()
+        renderState(force = true)
         return scroll
     }
 
-    private fun renderState() {
+    private fun refreshStateIfChanged() {
         if (!::root.isInitialized) return
         val state = MemoStore(this).load()
+        val signature = stateSignature(state)
+        if (signature != lastRenderedSignature) {
+            renderState(state, signature)
+        }
+    }
+
+    private fun renderState(force: Boolean = false) {
+        if (!::root.isInitialized) return
+        val state = MemoStore(this).load()
+        val signature = stateSignature(state)
+        if (!force && signature == lastRenderedSignature) return
+        renderState(state, signature)
+    }
+
+    private fun renderState(state: LastMemoState, signature: String = stateSignature(state)) {
         root.removeAllViews()
 
         root.addView(title("MEMO-Appflow"))
-        root.addView(subtitle("Device-side prediction, real app recommendations, and scheduling actions"))
+        root.addView(subtitle("观察真实手机使用，预测接下来可能用到的应用，并在后台做资源调度"))
         root.addView(statusPanel(state))
-        root.addView(latencyPanel(state))
         root.addView(controlPanel())
         root.addView(recommendationsPanel(state))
         root.addView(maplePanel(state))
         root.addView(actionsPanel(state))
         root.addView(evidencePanel(state))
+        root.addView(latencyPanel(state))
+        root.addView(experimentPanel())
         root.addView(diagnosticsToggle())
         if (showDiagnostics) {
             root.addView(diagnosticsPanel(state))
         }
+        lastRenderedSignature = signature
     }
 
     private fun statusPanel(state: LastMemoState): View {
         val updated = if (state.updatedAt > 0) {
             SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US).format(Date(state.updatedAt))
         } else {
-            "No run yet"
+            "还没有运行"
         }
         val panel = verticalPanel()
-        panel.addView(label("Current State"))
-        panel.addView(kv("Last run", updated))
-        panel.addView(kv("MAPLE", if (state.maple.available) "Ready via ${state.maple.backend}" else "Not ready: ${state.maple.error ?: "waiting for model"}"))
-        panel.addView(kv("Recommendations", if (state.recommendations.isEmpty()) "Not generated yet" else "${state.recommendations.size} real launchable apps"))
-        panel.addView(kv("Evidence", evidenceHeadline(state)))
+        panel.addView(label("现在能做什么"))
+        val rootIssue = hasRootIssue(state)
+        if (rootIssue) {
+            panel.addView(statusText("需要处理 root 授权", Color.rgb(185, 28, 28)))
+            panel.addView(body("Magisk 当前拒绝了 MEMO-Appflow 的 superuser 权限。没有这个权限，eBPF 采集、系统状态读取和调度动作都会失败。"))
+            panel.addView(openMagiskButton())
+        } else if (state.maple.backend == "pending") {
+            panel.addView(statusText("正在后台推理", Color.rgb(180, 83, 9)))
+            panel.addView(body("你可以继续正常使用手机。MAPLE 完成后，Top-3 应用和系统动作会自动刷新。"))
+        } else if (state.recommendations.isNotEmpty()) {
+            panel.addView(statusText("已经生成推荐", Color.rgb(22, 101, 52)))
+            panel.addView(body("MEMO 已根据真实系统证据生成 Top-3 应用，并执行了非侵入式调度策略。"))
+        } else {
+            panel.addView(statusText("等待开始", Color.rgb(37, 99, 235)))
+            panel.addView(body("先点“检查设备授权”，确认 root、eBPF collector 和 MAPLE 模型可用；然后点“开始智能优化”。"))
+        }
+        panel.addView(kv("上次更新", updated))
+        panel.addView(kv("当前证据", friendlyEvidence(evidenceHeadline(state))))
         return panel
     }
 
     private fun latencyPanel(state: LastMemoState): View {
         val panel = verticalPanel()
-        panel.addView(label("Latency Budget"))
+        panel.addView(label("运行耗时"))
         if (!state.latency.isPresent) {
-            panel.addView(body("No latency data yet. Runs now record capture, parsing, MAPLE, app mapping, actions, and total time."))
+            panel.addView(body("还没有耗时数据。开始优化后，这里会显示采集、整理、MAPLE 推理和动作执行用了多久。"))
             return panel
         }
         val statusColor = when (state.latency.realtimeStatus) {
@@ -113,9 +160,9 @@ class MainActivity : Activity() {
             else -> Color.rgb(185, 28, 28)
         }
         panel.addView(statusText(state.latency.realtimeStatus.uppercase(Locale.US), statusColor))
-        panel.addView(kv("Foreground", "${formatDuration(state.latency.foregroundMs)} / budget ${formatDuration(state.latency.realtimeBudgetMs)}"))
-        panel.addView(kv("Total incl. MAPLE", formatDuration(state.latency.totalMs)))
-        panel.addView(kv("Parsed eBPF records", state.latency.parsedEvents.toString()))
+        panel.addView(kv("不阻塞用户的前台预算", "${formatDuration(state.latency.foregroundMs)} / ${formatDuration(state.latency.realtimeBudgetMs)}"))
+        panel.addView(kv("完整后台耗时", formatDuration(state.latency.totalMs)))
+        panel.addView(kv("读取到的系统事件", "${state.latency.parsedEvents} 条"))
         state.latency.stages
             .sortedByDescending { it.durationMs }
             .take(6)
@@ -125,28 +172,33 @@ class MainActivity : Activity() {
 
     private fun controlPanel(): View {
         val panel = verticalPanel()
-        panel.addView(label("Controls"))
-        panel.addView(rowButton("Run Full Local Evaluation", EBPFCollectorService.ACTION_FULL_LOCAL_EVALUATION, primary = true))
-        panel.addView(rowButton("Run App Pressure A/B Test", EBPFCollectorService.ACTION_PRESSURE_EXPERIMENT, primary = true))
-        panel.addView(rowButton("Run Device Pipeline", EBPFCollectorService.ACTION_RUN_ONCE, primary = false))
-        panel.addView(rowButton("Stop Collection", EBPFCollectorService.ACTION_STOP, primary = false))
-        panel.addView(smallCaption("Real eBPF experiments"))
-        panel.addView(rowButton("Record Current Real Usage (28s)", EBPFCollectorService.ACTION_RECORD_CURRENT_USAGE, primary = false))
-        panel.addView(rowButton("Open Real Communication App + Record", EBPFCollectorService.ACTION_EXPERIMENT_COMMUNICATION, primary = false))
-        panel.addView(rowButton("Open Real Camera/Photo App + Record", EBPFCollectorService.ACTION_EXPERIMENT_CAMERA, primary = false))
-        panel.addView(rowButton("Open Real Media/Video App + Record", EBPFCollectorService.ACTION_EXPERIMENT_MEDIA, primary = false))
-        panel.addView(rowButton("Open Payment/Security App if Installed + Record", EBPFCollectorService.ACTION_EXPERIMENT_PAYMENT, primary = false))
-        panel.addView(rowButton("Run Real Scroll/Display Interaction + Record", EBPFCollectorService.ACTION_EXPERIMENT_SCROLL, primary = false))
-        panel.addView(smallCaption("Real eBPF ablation"))
-        panel.addView(rowButton("Run Ablation on Latest Real Trace", EBPFCollectorService.ACTION_REAL_ABLATION_LATEST, primary = false))
+        panel.addView(label("开始使用"))
+        panel.addView(rowButton("检查设备授权", EBPFCollectorService.ACTION_CHECK_SETUP, primary = false))
+        panel.addView(rowButton("开始智能优化", EBPFCollectorService.ACTION_RUN_ONCE, primary = true))
+        panel.addView(rowButton("记录我现在的使用", EBPFCollectorService.ACTION_RECORD_CURRENT_USAGE, primary = false))
+        panel.addView(rowButton("停止后台任务", EBPFCollectorService.ACTION_STOP, primary = false))
+
+        return panel
+    }
+
+    private fun experimentPanel(): View {
+        val panel = verticalPanel()
+        panel.addView(label("实验和报告"))
+        panel.addView(body("这些入口用于复现实验、生成报告和做消融分析；普通使用时只需要上面的智能优化和 Top-3 推荐。"))
+        panel.addView(rowButton("完整本地评估", EBPFCollectorService.ACTION_FULL_LOCAL_EVALUATION, primary = false))
+        panel.addView(rowButton("手机压力 A/B 实验", EBPFCollectorService.ACTION_PRESSURE_EXPERIMENT, primary = false))
+        panel.addView(rowButton("滚动/显示场景采集", EBPFCollectorService.ACTION_EXPERIMENT_SCROLL, primary = false))
+        panel.addView(rowButton("通信场景采集", EBPFCollectorService.ACTION_EXPERIMENT_COMMUNICATION, primary = false))
+        panel.addView(rowButton("媒体场景采集", EBPFCollectorService.ACTION_EXPERIMENT_MEDIA, primary = false))
+        panel.addView(rowButton("最新真实证据消融", EBPFCollectorService.ACTION_REAL_ABLATION_LATEST, primary = false))
         return panel
     }
 
     private fun recommendationsPanel(state: LastMemoState): View {
         val panel = verticalPanel()
-        panel.addView(label("Top-3 Apps"))
+        panel.addView(label("推荐给用户的 Top-3 应用"))
         if (state.recommendations.isEmpty()) {
-            panel.addView(body("Run the device pipeline or a real eBPF experiment. Recommendations will be real installed apps, not processes or services."))
+            panel.addView(body("还没有推荐。运行“开始智能优化”后，这里只会显示手机上真实可打开的应用，不会显示进程名或系统服务。"))
             return panel
         }
         state.recommendations.forEachIndexed { index, app ->
@@ -157,56 +209,56 @@ class MainActivity : Activity() {
 
     private fun maplePanel(state: LastMemoState): View {
         val panel = verticalPanel()
-        panel.addView(label("MAPLE Prediction"))
+        panel.addView(label("系统判断"))
         if (state.maple.available) {
-            panel.addView(kv("Backend", state.maple.backend))
-            panel.addView(kv("MAPLE App ID", state.maple.predictedAppId.takeIf { it > 0 }?.toString() ?: "No specific ID"))
+            panel.addView(kv("推理引擎", state.maple.backend))
+            panel.addView(kv("内部预测 ID", state.maple.predictedAppId.takeIf { it > 0 }?.toString() ?: "无固定 ID"))
             if (state.maple.stage1.isNotEmpty()) {
-                panel.addView(body("Predicted resource needs:"))
-                state.maple.stage1.take(4).forEach { panel.addView(chip(it)) }
+                panel.addView(body("接下来可能需要的资源："))
+                state.maple.stage1.take(4).forEach { panel.addView(chip(friendlyStageLabel(it))) }
             }
         } else {
-            panel.addView(statusText(if (state.maple.backend == "pending") "Running" else "Blocked", Color.rgb(180, 83, 9)))
-            panel.addView(body(state.maple.error ?: "MAPLE model or Android native engine is not available yet."))
+            panel.addView(statusText(if (state.maple.backend == "pending") "推理中" else "暂不可用", Color.rgb(180, 83, 9)))
+            panel.addView(body(friendlyError(state.maple.error ?: "MAPLE 模型或本地推理引擎还不可用。")))
         }
         return panel
     }
 
     private fun actionsPanel(state: LastMemoState): View {
         val panel = verticalPanel()
-        panel.addView(label("Executed System Actions"))
+        panel.addView(label("MEMO 已做的系统优化"))
         if (state.actions.isEmpty()) {
-            panel.addView(body("No action has run yet."))
+            panel.addView(body("还没有执行动作。开始智能优化后，这里会显示 MEMO 是否更新 Widget、降低预热强度、刷新网络状态、处理内存压力等。"))
             return panel
         }
-        state.actions.forEach { panel.addView(actionRow(it)) }
+        state.actions.takeLast(8).forEach { panel.addView(actionRow(it)) }
         return panel
     }
 
     private fun evidencePanel(state: LastMemoState): View {
         val panel = verticalPanel()
-        panel.addView(label("Evidence Summary"))
+        panel.addView(label("MEMO 观察到了什么"))
         val userFacing = state.evidenceLines
             .filterNot { it.startsWith("process ") }
             .take(6)
         if (userFacing.isEmpty()) {
-            panel.addView(body("No device evidence collected yet."))
+            panel.addView(body("还没有采集到系统证据。"))
         } else {
-            userFacing.forEach { panel.addView(bullet(it)) }
+            userFacing.forEach { panel.addView(bullet(friendlyEvidence(it))) }
         }
-        panel.addView(smallCaption("Kernel details are hidden from the normal view. Open Advanced diagnostics only when debugging the collector."))
+        panel.addView(smallCaption("普通用户不需要看 eBPF 原始记录；高级诊断只用于调试。"))
         return panel
     }
 
     private fun diagnosticsToggle(): View {
         return Button(this).apply {
-            text = if (showDiagnostics) "Hide Advanced Diagnostics" else "Show Advanced Diagnostics"
+            text = if (showDiagnostics) "隐藏高级诊断" else "显示高级诊断"
             isAllCaps = false
             setTextColor(Color.rgb(15, 23, 42))
             background = rounded(Color.rgb(226, 232, 240), dp(8))
             setOnClickListener {
                 showDiagnostics = !showDiagnostics
-                renderState()
+                renderState(force = true)
             }
             layoutParams = LinearLayout.LayoutParams(match(), dp(46)).apply { bottomMargin = dp(12) }
         }
@@ -214,20 +266,20 @@ class MainActivity : Activity() {
 
     private fun diagnosticsPanel(state: LastMemoState): View {
         val panel = verticalPanel()
-        panel.addView(label("Advanced Diagnostics"))
-        panel.addView(kv("Raw evidence lines", state.evidenceLines.size.toString()))
-        panel.addView(kv("Scenario JSON", if (state.scenarioJson.isBlank()) "not generated" else "${state.scenarioJson.length} chars stored"))
-        panel.addView(kv("MAPLE raw JSON", if (state.rawMapleJson.isBlank()) "empty" else "${state.rawMapleJson.length} chars stored"))
-        panel.addView(kv("Actions raw JSON", if (state.rawActionsJson.isBlank()) "empty" else "${state.rawActionsJson.length} chars stored"))
-        panel.addView(kv("Latency raw JSON", if (state.rawLatencyJson.isBlank()) "empty" else "${state.rawLatencyJson.length} chars stored"))
+        panel.addView(label("高级诊断"))
+        panel.addView(kv("原始证据行数", state.evidenceLines.size.toString()))
+        panel.addView(kv("Scenario JSON", if (state.scenarioJson.isBlank()) "未生成" else "${state.scenarioJson.length} 字符"))
+        panel.addView(kv("MAPLE raw JSON", if (state.rawMapleJson.isBlank()) "空" else "${state.rawMapleJson.length} 字符"))
+        panel.addView(kv("Actions raw JSON", if (state.rawActionsJson.isBlank()) "空" else "${state.rawActionsJson.length} 字符"))
+        panel.addView(kv("Latency raw JSON", if (state.rawLatencyJson.isBlank()) "空" else "${state.rawLatencyJson.length} 字符"))
 
         val scanned = AppIdMapping.scanInstalledApps(this)
-        panel.addView(kv("Launchable apps visible", scanned.size.toString()))
+        panel.addView(kv("可启动应用数量", scanned.size.toString()))
         scanned.take(8).forEach { app ->
             panel.addView(bullet("${app.label}: ${app.inferredCategories.take(4).joinToString()}"))
         }
         if (state.evidenceLines.isNotEmpty()) {
-            panel.addView(smallCaption("Raw evidence sample"))
+            panel.addView(smallCaption("原始证据样例"))
             state.evidenceLines.take(10).forEach { panel.addView(monoLine(it)) }
         }
         return panel
@@ -276,12 +328,11 @@ class MainActivity : Activity() {
             layoutParams = LinearLayout.LayoutParams(0, wrap(), 1f)
         }
         info.addView(text("$rank. ${app.label}", 16f, Color.rgb(15, 23, 42), bold = true))
-        info.addView(text(app.category, 13f, Color.rgb(37, 99, 235)))
-        val why = app.reason.substringBefore(" perms=").replace("auto-classified from Android metadata: ", "")
-        if (why.isNotBlank()) info.addView(text(why, 12f, Color.rgb(71, 85, 105)))
+        info.addView(text(friendlyCategory(app.category), 13f, Color.rgb(37, 99, 235)))
+        info.addView(text(recommendationReason(app), 12f, Color.rgb(71, 85, 105)))
 
         val open = Button(this).apply {
-            text = "Open"
+            text = "打开"
             isAllCaps = false
             setTextColor(Color.WHITE)
             background = rounded(Color.rgb(15, 23, 42), dp(8))
@@ -309,9 +360,9 @@ class MainActivity : Activity() {
             "skipped", "unsupported" -> Color.rgb(180, 83, 9)
             else -> Color.rgb(71, 85, 105)
         }
-        row.addView(text("${actionTitle(action.name)}: ${action.target}", 14f, Color.rgb(15, 23, 42), bold = true))
-        row.addView(statusText(action.status.uppercase(Locale.US), statusColor))
-        if (action.detail.isNotBlank()) row.addView(text(action.detail, 12f, Color.rgb(71, 85, 105)))
+        row.addView(text("${actionTitle(action.name)}：${friendlyActionTarget(action)}", 14f, Color.rgb(15, 23, 42), bold = true))
+        row.addView(statusText(actionStatus(action.status), statusColor))
+        if (action.detail.isNotBlank()) row.addView(text(friendlyActionDetail(action.detail), 12f, Color.rgb(71, 85, 105)))
         return row
     }
 
@@ -385,22 +436,29 @@ class MainActivity : Activity() {
 
     private fun actionTitle(name: String): String {
         return when (name) {
-            "widget_update" -> "Widget update"
-            "latency_policy" -> "Latency policy"
-            "latency_summary" -> "Latency summary"
-            "maple_background" -> "MAPLE background"
-            "memory_policy" -> "Memory policy"
-            "thermal_policy" -> "Thermal policy"
-            "warm_launch" -> "Warm launch"
-            "network_candidate_priority" -> "Network priority"
-            "network_stats_refresh" -> "Network refresh"
-            "camera_media_candidate" -> "Camera/media prep"
-            "camera_media_prewarm" -> "Camera/media policy"
-            "display_ui_policy" -> "Display policy"
-            "binder_service_policy" -> "Service policy"
-            "binder_service_refresh" -> "Service refresh"
-            "maple_backend" -> "MAPLE backend"
-            "user_app_pressure_ab" -> "User app pressure A/B"
+            "widget_update" -> "更新推荐展示"
+            "latency_policy" -> "异步推理策略"
+            "latency_summary" -> "耗时总结"
+            "maple_background" -> "MAPLE 后台推理"
+            "memory_policy" -> "内存策略"
+            "memory_idle_maintenance" -> "空闲维护"
+            "memory_trim" -> "内存回收提示"
+            "cache_pressure_response" -> "缓存压力响应"
+            "thermal_policy" -> "温度策略"
+            "thermal_power_mode" -> "功耗模式"
+            "warm_launch" -> "轻量预热"
+            "network_candidate_priority" -> "网络应用优先"
+            "network_stats_refresh" -> "网络状态刷新"
+            "camera_media_candidate" -> "相机/媒体候选"
+            "camera_media_prewarm" -> "相机/媒体策略"
+            "display_ui_policy" -> "界面流畅策略"
+            "binder_service_policy" -> "系统服务策略"
+            "binder_service_refresh" -> "服务状态刷新"
+            "maple_backend" -> "MAPLE 引擎"
+            "root_permission" -> "Root 授权"
+            "collector_runtime" -> "eBPF 运行环境"
+            "maple_runtime" -> "MAPLE 模型环境"
+            "user_app_pressure_ab" -> "手机压力 A/B 实验"
             else -> name.replace('_', ' ').replaceFirstChar { it.uppercase() }
         }
     }
@@ -412,6 +470,170 @@ class MainActivity : Activity() {
     }
 
     private fun formatDuration(ms: Long): String = PipelineLatency.formatMs(ms)
+
+    private fun stateSignature(state: LastMemoState): String {
+        return listOf(
+            state.updatedAt,
+            state.recommendations.size,
+            state.maple.backend,
+            state.maple.available,
+            state.actions.size,
+            state.latency.totalMs,
+        ).joinToString("|")
+    }
+
+    private fun hasRootIssue(state: LastMemoState): Boolean {
+        val latestRoot = state.actions.lastOrNull { it.name == "root_permission" }
+        if (latestRoot?.status == "ok") return false
+        val values = buildList {
+            state.maple.error?.let { add(it) }
+            state.actions.forEach { add("${it.name} ${it.status} ${it.detail}") }
+            state.evidenceLines.forEach { add(it) }
+        }.joinToString("\n").lowercase(Locale.US)
+        return "superuser" in values || "root unavailable" in values || "denied" in values || "raw libbpf collector is required" in values
+    }
+
+    private fun openMagiskButton(): View {
+        return Button(this).apply {
+            text = "打开 Magisk 授权"
+            isAllCaps = false
+            setTextColor(Color.WHITE)
+            background = rounded(Color.rgb(185, 28, 28), dp(8))
+            setOnClickListener {
+                val launch = packageManager.getLaunchIntentForPackage("com.topjohnwu.magisk")
+                if (launch != null) {
+                    startActivity(launch)
+                }
+            }
+            layoutParams = LinearLayout.LayoutParams(match(), dp(46)).apply {
+                topMargin = dp(8)
+                bottomMargin = dp(4)
+            }
+        }
+    }
+
+    private fun friendlyEvidence(value: String): String {
+        return value
+            .replace("device-side eBPF records in the observed Android window", "条系统级事件来自当前手机使用窗口")
+            .replace("event_type", "系统事件")
+            .replace("MAPLE evidence/resource category", "资源信号")
+            .replace("observed user action target app=", "本次观察的应用：")
+            .replace("count=", "数量=")
+    }
+
+    private fun friendlyError(value: String): String {
+        return value
+            .replace("MEMO-Appflow is denied superuser rights. Open Magisk -> Superuser -> MEMO-Appflow -> Allow, then tap Check Device Setup again.", "Magisk 拒绝了 MEMO-Appflow 的 root 权限。请打开 Magisk，在 Superuser 里把 MEMO-Appflow 改成 Allow，然后回到这里点“检查设备授权”。")
+            .replace("raw libbpf collector is required", "需要 raw eBPF collector")
+            .replace("phone-local MAPLE runtime is incomplete", "手机本地 MAPLE 运行环境不完整")
+            .replace("Strict eBPF pipeline failed", "eBPF 采集流程失败")
+            .replace("Strict MAPLE inference failed", "MAPLE 推理失败")
+    }
+
+    private fun actionStatus(status: String): String {
+        return when (status) {
+            "ok" -> "已执行"
+            "blocked" -> "需要处理"
+            "failed" -> "失败"
+            "skipped" -> "已跳过"
+            "unsupported" -> "设备不支持"
+            "pending" -> "等待中"
+            "completed" -> "已完成"
+            else -> status.uppercase(Locale.US)
+        }
+    }
+
+    private fun friendlyCategory(category: String): String {
+        val lower = category.lowercase(Locale.US)
+        return when {
+            "network" in lower || "udp" in lower -> "网络通信"
+            "communication" in lower || "binder" in lower || "service ipc" in lower -> "通信/系统服务"
+            "camera" in lower || "photo" in lower -> "相机/图片"
+            "media" in lower || "codec" in lower || "video" in lower -> "音视频"
+            "payment" in lower || "wallet" in lower || "security" in lower -> "支付/安全"
+            "location" in lower || "navigation" in lower || "map" in lower -> "位置/导航"
+            "display" in lower || "render" in lower -> "界面显示"
+            "memory" in lower || "reclaim" in lower -> "内存状态"
+            "runtime" in lower || "process" in lower -> "应用运行状态"
+            else -> category
+        }
+    }
+
+    private fun friendlyStageLabel(value: String): String {
+        val category = value.substringBefore(" (")
+        val suffix = value.substringAfter(category, "").trim()
+        return "${friendlyCategory(category)} $suffix".trim()
+    }
+
+    private fun friendlyActionTarget(action: ActionState): String {
+        return when (action.name) {
+            "widget_update" -> "推荐卡片"
+            "latency_policy", "maple_background" -> "后台推理"
+            "latency_summary" -> "整条流水线"
+            "memory_policy", "thermal_policy", "thermal_power_mode" -> "预热强度"
+            "memory_idle_maintenance", "memory_trim", "cache_pressure_response" -> "内存和缓存"
+            "network_candidate_priority" -> readableAppList(action.target)
+            "network_stats_refresh" -> "网络状态"
+            "camera_media_candidate", "camera_media_prewarm" -> "相机/媒体资源"
+            "display_ui_policy" -> "界面流畅度"
+            "binder_service_policy", "binder_service_refresh" -> "系统服务"
+            "warm_launch" -> "候选应用预热"
+            "root_permission" -> "Magisk 授权"
+            "collector_runtime" -> "eBPF 采集器"
+            "maple_runtime" -> "本地模型"
+            else -> action.target
+        }
+    }
+
+    private fun friendlyActionDetail(value: String): String {
+        return friendlyError(value)
+            .replace("published 3 real app recommendations", "已经把 3 个真实可打开应用发布到推荐区和 Widget。")
+            .replace("normal memory; warm launch budget allowed", "当前内存状态正常，可以保留轻量预热预算。")
+            .replace("normal battery thermal state", "当前电池温度正常，不需要降低预热强度。")
+            .replace("UDP sendto/recvfrom evidence prioritizes network-capable apps", "检测到 UDP 网络收发，优先保留网络类应用。")
+            .replace("refreshed network stats before recommendation", "推荐前已经刷新网络状态。")
+            .replace("Binder/system-service evidence kept as MAPLE scheduling context", "Binder 和系统服务活动已经进入 MAPLE 调度上下文。")
+            .replace("queried service manager after high Binder activity", "检测到 Binder 活跃后刷新了系统服务状态。")
+            .replace("non-intrusive background mode; do not switch visible apps while the user continues using the phone", "后台模式不切换当前屏幕，避免打断用户正在做的事。")
+            .replace("MAPLE result published after asynchronous inference; foreground budget status=ok", "MAPLE 在后台完成推理，前台使用没有被阻塞。")
+            .replace("MAPLE prediction ran asynchronously; foreground use was not blocked", "MAPLE 在后台异步推理，用户可以继续正常操作手机")
+            .replace("latency=ok", "耗时正常")
+            .replace("foreground=", "前台等待=")
+            .replace("MAPLE=", "MAPLE=")
+            .replace("total=", "总耗时=")
+            .replace("budget=", "预算=")
+    }
+
+    private fun readableAppList(value: String): String {
+        return value
+            .replace("com.android.chrome", "Chrome")
+            .replace("com.google.android.apps.messaging", "Messages")
+            .replace("com.android.settings", "Settings")
+            .replace("top_apps", "Top-3 应用")
+            .replace(",", "、")
+    }
+
+    private fun recommendationReason(app: RecommendationState): String {
+        val lower = app.category.lowercase(Locale.US)
+        return when {
+            "network" in lower || "udp" in lower ->
+                "刚才网络收发比较活跃，MEMO 认为这个应用可能很快会被用到。"
+            "communication" in lower || "binder" in lower || "service ipc" in lower ->
+                "系统服务和通信调用变多，优先保留这类可打开应用。"
+            "camera" in lower || "photo" in lower ->
+                "相机、图片或分享相关信号增强，提前把它放进候选。"
+            "media" in lower || "codec" in lower || "video" in lower ->
+                "音视频和显示链路活跃，适合提前准备媒体类应用。"
+            "payment" in lower || "wallet" in lower || "security" in lower ->
+                "支付或安全相关服务出现，保留可快速进入的候选应用。"
+            "display" in lower || "render" in lower ->
+                "界面刷新和交互变多，MEMO 会控制预热强度避免卡顿。"
+            "runtime" in lower || "process" in lower ->
+                "应用切换和进程活动明显，MEMO 保留一个稳定的系统入口。"
+            else ->
+                "来自 MAPLE 对当前 eBPF 证据的端侧推理结果。"
+        }
+    }
 
     private fun requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -428,6 +650,7 @@ class MainActivity : Activity() {
         private val SERVICE_ACTIONS = setOf(
             EBPFCollectorService.ACTION_RUN_ONCE,
             EBPFCollectorService.ACTION_STOP,
+            EBPFCollectorService.ACTION_CHECK_SETUP,
             EBPFCollectorService.ACTION_FULL_LOCAL_EVALUATION,
             EBPFCollectorService.ACTION_RECORD_CURRENT_USAGE,
             EBPFCollectorService.ACTION_EXPERIMENT_COMMUNICATION,

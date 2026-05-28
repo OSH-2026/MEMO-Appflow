@@ -47,6 +47,7 @@ class EBPFCollectorService : Service() {
         startForeground(NOTIFICATION_ID, notification("MEMO pipeline is running"))
         when (intent?.action) {
             ACTION_STOP -> stopPipeline()
+            ACTION_CHECK_SETUP -> checkDeviceSetup()
             ACTION_FULL_LOCAL_EVALUATION -> runRealUserExperiment(RealUserExperimentPlanner.KIND_SCROLL, runAblationAfterMaple = true)
             ACTION_RUN_ONCE, null -> runPipelineOnce()
             ACTION_RECORD_CURRENT_USAGE -> runRealUserExperiment(RealUserExperimentPlanner.KIND_CURRENT)
@@ -282,6 +283,62 @@ class EBPFCollectorService : Service() {
         }
     }
 
+    private fun checkDeviceSetup() {
+        runningTask?.cancel(true)
+        mapleTask?.cancel(true)
+        runningTask = executor.submit {
+            try {
+                val root = RootShell.run("id", requireRoot = true, timeoutMs = 5_000L)
+                if (!root.ok || !root.stdout.contains("uid=0")) {
+                    MemoStore(this).appendAction(
+                        ActionResult(
+                            "root_permission",
+                            "Magisk Superuser",
+                            "blocked",
+                            "MEMO-Appflow is denied superuser rights. Open Magisk -> Superuser -> MEMO-Appflow -> Allow, then tap Check Device Setup again.",
+                        ),
+                    )
+                    return@submit
+                }
+                MemoStore(this).appendAction(
+                    ActionResult(
+                        "root_permission",
+                        "Magisk Superuser",
+                        "ok",
+                        "superuser available to MEMO-Appflow (${root.stdout.trim()})",
+                    ),
+                )
+
+                DeviceCollectorDeployer(this).ensureRawCollectorExecutable()
+                val collector = RootShell.run("test -x '${DevicePaths.RAW_COLLECTOR}' && test -r '${DevicePaths.BPF_OBJECT}'", requireRoot = true, timeoutMs = 4_000L)
+                MemoStore(this).appendAction(
+                    ActionResult(
+                        "collector_runtime",
+                        "raw eBPF",
+                        if (collector.ok) "ok" else "blocked",
+                        if (collector.ok) "raw collector and BPF object are deployed on device" else collector.stderr.ifBlank { collector.stdout }.take(240),
+                    ),
+                )
+
+                val maple = RootShell.run(
+                    "test -x '${DevicePaths.MAPLE_DEMO}' && test -r '${DevicePaths.MAPLE_ENGINE_SO}' && test -r '${DevicePaths.DEFAULT_MODEL}'",
+                    requireRoot = true,
+                    timeoutMs = 4_000L,
+                )
+                MemoStore(this).appendAction(
+                    ActionResult(
+                        "maple_runtime",
+                        "local model",
+                        if (maple.ok) "ok" else "blocked",
+                        if (maple.ok) "MAPLE executable, engine library and GGUF model are readable on device" else "MAPLE runtime file is missing under ${DevicePaths.MEMO_ROOT}",
+                    ),
+                )
+            } finally {
+                stopForeground(STOP_FOREGROUND_DETACH)
+            }
+        }
+    }
+
 
     private fun runLocalAblationAfterPrediction(scenario: MapleScenario) {
         val start = SystemClock.elapsedRealtime()
@@ -443,6 +500,7 @@ class EBPFCollectorService : Service() {
     companion object {
         const val ACTION_RUN_ONCE = "com.memoos.action.RUN_ONCE"
         const val ACTION_STOP = "com.memoos.action.STOP"
+        const val ACTION_CHECK_SETUP = "com.memoos.action.CHECK_SETUP"
         const val ACTION_FULL_LOCAL_EVALUATION = "com.memoos.action.FULL_LOCAL_EVALUATION"
         const val ACTION_RECORD_CURRENT_USAGE = "com.memoos.action.RECORD_CURRENT_USAGE"
         const val ACTION_EXPERIMENT_COMMUNICATION = "com.memoos.action.REAL_EXPERIMENT_COMMUNICATION"

@@ -94,11 +94,19 @@ object AppIdMapping {
         foregroundPackage: String?,
     ): List<RecommendedApp> {
         val profiles = scanInstalledApps(context)
-        val desiredCategories = mutableListOf<String>()
-        categoryForId(predictedAppId)?.let { desiredCategories += it }
-        desiredCategories += stage1Categories.map { normalizeCategory(it) }
-        desiredCategories += scenarioCategories.map { normalizeCategory(it) }
-        foregroundPackage?.let { desiredCategories += followUpCategoryForPackage(it) }
+        val rawDesiredCategories = mutableListOf<String>()
+        categoryForId(predictedAppId)?.let { rawDesiredCategories += it }
+        rawDesiredCategories += stage1Categories.map { normalizeCategory(it) }
+        rawDesiredCategories += scenarioCategories.map { normalizeCategory(it) }
+        foregroundPackage?.let { rawDesiredCategories += followUpCategoryForPackage(it) }
+        val desiredCategories = rawDesiredCategories
+            .map { normalizeCategory(it) }
+            .filter { it.isNotBlank() }
+            .distinct()
+            .sortedWith(
+                compareByDescending<String> { isUserFacingCategory(it) }
+                    .thenByDescending { categoryPriority(it) },
+            )
 
         val scored = profiles.map { profile ->
             val categoryScore = desiredCategories
@@ -138,7 +146,7 @@ object AppIdMapping {
                     category = desired,
                     appId = categoryId(desired),
                     confidence = categoryMatchScore(desired, profile).coerceIn(0.0, 1.0),
-                    reason = "reserved for predicted evidence category: $desired; roles=${profile.roleCategories.joinToString()} intents=${profile.intentCapabilities.joinToString()} perms=${profile.requestedPermissions.size}",
+                    reason = "matched phone-local app to predicted category: $desired",
                 )
                 if (recommendations.size >= 3) return recommendations.values.toList()
             }
@@ -150,7 +158,7 @@ object AppIdMapping {
                     category = normalizeCategory(match.first),
                     appId = categoryId(match.first),
                     confidence = match.second.coerceIn(0.0, 1.0),
-                    reason = "auto-classified from Android metadata: roles=${profile.roleCategories.joinToString()} intents=${profile.intentCapabilities.joinToString()} perms=${profile.requestedPermissions.size}",
+                    reason = "matched installed app metadata to current evidence category: ${normalizeCategory(match.first)}",
                 )
             }
             if (recommendations.size >= 3) return recommendations.values.toList()
@@ -168,7 +176,7 @@ object AppIdMapping {
                         category = category,
                         appId = categoryId(category),
                         confidence = 0.42,
-                        reason = "coverage completion from real installed launchable apps",
+                        reason = "kept as a real launchable app when the phone has too few category matches",
                     )
                 }
         }
@@ -244,6 +252,7 @@ object AppIdMapping {
 
     private fun categoryMatchScore(category: String, profile: InstalledAppProfile): Double {
         val normalized = normalizeCategory(category)
+        if (!isUserFacingCategory(normalized) && profile.isUserInstalled) return 0.0
         if (normalized in profile.roleCategories) return 0.98
         if (normalized in profile.intentCapabilities) return 0.90
         if (normalized in profile.lexicalHints) return 0.88
@@ -256,7 +265,33 @@ object AppIdMapping {
             CATEGORY_NETWORK -> if (CATEGORY_COMMUNICATION in profile.inferredCategories || CATEGORY_MEDIA in profile.inferredCategories) 0.50 else 0.0
             CATEGORY_DISPLAY -> if (profile.inferredCategories.any { it in setOf(CATEGORY_MEDIA, CATEGORY_NETWORK, CATEGORY_CAMERA) }) 0.46 else 0.0
             CATEGORY_PAYMENT -> if (CATEGORY_NETWORK in profile.inferredCategories) 0.36 else 0.0
+            CATEGORY_RUNTIME -> if (!profile.isUserInstalled && CATEGORY_RUNTIME in profile.inferredCategories) 0.18 else 0.0
             else -> 0.0
+        }
+    }
+
+    private fun isUserFacingCategory(category: String): Boolean {
+        return normalizeCategory(category) in setOf(
+            CATEGORY_NETWORK,
+            CATEGORY_COMMUNICATION,
+            CATEGORY_CAMERA,
+            CATEGORY_MEDIA,
+            CATEGORY_PAYMENT,
+            CATEGORY_LOCATION,
+            CATEGORY_DISPLAY,
+        )
+    }
+
+    private fun categoryPriority(category: String): Int {
+        return when (normalizeCategory(category)) {
+            CATEGORY_NETWORK -> 80
+            CATEGORY_COMMUNICATION -> 75
+            CATEGORY_CAMERA -> 70
+            CATEGORY_MEDIA -> 65
+            CATEGORY_PAYMENT -> 60
+            CATEGORY_LOCATION -> 55
+            CATEGORY_DISPLAY -> 50
+            else -> 10
         }
     }
 
