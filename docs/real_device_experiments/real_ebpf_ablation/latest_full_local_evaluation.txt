@@ -1,0 +1,5 @@
+mode=full_local_product_evaluation
+scenario=real_user_scroll_display_usage
+ablation_results=8
+ablation_duration_ms=204663
+ablation_path=/sdcard/MEMO/ablations/latest_real_ablation.json

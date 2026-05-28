@@ -75,6 +75,7 @@ object RealUserExperimentPlanner {
                 apps = apps,
                 desired = listOf(CATEGORY_CAMERA, CATEGORY_MEDIA, CATEGORY_DISPLAY),
                 commands = cameraLikeCommands(),
+                requireDirectCategory = true,
             )
             KIND_MEDIA -> planFor(
                 id = KIND_MEDIA,

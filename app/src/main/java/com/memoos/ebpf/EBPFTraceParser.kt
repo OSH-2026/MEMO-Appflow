@@ -61,6 +61,7 @@ object EBPFTraceParser {
             "network" -> if (arg0 == 1) "MEMO_SENDTO" else "MEMO_RECVFROM"
             "process_fork" -> "MEMO_PROCESS_FORK"
             "process_exit" -> "MEMO_PROCESS_EXIT"
+            "process_exec" -> "MEMO_PROCESS_EXEC"
             "sched" -> "MEMO_SCHED"
             "input" -> "MEMO_INPUT"
             "status" -> "MEMO_STATUS"
@@ -86,7 +87,7 @@ object EBPFTraceParser {
             path = path,
             detail = detail,
             evidenceCategory = evidenceCategory(path),
-            source = "bpftrace_tsv",
+            source = "raw_libbpf_tsv",
             extra = extra,
         )
     }

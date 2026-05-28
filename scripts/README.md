@@ -1,12 +1,13 @@
 # Scripts
 
-The scripts directory is now focused on Android eBPF evidence collection and
-MAPLE integration.
+The scripts directory now only keeps build/deploy helpers that support the
+Android-device product path. Runtime collection, parsing, MAPLE inference,
+Top-3 mapping, scheduling, and widget updates run inside the Android app.
 
 Primary entry points:
 
-- `android_ebpf/android_ebpf_collect.py`
-- `android_ebpf/maple_context_from_ebpf.py`
+- `build_memo_libbpf.sh`
 
-The old app-sequence replay, macOS tracing, and dataset helper scripts were
-removed because they are not part of the current eBPF-first direction.
+The old host-side adb/Python collectors and bpftrace programs were removed.
+The host should install the APK, push model/native artifacts, and pull logs;
+it should not own product logic.

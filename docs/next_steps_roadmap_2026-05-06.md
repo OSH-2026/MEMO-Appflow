@@ -21,8 +21,8 @@ Host scripts are not part of the product architecture. The host may install the 
 
 | Area | Android implementation |
 | --- | --- |
-| eBPF/service collection | `EBPFCollectorService`, `EBPFCapabilityProbe`, `BpftraceProgramBuilder`, `DeviceCollectorDeployer` |
-| Trace parsing | `EBPFTraceParser` parses `MEMO_*` trace lines and bpftrace TSV records inside Android |
+| eBPF/service collection | `EBPFCollectorService`, `EBPFCapabilityProbe`, `DeviceCollectorDeployer`, `src/bpf/memo_appflow.bpf.c`, `src/native/memo_libbpf_collector.c` |
+| Trace parsing | `EBPFTraceParser` parses raw MEMO TSV records inside Android |
 | System state | `SystemStateCollector` collects memory, PSI, LMKD snapshot, battery, UDP/network, foreground app, SurfaceFlinger, camera/media and service hints |
 | MAPLE scenario | `MapleScenarioBuilder` builds MAPLE-compatible JSON inside Android |
 | MAPLE bridge | `MapleNative` JNI wrapper and device-local shell backend path |
@@ -75,8 +75,9 @@ Actions after MAPLE inference:
 Expected device layout:
 
 ```text
-/sdcard/MEMO/models/Qwen3.5-0.8B-Q4_K_M.gguf
-/data/local/tmp/memo/bpftrace
+/data/local/tmp/memo/models/Qwen3.5-0.8B-Q4_K_M.gguf
+/data/local/tmp/memo/memo_libbpf_collector
+/data/local/tmp/memo/memo_appflow.bpf.o
 /data/local/tmp/memo/bpftool
 /data/local/tmp/memo/libmaple_engine.so
 ```
@@ -87,7 +88,7 @@ The APK runs without host Python. If a capability is absent, the app reports it 
 
 The Android code path is in place and builds. The next practical work is device packaging:
 
-- cross-compile or provide Android-compatible `bpftrace` / `bpftool` for the emulator architecture;
+- build and deploy the Android-compatible raw eBPF collector, BPF object and `bpftool`;
 - cross-compile `libmaple_engine.so` and its llama.cpp dependencies for Android;
 - test the pipeline on the custom Android 14 emulator kernel;
 - then repeat the same deployment layout on the rooted phone.

@@ -5,6 +5,7 @@
 #include <sstream>
 #include <cstring>
 #include <cstdlib>
+#include <algorithm>
 
 namespace maple {
 
@@ -104,6 +105,45 @@ static std::map<std::string, std::vector<int>> json_get_installed_apps(const std
         start = b2 + 1;
     }
     return result;
+}
+
+static std::vector<int> candidate_ids_for_stage(const UserContext& ctx, const AppTypeResult& stage1) {
+    if (!stage1.top_categories.empty()) {
+        auto it = ctx.installed_apps.find(stage1.top_categories[0].first);
+        if (it != ctx.installed_apps.end() && !it->second.empty()) {
+            return it->second;
+        }
+    }
+    return ctx.historical_app_ids;
+}
+
+static bool contains_id(const std::vector<int>& ids, int value) {
+    return std::find(ids.begin(), ids.end(), value) != ids.end();
+}
+
+static int repair_truncated_candidate_id(int parsed_id,
+                                         const std::vector<int>& candidates,
+                                         const std::vector<int>& recent_ids) {
+    if (parsed_id < 0 || candidates.empty()) return parsed_id;
+    if (contains_id(candidates, parsed_id)) return parsed_id;
+
+    const std::string prefix = std::to_string(parsed_id);
+    std::vector<int> prefix_matches;
+    for (int candidate : candidates) {
+        const std::string text = std::to_string(candidate);
+        if (text.rfind(prefix, 0) == 0) {
+            prefix_matches.push_back(candidate);
+        }
+    }
+    if (prefix_matches.size() == 1) {
+        return prefix_matches[0];
+    }
+    for (int recent : recent_ids) {
+        if (contains_id(prefix_matches, recent)) {
+            return recent;
+        }
+    }
+    return -1;
 }
 
 // Parse UserContext from a simple JSON string
@@ -208,7 +248,16 @@ NextAppResult MAPLEEngine::predict_next_app(const UserContext& ctx, const AppTyp
     }
     std::string prompt = prompt_builder_->build_next_app_prompt(ctx, stage1);
     std::string output = backend_->generate(prompt);
-    return parser_->parse_next_app(output);
+    NextAppResult result = parser_->parse_next_app(output);
+    const std::vector<int> candidates = candidate_ids_for_stage(ctx, stage1);
+    const int repaired = repair_truncated_candidate_id(result.predicted_app_id, candidates, ctx.historical_app_ids);
+    if (repaired != result.predicted_app_id) {
+        result.reasoning = repaired > 0
+            ? "This user will use App " + std::to_string(repaired) + "."
+            : result.reasoning;
+        result.predicted_app_id = repaired;
+    }
+    return result;
 }
 
 std::pair<AppTypeResult, NextAppResult> MAPLEEngine::predict(const UserContext& ctx) {

@@ -39,11 +39,18 @@ class MainActivity : Activity() {
         MemoStore(this).clearSyntheticDemoState()
         requestNotificationPermission()
         setContentView(buildContent())
+        handleCommandIntent(intent)
     }
 
     override fun onResume() {
         super.onResume()
         renderState()
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleCommandIntent(intent)
     }
 
     private fun buildContent(): ScrollView {
@@ -119,7 +126,9 @@ class MainActivity : Activity() {
     private fun controlPanel(): View {
         val panel = verticalPanel()
         panel.addView(label("Controls"))
-        panel.addView(rowButton("Run Device Pipeline", EBPFCollectorService.ACTION_RUN_ONCE, primary = true))
+        panel.addView(rowButton("Run Full Local Evaluation", EBPFCollectorService.ACTION_FULL_LOCAL_EVALUATION, primary = true))
+        panel.addView(rowButton("Run App Pressure A/B Test", EBPFCollectorService.ACTION_PRESSURE_EXPERIMENT, primary = true))
+        panel.addView(rowButton("Run Device Pipeline", EBPFCollectorService.ACTION_RUN_ONCE, primary = false))
         panel.addView(rowButton("Stop Collection", EBPFCollectorService.ACTION_STOP, primary = false))
         panel.addView(smallCaption("Real eBPF experiments"))
         panel.addView(rowButton("Record Current Real Usage (28s)", EBPFCollectorService.ACTION_RECORD_CURRENT_USAGE, primary = false))
@@ -239,6 +248,16 @@ class MainActivity : Activity() {
                 topMargin = dp(5)
                 bottomMargin = dp(5)
             }
+        }
+    }
+
+    private fun handleCommandIntent(intent: Intent?) {
+        val action = intent?.getStringExtra(EXTRA_MEMO_ACTION) ?: intent?.action
+        if (action !in SERVICE_ACTIONS) return
+        val serviceIntent = Intent(this, EBPFCollectorService::class.java).setAction(action)
+        if (Build.VERSION.SDK_INT >= 26) startForegroundService(serviceIntent) else startService(serviceIntent)
+        if (::root.isInitialized) {
+            root.postDelayed({ renderState() }, 1800)
         }
     }
 
@@ -381,6 +400,7 @@ class MainActivity : Activity() {
             "binder_service_policy" -> "Service policy"
             "binder_service_refresh" -> "Service refresh"
             "maple_backend" -> "MAPLE backend"
+            "user_app_pressure_ab" -> "User app pressure A/B"
             else -> name.replace('_', ' ').replaceFirstChar { it.uppercase() }
         }
     }
@@ -402,4 +422,21 @@ class MainActivity : Activity() {
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
     private fun match(): Int = ViewGroup.LayoutParams.MATCH_PARENT
     private fun wrap(): Int = ViewGroup.LayoutParams.WRAP_CONTENT
+
+    companion object {
+        private const val EXTRA_MEMO_ACTION = "memo_action"
+        private val SERVICE_ACTIONS = setOf(
+            EBPFCollectorService.ACTION_RUN_ONCE,
+            EBPFCollectorService.ACTION_STOP,
+            EBPFCollectorService.ACTION_FULL_LOCAL_EVALUATION,
+            EBPFCollectorService.ACTION_RECORD_CURRENT_USAGE,
+            EBPFCollectorService.ACTION_EXPERIMENT_COMMUNICATION,
+            EBPFCollectorService.ACTION_EXPERIMENT_CAMERA,
+            EBPFCollectorService.ACTION_EXPERIMENT_MEDIA,
+            EBPFCollectorService.ACTION_EXPERIMENT_PAYMENT,
+            EBPFCollectorService.ACTION_EXPERIMENT_SCROLL,
+            EBPFCollectorService.ACTION_REAL_ABLATION_LATEST,
+            EBPFCollectorService.ACTION_PRESSURE_EXPERIMENT,
+        )
+    }
 }

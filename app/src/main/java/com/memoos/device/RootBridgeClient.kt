@@ -17,10 +17,8 @@ class RootBridgeClient(context: Context) {
     fun ensureLayout() {
         requestDir.mkdirs()
         responseDir.mkdirs()
-        if (!daemonScript.exists()) {
-            daemonScript.writeText(DAEMON_SCRIPT)
-            daemonScript.setExecutable(true, false)
-        }
+        daemonScript.writeText(DAEMON_SCRIPT)
+        daemonScript.setExecutable(true, false)
     }
 
     fun run(command: String, timeoutMs: Long): ShellResult {
@@ -77,17 +75,19 @@ class RootBridgeClient(context: Context) {
                 [ -f "${'$'}f" ] || continue
                 id="${'$'}{f##*/}"
                 id="${'$'}{id%.cmd}"
+                running="${'$'}REQ/${'$'}id.running"
+                mv "${'$'}f" "${'$'}running" 2>/dev/null || continue
                 out="${'$'}RESP/${'$'}id.out"
                 err="${'$'}RESP/${'$'}id.err"
                 exitf="${'$'}RESP/${'$'}id.exit"
                 donef="${'$'}RESP/${'$'}id.cmd.done"
-                cmd="${'$'}(cat "${'$'}f")"
+                cmd="${'$'}(cat "${'$'}running")"
                 sh -c "${'$'}cmd" > "${'$'}out.tmp" 2> "${'$'}err.tmp"
                 rc="${'$'}?"
                 mv "${'$'}out.tmp" "${'$'}out"
                 mv "${'$'}err.tmp" "${'$'}err"
                 echo "${'$'}rc" > "${'$'}exitf"
-                mv "${'$'}f" "${'$'}donef"
+                mv "${'$'}running" "${'$'}donef"
               done
               sleep 0.1
             done

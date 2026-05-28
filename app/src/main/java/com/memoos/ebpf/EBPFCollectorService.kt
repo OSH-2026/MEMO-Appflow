@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.os.Build
+import android.os.SystemClock
 import android.os.IBinder
 import com.memoos.R
 import com.memoos.ablation.RealEbpfAblationRunner
@@ -20,6 +21,7 @@ import com.memoos.maple.MapleInferenceOrchestrator
 import com.memoos.maple.MapleScenario
 import com.memoos.maple.MapleScenarioBuilder
 import com.memoos.perf.PipelineTimer
+import com.memoos.perf.PressureExperimentRunner
 import com.memoos.state.SystemStateCollector
 import com.memoos.state.SystemStateSnapshot
 import com.memoos.store.MemoStore
@@ -45,6 +47,7 @@ class EBPFCollectorService : Service() {
         startForeground(NOTIFICATION_ID, notification("MEMO pipeline is running"))
         when (intent?.action) {
             ACTION_STOP -> stopPipeline()
+            ACTION_FULL_LOCAL_EVALUATION -> runRealUserExperiment(RealUserExperimentPlanner.KIND_SCROLL, runAblationAfterMaple = true)
             ACTION_RUN_ONCE, null -> runPipelineOnce()
             ACTION_RECORD_CURRENT_USAGE -> runRealUserExperiment(RealUserExperimentPlanner.KIND_CURRENT)
             ACTION_EXPERIMENT_COMMUNICATION -> runRealUserExperiment(RealUserExperimentPlanner.KIND_COMMUNICATION)
@@ -53,6 +56,7 @@ class EBPFCollectorService : Service() {
             ACTION_EXPERIMENT_PAYMENT -> runRealUserExperiment(RealUserExperimentPlanner.KIND_PAYMENT)
             ACTION_EXPERIMENT_SCROLL -> runRealUserExperiment(RealUserExperimentPlanner.KIND_SCROLL)
             ACTION_REAL_ABLATION_LATEST -> runRealAblationOnLatestScenario()
+            ACTION_PRESSURE_EXPERIMENT -> runAppPressureExperiment()
             else -> runPipelineOnce()
         }
         return START_STICKY
@@ -74,6 +78,7 @@ class EBPFCollectorService : Service() {
             val timer = PipelineTimer("device_pipeline")
             try {
                 val report = timer.measure("capability_probe") { EBPFCapabilityProbe.probe().requireUsableEbpf() }
+                timer.measure("local_runtime_preflight") { requireLocalMapleRuntime() }
                 val events = timer.measure("ebpf_capture_parse") { collectEbpfEvents(report, WINDOW_MS) }
                 val state = timer.measure("system_state") { SystemStateCollector(this).collect() }
                 val scenario = timer.measure("scenario_build") { MapleScenarioBuilder(this).build(events, state) }
@@ -89,13 +94,19 @@ class EBPFCollectorService : Service() {
         }
     }
 
-    private fun runRealUserExperiment(kind: String) {
+    private fun runRealUserExperiment(kind: String, runAblationAfterMaple: Boolean = false) {
         runningTask?.cancel(true)
         mapleTask?.cancel(true)
         runningTask = executor.submit {
-            val timer = PipelineTimer("real_user_ebpf_experiment:$kind")
+            val timerMode = if (runAblationAfterMaple) {
+                "full_local_product_evaluation:$kind"
+            } else {
+                "real_user_ebpf_experiment:$kind"
+            }
+            val timer = PipelineTimer(timerMode)
             try {
                 val report = timer.measure("capability_probe") { EBPFCapabilityProbe.probe().requireUsableEbpf() }
+                timer.measure("local_runtime_preflight") { requireLocalMapleRuntime() }
                 val plan = timer.measure("experiment_plan") { RealUserExperimentPlanner.plan(this, kind) }
                 val collected = timer.measure("ebpf_capture_parse") {
                     collectEbpfEventsDuringRealInteraction(report, EXPERIMENT_WINDOW_MS) {
@@ -131,7 +142,7 @@ class EBPFCollectorService : Service() {
                         appendLine("description=${scenario.description}")
                     },
                 )
-                publishEvidenceThenRunMaple(timer, scenario, state, collected.events.size)
+                publishEvidenceThenRunMaple(timer, scenario, state, collected.events.size, runAblationAfterMaple)
             } catch (exc: Exception) {
                 stopDeviceCollectors()
                 val latency = timer.snapshot(0, mapleTimedOut = false)
@@ -179,6 +190,7 @@ class EBPFCollectorService : Service() {
         scenario: MapleScenario,
         state: SystemStateSnapshot,
         eventCount: Int,
+        runAblationAfterMaple: Boolean = false,
     ) {
         val pendingLatency = timer.snapshot(eventCount, mapleTimedOut = false)
         File(getExternalFilesDir(null), "latest_pipeline_latency.json").writeText(pendingLatency.toJson().toString(2))
@@ -233,7 +245,91 @@ class EBPFCollectorService : Service() {
             val actions = baseActions + completion + ActionResult("latency_summary", "pipeline", latency.realtimeStatus, latency.summaryLine())
             File(getExternalFilesDir(null), "latest_pipeline_latency.json").writeText(latency.toJson().toString(2))
             MemoStore(this).save(scenario, prediction, recommendations, actions, latency)
+            if (runAblationAfterMaple) {
+                runLocalAblationAfterPrediction(scenario)
+            }
             stopForeground(STOP_FOREGROUND_DETACH)
+        }
+    }
+
+    private fun runAppPressureExperiment() {
+        runningTask?.cancel(true)
+        mapleTask?.cancel(true)
+        runningTask = executor.submit {
+            try {
+                val report = PressureExperimentRunner(this).run()
+                val summary = report.getJSONObject("summary")
+                MemoStore(this).appendAction(
+                    ActionResult(
+                        "user_app_pressure_ab",
+                        "${DevicePaths.MEMO_PUBLIC_ROOT}/pressure/latest_pressure_experiment.json",
+                        "ok",
+                        "MEMO off/on real app pressure A/B finished; avg_pressure_score_improvement_pct=${summary.optDouble("avg_pressure_score_improvement_pct", Double.NaN)}",
+                    ),
+                )
+            } catch (exc: Exception) {
+                MemoStore(this).appendAction(
+                    ActionResult(
+                        "user_app_pressure_ab",
+                        "real_app_workloads",
+                        "blocked",
+                        exc.message ?: exc.javaClass.simpleName,
+                    ),
+                )
+            } finally {
+                stopForeground(STOP_FOREGROUND_DETACH)
+            }
+        }
+    }
+
+
+    private fun runLocalAblationAfterPrediction(scenario: MapleScenario) {
+        val start = SystemClock.elapsedRealtime()
+        try {
+            val report = RealEbpfAblationRunner(this).run(scenario.scenarioJson)
+            val durationMs = SystemClock.elapsedRealtime() - start
+            val resultCount = report.getJSONArray("results").length()
+            File(getExternalFilesDir(null), "latest_full_local_evaluation.txt").writeText(
+                buildString {
+                    appendLine("mode=full_local_product_evaluation")
+                    appendLine("scenario=${scenario.scenarioId}")
+                    appendLine("ablation_results=$resultCount")
+                    appendLine("ablation_duration_ms=$durationMs")
+                    appendLine("ablation_path=${DevicePaths.MEMO_PUBLIC_ROOT}/ablations/latest_real_ablation.json")
+                },
+            )
+            MemoStore(this).appendAction(
+                ActionResult(
+                    "real_ebpf_ablation",
+                    "${DevicePaths.MEMO_PUBLIC_ROOT}/ablations/latest_real_ablation.json",
+                    "ok",
+                    "full local one-tap run completed $resultCount MAPLE ablations on device in ${durationMs / 1000.0}s",
+                ),
+            )
+        } catch (exc: Exception) {
+            MemoStore(this).appendAction(
+                ActionResult(
+                    "real_ebpf_ablation",
+                    "latest_real_scenario",
+                    "blocked",
+                    "full local one-tap ablation failed: ${exc.message ?: exc.javaClass.simpleName}",
+                ),
+            )
+        }
+    }
+
+    private fun requireLocalMapleRuntime() {
+        val checks = listOf(
+            "test -x '${DevicePaths.MAPLE_DEMO}'" to "MAPLE executable missing at ${DevicePaths.MAPLE_DEMO}",
+            "test -r '${DevicePaths.MAPLE_ENGINE_SO}'" to "MAPLE engine library missing at ${DevicePaths.MAPLE_ENGINE_SO}",
+            "test -r '${DevicePaths.MAPLE_CXX_SHARED}'" to "C++ runtime missing at ${DevicePaths.MAPLE_CXX_SHARED}",
+            "test -r '${DevicePaths.DEFAULT_MODEL}'" to "MAPLE GGUF model missing at ${DevicePaths.DEFAULT_MODEL}",
+        )
+        val missing = checks.mapNotNull { (cmd, message) ->
+            if (RootShell.run(cmd, requireRoot = true, timeoutMs = 3_000L).ok) null else message
+        }
+        require(missing.isEmpty()) {
+            "phone-local MAPLE runtime is incomplete; ${missing.joinToString("; ")}"
         }
     }
 
@@ -249,24 +345,30 @@ class EBPFCollectorService : Service() {
 
     private fun stopDeviceCollectors(killMaple: Boolean = false) {
         val maplePart = if (killMaple) "; pkill -f maple_demo 2>/dev/null" else ""
-        RootShell.run("pkill -f memo_appflow_generated.bt 2>/dev/null; pkill -f bpftrace 2>/dev/null$maplePart", timeoutMs = 3_000L)
+        RootShell.run("pkill -f memo_libbpf_collector 2>/dev/null$maplePart", timeoutMs = 3_000L)
     }
 
     private fun collectEbpfEvents(report: EBPFCapabilityReport, windowMs: Long): List<EBPFEvent> {
-        val script = BpftraceProgramBuilder.build(report)
-        DeviceCollectorDeployer(this).deployGeneratedBpftrace(script)
-        val bpftrace = report.bpftracePath ?: DevicePaths.BPFTRACE
-        val seconds = ((windowMs + 999L) / 1000L + BPFTRACE_STARTUP_SLACK_SECONDS).coerceAtLeast(2L)
-        val command = "timeout $seconds $bpftrace -B line '${DevicePaths.GENERATED_TRACE_SCRIPT}' 2>&1 | sed -n '/^MEMO/p' | head -n $REALTIME_PARSE_LINES"
-        val result = RootShell.run(command, timeoutMs = (seconds + 5L) * 1_000L)
-        if (!result.ok && result.stdout.isBlank()) {
-            error("eBPF capture failed: ${result.stderr.ifBlank { result.stdout }.take(300)}")
+        DeviceCollectorDeployer(this).ensureRawCollectorExecutable()
+        RootShell.run("mkdir -p ${DevicePaths.LOG_DIR}", timeoutMs = 3_000L)
+        val collector = report.rawCollectorPath ?: DevicePaths.RAW_COLLECTOR
+        val seconds = ((windowMs + 999L) / 1000L + RAW_COLLECTOR_STARTUP_SLACK_SECONDS).coerceAtLeast(2L)
+        val rawTracePath = "${DevicePaths.LOG_DIR}/device_window_${System.currentTimeMillis()}.trace"
+        val result = RootShell.run(
+            "rm -f '$rawTracePath'; $collector --duration-sec $seconds --max-events $REALTIME_PARSE_LINES --output '$rawTracePath'",
+            timeoutMs = (seconds + 8L) * 1_000L,
+        )
+        if (!result.ok) {
+            error("raw eBPF capture failed: ${result.stderr.ifBlank { result.stdout }.take(300)}")
         }
-        val events = EBPFTraceParser.parseLines(result.stdout.lineSequence())
+        val raw = RootShell.run("sed -n '/^MEMO/p' '$rawTracePath' 2>/dev/null | head -n $REALTIME_PARSE_LINES", timeoutMs = 8_000L).stdout
+        val events = EBPFTraceParser.parseLines(raw.lineSequence())
             .take(MAX_LINES)
             .toList()
         if (events.isEmpty()) {
-            error("eBPF capture produced zero MEMO events; raw output=${result.stdout.ifBlank { result.stderr }.take(300)}")
+            val head = RootShell.run("head -n 20 '$rawTracePath' 2>/dev/null", timeoutMs = 3_000L).stdout
+            val diagnostic = raw.ifBlank { head }.ifBlank { result.stderr.ifBlank { result.stdout } }
+            error("raw eBPF capture produced zero MEMO events; raw_trace_path=$rawTracePath; head=${diagnostic.take(500)}")
         }
         return events
     }
@@ -276,15 +378,14 @@ class EBPFCollectorService : Service() {
         windowMs: Long,
         interaction: () -> String,
     ): CollectedEvents {
-        val script = BpftraceProgramBuilder.build(report)
-        DeviceCollectorDeployer(this).deployGeneratedBpftrace(script)
+        DeviceCollectorDeployer(this).ensureRawCollectorExecutable()
         RootShell.run("mkdir -p ${DevicePaths.LOG_DIR}", timeoutMs = 3_000L)
 
-        val bpftrace = report.bpftracePath ?: DevicePaths.BPFTRACE
-        val seconds = ((windowMs + 999L) / 1000L + BPFTRACE_STARTUP_SLACK_SECONDS).coerceAtLeast(8L)
+        val collector = report.rawCollectorPath ?: DevicePaths.RAW_COLLECTOR
+        val seconds = ((windowMs + 999L) / 1000L + RAW_COLLECTOR_STARTUP_SLACK_SECONDS).coerceAtLeast(8L)
         val rawTracePath = "${DevicePaths.LOG_DIR}/real_user_${System.currentTimeMillis()}.trace"
         RootShell.run(
-            "rm -f '$rawTracePath'; (timeout $seconds $bpftrace -B line '${DevicePaths.GENERATED_TRACE_SCRIPT}' > '$rawTracePath' 2>&1) & echo \$!",
+            "rm -f '$rawTracePath'; ($collector --duration-sec $seconds --max-events $REALTIME_PARSE_LINES --output '$rawTracePath' 2>&1) & echo \$!",
             timeoutMs = 3_000L,
         )
         waitForCollectorStarted(rawTracePath)
@@ -292,27 +393,27 @@ class EBPFCollectorService : Service() {
         val interactionResult = interaction()
         val remaining = windowMs - (System.currentTimeMillis() - startAt)
         if (remaining > 0) Thread.sleep(remaining)
-        RootShell.run("pkill -f memo_appflow_generated.bt 2>/dev/null; pkill -f bpftrace 2>/dev/null", timeoutMs = 3_000L)
+        RootShell.run("pkill -f memo_libbpf_collector 2>/dev/null", timeoutMs = 3_000L)
         val raw = RootShell.run("sed -n '/^MEMO/p' '$rawTracePath' 2>/dev/null | head -n $REALTIME_PARSE_LINES", timeoutMs = 8_000L).stdout
         val events = EBPFTraceParser.parseLines(raw.lineSequence())
             .take(MAX_LINES)
             .toList()
         if (events.isEmpty()) {
             val head = RootShell.run("head -n 20 '$rawTracePath' 2>/dev/null", timeoutMs = 3_000L).stdout
-            error("real eBPF capture produced zero MEMO events; raw_trace_path=$rawTracePath; head=${head.take(500)}")
+            error("real raw eBPF capture produced zero MEMO events; raw_trace_path=$rawTracePath; head=${head.take(500)}")
         }
         return CollectedEvents(events, rawTracePath, interactionResult)
     }
 
     private fun waitForCollectorStarted(rawTracePath: String) {
-        val deadline = System.currentTimeMillis() + BPFTRACE_ATTACH_TIMEOUT_MS
+        val deadline = System.currentTimeMillis() + RAW_COLLECTOR_ATTACH_TIMEOUT_MS
         while (System.currentTimeMillis() < deadline) {
-            val ready = RootShell.run("grep -q '^Attached ' '$rawTracePath'", timeoutMs = 1_000L)
+            val ready = RootShell.run("grep -q 'collector_started' '$rawTracePath'", timeoutMs = 1_000L)
             if (ready.ok) return
             Thread.sleep(250L)
         }
         val head = RootShell.run("head -n 20 '$rawTracePath' 2>/dev/null", timeoutMs = 3_000L).stdout
-        error("bpftrace did not attach before user interaction; raw_trace_path=$rawTracePath; head=${head.take(500)}")
+        error("raw eBPF collector did not attach before user interaction; raw_trace_path=$rawTracePath; head=${head.take(500)}")
     }
 
     private fun createChannel() {
@@ -342,6 +443,7 @@ class EBPFCollectorService : Service() {
     companion object {
         const val ACTION_RUN_ONCE = "com.memoos.action.RUN_ONCE"
         const val ACTION_STOP = "com.memoos.action.STOP"
+        const val ACTION_FULL_LOCAL_EVALUATION = "com.memoos.action.FULL_LOCAL_EVALUATION"
         const val ACTION_RECORD_CURRENT_USAGE = "com.memoos.action.RECORD_CURRENT_USAGE"
         const val ACTION_EXPERIMENT_COMMUNICATION = "com.memoos.action.REAL_EXPERIMENT_COMMUNICATION"
         const val ACTION_EXPERIMENT_CAMERA = "com.memoos.action.REAL_EXPERIMENT_CAMERA"
@@ -349,12 +451,13 @@ class EBPFCollectorService : Service() {
         const val ACTION_EXPERIMENT_PAYMENT = "com.memoos.action.REAL_EXPERIMENT_PAYMENT"
         const val ACTION_EXPERIMENT_SCROLL = "com.memoos.action.REAL_EXPERIMENT_SCROLL"
         const val ACTION_REAL_ABLATION_LATEST = "com.memoos.action.REAL_EBPF_ABLATION_LATEST"
+        const val ACTION_PRESSURE_EXPERIMENT = "com.memoos.action.USER_APP_PRESSURE_EXPERIMENT"
         private const val NOTIFICATION_ID = 42
         private const val CHANNEL_ID = "memo_pipeline"
         private const val WINDOW_MS = 8_000L
         private const val EXPERIMENT_WINDOW_MS = 14_000L
-        private const val BPFTRACE_STARTUP_SLACK_SECONDS = 100
-        private const val BPFTRACE_ATTACH_TIMEOUT_MS = 90_000L
+        private const val RAW_COLLECTOR_STARTUP_SLACK_SECONDS = 8
+        private const val RAW_COLLECTOR_ATTACH_TIMEOUT_MS = 10_000L
         private const val MAX_LINES = 12_000
         private const val REALTIME_PARSE_LINES = 4_000
     }
@@ -367,11 +470,8 @@ class EBPFCollectorService : Service() {
 }
 
 private fun com.memoos.device.EBPFCapabilityReport.requireUsableEbpf(): com.memoos.device.EBPFCapabilityReport {
-    require(canRunBpftrace) {
-        "bpftrace is required; report=${notes.joinToString("; ")}"
-    }
-    require(availableEvents.isNotEmpty()) {
-        "no tracepoints are available for eBPF collection"
+    require(canRunRawCollector) {
+        "raw libbpf collector is required; report=${notes.joinToString("; ")}"
     }
     return this
 }

@@ -115,7 +115,7 @@ int main(int argc, char** argv) {
     cfg.n_ctx = ebpf_context ? 384 : 768;
     cfg.n_threads = 4;
     cfg.temperature = 0.0f;
-    cfg.max_tokens = 8;
+    cfg.max_tokens = 24;
 
     maple::MAPLEEngine engine(cfg);
     if (!engine.is_ready()) {

@@ -122,7 +122,7 @@ class MapleScenarioBuilder(private val context: Context) {
         }
         events.mapNotNull { it.comm ?: it.traceTask }
             .filter {
-                it !in setOf("cat", "grep", "sh", "su", "toybox", "bpftrace", "sleep", "pkill") &&
+                it !in setOf("cat", "grep", "sh", "su", "toybox", "memo_libbpf_collector", "sleep", "pkill") &&
                     !it.startsWith("binder:") &&
                     !it.startsWith("swapper/")
             }

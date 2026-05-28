@@ -1,9 +1,9 @@
-id=camera_photo_usage
-title=Real camera or photo app usage
-target_package=com.android.camera2
-target_label=Camera
-desired_categories=Camera Service, Media Codec, Display Composition
-raw_trace_path=/sdcard/MEMO/logs/real_user_1778095657670.trace
-interaction_result=executed real Android interaction plan target=com.android.camera2
-parsed_events=4000
-description=Launch a real installed camera/photo-capable app and record camera/media/display/process evidence from the device. Target app: Camera (com.android.camera2). Raw trace: /sdcard/MEMO/logs/real_user_1778095657670.trace.
+id=scroll_display_usage
+title=Real scrolling and display usage
+target_package=com.android.chrome
+target_label=Chrome
+desired_categories=Display Composition, Network IO, Media Codec, App Process Runtime
+raw_trace_path=/sdcard/MEMO/logs/real_user_1779966570132.trace
+interaction_result=executed real Android interaction plan target=com.android.chrome
+parsed_events=2474
+description=Launch a real installed app and drive Android input swipes so SurfaceFlinger, RenderThread, Binder, file, and scheduler evidence comes from the kernel. Target app: Chrome (com.android.chrome). Raw trace: /sdcard/MEMO/logs/real_user_1779966570132.trace.

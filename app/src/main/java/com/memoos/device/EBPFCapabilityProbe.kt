@@ -3,7 +3,7 @@ package com.memoos.device
 data class EBPFCapabilityReport(
     val rootAvailable: Boolean,
     val traceFsPath: String?,
-    val bpftracePath: String?,
+    val rawCollectorPath: String?,
     val bpftoolPath: String?,
     val btfAvailable: Boolean,
     val ftraceSyscallsAvailable: Boolean,
@@ -16,7 +16,7 @@ data class EBPFCapabilityReport(
     val traceableFunctions: Set<String>,
     val notes: List<String>,
 ) {
-    val canRunBpftrace: Boolean get() = rootAvailable && traceFsPath != null && bpftracePath != null
+    val canRunRawCollector: Boolean get() = rootAvailable && traceFsPath != null && rawCollectorPath != null && bpftoolPath != null
     val canReadTracePipe: Boolean get() = rootAvailable && traceFsPath != null
 }
 
@@ -29,10 +29,10 @@ object EBPFCapabilityProbe {
         val traceFs = if (root) firstExisting(DevicePaths.traceFsCandidates) else null
         if (traceFs == null) notes += "tracefs/debugfs not found"
 
-        val bpftrace = if (root) firstExecutable(
-            listOf(DevicePaths.BPFTRACE, "/data/local/tmp/bpftrace", "/system/bin/bpftrace", "/vendor/bin/bpftrace", "bpftrace"),
+        val rawCollector = if (root) firstExecutable(
+            listOf(DevicePaths.RAW_COLLECTOR, "memo_libbpf_collector"),
         ) else null
-        if (bpftrace == null) notes += "bpftrace not found on device"
+        if (rawCollector == null) notes += "raw libbpf collector missing at ${DevicePaths.RAW_COLLECTOR}"
 
         val bpftool = if (root) firstExecutable(
             listOf(DevicePaths.BPFTOOL, "/data/local/tmp/bpftool", "/system/bin/bpftool", "/vendor/bin/bpftool", "bpftool"),
@@ -81,7 +81,7 @@ object EBPFCapabilityProbe {
         return EBPFCapabilityReport(
             rootAvailable = root,
             traceFsPath = traceFs,
-            bpftracePath = bpftrace,
+            rawCollectorPath = rawCollector,
             bpftoolPath = bpftool,
             btfAvailable = btf,
             ftraceSyscallsAvailable = ftraceSyscalls,

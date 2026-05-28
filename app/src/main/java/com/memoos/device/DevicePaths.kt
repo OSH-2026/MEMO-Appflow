@@ -7,12 +7,13 @@ object DevicePaths {
     const val MODEL_DIR = "$MEMO_ROOT/models"
     const val LOG_DIR = "$MEMO_PUBLIC_ROOT/logs"
     const val SCENARIO_DIR = "$MEMO_PUBLIC_ROOT/scenarios"
-    const val BPFTRACE = "$MEMO_ROOT/bpftrace"
     const val BPFTOOL = "$MEMO_ROOT/bpftool"
-    const val TRACE_SCRIPT = "$MEMO_ROOT/memo_appflow_trace.bt"
-    const val GENERATED_TRACE_SCRIPT = "$MEMO_ROOT/memo_appflow_generated.bt"
+    const val RAW_COLLECTOR = "$MEMO_ROOT/memo_libbpf_collector"
+    const val BPF_OBJECT = "$MEMO_ROOT/memo_appflow.bpf.o"
     const val MAPLE_DEMO = "$MEMO_ROOT/maple_demo"
+    const val MAPLE_ENGINE_SO = "$MEMO_ROOT/libmaple_engine.so"
     const val MAPLE_JNI_SO = "$MEMO_ROOT/libmaple-jni.so"
+    const val MAPLE_CXX_SHARED = "$MEMO_ROOT/libc++_shared.so"
     const val DEFAULT_MODEL = "$MODEL_DIR/$MODEL_FILE_NAME"
 
     val traceFsCandidates = listOf(

@@ -78,6 +78,14 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/memo_widget_info" />
         </receiver>
+
+        <receiver
+            android:name=".ebpf.MemoCommandReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.memoos.action.COMMAND" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

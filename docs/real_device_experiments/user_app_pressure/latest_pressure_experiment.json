@@ -1,0 +1,1988 @@
+{
+  "schema_version": "memo.real_user_app_pressure.v1",
+  "experiment_type": "real_user_app_pressure_ab",
+  "started_at_ms": 1779970636382,
+  "duration_ms": 525364,
+  "device": {
+    "model": "Pixel 5",
+    "device": "redfin",
+    "release": "14",
+    "kernel": "Linux localhost 4.19.278 #1 SMP PREEMPT Thu Sep 7 05:43:03 UTC 2023 aarch64 Toybox"
+  },
+  "metric_definitions": {
+    "launch_total_time_ms": "Android am start -W TotalTime for the measured app launch; lower is better.",
+    "wait_time_ms": "Android am start -W WaitTime; lower is better.",
+    "cpu_busy_pct": "CPU busy jiffy share during the user workload window; lower means less global CPU pressure.",
+    "iowait_pct": "CPU iowait jiffy share during the workload; lower means less storage\/blocking pressure.",
+    "mem_available_drop_kb": "MemAvailable before minus after; lower means the workload consumed less available memory.",
+    "reclaim_delta": "pgscan_direct plus pgscan_kswapd delta from \/proc\/vmstat; lower means less memory reclaim.",
+    "psi_some_avg10_delta": "Change in memory PSI some avg10; lower means less memory pressure.",
+    "jank_rate_pct": "dumpsys gfxinfo janky frames \/ total frames for the target app when available; lower is smoother.",
+    "pressure_score_lower_is_better": "Composite score from memory drop, reclaim, PSI, CPU, iowait, thermal, and UDP error pressure. It is only for same-device A\/B ranking.",
+    "normal_condition": "No extra pressure preparation beyond returning to HOME.",
+    "crowded_condition": "Before both baseline and MEMO-on, the runner opens several real installed launchable apps and returns HOME, simulating a phone with many cached\/background apps."
+  },
+  "workload_count": 3,
+  "conditions": [
+    "normal_recent_usage",
+    "crowded_cached_apps"
+  ],
+  "workloads": [
+    {
+      "mode": "memo_off_baseline",
+      "condition": "normal_recent_usage",
+      "plan_id": "scroll_display_usage",
+      "title": "Real scrolling and display usage",
+      "target_package": "com.android.chrome",
+      "target_label": "Chrome",
+      "launch": {
+        "total_time_ms": 262,
+        "wait_time_ms": 266,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 183,
+        "janky_frames": 6,
+        "jank_rate_pct": 3.278688524590164,
+        "p90_ms": 9,
+        "p95_ms": 19,
+        "p99_ms": 61
+      },
+      "before": {
+        "wall_time_ms": 1779970645831,
+        "elapsed_ms": 173178920,
+        "mem_available_kb": 3467832,
+        "swap_free_kb": 1015484,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1873969,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 13162,
+        "udp_out_datagrams": 13817,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.8,
+        "battery_current_ua": 1525,
+        "cpu": {
+          "total_jiffies": 74982754,
+          "busy_jiffies": 3489465,
+          "idle_jiffies": 71484400,
+          "iowait_jiffies": 8889,
+          "procs_running": 3,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779970655902,
+        "elapsed_ms": 173188992,
+        "mem_available_kb": 3324588,
+        "swap_free_kb": 1085628,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1874128,
+        "compact_stall": 13,
+        "psi_some_avg10": 0.59,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 13393,
+        "udp_out_datagrams": 14039,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.8,
+        "battery_current_ua": -305,
+        "cpu": {
+          "total_jiffies": 74990676,
+          "busy_jiffies": 3492164,
+          "idle_jiffies": 71489620,
+          "iowait_jiffies": 8892,
+          "procs_running": 6,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 10072,
+        "mem_available_drop_kb": 143244,
+        "swap_free_drop_kb": -70144,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 159,
+        "reclaim_delta": 159,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": 0.59,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 231,
+        "udp_out_delta": 222,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 34.06967937389548,
+        "iowait_pct": 0.03786922494319616,
+        "pressure_score_lower_is_better": 31.443033975795252
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.android.chrome\/com.google.android.apps.chrome.Main }\nStatus: ok\nLaunchState: COLD\nActivity: com.android.chrome\/org.chromium.chrome.browser.ChromeTabbedActivity\nTotalTime: 262\nWaitTime: 266\nComplete\n",
+      "memo_preparation": {
+        "type": "same_prior_real_user_action_without_memo",
+        "condition": "normal_recent_usage",
+        "interaction_result": "executed real Android interaction plan target=com.android.chrome",
+        "duration_ms": 6109,
+        "reason": "The baseline gets the same immediately previous real app action as MEMO-on, but no eBPF collection, MAPLE reasoning, or ActionExecutor scheduling."
+      }
+    },
+    {
+      "mode": "memo_on_after_real_ebpf_maple_actions",
+      "condition": "normal_recent_usage",
+      "plan_id": "scroll_display_usage",
+      "title": "Real scrolling and display usage",
+      "target_package": "com.android.chrome",
+      "target_label": "Chrome",
+      "launch": {
+        "total_time_ms": 269,
+        "wait_time_ms": 272,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 185,
+        "janky_frames": 6,
+        "jank_rate_pct": 3.2432432432432434,
+        "p90_ms": 8,
+        "p95_ms": 19,
+        "p99_ms": 89
+      },
+      "before": {
+        "wall_time_ms": 1779970702679,
+        "elapsed_ms": 173235768,
+        "mem_available_kb": 3441024,
+        "swap_free_kb": 1042980,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1874646,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 13416,
+        "udp_out_datagrams": 14061,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.7,
+        "battery_current_ua": 610,
+        "cpu": {
+          "total_jiffies": 75027653,
+          "busy_jiffies": 3505739,
+          "idle_jiffies": 71513016,
+          "iowait_jiffies": 8898,
+          "procs_running": 2,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779970712677,
+        "elapsed_ms": 173245767,
+        "mem_available_kb": 3342172,
+        "swap_free_kb": 1055936,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1875065,
+        "compact_stall": 13,
+        "psi_some_avg10": 0.08,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 13487,
+        "udp_out_datagrams": 14140,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.7,
+        "battery_current_ua": 610,
+        "cpu": {
+          "total_jiffies": 75035538,
+          "busy_jiffies": 3508126,
+          "idle_jiffies": 71518510,
+          "iowait_jiffies": 8902,
+          "procs_running": 2,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 9999,
+        "mem_available_drop_kb": 98852,
+        "swap_free_drop_kb": -12956,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 419,
+        "reclaim_delta": 419,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": 0.08,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 71,
+        "udp_out_delta": 79,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 30.27266962587191,
+        "iowait_pct": 0.05072923272035511,
+        "pressure_score_lower_is_better": 33.8484188233196
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.android.chrome\/com.google.android.apps.chrome.Main }\nStatus: ok\nLaunchState: COLD\nActivity: com.android.chrome\/org.chromium.chrome.browser.ChromeTabbedActivity\nTotalTime: 269\nWaitTime: 272\nComplete\n",
+      "memo_preparation": {
+        "raw_trace_path": "\/sdcard\/MEMO\/logs\/pressure_scroll_display_usage_1779970663915.trace",
+        "type": "same_prior_real_user_action_with_ebpf_maple_actions",
+        "condition": "normal_recent_usage",
+        "interaction_result": "executed real Android interaction plan target=com.android.chrome",
+        "parsed_events": 2311,
+        "scenario_id": "pressure_scroll_display_usage",
+        "scenario_file": "\/storage\/emulated\/0\/Android\/data\/com.memoos\/files\/latest_pressure_scenario.json",
+        "top_categories": [
+          "Network IO",
+          "Android Service IPC",
+          "App Process Runtime",
+          "Display Composition",
+          "Media Codec",
+          "Other File Access"
+        ],
+        "maple_backend": "shell",
+        "predicted_app_id": 280,
+        "stage1": [
+          "App Process Runtime:1.0"
+        ],
+        "recommendations": [
+          {
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "category": "App Process Runtime",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "category": "Network IO",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.google.android.apps.messaging",
+            "label": "Messages",
+            "category": "Communication",
+            "confidence": 0.98
+          }
+        ],
+        "actions": [
+          {
+            "name": "widget_update",
+            "target": "top3",
+            "status": "ok",
+            "detail": "published 3 real app recommendations",
+            "duration_ms": 5
+          },
+          {
+            "name": "latency_policy",
+            "target": "async_maple",
+            "status": "ok",
+            "detail": "MAPLE prediction ran asynchronously; foreground use was not blocked, completion latency=41.1s",
+            "duration_ms": 0
+          },
+          {
+            "name": "memory_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal memory; warm launch budget allowed",
+            "duration_ms": 0
+          },
+          {
+            "name": "thermal_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal battery thermal state",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_candidate_priority",
+            "target": "com.android.chrome, com.google.android.apps.messaging",
+            "status": "ok",
+            "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_stats_refresh",
+            "target": "netstats",
+            "status": "ok",
+            "detail": "refreshed network stats before recommendation",
+            "duration_ms": 272
+          },
+          {
+            "name": "display_ui_policy",
+            "target": "warm_launch_budget",
+            "status": "ok",
+            "detail": "SurfaceFlinger\/RenderThread\/input evidence; keep prewarm count low to avoid jank, memory=normal",
+            "duration_ms": 0
+          },
+          {
+            "name": "binder_service_policy",
+            "target": "system_services",
+            "status": "ok",
+            "detail": "Binder\/system-service evidence kept as MAPLE scheduling context",
+            "duration_ms": 0
+          },
+          {
+            "name": "binder_service_refresh",
+            "target": "service_manager",
+            "status": "ok",
+            "detail": "queried service manager after high Binder activity",
+            "duration_ms": 362
+          },
+          {
+            "name": "warm_launch",
+            "target": "top_apps",
+            "status": "skipped",
+            "detail": "non-intrusive background mode; do not switch visible apps while the user continues using the phone",
+            "duration_ms": 0
+          }
+        ],
+        "duration_ms": 41998
+      }
+    },
+    {
+      "mode": "memo_off_baseline",
+      "condition": "normal_recent_usage",
+      "plan_id": "generic_com_topjohnwu_magisk",
+      "title": "Real launchable app workload: Magisk",
+      "target_package": "com.topjohnwu.magisk",
+      "target_label": "Magisk",
+      "launch": {
+        "total_time_ms": 1003,
+        "wait_time_ms": 1006,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 175,
+        "janky_frames": 2,
+        "jank_rate_pct": 1.1428571428571428,
+        "p90_ms": 11,
+        "p95_ms": 12,
+        "p99_ms": 57
+      },
+      "before": {
+        "wall_time_ms": 1779970721745,
+        "elapsed_ms": 173254834,
+        "mem_available_kb": 3171104,
+        "swap_free_kb": 1052800,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1875461,
+        "compact_stall": 13,
+        "psi_some_avg10": 0.13,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 13500,
+        "udp_out_datagrams": 14152,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.6,
+        "battery_current_ua": 610,
+        "cpu": {
+          "total_jiffies": 75042661,
+          "busy_jiffies": 3509631,
+          "idle_jiffies": 71524124,
+          "iowait_jiffies": 8906,
+          "procs_running": 7,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779970730673,
+        "elapsed_ms": 173263762,
+        "mem_available_kb": 3244716,
+        "swap_free_kb": 1049404,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1875593,
+        "compact_stall": 13,
+        "psi_some_avg10": 0.04,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 13500,
+        "udp_out_datagrams": 14152,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.6,
+        "battery_current_ua": 610,
+        "cpu": {
+          "total_jiffies": 75049733,
+          "busy_jiffies": 3510934,
+          "idle_jiffies": 71529893,
+          "iowait_jiffies": 8906,
+          "procs_running": 3,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 8928,
+        "mem_available_drop_kb": -73612,
+        "swap_free_drop_kb": 3396,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 132,
+        "reclaim_delta": 132,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": -0.09,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 0,
+        "udp_out_delta": 0,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 18.42477375565611,
+        "iowait_pct": 0,
+        "pressure_score_lower_is_better": 11.728670814479639
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.topjohnwu.magisk\/.ui.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.topjohnwu.magisk\/.ui.MainActivity\nTotalTime: 1003\nWaitTime: 1006\nComplete\n",
+      "memo_preparation": {
+        "type": "same_prior_real_user_action_without_memo",
+        "condition": "normal_recent_usage",
+        "interaction_result": "executed real Android interaction plan target=com.topjohnwu.magisk",
+        "duration_ms": 4194,
+        "reason": "The baseline gets the same immediately previous real app action as MEMO-on, but no eBPF collection, MAPLE reasoning, or ActionExecutor scheduling."
+      }
+    },
+    {
+      "mode": "memo_on_after_real_ebpf_maple_actions",
+      "condition": "normal_recent_usage",
+      "plan_id": "generic_com_topjohnwu_magisk",
+      "title": "Real launchable app workload: Magisk",
+      "target_package": "com.topjohnwu.magisk",
+      "target_label": "Magisk",
+      "launch": {
+        "total_time_ms": 890,
+        "wait_time_ms": 893,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 175,
+        "janky_frames": 3,
+        "jank_rate_pct": 1.7142857142857142,
+        "p90_ms": 12,
+        "p95_ms": 13,
+        "p99_ms": 48
+      },
+      "before": {
+        "wall_time_ms": 1779970778652,
+        "elapsed_ms": 173311741,
+        "mem_available_kb": 3268152,
+        "swap_free_kb": 1012376,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1877819,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 13517,
+        "udp_out_datagrams": 14168,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.6,
+        "battery_current_ua": -4577,
+        "cpu": {
+          "total_jiffies": 75087619,
+          "busy_jiffies": 3525453,
+          "idle_jiffies": 71553254,
+          "iowait_jiffies": 8912,
+          "procs_running": 8,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779970787572,
+        "elapsed_ms": 173320662,
+        "mem_available_kb": 3186756,
+        "swap_free_kb": 1064856,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1877819,
+        "compact_stall": 13,
+        "psi_some_avg10": 0.49,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 13528,
+        "udp_out_datagrams": 14179,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.6,
+        "battery_current_ua": -1220,
+        "cpu": {
+          "total_jiffies": 75094609,
+          "busy_jiffies": 3526779,
+          "idle_jiffies": 71558917,
+          "iowait_jiffies": 8913,
+          "procs_running": 2,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 8921,
+        "mem_available_drop_kb": 81396,
+        "swap_free_drop_kb": -52480,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 0,
+        "reclaim_delta": 0,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": 0.49,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 11,
+        "udp_out_delta": 11,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 18.969957081545065,
+        "iowait_pct": 0.01430615164520744,
+        "pressure_score_lower_is_better": 15.34594923551502
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.topjohnwu.magisk\/.ui.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.topjohnwu.magisk\/.ui.MainActivity\nTotalTime: 890\nWaitTime: 893\nComplete\n",
+      "memo_preparation": {
+        "raw_trace_path": "\/sdcard\/MEMO\/logs\/pressure_generic_com_topjohnwu_magisk_1779970738469.trace",
+        "type": "same_prior_real_user_action_with_ebpf_maple_actions",
+        "condition": "normal_recent_usage",
+        "interaction_result": "executed real Android interaction plan target=com.topjohnwu.magisk",
+        "parsed_events": 2317,
+        "scenario_id": "pressure_generic_com_topjohnwu_magisk",
+        "scenario_file": "\/storage\/emulated\/0\/Android\/data\/com.memoos\/files\/latest_pressure_scenario.json",
+        "top_categories": [
+          "Network IO",
+          "Android Service IPC",
+          "App Process Runtime",
+          "Other File Access",
+          "Memory Management"
+        ],
+        "maple_backend": "shell",
+        "predicted_app_id": 245,
+        "stage1": [
+          "Network IO:1.0"
+        ],
+        "recommendations": [
+          {
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "category": "Network IO",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.google.android.apps.messaging",
+            "label": "Messages",
+            "category": "Communication",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "category": "App Process Runtime",
+            "confidence": 0.98
+          }
+        ],
+        "actions": [
+          {
+            "name": "widget_update",
+            "target": "top3",
+            "status": "ok",
+            "detail": "published 3 real app recommendations",
+            "duration_ms": 0
+          },
+          {
+            "name": "latency_policy",
+            "target": "async_maple",
+            "status": "ok",
+            "detail": "MAPLE prediction ran asynchronously; foreground use was not blocked, completion latency=42.2s",
+            "duration_ms": 0
+          },
+          {
+            "name": "memory_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal memory; warm launch budget allowed",
+            "duration_ms": 0
+          },
+          {
+            "name": "thermal_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal battery thermal state",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_candidate_priority",
+            "target": "com.android.chrome, com.google.android.apps.messaging",
+            "status": "ok",
+            "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_stats_refresh",
+            "target": "netstats",
+            "status": "ok",
+            "detail": "refreshed network stats before recommendation",
+            "duration_ms": 357
+          },
+          {
+            "name": "binder_service_policy",
+            "target": "system_services",
+            "status": "ok",
+            "detail": "Binder\/system-service evidence kept as MAPLE scheduling context",
+            "duration_ms": 0
+          },
+          {
+            "name": "binder_service_refresh",
+            "target": "service_manager",
+            "status": "ok",
+            "detail": "queried service manager after high Binder activity",
+            "duration_ms": 367
+          },
+          {
+            "name": "warm_launch",
+            "target": "top_apps",
+            "status": "skipped",
+            "detail": "non-intrusive background mode; do not switch visible apps while the user continues using the phone",
+            "duration_ms": 0
+          }
+        ],
+        "duration_ms": 43191
+      }
+    },
+    {
+      "mode": "memo_off_baseline",
+      "condition": "normal_recent_usage",
+      "plan_id": "generic_com_tencent_wemeet_app",
+      "title": "Real launchable app workload: Tencent Meeting",
+      "target_package": "com.tencent.wemeet.app",
+      "target_label": "Tencent Meeting",
+      "launch": {
+        "total_time_ms": 391,
+        "wait_time_ms": 394,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 32,
+        "janky_frames": 5,
+        "jank_rate_pct": 15.625,
+        "p90_ms": 73,
+        "p95_ms": 350,
+        "p99_ms": 400
+      },
+      "before": {
+        "wall_time_ms": 1779970796530,
+        "elapsed_ms": 173329620,
+        "mem_available_kb": 3212464,
+        "swap_free_kb": 993616,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1877883,
+        "compact_stall": 13,
+        "psi_some_avg10": 0.18,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 13576,
+        "udp_out_datagrams": 14228,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.6,
+        "battery_current_ua": -1220,
+        "cpu": {
+          "total_jiffies": 75101693,
+          "busy_jiffies": 3528022,
+          "idle_jiffies": 71564755,
+          "iowait_jiffies": 8916,
+          "procs_running": 2,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779970804760,
+        "elapsed_ms": 173337849,
+        "mem_available_kb": 3023828,
+        "swap_free_kb": 1286992,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1892613,
+        "compact_stall": 13,
+        "psi_some_avg10": 0.08,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 14067,
+        "udp_out_datagrams": 14684,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.6,
+        "battery_current_ua": 3051,
+        "cpu": {
+          "total_jiffies": 75108153,
+          "busy_jiffies": 3530979,
+          "idle_jiffies": 71568248,
+          "iowait_jiffies": 8926,
+          "procs_running": 9,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 8229,
+        "mem_available_drop_kb": 188636,
+        "swap_free_drop_kb": -293376,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 14730,
+        "reclaim_delta": 14730,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": -0.09999999999999999,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 491,
+        "udp_out_delta": 456,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 45.77399380804953,
+        "iowait_pct": 0.15479876160990713,
+        "pressure_score_lower_is_better": 616.4595469717493
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.tencent.wemeet.app\/.StartupActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.tencent.wemeet.app\/.StartupActivity\nTotalTime: 391\nWaitTime: 394\nComplete\n",
+      "memo_preparation": {
+        "type": "same_prior_real_user_action_without_memo",
+        "condition": "normal_recent_usage",
+        "interaction_result": "executed real Android interaction plan target=com.tencent.wemeet.app",
+        "duration_ms": 4182,
+        "reason": "The baseline gets the same immediately previous real app action as MEMO-on, but no eBPF collection, MAPLE reasoning, or ActionExecutor scheduling."
+      }
+    },
+    {
+      "mode": "memo_on_after_real_ebpf_maple_actions",
+      "condition": "normal_recent_usage",
+      "plan_id": "generic_com_tencent_wemeet_app",
+      "title": "Real launchable app workload: Tencent Meeting",
+      "target_package": "com.tencent.wemeet.app",
+      "target_label": "Tencent Meeting",
+      "launch": {
+        "total_time_ms": 409,
+        "wait_time_ms": 412,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 32,
+        "janky_frames": 5,
+        "jank_rate_pct": 15.625,
+        "p90_ms": 53,
+        "p95_ms": 350,
+        "p99_ms": 350
+      },
+      "before": {
+        "wall_time_ms": 1779970852984,
+        "elapsed_ms": 173386074,
+        "mem_available_kb": 3033024,
+        "swap_free_kb": 1269408,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1920613,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 14282,
+        "udp_out_datagrams": 14889,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.7,
+        "battery_current_ua": -6713,
+        "cpu": {
+          "total_jiffies": 75146223,
+          "busy_jiffies": 3545649,
+          "idle_jiffies": 71591640,
+          "iowait_jiffies": 8934,
+          "procs_running": 2,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779970861248,
+        "elapsed_ms": 173394338,
+        "mem_available_kb": 3065692,
+        "swap_free_kb": 1270432,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1920613,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 14734,
+        "udp_out_datagrams": 15321,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.7,
+        "battery_current_ua": -3356,
+        "cpu": {
+          "total_jiffies": 75152768,
+          "busy_jiffies": 3548598,
+          "idle_jiffies": 71595222,
+          "iowait_jiffies": 8948,
+          "procs_running": 5,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 8264,
+        "mem_available_drop_kb": -32668,
+        "swap_free_drop_kb": -1024,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 0,
+        "reclaim_delta": 0,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": 0,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 452,
+        "udp_out_delta": 432,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 45.05729564553094,
+        "iowait_pct": 0.21390374331550802,
+        "pressure_score_lower_is_better": 16.02673796791444
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.tencent.wemeet.app\/.StartupActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.tencent.wemeet.app\/.StartupActivity\nTotalTime: 409\nWaitTime: 412\nComplete\n",
+      "memo_preparation": {
+        "raw_trace_path": "\/sdcard\/MEMO\/logs\/pressure_generic_com_tencent_wemeet_app_1779970812525.trace",
+        "type": "same_prior_real_user_action_with_ebpf_maple_actions",
+        "condition": "normal_recent_usage",
+        "interaction_result": "executed real Android interaction plan target=com.tencent.wemeet.app",
+        "parsed_events": 2454,
+        "scenario_id": "pressure_generic_com_tencent_wemeet_app",
+        "scenario_file": "\/storage\/emulated\/0\/Android\/data\/com.memoos\/files\/latest_pressure_scenario.json",
+        "top_categories": [
+          "Network IO",
+          "Android Service IPC",
+          "App Process Runtime",
+          "Camera Service",
+          "Media Codec",
+          "Other File Access"
+        ],
+        "maple_backend": "shell",
+        "predicted_app_id": 280,
+        "stage1": [
+          "App Process Runtime:0.8"
+        ],
+        "recommendations": [
+          {
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "category": "App Process Runtime",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "category": "Network IO",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.google.android.apps.messaging",
+            "label": "Messages",
+            "category": "Communication",
+            "confidence": 0.98
+          }
+        ],
+        "actions": [
+          {
+            "name": "widget_update",
+            "target": "top3",
+            "status": "ok",
+            "detail": "published 3 real app recommendations",
+            "duration_ms": 1
+          },
+          {
+            "name": "latency_policy",
+            "target": "async_maple",
+            "status": "ok",
+            "detail": "MAPLE prediction ran asynchronously; foreground use was not blocked, completion latency=42.5s",
+            "duration_ms": 0
+          },
+          {
+            "name": "memory_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal memory; warm launch budget allowed",
+            "duration_ms": 0
+          },
+          {
+            "name": "thermal_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal battery thermal state",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_candidate_priority",
+            "target": "com.android.chrome, com.google.android.apps.messaging",
+            "status": "ok",
+            "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_stats_refresh",
+            "target": "netstats",
+            "status": "ok",
+            "detail": "refreshed network stats before recommendation",
+            "duration_ms": 278
+          },
+          {
+            "name": "binder_service_policy",
+            "target": "system_services",
+            "status": "ok",
+            "detail": "Binder\/system-service evidence kept as MAPLE scheduling context",
+            "duration_ms": 0
+          },
+          {
+            "name": "binder_service_refresh",
+            "target": "service_manager",
+            "status": "ok",
+            "detail": "queried service manager after high Binder activity",
+            "duration_ms": 454
+          },
+          {
+            "name": "warm_launch",
+            "target": "top_apps",
+            "status": "skipped",
+            "detail": "non-intrusive background mode; do not switch visible apps while the user continues using the phone",
+            "duration_ms": 0
+          }
+        ],
+        "duration_ms": 43526
+      }
+    },
+    {
+      "mode": "memo_off_baseline",
+      "condition": "crowded_cached_apps",
+      "plan_id": "scroll_display_usage",
+      "title": "Real scrolling and display usage",
+      "target_package": "com.android.chrome",
+      "target_label": "Chrome",
+      "launch": {
+        "total_time_ms": 266,
+        "wait_time_ms": 268,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 192,
+        "janky_frames": 5,
+        "jank_rate_pct": 2.6041666666666665,
+        "p90_ms": 8,
+        "p95_ms": 18,
+        "p99_ms": 69
+      },
+      "before": {
+        "wall_time_ms": 1779970883399,
+        "elapsed_ms": 173416488,
+        "mem_available_kb": 3024196,
+        "swap_free_kb": 1276240,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1921038,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 14955,
+        "udp_out_datagrams": 15530,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.7,
+        "battery_current_ua": 305,
+        "cpu": {
+          "total_jiffies": 75170158,
+          "busy_jiffies": 3553004,
+          "idle_jiffies": 71608201,
+          "iowait_jiffies": 8953,
+          "procs_running": 4,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779970893402,
+        "elapsed_ms": 173426492,
+        "mem_available_kb": 2980856,
+        "swap_free_kb": 1306128,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1921982,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 15031,
+        "udp_out_datagrams": 15613,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.7,
+        "battery_current_ua": 915,
+        "cpu": {
+          "total_jiffies": 75178031,
+          "busy_jiffies": 3555402,
+          "idle_jiffies": 71613672,
+          "iowait_jiffies": 8957,
+          "procs_running": 2,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 10004,
+        "mem_available_drop_kb": 43340,
+        "swap_free_drop_kb": -29888,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 944,
+        "reclaim_delta": 944,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": 0,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 76,
+        "udp_out_delta": 83,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 30.458529150260382,
+        "iowait_pct": 0.050806554045471866,
+        "pressure_score_lower_is_better": 51.0209061924457
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.android.chrome\/com.google.android.apps.chrome.Main }\nStatus: ok\nLaunchState: COLD\nActivity: com.android.chrome\/org.chromium.chrome.browser.ChromeTabbedActivity\nTotalTime: 266\nWaitTime: 268\nComplete\n",
+      "memo_preparation": {
+        "type": "same_prior_real_user_action_without_memo",
+        "condition": "crowded_cached_apps",
+        "interaction_result": "executed real Android interaction plan target=com.android.chrome",
+        "duration_ms": 5963,
+        "reason": "The baseline gets the same immediately previous real app action as MEMO-on, but no eBPF collection, MAPLE reasoning, or ActionExecutor scheduling."
+      }
+    },
+    {
+      "mode": "memo_on_after_real_ebpf_maple_actions",
+      "condition": "crowded_cached_apps",
+      "plan_id": "scroll_display_usage",
+      "title": "Real scrolling and display usage",
+      "target_package": "com.android.chrome",
+      "target_label": "Chrome",
+      "launch": {
+        "total_time_ms": 275,
+        "wait_time_ms": 277,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 227,
+        "janky_frames": 5,
+        "jank_rate_pct": 2.202643171806167,
+        "p90_ms": 11,
+        "p95_ms": 15,
+        "p99_ms": 69
+      },
+      "before": {
+        "wall_time_ms": 1779970953553,
+        "elapsed_ms": 173486642,
+        "mem_available_kb": 3318292,
+        "swap_free_kb": 1226320,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1928784,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 15101,
+        "udp_out_datagrams": 15682,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 35.8,
+        "battery_current_ua": -6408,
+        "cpu": {
+          "total_jiffies": 75225519,
+          "busy_jiffies": 3572007,
+          "idle_jiffies": 71644542,
+          "iowait_jiffies": 8970,
+          "procs_running": 2,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779970963532,
+        "elapsed_ms": 173496622,
+        "mem_available_kb": 3291412,
+        "swap_free_kb": 1259088,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1928784,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 15176,
+        "udp_out_datagrams": 15766,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 36,
+        "battery_current_ua": 610,
+        "cpu": {
+          "total_jiffies": 75233382,
+          "busy_jiffies": 3574451,
+          "idle_jiffies": 71649958,
+          "iowait_jiffies": 8973,
+          "procs_running": 2,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 9980,
+        "mem_available_drop_kb": 26880,
+        "swap_free_drop_kb": -32768,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 0,
+        "reclaim_delta": 0,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": 0,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 75,
+        "udp_out_delta": 84,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0.20000000000000284,
+        "cpu_busy_pct": 31.082284115477552,
+        "iowait_pct": 0.03815337657382678,
+        "pressure_score_lower_is_better": 14.099583492305758
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.android.chrome\/com.google.android.apps.chrome.Main }\nStatus: ok\nLaunchState: COLD\nActivity: com.android.chrome\/org.chromium.chrome.browser.ChromeTabbedActivity\nTotalTime: 275\nWaitTime: 277\nComplete\n",
+      "memo_preparation": {
+        "raw_trace_path": "\/sdcard\/MEMO\/logs\/pressure_scroll_display_usage_1779970912762.trace",
+        "type": "same_prior_real_user_action_with_ebpf_maple_actions",
+        "condition": "crowded_cached_apps",
+        "interaction_result": "executed real Android interaction plan target=com.android.chrome",
+        "parsed_events": 2669,
+        "scenario_id": "pressure_scroll_display_usage",
+        "scenario_file": "\/storage\/emulated\/0\/Android\/data\/com.memoos\/files\/latest_pressure_scenario.json",
+        "top_categories": [
+          "Network IO",
+          "Android Service IPC",
+          "App Process Runtime",
+          "Display Composition",
+          "Media Codec",
+          "Other File Access"
+        ],
+        "maple_backend": "shell",
+        "predicted_app_id": 280,
+        "stage1": [
+          "App Process Runtime:1.0"
+        ],
+        "recommendations": [
+          {
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "category": "App Process Runtime",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "category": "Network IO",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.google.android.apps.messaging",
+            "label": "Messages",
+            "category": "Communication",
+            "confidence": 0.98
+          }
+        ],
+        "actions": [
+          {
+            "name": "widget_update",
+            "target": "top3",
+            "status": "ok",
+            "detail": "published 3 real app recommendations",
+            "duration_ms": 0
+          },
+          {
+            "name": "latency_policy",
+            "target": "async_maple",
+            "status": "ok",
+            "detail": "MAPLE prediction ran asynchronously; foreground use was not blocked, completion latency=42.9s",
+            "duration_ms": 0
+          },
+          {
+            "name": "memory_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal memory; warm launch budget allowed",
+            "duration_ms": 0
+          },
+          {
+            "name": "thermal_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal battery thermal state",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_candidate_priority",
+            "target": "com.android.chrome, com.google.android.apps.messaging",
+            "status": "ok",
+            "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_stats_refresh",
+            "target": "netstats",
+            "status": "ok",
+            "detail": "refreshed network stats before recommendation",
+            "duration_ms": 355
+          },
+          {
+            "name": "display_ui_policy",
+            "target": "warm_launch_budget",
+            "status": "ok",
+            "detail": "SurfaceFlinger\/RenderThread\/input evidence; keep prewarm count low to avoid jank, memory=normal",
+            "duration_ms": 0
+          },
+          {
+            "name": "binder_service_policy",
+            "target": "system_services",
+            "status": "ok",
+            "detail": "Binder\/system-service evidence kept as MAPLE scheduling context",
+            "duration_ms": 0
+          },
+          {
+            "name": "binder_service_refresh",
+            "target": "service_manager",
+            "status": "ok",
+            "detail": "queried service manager after high Binder activity",
+            "duration_ms": 370
+          },
+          {
+            "name": "warm_launch",
+            "target": "top_apps",
+            "status": "skipped",
+            "detail": "non-intrusive background mode; do not switch visible apps while the user continues using the phone",
+            "duration_ms": 0
+          }
+        ],
+        "duration_ms": 43890
+      }
+    },
+    {
+      "mode": "memo_off_baseline",
+      "condition": "crowded_cached_apps",
+      "plan_id": "generic_com_topjohnwu_magisk",
+      "title": "Real launchable app workload: Magisk",
+      "target_package": "com.topjohnwu.magisk",
+      "target_label": "Magisk",
+      "launch": {
+        "total_time_ms": 1007,
+        "wait_time_ms": 1010,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 174,
+        "janky_frames": 4,
+        "jank_rate_pct": 2.2988505747126435,
+        "p90_ms": 12,
+        "p95_ms": 15,
+        "p99_ms": 57
+      },
+      "before": {
+        "wall_time_ms": 1779970984002,
+        "elapsed_ms": 173517092,
+        "mem_available_kb": 2881212,
+        "swap_free_kb": 1252420,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1941181,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 15768,
+        "udp_out_datagrams": 16332,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 36,
+        "battery_current_ua": -23193,
+        "cpu": {
+          "total_jiffies": 75249587,
+          "busy_jiffies": 3580356,
+          "idle_jiffies": 71660240,
+          "iowait_jiffies": 8991,
+          "procs_running": 4,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779970992987,
+        "elapsed_ms": 173526077,
+        "mem_available_kb": 2971340,
+        "swap_free_kb": 1189796,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1941236,
+        "compact_stall": 13,
+        "psi_some_avg10": 0.08,
+        "psi_full_avg10": 0.08,
+        "udp_in_datagrams": 15795,
+        "udp_out_datagrams": 16351,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 36,
+        "battery_current_ua": -23193,
+        "cpu": {
+          "total_jiffies": 75256632,
+          "busy_jiffies": 3581700,
+          "idle_jiffies": 71665938,
+          "iowait_jiffies": 8994,
+          "procs_running": 2,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 8985,
+        "mem_available_drop_kb": -90128,
+        "swap_free_drop_kb": 62624,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 55,
+        "reclaim_delta": 55,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": 0.08,
+        "psi_full_avg10_delta": 0.08,
+        "udp_in_delta": 27,
+        "udp_out_delta": 19,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 19.07735982966643,
+        "iowait_pct": 0.042583392476934,
+        "pressure_score_lower_is_better": 10.688176011355573
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.topjohnwu.magisk\/.ui.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.topjohnwu.magisk\/.ui.MainActivity\nTotalTime: 1007\nWaitTime: 1010\nComplete\n",
+      "memo_preparation": {
+        "type": "same_prior_real_user_action_without_memo",
+        "condition": "crowded_cached_apps",
+        "interaction_result": "executed real Android interaction plan target=com.topjohnwu.magisk",
+        "duration_ms": 4091,
+        "reason": "The baseline gets the same immediately previous real app action as MEMO-on, but no eBPF collection, MAPLE reasoning, or ActionExecutor scheduling."
+      }
+    },
+    {
+      "mode": "memo_on_after_real_ebpf_maple_actions",
+      "condition": "crowded_cached_apps",
+      "plan_id": "generic_com_topjohnwu_magisk",
+      "title": "Real launchable app workload: Magisk",
+      "target_package": "com.topjohnwu.magisk",
+      "target_label": "Magisk",
+      "launch": {
+        "total_time_ms": 983,
+        "wait_time_ms": 987,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 175,
+        "janky_frames": 2,
+        "jank_rate_pct": 1.1428571428571428,
+        "p90_ms": 10,
+        "p95_ms": 14,
+        "p99_ms": 53
+      },
+      "before": {
+        "wall_time_ms": 1779971052963,
+        "elapsed_ms": 173586052,
+        "mem_available_kb": 3360356,
+        "swap_free_kb": 1160880,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1956529,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 15866,
+        "udp_out_datagrams": 16425,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 36.1,
+        "battery_current_ua": 0,
+        "cpu": {
+          "total_jiffies": 75303930,
+          "busy_jiffies": 3598696,
+          "idle_jiffies": 71696223,
+          "iowait_jiffies": 9011,
+          "procs_running": 3,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779971062022,
+        "elapsed_ms": 173595111,
+        "mem_available_kb": 3347188,
+        "swap_free_kb": 1191600,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1956529,
+        "compact_stall": 13,
+        "psi_some_avg10": 0.09,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 15873,
+        "udp_out_datagrams": 16432,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 36.1,
+        "battery_current_ua": 0,
+        "cpu": {
+          "total_jiffies": 75311057,
+          "busy_jiffies": 3600252,
+          "idle_jiffies": 71701792,
+          "iowait_jiffies": 9013,
+          "procs_running": 6,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 9059,
+        "mem_available_drop_kb": 13168,
+        "swap_free_drop_kb": -30720,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 0,
+        "reclaim_delta": 0,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": 0.09,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 7,
+        "udp_out_delta": 7,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 21.83246807913568,
+        "iowait_pct": 0.02806229830223095,
+        "pressure_score_lower_is_better": 9.166601085660165
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.topjohnwu.magisk\/.ui.MainActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.topjohnwu.magisk\/.ui.MainActivity\nTotalTime: 983\nWaitTime: 987\nComplete\n",
+      "memo_preparation": {
+        "raw_trace_path": "\/sdcard\/MEMO\/logs\/pressure_generic_com_topjohnwu_magisk_1779971012707.trace",
+        "type": "same_prior_real_user_action_with_ebpf_maple_actions",
+        "condition": "crowded_cached_apps",
+        "interaction_result": "executed real Android interaction plan target=com.topjohnwu.magisk",
+        "parsed_events": 2311,
+        "scenario_id": "pressure_generic_com_topjohnwu_magisk",
+        "scenario_file": "\/storage\/emulated\/0\/Android\/data\/com.memoos\/files\/latest_pressure_scenario.json",
+        "top_categories": [
+          "Network IO",
+          "Android Service IPC",
+          "App Process Runtime",
+          "Other File Access"
+        ],
+        "maple_backend": "shell",
+        "predicted_app_id": 245,
+        "stage1": [
+          "Network IO:1.0"
+        ],
+        "recommendations": [
+          {
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "category": "Network IO",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.google.android.apps.messaging",
+            "label": "Messages",
+            "category": "Communication",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "category": "App Process Runtime",
+            "confidence": 0.98
+          }
+        ],
+        "actions": [
+          {
+            "name": "widget_update",
+            "target": "top3",
+            "status": "ok",
+            "detail": "published 3 real app recommendations",
+            "duration_ms": 1
+          },
+          {
+            "name": "latency_policy",
+            "target": "async_maple",
+            "status": "ok",
+            "detail": "MAPLE prediction ran asynchronously; foreground use was not blocked, completion latency=42.4s",
+            "duration_ms": 0
+          },
+          {
+            "name": "memory_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal memory; warm launch budget allowed",
+            "duration_ms": 0
+          },
+          {
+            "name": "thermal_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal battery thermal state",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_candidate_priority",
+            "target": "com.android.chrome, com.google.android.apps.messaging",
+            "status": "ok",
+            "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_stats_refresh",
+            "target": "netstats",
+            "status": "ok",
+            "detail": "refreshed network stats before recommendation",
+            "duration_ms": 271
+          },
+          {
+            "name": "binder_service_policy",
+            "target": "system_services",
+            "status": "ok",
+            "detail": "Binder\/system-service evidence kept as MAPLE scheduling context",
+            "duration_ms": 0
+          },
+          {
+            "name": "binder_service_refresh",
+            "target": "service_manager",
+            "status": "ok",
+            "detail": "queried service manager after high Binder activity",
+            "duration_ms": 523
+          },
+          {
+            "name": "warm_launch",
+            "target": "top_apps",
+            "status": "skipped",
+            "detail": "non-intrusive background mode; do not switch visible apps while the user continues using the phone",
+            "duration_ms": 0
+          }
+        ],
+        "duration_ms": 43427
+      }
+    },
+    {
+      "mode": "memo_off_baseline",
+      "condition": "crowded_cached_apps",
+      "plan_id": "generic_com_tencent_wemeet_app",
+      "title": "Real launchable app workload: Tencent Meeting",
+      "target_package": "com.tencent.wemeet.app",
+      "target_label": "Tencent Meeting",
+      "launch": {
+        "total_time_ms": 427,
+        "wait_time_ms": 431,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 27,
+        "janky_frames": 10,
+        "jank_rate_pct": 37.03703703703704,
+        "p90_ms": 250,
+        "p95_ms": 400,
+        "p99_ms": 450
+      },
+      "before": {
+        "wall_time_ms": 1779971082975,
+        "elapsed_ms": 173616064,
+        "mem_available_kb": 2923252,
+        "swap_free_kb": 1140916,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1956725,
+        "compact_stall": 13,
+        "psi_some_avg10": 0.01,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 16321,
+        "udp_out_datagrams": 16848,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 36.2,
+        "battery_current_ua": -7019,
+        "cpu": {
+          "total_jiffies": 75327612,
+          "busy_jiffies": 3605552,
+          "idle_jiffies": 71713037,
+          "iowait_jiffies": 9023,
+          "procs_running": 5,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779971091558,
+        "elapsed_ms": 173624648,
+        "mem_available_kb": 2944052,
+        "swap_free_kb": 1152092,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1957675,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 16823,
+        "udp_out_datagrams": 17345,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 36.2,
+        "battery_current_ua": -7019,
+        "cpu": {
+          "total_jiffies": 75334366,
+          "busy_jiffies": 3609050,
+          "idle_jiffies": 71716286,
+          "iowait_jiffies": 9030,
+          "procs_running": 5,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 8584,
+        "mem_available_drop_kb": -20800,
+        "swap_free_drop_kb": -11176,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 950,
+        "reclaim_delta": 950,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": -0.01,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 502,
+        "udp_out_delta": 497,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 51.79153094462541,
+        "iowait_pct": 0.1036422860527095,
+        "pressure_score_lower_is_better": 56.25140657388214
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.tencent.wemeet.app\/.StartupActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.tencent.wemeet.app\/.StartupActivity\nTotalTime: 427\nWaitTime: 431\nComplete\n",
+      "memo_preparation": {
+        "type": "same_prior_real_user_action_without_memo",
+        "condition": "crowded_cached_apps",
+        "interaction_result": "executed real Android interaction plan target=com.tencent.wemeet.app",
+        "duration_ms": 4430,
+        "reason": "The baseline gets the same immediately previous real app action as MEMO-on, but no eBPF collection, MAPLE reasoning, or ActionExecutor scheduling."
+      }
+    },
+    {
+      "mode": "memo_on_after_real_ebpf_maple_actions",
+      "condition": "crowded_cached_apps",
+      "plan_id": "generic_com_tencent_wemeet_app",
+      "title": "Real launchable app workload: Tencent Meeting",
+      "target_package": "com.tencent.wemeet.app",
+      "target_label": "Tencent Meeting",
+      "launch": {
+        "total_time_ms": 436,
+        "wait_time_ms": 439,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 29,
+        "janky_frames": 8,
+        "jank_rate_pct": 27.586206896551722,
+        "p90_ms": 109,
+        "p95_ms": 350,
+        "p99_ms": 400
+      },
+      "before": {
+        "wall_time_ms": 1779971151953,
+        "elapsed_ms": 173685043,
+        "mem_available_kb": 2873328,
+        "swap_free_kb": 1083456,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1977222,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 17056,
+        "udp_out_datagrams": 17567,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 36.3,
+        "battery_current_ua": -915,
+        "cpu": {
+          "total_jiffies": 75382024,
+          "busy_jiffies": 3626216,
+          "idle_jiffies": 71746762,
+          "iowait_jiffies": 9046,
+          "procs_running": 3,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1779971160379,
+        "elapsed_ms": 173693469,
+        "mem_available_kb": 2856472,
+        "swap_free_kb": 1088832,
+        "pgscan_direct": 18597,
+        "pgscan_kswapd": 1977222,
+        "compact_stall": 13,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 17506,
+        "udp_out_datagrams": 17991,
+        "udp_in_errors": 12,
+        "battery_level_pct": 100,
+        "battery_temp_c": 36.3,
+        "battery_current_ua": -305,
+        "cpu": {
+          "total_jiffies": 75388724,
+          "busy_jiffies": 3629562,
+          "idle_jiffies": 71750109,
+          "iowait_jiffies": 9053,
+          "procs_running": 4,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 8426,
+        "mem_available_drop_kb": 16856,
+        "swap_free_drop_kb": -5376,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 0,
+        "reclaim_delta": 0,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": 0,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 450,
+        "udp_out_delta": 424,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0,
+        "cpu_busy_pct": 49.940298507462686,
+        "iowait_pct": 0.1044776119402985,
+        "pressure_score_lower_is_better": 18.592133861940297
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.tencent.wemeet.app\/.StartupActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.tencent.wemeet.app\/.StartupActivity\nTotalTime: 436\nWaitTime: 439\nComplete\n",
+      "memo_preparation": {
+        "raw_trace_path": "\/sdcard\/MEMO\/logs\/pressure_generic_com_tencent_wemeet_app_1779971111135.trace",
+        "type": "same_prior_real_user_action_with_ebpf_maple_actions",
+        "condition": "crowded_cached_apps",
+        "interaction_result": "executed real Android interaction plan target=com.tencent.wemeet.app",
+        "parsed_events": 2350,
+        "scenario_id": "pressure_generic_com_tencent_wemeet_app",
+        "scenario_file": "\/storage\/emulated\/0\/Android\/data\/com.memoos\/files\/latest_pressure_scenario.json",
+        "top_categories": [
+          "Network IO",
+          "Android Service IPC",
+          "App Process Runtime",
+          "Camera Service",
+          "Media Codec",
+          "Other File Access"
+        ],
+        "maple_backend": "shell",
+        "predicted_app_id": 280,
+        "stage1": [
+          "App Process Runtime:0.8"
+        ],
+        "recommendations": [
+          {
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "category": "App Process Runtime",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "category": "Network IO",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.google.android.apps.messaging",
+            "label": "Messages",
+            "category": "Communication",
+            "confidence": 0.98
+          }
+        ],
+        "actions": [
+          {
+            "name": "widget_update",
+            "target": "top3",
+            "status": "ok",
+            "detail": "published 3 real app recommendations",
+            "duration_ms": 1
+          },
+          {
+            "name": "latency_policy",
+            "target": "async_maple",
+            "status": "ok",
+            "detail": "MAPLE prediction ran asynchronously; foreground use was not blocked, completion latency=42.8s",
+            "duration_ms": 0
+          },
+          {
+            "name": "memory_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal memory; warm launch budget allowed",
+            "duration_ms": 0
+          },
+          {
+            "name": "thermal_policy",
+            "target": "preload_budget",
+            "status": "ok",
+            "detail": "normal battery thermal state",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_candidate_priority",
+            "target": "com.android.chrome, com.google.android.apps.messaging",
+            "status": "ok",
+            "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps",
+            "duration_ms": 0
+          },
+          {
+            "name": "network_stats_refresh",
+            "target": "netstats",
+            "status": "ok",
+            "detail": "refreshed network stats before recommendation",
+            "duration_ms": 353
+          },
+          {
+            "name": "binder_service_policy",
+            "target": "system_services",
+            "status": "ok",
+            "detail": "Binder\/system-service evidence kept as MAPLE scheduling context",
+            "duration_ms": 0
+          },
+          {
+            "name": "binder_service_refresh",
+            "target": "service_manager",
+            "status": "ok",
+            "detail": "queried service manager after high Binder activity",
+            "duration_ms": 443
+          },
+          {
+            "name": "warm_launch",
+            "target": "top_apps",
+            "status": "skipped",
+            "detail": "non-intrusive background mode; do not switch visible apps while the user continues using the phone",
+            "duration_ms": 0
+          }
+        ],
+        "duration_ms": 43900
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "plan_id": "scroll_display_usage",
+      "condition": "normal_recent_usage",
+      "target_package": "com.android.chrome",
+      "target_label": "Chrome",
+      "interpretation": "Positive percentages mean MEMO-on reduced pressure or latency for the same real app workload.",
+      "launch_total_time_improvement_pct": -2.6717557251908395,
+      "wait_time_improvement_pct": -2.255639097744361,
+      "pressure_score_improvement_pct": -7.649976937263761,
+      "cpu_busy_improvement_pct": 11.144835577563077,
+      "iowait_improvement_pct": -33.95899387021773,
+      "memory_drop_improvement_pct": 30.990477786155093,
+      "reclaim_improvement_pct": -163.52201257861634,
+      "jank_rate_improvement_pct": 1.0810810810810783,
+      "baseline_pressure_score": 31.443033975795252,
+      "memo_on_pressure_score": 33.8484188233196,
+      "baseline_launch_total_ms": 262,
+      "memo_on_launch_total_ms": 269,
+      "baseline_jank_rate_pct": 3.278688524590164,
+      "memo_on_jank_rate_pct": 3.2432432432432434
+    },
+    {
+      "plan_id": "generic_com_topjohnwu_magisk",
+      "condition": "normal_recent_usage",
+      "target_package": "com.topjohnwu.magisk",
+      "target_label": "Magisk",
+      "interpretation": "Positive percentages mean MEMO-on reduced pressure or latency for the same real app workload.",
+      "launch_total_time_improvement_pct": 11.266201395812562,
+      "wait_time_improvement_pct": 11.232604373757455,
+      "pressure_score_improvement_pct": -30.841332988642396,
+      "cpu_busy_improvement_pct": -2.9589689030596316,
+      "iowait_improvement_pct": null,
+      "memory_drop_improvement_pct": null,
+      "reclaim_improvement_pct": 100,
+      "jank_rate_improvement_pct": -50,
+      "baseline_pressure_score": 11.728670814479639,
+      "memo_on_pressure_score": 15.34594923551502,
+      "baseline_launch_total_ms": 1003,
+      "memo_on_launch_total_ms": 890,
+      "baseline_jank_rate_pct": 1.1428571428571428,
+      "memo_on_jank_rate_pct": 1.7142857142857142
+    },
+    {
+      "plan_id": "generic_com_tencent_wemeet_app",
+      "condition": "normal_recent_usage",
+      "target_package": "com.tencent.wemeet.app",
+      "target_label": "Tencent Meeting",
+      "interpretation": "Positive percentages mean MEMO-on reduced pressure or latency for the same real app workload.",
+      "launch_total_time_improvement_pct": -4.603580562659847,
+      "wait_time_improvement_pct": -4.568527918781726,
+      "pressure_score_improvement_pct": 97.40019632323921,
+      "cpu_busy_improvement_pct": 1.5657322048935036,
+      "iowait_improvement_pct": -38.181818181818166,
+      "memory_drop_improvement_pct": 117.31800928772874,
+      "reclaim_improvement_pct": 100,
+      "jank_rate_improvement_pct": 0,
+      "baseline_pressure_score": 616.4595469717493,
+      "memo_on_pressure_score": 16.02673796791444,
+      "baseline_launch_total_ms": 391,
+      "memo_on_launch_total_ms": 409,
+      "baseline_jank_rate_pct": 15.625,
+      "memo_on_jank_rate_pct": 15.625
+    },
+    {
+      "plan_id": "scroll_display_usage",
+      "condition": "crowded_cached_apps",
+      "target_package": "com.android.chrome",
+      "target_label": "Chrome",
+      "interpretation": "Positive percentages mean MEMO-on reduced pressure or latency for the same real app workload.",
+      "launch_total_time_improvement_pct": -3.3834586466165413,
+      "wait_time_improvement_pct": -3.3582089552238807,
+      "pressure_score_improvement_pct": 72.3650861097536,
+      "cpu_busy_improvement_pct": -2.0478827527751378,
+      "iowait_improvement_pct": 24.90461655856544,
+      "memory_drop_improvement_pct": 37.978772496538994,
+      "reclaim_improvement_pct": 100,
+      "jank_rate_improvement_pct": 15.418502202643174,
+      "baseline_pressure_score": 51.0209061924457,
+      "memo_on_pressure_score": 14.099583492305758,
+      "baseline_launch_total_ms": 266,
+      "memo_on_launch_total_ms": 275,
+      "baseline_jank_rate_pct": 2.6041666666666665,
+      "memo_on_jank_rate_pct": 2.202643171806167
+    },
+    {
+      "plan_id": "generic_com_topjohnwu_magisk",
+      "condition": "crowded_cached_apps",
+      "target_package": "com.topjohnwu.magisk",
+      "target_label": "Magisk",
+      "interpretation": "Positive percentages mean MEMO-on reduced pressure or latency for the same real app workload.",
+      "launch_total_time_improvement_pct": 2.3833167825223436,
+      "wait_time_improvement_pct": 2.277227722772277,
+      "pressure_score_improvement_pct": 14.236057902478604,
+      "cpu_busy_improvement_pct": -14.441769060647959,
+      "iowait_improvement_pct": 34.100369486927654,
+      "memory_drop_improvement_pct": null,
+      "reclaim_improvement_pct": 100,
+      "jank_rate_improvement_pct": 50.285714285714285,
+      "baseline_pressure_score": 10.688176011355573,
+      "memo_on_pressure_score": 9.166601085660165,
+      "baseline_launch_total_ms": 1007,
+      "memo_on_launch_total_ms": 983,
+      "baseline_jank_rate_pct": 2.2988505747126435,
+      "memo_on_jank_rate_pct": 1.1428571428571428
+    },
+    {
+      "plan_id": "generic_com_tencent_wemeet_app",
+      "condition": "crowded_cached_apps",
+      "target_package": "com.tencent.wemeet.app",
+      "target_label": "Tencent Meeting",
+      "interpretation": "Positive percentages mean MEMO-on reduced pressure or latency for the same real app workload.",
+      "launch_total_time_improvement_pct": -2.107728337236534,
+      "wait_time_improvement_pct": -1.8561484918793503,
+      "pressure_score_improvement_pct": 66.9481440654806,
+      "cpu_busy_improvement_pct": 3.574392189993431,
+      "iowait_improvement_pct": -0.8059701492537296,
+      "memory_drop_improvement_pct": null,
+      "reclaim_improvement_pct": 100,
+      "jank_rate_improvement_pct": 25.517241379310352,
+      "baseline_pressure_score": 56.25140657388214,
+      "memo_on_pressure_score": 18.592133861940297,
+      "baseline_launch_total_ms": 427,
+      "memo_on_launch_total_ms": 436,
+      "baseline_jank_rate_pct": 37.03703703703704,
+      "memo_on_jank_rate_pct": 27.586206896551722
+    }
+  ],
+  "summary": {
+    "workloads_compared": 6,
+    "avg_launch_total_time_improvement_pct": 0.14716581777185725,
+    "avg_wait_time_improvement_pct": 0.24521793881673584,
+    "avg_pressure_score_improvement_pct": 35.40969574584097,
+    "avg_cpu_busy_improvement_pct": -0.5272767906721193,
+    "avg_iowait_improvement_pct": -2.7883592311593075,
+    "avg_memory_drop_improvement_pct": 62.09575319014095,
+    "avg_reclaim_improvement_pct": 56.07966457023061,
+    "claim_scope": "This measures user-facing app workload pressure on the rooted Android device. Pipeline latency is reported elsewhere and is not treated as the phone-performance metric."
+  }
+}

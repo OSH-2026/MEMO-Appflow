@@ -55,6 +55,8 @@ Android App 内部会采集和整理这些证据：
 
 这些 eBPF 和系统细节不会展示给普通用户。它们只作为 MAPLE 推理和调度策略的输入。用户看到的是 Top-3 真实可启动应用，以及系统实际做出的预热或降级动作。
 
+当前 App 主界面提供 `Run Full Local Evaluation` 一键入口。手机上点一下后，流程会在设备内部完成真实用户操作窗口、raw eBPF 采集、Kotlin 解析、MAPLE 推理、Top-3 推荐、ActionExecutor 调度动作和真实 eBPF 消融结果生成。ADB/电脑只用于安装和查看文件；拔掉线后，已经部署好的手机仍可从 App UI 触发同一条本地流程。
+
 ## 应用推荐与动作
 
 Top-3 推荐不是硬编码 “App 110 = 微信”。App 会扫描设备上真实安装的 launcher 应用，并结合默认浏览器/电话/短信角色、Intent 能力、权限、`ApplicationInfo.category` 和弱文本特征做自适应分类。最后展示给用户的一定是实际存在、可启动的应用，而不是进程、Binder 线程或 SurfaceFlinger 这类系统对象。
@@ -87,20 +89,38 @@ adb install -r app\build\outputs\apk\debug\app-debug.apk
 
 ```text
 /data/local/tmp/memo/models/Qwen3.5-0.8B-Q4_K_M.gguf
-/data/local/tmp/memo/bpftrace
+/data/local/tmp/memo/memo_libbpf_collector
+/data/local/tmp/memo/memo_appflow.bpf.o
 /data/local/tmp/memo/bpftool
 /data/local/tmp/memo/libmaple_engine.so
+/data/local/tmp/memo/libc++_shared.so
+/data/local/tmp/memo/maple_demo
 ```
 
-如果设备缺少 root、tracefs、bpftrace、bpftool 或 MAPLE native binary，App 会在控制台里报告 capability unavailable，不会伪造成 eBPF 或 MAPLE 已经成功。
+如果设备缺少 root、tracefs、raw eBPF collector、bpftool 或 MAPLE native binary，App 会在控制台里报告 capability unavailable，不会伪造成 eBPF 或 MAPLE 已经成功。
 
 ## 文档
 
 - `docs/ebpf_report.md`：当前 Android 端 eBPF、系统状态、MAPLE、Top-3 与动作闭环说明。
+- `docs/raw_libbpf_collector.md`：raw eBPF collector、BPF object、设备部署和真实运行验证说明。
 - `docs/next_steps_roadmap_2026-05-06.md`：本轮端侧迁移后的下一步工程路线。
 - `docs/theoretical_ablation_experiment/`：Chengyu Fan 的理论/合成消融实验。
 - `docs/real_device_experiments/real_ebpf_ablation/`：Jingyi Guo 的 Android 真实 eBPF 消融实验与结果解读。
+- `docs/real_device_experiments/user_app_pressure/`：Jingyi Guo 的真实用户 app 压力 A/B 实验，衡量 MEMO 开/关对手机整体压力的影响。
 - `docs/report_versions/`：历史阶段报告，用来保留项目方向的演进过程。
+
+## 2026-05-28 rooted phone 实验更新
+
+新增 `Run App Pressure A/B Test`，用于衡量用户使用其他真实 app 时 MEMO 开/关对手机整体压力的影响。这个实验和 MAPLE pipeline latency 分开，重点看启动耗时、CPU busy、iowait、可用内存下降、reclaim、PSI、gfx/jank 等真实设备指标。
+
+最新 Pixel 5 结果见：
+
+```text
+docs/real_device_experiments/user_app_pressure/README.md
+docs/real_device_experiments/user_app_pressure/latest_pressure_experiment.json
+```
+
+本次 6 个 A/B 对照的结论：MEMO-on 平均综合压力分数改善 35.41%，MemAvailable 下降量改善 62.10%，reclaim 改善 56.08%；但 app 启动耗时基本持平（+0.15%），CPU busy 和 iowait 略差。因此当前版本不能宣称全面提升手机性能，比较准确的说法是：在 crowded cached-app 场景下，MEMO 更明显地降低内存/reclaim 压力和部分 jank，但后台 MAPLE/eBPF/调度仍有开销。
 
 ## 会议记录
 

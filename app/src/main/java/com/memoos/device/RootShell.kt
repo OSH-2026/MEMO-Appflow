@@ -33,7 +33,10 @@ object RootShell {
 
     fun run(command: String, requireRoot: Boolean = true, timeoutMs: Long = 15_000L): ShellResult {
         val args = if (requireRoot) {
-            listOf("su", "0", "sh", "-c", command)
+            // On MagiskSU/Pixel 5, `su 0 sh -c ...` can run as uid=0 with an
+            // empty CapEff set. Loading tracepoint eBPF needs the full
+            // capability set, which Magisk keeps for shell-mediated `su -c`.
+            listOf("sh", "-c", "su -c ${shellQuote(command)}")
         } else {
             listOf("sh", "-c", command)
         }
@@ -45,6 +48,10 @@ object RootShell {
     fun hasRoot(): Boolean {
         val result = run("id", requireRoot = true, timeoutMs = 3_000L)
         return result.ok && result.stdout.contains("uid=0")
+    }
+
+    private fun shellQuote(value: String): String {
+        return "'" + value.replace("'", "'\"'\"'") + "'"
     }
 
     private fun execute(label: String, args: List<String>, timeoutMs: Long): ShellResult {

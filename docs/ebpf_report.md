@@ -9,7 +9,7 @@ MEMO-Appflow now treats the Android emulator as the deployment target, not as a 
 ```text
 Android app
 -> root/device capability probe
--> eBPF or tracefs collection inside Android
+-> raw eBPF collection inside Android
 -> system-state snapshot inside Android
 -> MAPLE scenario built inside Android
 -> MAPLE native bridge or device-local MAPLE binary
@@ -24,8 +24,9 @@ The host is not part of the product runtime. It can install the APK, push model/
 | Component | Role |
 | --- | --- |
 | `EBPFCollectorService` | Foreground service that runs the device pipeline and real user experiment windows |
-| `EBPFCapabilityProbe` | Detects root, tracefs, bpftrace, bpftool, BTF and available tracepoints |
-| `BpftraceProgramBuilder` | Generates a bpftrace program from device-supported tracepoints |
+| `EBPFCapabilityProbe` | Detects root, tracefs, raw eBPF collector, bpftool, BTF and available tracepoints |
+| `src/bpf/memo_appflow.bpf.c` | Native eBPF C tracepoint program compiled with `clang -target bpf` |
+| `src/native/memo_libbpf_collector.c` | Android loader that loads the BPF object, attaches tracepoints and emits MEMO TSV records |
 | `EBPFTraceParser` | Parses `MEMO_*` trace lines and TSV records inside Android |
 | `SystemStateCollector` | Collects memory, battery, network, camera/media, display and process/service state |
 | `MapleScenarioBuilder` | Builds MAPLE-compatible scenario JSON from eBPF + system state |
@@ -118,7 +119,8 @@ Expected layout:
 
 ```text
 /data/local/tmp/memo/models/Qwen3.5-0.8B-Q4_K_M.gguf
-/data/local/tmp/memo/bpftrace
+/data/local/tmp/memo/memo_libbpf_collector
+/data/local/tmp/memo/memo_appflow.bpf.o
 /data/local/tmp/memo/bpftool
 /data/local/tmp/memo/libmaple_engine.so
 ```

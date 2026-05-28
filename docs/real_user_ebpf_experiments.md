@@ -4,11 +4,13 @@ Date: 2026-05-07
 
 These experiments replace the removed synthetic scenarios. They are not hand-written event sequences. The app starts a real device-side eBPF capture window, launches or records real Android app usage, parses the resulting kernel evidence inside Android, calls MAPLE, maps the result to real installed apps, executes scheduling actions, and updates the widget.
 
+The phone UI now has a one-tap `Run Full Local Evaluation` path. It runs the real scroll/display experiment, publishes the MAPLE-driven Top-3/actions, then runs the real eBPF ablation on the same device-generated scenario. The host can inspect outputs, but does not execute product logic.
+
 ## Product Path
 
 ```text
 tap experiment in MEMO app
--> EBPFCollectorService starts bpftrace on device
+-> EBPFCollectorService starts the raw eBPF collector on device
 -> real Android app launch/manual usage/input gestures happen
 -> raw trace is written under /sdcard/MEMO/logs/real_user_*.trace
 -> EBPFTraceParser parses real MEMO records
@@ -28,6 +30,7 @@ tap experiment in MEMO app
 | Open Real Media/Video App + Record | PackageManager chooses a real media/network-capable app and records media/network/display behavior |
 | Open Payment/Security App if Installed + Record | Runs only against a real matching app; otherwise records a no-target real window |
 | Run Real Scroll/Display Interaction + Record | Launches a real app and uses Android `input swipe` while eBPF records UI/display evidence |
+| Run Full Local Evaluation | One tap runs real scroll/display capture, MAPLE, Top-3, ActionExecutor, and 8-config ablation locally |
 
 The Android `input` commands are only user-action simulation. They do not create fake eBPF rows. The collected evidence still comes from the kernel and system services.
 
@@ -37,10 +40,49 @@ The Android `input` commands are only user-action simulation. They do not create
 /sdcard/MEMO/logs/real_user_*.trace
 /sdcard/Android/data/com.memoos/files/latest_real_user_experiment.txt
 /sdcard/Android/data/com.memoos/files/latest_maple_scenario.json
+/sdcard/Android/data/com.memoos/files/latest_full_local_evaluation.txt
 /sdcard/MEMO/ablations/latest_real_ablation.json
+/sdcard/MEMO/pressure/latest_pressure_experiment.json
 ```
 
 The app UI shows user-facing Top-3 apps and system actions. Raw eBPF evidence is kept in advanced diagnostics and the files above.
+
+## Real User App Pressure A/B
+
+The pressure experiment is the product-performance check. It asks whether MEMO reduces phone pressure while the user uses other real apps, not just whether MEMO's own inference pipeline finishes quickly.
+
+App control:
+
+```text
+Run App Pressure A/B Test
+```
+
+Runtime:
+
+```text
+same prior real app action without MEMO
+-> measured app workload baseline
+
+same prior real app action with raw eBPF + MAPLE + ActionExecutor
+-> measured app workload MEMO-on
+```
+
+Latest rooted Pixel 5 result:
+
+```text
+report: docs/real_device_experiments/user_app_pressure/latest_pressure_experiment.json
+workloads: Chrome, Magisk, Tencent Meeting
+conditions: normal_recent_usage, crowded_cached_apps
+comparisons: 6
+avg pressure score improvement: +35.41%
+avg MemAvailable-drop improvement: +62.10%
+avg reclaim improvement: +56.08%
+avg launch TotalTime improvement: +0.15%
+avg CPU busy improvement: -0.53%
+avg iowait improvement: -2.79%
+```
+
+Interpretation: on this phone, MEMO's clearest benefit is memory/reclaim pressure, especially with crowded cached apps. Launch time is almost unchanged, and CPU/iowait overhead remains. The detailed Chinese interpretation is in `docs/real_device_experiments/user_app_pressure/README.md`.
 
 ## Real eBPF Ablation Metrics
 
