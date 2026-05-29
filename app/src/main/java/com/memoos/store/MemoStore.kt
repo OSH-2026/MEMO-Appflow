@@ -54,6 +54,7 @@ data class LastMemoState(
     val updatedAt: Long,
     val recommendations: List<RecommendationState>,
     val evidenceLines: List<String>,
+    val rawTracePath: String,
     val maple: MapleState,
     val actions: List<ActionState>,
     val scenarioJson: String,
@@ -182,6 +183,12 @@ class MemoStore(context: Context) {
             .apply()
     }
 
+    fun saveRawTracePath(path: String) {
+        prefs.edit()
+            .putString("raw_trace_path", path)
+            .apply()
+    }
+
     fun load(): LastMemoState {
         val rawMaple = prefs.getString("maple", "{}") ?: "{}"
         val rawActions = prefs.getString("actions", "[]") ?: "[]"
@@ -195,6 +202,7 @@ class MemoStore(context: Context) {
                 .map { it.trim() }
                 .filter { it.isNotBlank() }
                 .toList(),
+            rawTracePath = prefs.getString("raw_trace_path", "") ?: "",
             maple = readMaple(rawMaple),
             actions = readActions(rawActions),
             scenarioJson = prefs.getString("scenario_json", "") ?: "",

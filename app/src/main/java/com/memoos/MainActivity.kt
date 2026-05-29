@@ -204,6 +204,7 @@ class MainActivity : Activity() {
         state.recommendations.forEachIndexed { index, app ->
             panel.addView(appRow(index + 1, app))
         }
+        panel.addView(rowButton("立即预热第 1 个推荐", EBPFCollectorService.ACTION_WARM_TOP_APP, primary = false))
         return panel
     }
 
@@ -244,9 +245,11 @@ class MainActivity : Activity() {
         if (userFacing.isEmpty()) {
             panel.addView(body("还没有采集到系统证据。"))
         } else {
-            userFacing.forEach { panel.addView(bullet(friendlyEvidence(it))) }
+            userFacing.forEach { panel.addView(evidenceItem(it)) }
         }
-        panel.addView(smallCaption("普通用户不需要看 eBPF 原始记录；高级诊断只用于调试。"))
+        panel.addView(detailButton("查看 eBPF 证据详情") {
+            startActivity(Intent(this, EvidenceActivity::class.java))
+        })
         return panel
     }
 
@@ -389,6 +392,29 @@ class MainActivity : Activity() {
         return text("- $value", 13f, Color.rgb(51, 65, 85), bottom = 4)
     }
 
+    private fun evidenceItem(raw: String): View {
+        val value = friendlyEvidence(raw)
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(10), dp(8), dp(10), dp(8))
+            background = rounded(Color.rgb(248, 250, 252), dp(8))
+            layoutParams = LinearLayout.LayoutParams(match(), wrap()).apply { bottomMargin = dp(8) }
+            addView(text(evidenceTitle(raw), 13f, Color.rgb(15, 23, 42), bold = true, bottom = 3))
+            addView(text(value, 12f, Color.rgb(71, 85, 105)))
+        }
+    }
+
+    private fun detailButton(label: String, onClick: () -> Unit): View {
+        return Button(this).apply {
+            text = label
+            isAllCaps = false
+            setTextColor(Color.rgb(37, 99, 235))
+            background = rounded(Color.rgb(219, 234, 254), dp(8))
+            setOnClickListener { onClick() }
+            layoutParams = LinearLayout.LayoutParams(match(), dp(44)).apply { topMargin = dp(6) }
+        }
+    }
+
     private fun chip(value: String): View {
         return text(value, 13f, Color.rgb(15, 23, 42), bottom = 6).apply {
             setPadding(dp(10), dp(6), dp(10), dp(6))
@@ -447,6 +473,7 @@ class MainActivity : Activity() {
             "thermal_policy" -> "温度策略"
             "thermal_power_mode" -> "功耗模式"
             "warm_launch" -> "轻量预热"
+            "warm_launch_policy" -> "预热策略"
             "network_candidate_priority" -> "网络应用优先"
             "network_stats_refresh" -> "网络状态刷新"
             "camera_media_candidate" -> "相机/媒体候选"
@@ -464,8 +491,12 @@ class MainActivity : Activity() {
     }
 
     private fun evidenceHeadline(state: LastMemoState): String {
+        val first = state.evidenceLines.firstOrNull()
+        if (first != null && ("failed" in first || "capture produced zero" in first)) {
+            return "上次采集没有成功，已保留原因；可以检查授权后重新开始智能优化"
+        }
         return state.evidenceLines.firstOrNull { "records" in it }
-            ?: state.evidenceLines.firstOrNull()
+            ?: first
             ?: "No evidence collected yet"
     }
 
@@ -514,11 +545,29 @@ class MainActivity : Activity() {
 
     private fun friendlyEvidence(value: String): String {
         return value
+            .replace("Strict real eBPF experiment failed", "真实使用采集没有成功")
+            .replace("Strict eBPF pipeline failed", "eBPF 采集流程没有成功")
+            .replace("real raw eBPF capture produced zero MEMO events", "这次采集窗口没有读到 MEMO 事件")
+            .replace("raw eBPF capture produced zero MEMO events", "这次采集窗口没有读到 MEMO 事件")
+            .replace("raw eBPF collector did not attach before user interaction", "eBPF 采集器还没启动好，用户动作已经开始")
             .replace("device-side eBPF records in the observed Android window", "条系统级事件来自当前手机使用窗口")
             .replace("event_type", "系统事件")
             .replace("MAPLE evidence/resource category", "资源信号")
             .replace("observed user action target app=", "本次观察的应用：")
             .replace("count=", "数量=")
+    }
+
+    private fun evidenceTitle(value: String): String {
+        return when {
+            "records" in value -> "采集规模"
+            value.startsWith("event_type") -> "内核事件"
+            value.startsWith("MAPLE evidence") -> "资源信号"
+            value.startsWith("memory") -> "内存状态"
+            value.startsWith("battery") -> "电池/温度"
+            value.startsWith("network") -> "网络状态"
+            "failed" in value || "capture produced zero" in value -> "采集状态"
+            else -> "系统证据"
+        }
     }
 
     private fun friendlyError(value: String): String {
@@ -536,6 +585,7 @@ class MainActivity : Activity() {
             "blocked" -> "需要处理"
             "failed" -> "失败"
             "skipped" -> "已跳过"
+            "planned" -> "已准备"
             "unsupported" -> "设备不支持"
             "pending" -> "等待中"
             "completed" -> "已完成"
@@ -578,6 +628,7 @@ class MainActivity : Activity() {
             "display_ui_policy" -> "界面流畅度"
             "binder_service_policy", "binder_service_refresh" -> "系统服务"
             "warm_launch" -> "候选应用预热"
+            "warm_launch_policy" -> "后台预热准备"
             "root_permission" -> "Magisk 授权"
             "collector_runtime" -> "eBPF 采集器"
             "maple_runtime" -> "本地模型"
@@ -595,6 +646,10 @@ class MainActivity : Activity() {
             .replace("Binder/system-service evidence kept as MAPLE scheduling context", "Binder 和系统服务活动已经进入 MAPLE 调度上下文。")
             .replace("queried service manager after high Binder activity", "检测到 Binder 活跃后刷新了系统服务状态。")
             .replace("non-intrusive background mode; do not switch visible apps while the user continues using the phone", "后台模式不切换当前屏幕，避免打断用户正在做的事。")
+            .replace("background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute", "已经准备好候选应用。为了不打断你，MEMO 不会自动切屏；点“立即预热第 1 个推荐”会真正执行预热。")
+            .replace("root am start + HOME; label=", "已经启动并回到桌面完成预热：")
+            .replace("no Top-3 recommendation yet; run smart optimization first", "还没有 Top-3 推荐，请先运行“开始智能优化”。")
+            .replace("no launchable activity", "这个应用没有可启动入口。")
             .replace("MAPLE result published after asynchronous inference; foreground budget status=ok", "MAPLE 在后台完成推理，前台使用没有被阻塞。")
             .replace("MAPLE prediction ran asynchronously; foreground use was not blocked", "MAPLE 在后台异步推理，用户可以继续正常操作手机")
             .replace("latency=ok", "耗时正常")
@@ -651,6 +706,7 @@ class MainActivity : Activity() {
             EBPFCollectorService.ACTION_RUN_ONCE,
             EBPFCollectorService.ACTION_STOP,
             EBPFCollectorService.ACTION_CHECK_SETUP,
+            EBPFCollectorService.ACTION_WARM_TOP_APP,
             EBPFCollectorService.ACTION_FULL_LOCAL_EVALUATION,
             EBPFCollectorService.ACTION_RECORD_CURRENT_USAGE,
             EBPFCollectorService.ACTION_EXPERIMENT_COMMUNICATION,

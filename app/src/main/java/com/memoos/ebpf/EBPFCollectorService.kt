@@ -13,6 +13,7 @@ import com.memoos.ablation.RealEbpfAblationRunner
 import com.memoos.action.ActionResult
 import com.memoos.action.ActionExecutor
 import com.memoos.action.AppIdMapping
+import com.memoos.action.RecommendedApp
 import com.memoos.device.DevicePaths
 import com.memoos.device.EBPFCapabilityProbe
 import com.memoos.device.EBPFCapabilityReport
@@ -48,6 +49,7 @@ class EBPFCollectorService : Service() {
         when (intent?.action) {
             ACTION_STOP -> stopPipeline()
             ACTION_CHECK_SETUP -> checkDeviceSetup()
+            ACTION_WARM_TOP_APP -> warmTopRecommendation()
             ACTION_FULL_LOCAL_EVALUATION -> runRealUserExperiment(RealUserExperimentPlanner.KIND_SCROLL, runAblationAfterMaple = true)
             ACTION_RUN_ONCE, null -> runPipelineOnce()
             ACTION_RECORD_CURRENT_USAGE -> runRealUserExperiment(RealUserExperimentPlanner.KIND_CURRENT)
@@ -339,6 +341,39 @@ class EBPFCollectorService : Service() {
         }
     }
 
+    private fun warmTopRecommendation() {
+        runningTask = executor.submit {
+            try {
+                val state = MemoStore(this).load()
+                val top = state.recommendations.firstOrNull()
+                if (top == null) {
+                    MemoStore(this).appendAction(
+                        ActionResult(
+                            "warm_launch",
+                            "top_apps",
+                            "blocked",
+                            "no Top-3 recommendation yet; run smart optimization first",
+                        ),
+                    )
+                    return@submit
+                }
+                val result = ActionExecutor(this).warmLaunchNow(
+                    RecommendedApp(
+                        packageName = top.packageName,
+                        label = top.label,
+                        category = top.category,
+                        appId = 0,
+                        confidence = top.confidence,
+                        reason = top.reason,
+                    ),
+                )
+                MemoStore(this).appendAction(result)
+            } finally {
+                stopForeground(STOP_FOREGROUND_DETACH)
+            }
+        }
+    }
+
 
     private fun runLocalAblationAfterPrediction(scenario: MapleScenario) {
         val start = SystemClock.elapsedRealtime()
@@ -411,6 +446,7 @@ class EBPFCollectorService : Service() {
         val collector = report.rawCollectorPath ?: DevicePaths.RAW_COLLECTOR
         val seconds = ((windowMs + 999L) / 1000L + RAW_COLLECTOR_STARTUP_SLACK_SECONDS).coerceAtLeast(2L)
         val rawTracePath = "${DevicePaths.LOG_DIR}/device_window_${System.currentTimeMillis()}.trace"
+        MemoStore(this).saveRawTracePath(rawTracePath)
         val result = RootShell.run(
             "rm -f '$rawTracePath'; $collector --duration-sec $seconds --max-events $REALTIME_PARSE_LINES --output '$rawTracePath'",
             timeoutMs = (seconds + 8L) * 1_000L,
@@ -441,6 +477,7 @@ class EBPFCollectorService : Service() {
         val collector = report.rawCollectorPath ?: DevicePaths.RAW_COLLECTOR
         val seconds = ((windowMs + 999L) / 1000L + RAW_COLLECTOR_STARTUP_SLACK_SECONDS).coerceAtLeast(8L)
         val rawTracePath = "${DevicePaths.LOG_DIR}/real_user_${System.currentTimeMillis()}.trace"
+        MemoStore(this).saveRawTracePath(rawTracePath)
         RootShell.run(
             "rm -f '$rawTracePath'; ($collector --duration-sec $seconds --max-events $REALTIME_PARSE_LINES --output '$rawTracePath' 2>&1) & echo \$!",
             timeoutMs = 3_000L,
@@ -501,6 +538,7 @@ class EBPFCollectorService : Service() {
         const val ACTION_RUN_ONCE = "com.memoos.action.RUN_ONCE"
         const val ACTION_STOP = "com.memoos.action.STOP"
         const val ACTION_CHECK_SETUP = "com.memoos.action.CHECK_SETUP"
+        const val ACTION_WARM_TOP_APP = "com.memoos.action.WARM_TOP_APP"
         const val ACTION_FULL_LOCAL_EVALUATION = "com.memoos.action.FULL_LOCAL_EVALUATION"
         const val ACTION_RECORD_CURRENT_USAGE = "com.memoos.action.RECORD_CURRENT_USAGE"
         const val ACTION_EXPERIMENT_COMMUNICATION = "com.memoos.action.REAL_EXPERIMENT_COMMUNICATION"

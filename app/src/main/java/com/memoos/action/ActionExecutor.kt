@@ -64,14 +64,21 @@ class ActionExecutor(private val context: Context) {
             else -> 2
         }
         if (warmLimit == 0) {
-            val detail = if (staleForRealtime) {
-                "prediction latency ${PipelineLatency.formatMs(latencyBeforeActionsMs)} exceeded realtime budget ${PipelineLatency.formatMs(realtimeBudgetMs)}; skip stale prewarm"
-            } else if (!allowVisibleWarmLaunch) {
-                "non-intrusive background mode; do not switch visible apps while the user continues using the phone"
+            if (!allowVisibleWarmLaunch && !staleForRealtime) {
+                results += ActionResult(
+                    "warm_launch_policy",
+                    "top_apps",
+                    "planned",
+                    "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                )
             } else {
-                "memory=$memory thermal=$thermal; preloading would add pressure"
+                val detail = if (staleForRealtime) {
+                    "prediction latency ${PipelineLatency.formatMs(latencyBeforeActionsMs)} exceeded realtime budget ${PipelineLatency.formatMs(realtimeBudgetMs)}; skip stale prewarm"
+                } else {
+                    "memory=$memory thermal=$thermal; preloading would add pressure"
+                }
+                results += ActionResult("warm_launch", "top_apps", "skipped", detail)
             }
-            results += ActionResult("warm_launch", "top_apps", "skipped", detail)
         } else {
             recommendations.take(warmLimit).forEach { app ->
                 results += warmLaunch(app)
@@ -83,6 +90,10 @@ class ActionExecutor(private val context: Context) {
         }
 
         return results
+    }
+
+    fun warmLaunchNow(app: RecommendedApp): ActionResult {
+        return warmLaunch(app)
     }
 
     private fun latencyPolicyAction(latencyBeforeActionsMs: Long, budgetMs: Long, stale: Boolean, asyncPrediction: Boolean): ActionResult {

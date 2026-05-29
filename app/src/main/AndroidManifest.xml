@@ -63,6 +63,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".EvidenceActivity"
+            android:exported="false" />
+
         <service
             android:name=".ebpf.EBPFCollectorService"
             android:exported="false"
