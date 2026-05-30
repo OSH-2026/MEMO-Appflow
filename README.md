@@ -138,3 +138,4 @@ docs/real_device_experiments/user_app_pressure/latest_pressure_experiment.json
 | 8 | 2026-04-15 | 邢老师指出仅收集进程事件（fork/exec/exit）的精度方向存在偏差。黄漠沙起初未能完全理解，陈可为解释后全组达成共识：必须综合考虑用户行为与系统状态。会后决定重新调整调研方向。 |
 | 9 | 2026-04-29 | 线上讨论：尝试加入 Android eBPF 系统证据采集，并把采集结果接到 MAPLE 大模型推理模块。同步修复 Android 14 emulator custom kernel 的 SurfaceFlinger 图形通道，使 UI 展示、`CONFIG_FTRACE_SYSCALLS` 和 eBPF 采集可以在同一虚拟机上演示。 |
 | 10 | 2026-05-06 | 讨论下一阶段方针：把产品逻辑全部迁到 Android emulator 内部，按未来 rooted phone 部署方式开发；补齐设备内采集、设备内结构化、MAPLE 调用、Top-3 真实应用推荐、动作执行和 Widget 展示。 |
+| 11 | 2026-05-27 | 交接工作：陈可为“强兼”了`bpftrace`，但是由于内核的版本低于最低支持，故它并不是好的方案。同时他完成了全部的交叉编译工作，现在交给郭璟仪迁移应用，因为context在那里。同时提出如果需要新的编译，把手机给陈可为继续交叉编译，因为维护了完整的内核树 |
