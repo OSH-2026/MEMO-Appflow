@@ -42,7 +42,6 @@ data class LatencyState(
     val mode: String,
     val totalMs: Long,
     val foregroundMs: Long,
-    val realtimeBudgetMs: Long,
     val parsedEvents: Int,
     val realtimeStatus: String,
     val stages: List<LatencyStageState>,
@@ -62,6 +61,9 @@ data class LastMemoState(
     val rawActionsJson: String,
     val latency: LatencyState,
     val rawLatencyJson: String,
+    val usageReportJson: String,
+    val ablationReportJson: String,
+    val pressureReportJson: String,
 )
 
 class MemoStore(context: Context) {
@@ -189,6 +191,27 @@ class MemoStore(context: Context) {
             .apply()
     }
 
+    fun saveUsageReport(report: JSONObject) {
+        prefs.edit()
+            .putLong("updated_at", System.currentTimeMillis())
+            .putString("usage_report", report.toString(2))
+            .apply()
+    }
+
+    fun saveAblationReport(report: JSONObject) {
+        prefs.edit()
+            .putLong("updated_at", System.currentTimeMillis())
+            .putString("ablation_report", report.toString(2))
+            .apply()
+    }
+
+    fun savePressureReport(report: JSONObject) {
+        prefs.edit()
+            .putLong("updated_at", System.currentTimeMillis())
+            .putString("pressure_report", report.toString(2))
+            .apply()
+    }
+
     fun load(): LastMemoState {
         val rawMaple = prefs.getString("maple", "{}") ?: "{}"
         val rawActions = prefs.getString("actions", "[]") ?: "[]"
@@ -210,6 +233,9 @@ class MemoStore(context: Context) {
             rawActionsJson = rawActions,
             latency = readLatency(rawLatency),
             rawLatencyJson = rawLatency,
+            usageReportJson = prefs.getString("usage_report", "") ?: "",
+            ablationReportJson = prefs.getString("ablation_report", "") ?: "",
+            pressureReportJson = prefs.getString("pressure_report", "") ?: "",
         )
     }
 
@@ -293,13 +319,21 @@ class MemoStore(context: Context) {
                 mode = obj.optString("mode"),
                 totalMs = obj.optLong("total_ms", 0L),
                 foregroundMs = obj.optLong("foreground_ms", obj.optLong("total_ms", 0L)),
-                realtimeBudgetMs = obj.optLong("realtime_budget_ms", PipelineLatency.REALTIME_BUDGET_MS),
                 parsedEvents = obj.optInt("parsed_events", 0),
-                realtimeStatus = obj.optString("realtime_status", "unknown"),
+                realtimeStatus = normalizeLatencyStatus(obj.optString("realtime_status", "unknown")),
                 stages = stages,
             )
         } catch (_: Exception) {
-            LatencyState("", 0L, 0L, PipelineLatency.REALTIME_BUDGET_MS, 0, "unknown", emptyList())
+            LatencyState("", 0L, 0L, 0, "unknown", emptyList())
+        }
+    }
+
+    private fun normalizeLatencyStatus(value: String): String {
+        val lower = value.lowercase()
+        return when {
+            lower in setOf("ok", "degraded", "timed_out") -> "completed"
+            "realtime" in lower -> "completed"
+            else -> value.ifBlank { "unknown" }
         }
     }
 

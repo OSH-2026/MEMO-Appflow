@@ -27,6 +27,8 @@ import com.memoos.store.ActionState
 import com.memoos.store.LastMemoState
 import com.memoos.store.MemoStore
 import com.memoos.store.RecommendationState
+import org.json.JSONArray
+import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -109,6 +111,9 @@ class MainActivity : Activity() {
         root.addView(recommendationsPanel(state))
         root.addView(maplePanel(state))
         root.addView(actionsPanel(state))
+        root.addView(usageReportPanel(state))
+        root.addView(ablationReportPanel(state))
+        root.addView(pressureReportPanel(state))
         root.addView(evidencePanel(state))
         root.addView(latencyPanel(state))
         root.addView(experimentPanel())
@@ -155,13 +160,13 @@ class MainActivity : Activity() {
             return panel
         }
         val statusColor = when (state.latency.realtimeStatus) {
-            "ok" -> Color.rgb(22, 101, 52)
-            "degraded" -> Color.rgb(180, 83, 9)
-            else -> Color.rgb(185, 28, 28)
+            "completed" -> Color.rgb(22, 101, 52)
+            "maple_timeout" -> Color.rgb(185, 28, 28)
+            else -> Color.rgb(180, 83, 9)
         }
-        panel.addView(statusText(state.latency.realtimeStatus.uppercase(Locale.US), statusColor))
-        panel.addView(kv("不阻塞用户的前台预算", "${formatDuration(state.latency.foregroundMs)} / ${formatDuration(state.latency.realtimeBudgetMs)}"))
-        panel.addView(kv("完整后台耗时", formatDuration(state.latency.totalMs)))
+        panel.addView(statusText(latencyStatusLabel(state.latency.realtimeStatus), statusColor))
+        panel.addView(kv("前台可见处理耗时", formatDuration(state.latency.foregroundMs)))
+        panel.addView(kv("完整设备端耗时", formatDuration(state.latency.totalMs)))
         panel.addView(kv("读取到的系统事件", "${state.latency.parsedEvents} 条"))
         state.latency.stages
             .sortedByDescending { it.durationMs }
@@ -185,7 +190,8 @@ class MainActivity : Activity() {
         val panel = verticalPanel()
         panel.addView(label("实验和报告"))
         panel.addView(body("这些入口用于复现实验、生成报告和做消融分析；普通使用时只需要上面的智能优化和 Top-3 推荐。"))
-        panel.addView(rowButton("完整本地评估", EBPFCollectorService.ACTION_FULL_LOCAL_EVALUATION, primary = false))
+        panel.addView(rowButton("100 次真实使用分析", EBPFCollectorService.ACTION_USAGE_100_ANALYSIS, primary = false))
+        panel.addView(rowButton("滚动场景完整评估", EBPFCollectorService.ACTION_FULL_LOCAL_EVALUATION, primary = false))
         panel.addView(rowButton("手机压力 A/B 实验", EBPFCollectorService.ACTION_PRESSURE_EXPERIMENT, primary = false))
         panel.addView(rowButton("滚动/显示场景采集", EBPFCollectorService.ACTION_EXPERIMENT_SCROLL, primary = false))
         panel.addView(rowButton("通信场景采集", EBPFCollectorService.ACTION_EXPERIMENT_COMMUNICATION, primary = false))
@@ -236,6 +242,79 @@ class MainActivity : Activity() {
         return panel
     }
 
+    private fun usageReportPanel(state: LastMemoState): View {
+        val panel = verticalPanel()
+        panel.addView(label("最近 100 次真实使用分析"))
+        val report = jsonOrNull(state.usageReportJson)
+        if (report == null) {
+            panel.addView(body("还没有 100 次真实使用分析。点“100 次真实使用分析”后，MEMO 会在手机本地连续打开真实应用、采集 eBPF、运行 MAPLE、执行调度，并生成这里的统计。"))
+            return panel
+        }
+        val launch = report.optJSONObject("launch_metrics")
+        val ebpf = report.optJSONObject("ebpf")
+        val delta = report.optJSONObject("system_delta")
+        panel.addView(kv("真实 app 打开", "${report.optInt("interaction_count_observed")}/${report.optInt("interaction_count_requested")} 次"))
+        panel.addView(kv("覆盖应用", "${report.optInt("unique_apps_opened")} 个真实可启动 app"))
+        panel.addView(kv("eBPF 事件", "${ebpf?.optInt("parsed_events") ?: 0} 条"))
+        panel.addView(kv("平均启动耗时", formatNumberMs(launch?.opt("avg_total_time_ms"))))
+        panel.addView(kv("P50 启动耗时", formatNumberMs(launch?.opt("p50_total_time_ms"))))
+        panel.addView(kv("内存变化", formatDeltaKb(delta?.opt("mem_available_delta_kb"))))
+        panel.addView(kv("UDP 收发变化", "in=${formatLong(delta?.opt("udp_in_delta"))}, out=${formatLong(delta?.opt("udp_out_delta"))}"))
+        panel.addView(kv("回收压力变化", "direct=${formatLong(delta?.opt("pgscan_direct_delta"))}, kswapd=${formatLong(delta?.opt("pgscan_kswapd_delta"))}"))
+        panel.addView(smallCaption("打开最多的真实应用"))
+        report.optJSONArray("app_usage_top").takeObjects(5).forEach { app ->
+            panel.addView(text("${app.optString("label")}：${app.optInt("count")} 次", 13f, Color.rgb(51, 65, 85), bottom = 4))
+        }
+        panel.addView(detailButton("查看完整使用报告") {
+            openReport("usage")
+        })
+        return panel
+    }
+
+    private fun ablationReportPanel(state: LastMemoState): View {
+        val panel = verticalPanel()
+        panel.addView(label("消融实验分析"))
+        val report = jsonOrNull(state.ablationReportJson)
+        if (report == null) {
+            panel.addView(body("还没有消融报告。点“最新真实证据消融”会基于最近一次真实 eBPF scenario 跑；点“100 次真实使用分析”会在完整使用分析后自动跑消融。"))
+            return panel
+        }
+        val summary = report.optJSONObject("summary")
+        panel.addView(kv("配置数量", "${summary?.optInt("config_count") ?: 0} 组"))
+        panel.addView(kv("MAPLE 可用配置", "${summary?.optInt("maple_available_count") ?: 0} 组"))
+        panel.addView(kv("预测 ID 被改变", joinArray(summary?.optJSONArray("changed_predicted_app_configs"))))
+        panel.addView(kv("Top-1 应用被改变", joinArray(summary?.optJSONArray("changed_top1_app_configs"))))
+        panel.addView(kv("调度域被改变", joinArray(summary?.optJSONArray("changed_predicted_scheduler_domain_configs"))))
+        panel.addView(kv("平均端到端耗时", formatNumberMs(summary?.opt("avg_end_to_end_ms"))))
+        panel.addView(detailButton("查看完整消融报告") {
+            openReport("ablation")
+        })
+        return panel
+    }
+
+    private fun pressureReportPanel(state: LastMemoState): View {
+        val panel = verticalPanel()
+        panel.addView(label("手机性能 A/B 实验"))
+        val report = jsonOrNull(state.pressureReportJson)
+        if (report == null) {
+            panel.addView(body("还没有性能 A/B 报告。点“手机压力 A/B 实验”后，MEMO 会比较同一批真实 app workload 在 MEMO 关闭和 MEMO 开启后的启动耗时、CPU、内存回收、PSI 和综合压力分数。"))
+            return panel
+        }
+        val summary = report.optJSONObject("summary")
+        panel.addView(kv("对比 workload", "${summary?.optInt("workloads_compared") ?: 0} 组"))
+        panel.addView(kv("综合压力改善", formatPct(summary?.opt("avg_pressure_score_improvement_pct"))))
+        panel.addView(kv("启动耗时改善", formatPct(summary?.opt("avg_launch_total_time_improvement_pct"))))
+        panel.addView(kv("等待耗时改善", formatPct(summary?.opt("avg_wait_time_improvement_pct"))))
+        panel.addView(kv("CPU busy 改善", formatPct(summary?.opt("avg_cpu_busy_improvement_pct"))))
+        panel.addView(kv("内存回收改善", formatPct(summary?.opt("avg_reclaim_improvement_pct"))))
+        panel.addView(smallCaption("解释"))
+        panel.addView(body("正数表示 MEMO-on 比 baseline 压力或延迟更低；负数会原样显示，说明该指标在当前手机和 workload 下没有改善。"))
+        panel.addView(detailButton("查看完整性能报告") {
+            openReport("pressure")
+        })
+        return panel
+    }
+
     private fun evidencePanel(state: LastMemoState): View {
         val panel = verticalPanel()
         panel.addView(label("MEMO 观察到了什么"))
@@ -282,7 +361,7 @@ class MainActivity : Activity() {
             panel.addView(bullet("${app.label}: ${app.inferredCategories.take(4).joinToString()}"))
         }
         if (state.evidenceLines.isNotEmpty()) {
-            panel.addView(smallCaption("原始证据样例"))
+            panel.addView(smallCaption("最近一次真实证据摘要"))
             state.evidenceLines.take(10).forEach { panel.addView(monoLine(it)) }
         }
         return panel
@@ -485,6 +564,9 @@ class MainActivity : Activity() {
             "root_permission" -> "Root 授权"
             "collector_runtime" -> "eBPF 运行环境"
             "maple_runtime" -> "MAPLE 模型环境"
+            "pipeline_stop" -> "停止后台任务"
+            "real_usage_100_analysis" -> "100 次真实使用分析"
+            "real_ebpf_ablation" -> "真实 eBPF 消融"
             "user_app_pressure_ab" -> "手机压力 A/B 实验"
             else -> name.replace('_', ' ').replaceFirstChar { it.uppercase() }
         }
@@ -510,6 +592,9 @@ class MainActivity : Activity() {
             state.maple.available,
             state.actions.size,
             state.latency.totalMs,
+            state.usageReportJson.length,
+            state.ablationReportJson.length,
+            state.pressureReportJson.length,
         ).joinToString("|")
     }
 
@@ -541,6 +626,13 @@ class MainActivity : Activity() {
                 bottomMargin = dp(4)
             }
         }
+    }
+
+    private fun openReport(section: String) {
+        startActivity(
+            Intent(this, ReportActivity::class.java)
+                .putExtra(ReportActivity.EXTRA_SECTION, section),
+        )
     }
 
     private fun friendlyEvidence(value: String): String {
@@ -593,6 +685,16 @@ class MainActivity : Activity() {
         }
     }
 
+    private fun latencyStatusLabel(status: String): String {
+        return when (status) {
+            "completed" -> "已完成"
+            "maple_timeout" -> "MAPLE 安全超时"
+            "pending" -> "等待中"
+            "unknown" -> "未知"
+            else -> status.replace('_', ' ')
+        }
+    }
+
     private fun friendlyCategory(category: String): String {
         val lower = category.lowercase(Locale.US)
         return when {
@@ -632,6 +734,9 @@ class MainActivity : Activity() {
             "root_permission" -> "Magisk 授权"
             "collector_runtime" -> "eBPF 采集器"
             "maple_runtime" -> "本地模型"
+            "pipeline_stop" -> "后台任务"
+            "real_usage_100_analysis" -> "真实使用报告"
+            "real_ebpf_ablation" -> "消融报告"
             else -> action.target
         }
     }
@@ -639,7 +744,8 @@ class MainActivity : Activity() {
     private fun friendlyActionDetail(value: String): String {
         return friendlyError(value)
             .replace("published 3 real app recommendations", "已经把 3 个真实可打开应用发布到推荐区和 Widget。")
-            .replace("normal memory; warm launch budget allowed", "当前内存状态正常，可以保留轻量预热预算。")
+            .replace("normal memory; lightweight warm launch remains enabled", "当前内存状态正常，可以保留轻量预热能力。")
+            .replace("normal memory; warm launch budget allowed", "当前内存状态正常，可以保留轻量预热能力。")
             .replace("normal battery thermal state", "当前电池温度正常，不需要降低预热强度。")
             .replace("UDP sendto/recvfrom evidence prioritizes network-capable apps", "检测到 UDP 网络收发，优先保留网络类应用。")
             .replace("refreshed network stats before recommendation", "推荐前已经刷新网络状态。")
@@ -650,13 +756,27 @@ class MainActivity : Activity() {
             .replace("root am start + HOME; label=", "已经启动并回到桌面完成预热：")
             .replace("no Top-3 recommendation yet; run smart optimization first", "还没有 Top-3 推荐，请先运行“开始智能优化”。")
             .replace("no launchable activity", "这个应用没有可启动入口。")
-            .replace("MAPLE result published after asynchronous inference; foreground budget status=ok", "MAPLE 在后台完成推理，前台使用没有被阻塞。")
-            .replace("MAPLE prediction ran asynchronously; foreground use was not blocked", "MAPLE 在后台异步推理，用户可以继续正常操作手机")
-            .replace("latency=ok", "耗时正常")
-            .replace("foreground=", "前台等待=")
+            .replace("stopped eBPF collector, MAPLE process, and MEMO background work on this device", "已经停止 eBPF 采集器、MAPLE 进程和 MEMO 后台任务。")
+            .replace("Strict 100-use real analysis failed", "100 次真实使用分析失败")
+            .replace("analyzed ", "已经分析 ")
+            .replace(" real app openings across ", " 次真实 app 打开，覆盖 ")
+            .replace(" apps; report=", " 个应用；报告位置：")
+            .replace("ran ", "已经运行 ")
+            .replace(" MAPLE ablations on the latest Android-side real eBPF scenario", " 组 MAPLE 消融，使用的是最新一次 Android 端真实 eBPF scenario。")
+            .replace("latest real MAPLE scenario is missing; run a real eBPF experiment first", "还没有最新真实 MAPLE scenario，请先运行一次“开始智能优化”或真实场景采集。")
+            .replace("MEMO off/on real app pressure A/B finished; avg_pressure_score_improvement_pct=", "手机压力 A/B 实验完成；综合压力改善=")
+            .replace("full local one-tap run completed ", "滚动场景完整评估已经完成 ")
+            .replace(" MAPLE ablations on device in ", " 组设备端 MAPLE 消融，用时 ")
+            .replace("full local one-tap ablation failed: ", "滚动场景完整评估里的消融步骤失败：")
+            .replace("MAPLE result published after asynchronous inference; completion status=completed", "MAPLE 在后台完成推理，Top-3 推荐和调度动作已经发布。")
+            .replace("MAPLE prediction ran asynchronously; completion latency=", "MAPLE 在后台异步推理，完成耗时=")
+            .replace("; slow runs still finish and still drive actions", "；即使耗时较长，也会继续完成预测并驱动系统动作。")
+            .replace("latency=completed", "流水线已完成")
+            .replace("latency=maple_timeout", "MAPLE 触发安全超时")
+            .replace("foreground_observed=", "前台可见处理=")
+            .replace("foreground=", "前台可见处理=")
             .replace("MAPLE=", "MAPLE=")
             .replace("total=", "总耗时=")
-            .replace("budget=", "预算=")
     }
 
     private fun readableAppList(value: String): String {
@@ -690,6 +810,54 @@ class MainActivity : Activity() {
         }
     }
 
+    private fun jsonOrNull(raw: String): JSONObject? {
+        return try {
+            if (raw.isBlank()) null else JSONObject(raw)
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    private fun JSONArray?.takeObjects(limit: Int): List<JSONObject> {
+        if (this == null) return emptyList()
+        return (0 until length()).mapNotNull { optJSONObject(it) }.take(limit)
+    }
+
+    private fun joinArray(array: JSONArray?): String {
+        if (array == null || array.length() == 0) return "无"
+        return (0 until array.length())
+            .mapNotNull { array.optString(it).takeIf { value -> value.isNotBlank() } }
+            .joinToString()
+    }
+
+    private fun formatNumberMs(value: Any?): String {
+        return when (value) {
+            is Number -> PipelineLatency.formatMs(value.toLong())
+            else -> "暂无"
+        }
+    }
+
+    private fun formatLong(value: Any?): String {
+        return when (value) {
+            is Number -> value.toLong().toString()
+            else -> "暂无"
+        }
+    }
+
+    private fun formatDeltaKb(value: Any?): String {
+        return when (value) {
+            is Number -> "${value.toLong()} kB"
+            else -> "暂无"
+        }
+    }
+
+    private fun formatPct(value: Any?): String {
+        return when (value) {
+            is Number -> String.format(Locale.US, "%+.1f%%", value.toDouble())
+            else -> "暂无"
+        }
+    }
+
     private fun requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= 33 && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 7)
@@ -716,6 +884,7 @@ class MainActivity : Activity() {
             EBPFCollectorService.ACTION_EXPERIMENT_SCROLL,
             EBPFCollectorService.ACTION_REAL_ABLATION_LATEST,
             EBPFCollectorService.ACTION_PRESSURE_EXPERIMENT,
+            EBPFCollectorService.ACTION_USAGE_100_ANALYSIS,
         )
     }
 }

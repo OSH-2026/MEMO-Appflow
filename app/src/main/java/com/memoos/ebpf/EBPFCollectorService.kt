@@ -23,6 +23,7 @@ import com.memoos.maple.MapleScenario
 import com.memoos.maple.MapleScenarioBuilder
 import com.memoos.perf.PipelineTimer
 import com.memoos.perf.PressureExperimentRunner
+import com.memoos.perf.RealUsageSessionRunner
 import com.memoos.state.SystemStateCollector
 import com.memoos.state.SystemStateSnapshot
 import com.memoos.store.MemoStore
@@ -60,6 +61,7 @@ class EBPFCollectorService : Service() {
             ACTION_EXPERIMENT_SCROLL -> runRealUserExperiment(RealUserExperimentPlanner.KIND_SCROLL)
             ACTION_REAL_ABLATION_LATEST -> runRealAblationOnLatestScenario()
             ACTION_PRESSURE_EXPERIMENT -> runAppPressureExperiment()
+            ACTION_USAGE_100_ANALYSIS -> runUsage100Analysis()
             else -> runPipelineOnce()
         }
         return START_STICKY
@@ -165,6 +167,7 @@ class EBPFCollectorService : Service() {
                 require(scenarioFile.isFile) { "latest real MAPLE scenario is missing; run a real eBPF experiment first" }
                 val report = RealEbpfAblationRunner(this).run(scenarioFile.readText())
                 val resultCount = report.getJSONArray("results").length()
+                MemoStore(this).saveAblationReport(report)
                 MemoStore(this).appendAction(
                     ActionResult(
                         "real_ebpf_ablation",
@@ -243,7 +246,7 @@ class EBPFCollectorService : Service() {
                 "maple_background",
                 "deep_reasoning",
                 "completed",
-                "MAPLE result published after asynchronous inference; foreground budget status=${latency.realtimeStatus}",
+                "MAPLE result published after asynchronous inference; completion status=${latency.realtimeStatus}",
             )
             val actions = baseActions + completion + ActionResult("latency_summary", "pipeline", latency.realtimeStatus, latency.summaryLine())
             File(getExternalFilesDir(null), "latest_pipeline_latency.json").writeText(latency.toJson().toString(2))
@@ -262,6 +265,7 @@ class EBPFCollectorService : Service() {
             try {
                 val report = PressureExperimentRunner(this).run()
                 val summary = report.getJSONObject("summary")
+                MemoStore(this).savePressureReport(report)
                 MemoStore(this).appendAction(
                     ActionResult(
                         "user_app_pressure_ab",
@@ -279,6 +283,40 @@ class EBPFCollectorService : Service() {
                         exc.message ?: exc.javaClass.simpleName,
                     ),
                 )
+            } finally {
+                stopForeground(STOP_FOREGROUND_DETACH)
+            }
+        }
+    }
+
+    private fun runUsage100Analysis() {
+        runningTask?.cancel(true)
+        mapleTask?.cancel(true)
+        runningTask = executor.submit {
+            try {
+                val result = RealUsageSessionRunner(this).run(100)
+                val observed = result.usageReport.optInt("interaction_count_observed", 0)
+                val uniqueApps = result.usageReport.optInt("unique_apps_opened", 0)
+                val actions = result.actions +
+                    ActionResult(
+                        "real_usage_100_analysis",
+                        "100 real app interactions",
+                        "ok",
+                        "analyzed $observed real app openings across $uniqueApps apps; report=${result.usageReport.optJSONObject("report_files")?.optString("usage_report") ?: "device report"}",
+                    ) +
+                    ActionResult(
+                        "real_ebpf_ablation",
+                        "${DevicePaths.MEMO_PUBLIC_ROOT}/ablations/latest_real_ablation.json",
+                        "ok",
+                        result.usageReport.optString("ablation_interpretation"),
+                    ) +
+                    ActionResult("latency_summary", "pipeline", result.latency.realtimeStatus, result.latency.summaryLine())
+                MemoStore(this).save(result.scenario, result.prediction, result.recommendations, actions, result.latency)
+                MemoStore(this).saveUsageReport(result.usageReport)
+                MemoStore(this).saveAblationReport(result.ablationReport)
+                MemoWidgetProvider.updateAll(this, result.recommendations)
+            } catch (exc: Exception) {
+                MemoStore(this).saveFailure("Strict 100-use real analysis failed: ${exc.message ?: exc.javaClass.simpleName}")
             } finally {
                 stopForeground(STOP_FOREGROUND_DETACH)
             }
@@ -381,6 +419,7 @@ class EBPFCollectorService : Service() {
             val report = RealEbpfAblationRunner(this).run(scenario.scenarioJson)
             val durationMs = SystemClock.elapsedRealtime() - start
             val resultCount = report.getJSONArray("results").length()
+            MemoStore(this).saveAblationReport(report)
             File(getExternalFilesDir(null), "latest_full_local_evaluation.txt").writeText(
                 buildString {
                     appendLine("mode=full_local_product_evaluation")
@@ -431,6 +470,14 @@ class EBPFCollectorService : Service() {
         runningTask = null
         mapleTask = null
         stopDeviceCollectors(killMaple = true)
+        MemoStore(this).appendAction(
+            ActionResult(
+                "pipeline_stop",
+                "background tasks",
+                "ok",
+                "stopped eBPF collector, MAPLE process, and MEMO background work on this device",
+            ),
+        )
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
     }
@@ -548,6 +595,7 @@ class EBPFCollectorService : Service() {
         const val ACTION_EXPERIMENT_SCROLL = "com.memoos.action.REAL_EXPERIMENT_SCROLL"
         const val ACTION_REAL_ABLATION_LATEST = "com.memoos.action.REAL_EBPF_ABLATION_LATEST"
         const val ACTION_PRESSURE_EXPERIMENT = "com.memoos.action.USER_APP_PRESSURE_EXPERIMENT"
+        const val ACTION_USAGE_100_ANALYSIS = "com.memoos.action.REAL_USAGE_100_ANALYSIS"
         private const val NOTIFICATION_ID = 42
         private const val CHANNEL_ID = "memo_pipeline"
         private const val WINDOW_MS = 8_000L

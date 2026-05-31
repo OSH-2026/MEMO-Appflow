@@ -67,6 +67,10 @@
             android:name=".EvidenceActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ReportActivity"
+            android:exported="false" />
+
         <service
             android:name=".ebpf.EBPFCollectorService"
             android:exported="false"

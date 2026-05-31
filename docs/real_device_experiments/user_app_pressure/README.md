@@ -1,6 +1,6 @@
 # 真实用户 App 压力 A/B 实验
 
-日期：2026-05-28
+日期：2026-06-01
 
 负责人：Jingyi Guo
 
@@ -101,48 +101,50 @@ negative improvement = MEMO-on 比 baseline 更差
 | 指标 | MEMO-on 相对 baseline |
 | --- | ---: |
 | workload 数 | 6 个 A/B 对照 |
-| app 启动 TotalTime | +0.15% |
-| app WaitTime | +0.25% |
-| 综合压力分数 | +35.41% |
-| CPU busy | -0.53% |
-| iowait | -2.79% |
-| MemAvailable 下降量 | +62.10% |
-| reclaim | +56.08% |
+| app 启动 TotalTime | +12.28% |
+| app WaitTime | +13.74% |
+| 综合压力分数 | +29.70% |
+| CPU busy | +9.84% |
+| iowait | +33.40% |
+| MemAvailable 下降量 | -14.13% |
+| reclaim | +13.07% |
 
 解读：
 
-- 当前版本在这台 Pixel 5 上 **没有显著改善 app 启动耗时**，平均只改善 0.15%，基本可以视为持平。
-- 当前版本对 **内存相关压力有明显收益**：MemAvailable 下降量改善 62.10%，reclaim 改善 56.08%。
-- 当前版本的 **CPU busy 和 iowait 略差**，说明后台 eBPF/MAPLE/调度仍然有成本，不能声称全面提升性能。
-- 综合压力分数平均改善 35.41%，主要来自内存下降和 reclaim 减少，而不是来自启动变快。
+- 当前版本在这台 Pixel 5 上平均 **降低了综合系统压力 29.70%**，6 个 workload 里 5 个综合压力改善。
+- app 启动 TotalTime 平均改善 12.28%，WaitTime 平均改善 13.74%。这次比上一版更好，但仍然要看分场景，不应该只报平均值。
+- CPU busy 改善 9.84%，iowait 改善 33.40%，说明 MEMO-on 的调度准备没有在这次实验里造成更高的全局 CPU/IO 压力。
+- MemAvailable 下降量平均 -14.13%，这是变差项，说明有些 workload 下 MEMO-on 会保留更多缓存或引入额外内存占用。
+- reclaim 平均改善 13.07%，但 Chrome normal 和 Tencent Meeting crowded 有反例，所以不能声称每个场景都改善。
 
 ## 分场景结果
 
 | condition | workload | pressure score | 启动 TotalTime | jank rate | 结论 |
 | --- | --- | --- | --- | --- | --- |
-| normal | Chrome | 31.44 -> 33.85，-7.65% | 262ms -> 269ms，-2.67% | 3.28% -> 3.24%，+1.08% | 普通状态下 Chrome 综合压力略差，但 jank 略好 |
-| normal | Magisk | 11.73 -> 15.35，-30.84% | 1003ms -> 890ms，+11.27% | 1.14% -> 1.71%，-50.00% | 启动更快，但综合压力和 jank 更差 |
-| normal | Tencent Meeting | 616.46 -> 16.03，+97.40% | 391ms -> 409ms，-4.60% | 15.63% -> 15.63%，0% | 综合压力大幅改善，但启动略慢 |
-| crowded | Chrome | 51.02 -> 14.10，+72.37% | 266ms -> 275ms，-3.38% | 2.60% -> 2.20%，+15.42% | crowded 状态下 Chrome 综合压力和 jank 明显改善 |
-| crowded | Magisk | 10.69 -> 9.17，+14.24% | 1007ms -> 983ms，+2.38% | 2.30% -> 1.14%，+50.29% | crowded 状态下三项都改善 |
-| crowded | Tencent Meeting | 56.25 -> 18.59，+66.95% | 427ms -> 436ms，-2.11% | 37.04% -> 27.59%，+25.52% | crowded 状态下综合压力和 jank 明显改善，启动略慢 |
+| normal | Chrome | 54.71 -> 30.91，+43.50% | 474ms -> 332ms，+29.96% | 2.64% -> 2.00%，+24.33% | 综合压力、启动、jank 都改善 |
+| normal | Magisk | 23.53 -> 18.45，+21.63% | 461ms -> 289ms，+37.31% | 2.30% -> 3.70%，-61.11% | 启动和综合压力改善，但 jank 变差 |
+| normal | Tencent Meeting | 94.49 -> 25.90，+72.59% | 551ms -> 517ms，+6.17% | 34.48% -> 26.67%，+22.67% | 综合压力大幅改善 |
+| crowded | Chrome | 21.98 -> 21.14，+3.79% | 419ms -> 367ms，+12.41% | 27.45% -> 9.84%，+64.17% | crowded 状态下启动和 jank 明显改善 |
+| crowded | Magisk | 85.90 -> 22.83，+73.42% | 530ms -> 586ms，-10.57% | 10.19% -> 5.66%，+44.46% | 综合压力和 jank 改善，但启动变慢 |
+| crowded | Tencent Meeting | 26.84 -> 36.69，-36.71% | 553ms -> 562ms，-1.63% | 24.14% -> 19.35%，+19.82% | 这是反例：jank 改善，但综合压力和启动变差 |
 
 ## 结论
 
 这组实验支持一个更谨慎的结论：
 
 ```text
-MEMO 当前版本在手机比较“空”的时候收益不稳定；
-在 crowded_cached_apps 场景下，MEMO 更容易降低综合系统压力和 jank，
-尤其是内存下降量与 reclaim 明显减少。
-但 MAPLE/eBPF/调度本身仍有 CPU 和 iowait 成本，
-不能说它已经全面提升手机性能。
+MEMO 当前版本在这次 Pixel 5 实验中平均能降低综合系统压力，
+并且启动耗时、CPU busy、iowait、reclaim 都有平均改善。
+但效果不是所有 workload 都稳定：crowded Tencent Meeting 是明确反例，
+MemAvailable 下降量平均也变差。
+所以可以说“当前真实实验支持 MEMO 有性能收益”，
+但不能说“所有场景都提升”。
 ```
 
 所以当前产品方向是合理的，但下一步优化重点很明确：
 
-- 减少 MAPLE 后台推理对 CPU/IO 的冲击；
-- 更严格地在低压力时少做动作，在高压力/crowded 时再做动作；
+- 继续减少 MAPLE 后台推理对 CPU/IO 的冲击；
+- 更严格地根据 eBPF 证据和压力指标选择动作强度；
 - 继续增加真实 app workload，尤其是相机、支付、视频这类真机核心功能；
 - 把 pressure A/B 作为后续性能主指标，而不是只汇报 pipeline latency。
 

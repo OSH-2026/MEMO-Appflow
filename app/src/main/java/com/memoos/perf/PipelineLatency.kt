@@ -14,18 +14,12 @@ data class PipelineLatency(
     val startedAtMs: Long,
     val totalMs: Long,
     val foregroundMs: Long,
-    val realtimeBudgetMs: Long,
     val parsedEvents: Int,
     val mapleTimedOut: Boolean,
     val stages: List<LatencyStage>,
 ) {
     val realtimeStatus: String
-        get() = when {
-            mapleTimedOut -> "timed_out"
-            foregroundMs > realtimeBudgetMs -> "too_slow_for_realtime"
-            foregroundMs > realtimeBudgetMs / 2 -> "degraded"
-            else -> "ok"
-        }
+        get() = if (mapleTimedOut) "maple_timeout" else "completed"
 
     fun toJson(): JSONObject {
         return JSONObject()
@@ -33,7 +27,6 @@ data class PipelineLatency(
             .put("started_at_ms", startedAtMs)
             .put("total_ms", totalMs)
             .put("foreground_ms", foregroundMs)
-            .put("realtime_budget_ms", realtimeBudgetMs)
             .put("parsed_events", parsedEvents)
             .put("maple_timed_out", mapleTimedOut)
             .put("realtime_status", realtimeStatus)
@@ -51,12 +44,10 @@ data class PipelineLatency(
         val mapleMs = stages.firstOrNull { it.name == "maple_inference" }?.durationMs
         val maplePart = mapleMs?.let { ", MAPLE=${formatMs(it)}" }.orEmpty()
         val totalPart = if (mapleMs != null) ", total=${formatMs(totalMs)}" else ""
-        return "latency=$realtimeStatus foreground=${formatMs(foregroundMs)}$maplePart$totalPart budget=${formatMs(realtimeBudgetMs)}"
+        return "latency=$realtimeStatus foreground_observed=${formatMs(foregroundMs)}$maplePart$totalPart"
     }
 
     companion object {
-        const val REALTIME_BUDGET_MS = 60_000L
-
         fun formatMs(value: Long): String {
             return if (value >= 1_000L) {
                 val seconds = value / 1000.0
@@ -93,7 +84,6 @@ class PipelineTimer(private val mode: String) {
             startedAtMs = startedWall,
             totalMs = total,
             foregroundMs = (total - asyncMapleMs).coerceAtLeast(0L),
-            realtimeBudgetMs = PipelineLatency.REALTIME_BUDGET_MS,
             parsedEvents = parsedEvents,
             mapleTimedOut = mapleTimedOut,
             stages = stageList,

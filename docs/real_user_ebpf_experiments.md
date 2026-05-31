@@ -2,6 +2,8 @@
 
 Date: 2026-05-07
 
+Latest verification update: 2026-06-01 on a rooted Pixel 5. The product path was rerun from the Android UI buttons, including 100 real app openings and the phone-pressure A/B experiment. Current result files are under `docs/real_device_experiments/real_usage_100/` and `docs/real_device_experiments/user_app_pressure/`.
+
 These experiments replace the removed synthetic scenarios. They are not hand-written event sequences. The app starts a real device-side eBPF capture window, launches or records real Android app usage, parses the resulting kernel evidence inside Android, calls MAPLE, maps the result to real installed apps, executes scheduling actions, and updates the widget.
 
 The phone UI now has a one-tap `Run Full Local Evaluation` path. It runs the real scroll/display experiment, publishes the MAPLE-driven Top-3/actions, then runs the real eBPF ablation on the same device-generated scenario. The host can inspect outputs, but does not execute product logic.
@@ -67,22 +69,44 @@ same prior real app action with raw eBPF + MAPLE + ActionExecutor
 -> measured app workload MEMO-on
 ```
 
-Latest rooted Pixel 5 result:
+Latest rooted Pixel 5 result, rerun from the Android UI on 2026-06-01:
 
 ```text
 report: docs/real_device_experiments/user_app_pressure/latest_pressure_experiment.json
 workloads: Chrome, Magisk, Tencent Meeting
 conditions: normal_recent_usage, crowded_cached_apps
 comparisons: 6
-avg pressure score improvement: +35.41%
-avg MemAvailable-drop improvement: +62.10%
-avg reclaim improvement: +56.08%
-avg launch TotalTime improvement: +0.15%
-avg CPU busy improvement: -0.53%
-avg iowait improvement: -2.79%
+avg pressure score improvement: +29.70%
+avg launch TotalTime improvement: +12.28%
+avg WaitTime improvement: +13.74%
+avg CPU busy improvement: +9.84%
+avg iowait improvement: +33.40%
+avg MemAvailable-drop improvement: -14.13%
+avg reclaim improvement: +13.07%
 ```
 
-Interpretation: on this phone, MEMO's clearest benefit is memory/reclaim pressure, especially with crowded cached apps. Launch time is almost unchanged, and CPU/iowait overhead remains. The detailed Chinese interpretation is in `docs/real_device_experiments/user_app_pressure/README.md`.
+Interpretation: in this run, MEMO-on improved average pressure score, launch time, CPU busy, iowait, and reclaim. It did not improve every metric: MemAvailable drop was worse on average, and crowded Tencent Meeting was a negative pressure-score case. The detailed Chinese interpretation is in `docs/real_device_experiments/user_app_pressure/README.md`.
+
+## 100 Real App Openings
+
+The latest `100 次真实使用分析` run was started from the app UI. It opened real launchable apps 100 times while collecting raw eBPF evidence on the phone.
+
+```text
+report: docs/real_device_experiments/real_usage_100/latest_usage_100_report.json
+raw trace: docs/real_device_experiments/real_usage_100/usage_100_raw_trace.trace
+requested app openings: 100
+observed app openings: 100
+unique apps: 12
+parsed eBPF events: 15925
+avg launch TotalTime: 191.9 ms
+P50 launch TotalTime: 136 ms
+MAPLE backend: shell
+Top-3 real apps: Chrome, Messages, Camera
+complete device-side run: 397.6 s
+foreground-visible processing time shown by app: 16.1 s
+```
+
+The app no longer reports a "too slow for realtime" product status. Slow MAPLE/ablation stages still finish and still drive Top-3 recommendations and scheduling actions.
 
 ## Real eBPF Ablation Metrics
 
@@ -96,17 +120,16 @@ The ablation runner uses the latest real Android-side eBPF scenario and removes 
 | scheduler domain alignment | overlap between predicted resource domains and actions planned by `ActionExecutor` |
 | action success/latency | action status counts and action execution time in non-intrusive mode |
 
-Latest checked run:
+Latest checked run, produced by the 100-use real app experiment:
 
 ```text
-report: docs/real_device_experiments/real_ebpf_ablation/latest_real_ablation.json
-source scenario: real_user_camera_photo_usage
+report: docs/real_device_experiments/real_usage_100/latest_real_ablation_after_usage_100.json
+source scenario: real_usage_100_1780245815290
 configs: 8
 MAPLE available: 8/8
-changed predicted app: no_display_ui, no_binder_service, app_sequence_baseline
-changed Top-1 app: no_display_ui, no_binder_service, app_sequence_baseline
+changed predicted app: no_binder_service, no_memory, app_sequence_baseline
+changed Top-1 app: no_network
 changed scheduler domains: no_network, no_camera_media, no_display_ui, no_binder_service
-task-domain hit rate best: full_real_ebpf, no_binder_service, no_memory, counters_only, app_sequence_baseline = 100.0%
-full-eBPF prediction stability best: full_real_ebpf, no_memory, counters_only keep Stage1/Top1/Top3/action-domain stable
-end-to-end range: 30.1s to 74.3s
+avg end-to-end: 32.3s
+end-to-end range: 13.9s to 79.4s
 ```

@@ -1,0 +1,370 @@
+{
+  "schema_version": "memo.real_usage_100.v1",
+  "experiment_type": "real_user_like_100_app_rotation",
+  "started_at_ms": 1780245815290,
+  "duration_ms": 397559,
+  "interaction_count_requested": 100,
+  "interaction_count_observed": 100,
+  "interaction_command_ok": true,
+  "app_pool_size": 12,
+  "unique_apps_opened": 12,
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/usage_100_1780245815290.trace",
+  "scenario_id": "real_usage_100_1780245815290",
+  "report_files": {
+    "usage_report": "\/sdcard\/MEMO\/reports\/latest_usage_100_report.json",
+    "ablation_report": "\/sdcard\/MEMO\/ablations\/latest_real_ablation.json"
+  },
+  "app_usage_top": [
+    {
+      "package_name": "com.android.chrome",
+      "label": "Chrome",
+      "count": 9
+    },
+    {
+      "package_name": "com.tencent.wemeet.app",
+      "label": "Tencent Meeting",
+      "count": 9
+    },
+    {
+      "package_name": "com.termux",
+      "label": "Termux",
+      "count": 9
+    },
+    {
+      "package_name": "com.topjohnwu.magisk",
+      "label": "Magisk",
+      "count": 9
+    },
+    {
+      "package_name": "com.google.android.apps.photos",
+      "label": "Photos",
+      "count": 8
+    },
+    {
+      "package_name": "com.android.settings",
+      "label": "Settings",
+      "count": 8
+    },
+    {
+      "package_name": "com.google.android.googlequicksearchbox",
+      "label": "Google",
+      "count": 8
+    },
+    {
+      "package_name": "com.google.android.apps.maps",
+      "label": "Maps",
+      "count": 8
+    },
+    {
+      "package_name": "com.google.android.apps.safetyhub",
+      "label": "Personal Safety",
+      "count": 8
+    },
+    {
+      "package_name": "com.google.android.dialer",
+      "label": "Phone",
+      "count": 8
+    },
+    {
+      "package_name": "com.google.android.youtube",
+      "label": "YouTube",
+      "count": 8
+    },
+    {
+      "package_name": "com.google.android.GoogleCamera",
+      "label": "Camera",
+      "count": 8
+    }
+  ],
+  "category_usage": {
+    "Camera Service": 82,
+    "Media Codec": 82,
+    "Network IO": 68,
+    "App Process Runtime": 17,
+    "Display Composition": 17,
+    "Navigation\/Location": 8,
+    "Communication": 8
+  },
+  "launch_metrics": {
+    "avg_total_time_ms": 191.87640449438203,
+    "p50_total_time_ms": 136,
+    "avg_wait_time_ms": 185.04,
+    "p50_wait_time_ms": 134,
+    "launch_state_counts": {
+      "HOT": 73,
+      "RELAUNCH": 3,
+      "UNKNOWN (0)": 8,
+      "WARM": 13,
+      "UNKNOWN (-1)": 3
+    }
+  },
+  "ebpf": {
+    "parsed_events": 15925,
+    "event_counts": {
+      "MEMO_STATUS": 2,
+      "MEMO_BINDER": 2000,
+      "MEMO_OPENAT": 2000,
+      "MEMO_MEMORY": 305,
+      "MEMO_SENDTO": 2000,
+      "MEMO_RECVFROM": 2000,
+      "MEMO_SCHED": 2000,
+      "MEMO_PROCESS_FORK": 2000,
+      "MEMO_PROCESS_EXIT": 2000,
+      "MEMO_PROCESS_EXEC": 1618
+    },
+    "top_event_types": [
+      "MEMO_BINDER:2000",
+      "MEMO_OPENAT:2000",
+      "MEMO_SENDTO:2000",
+      "MEMO_RECVFROM:2000",
+      "MEMO_SCHED:2000",
+      "MEMO_PROCESS_FORK:2000",
+      "MEMO_PROCESS_EXIT:2000",
+      "MEMO_PROCESS_EXEC:1618"
+    ]
+  },
+  "system_before": {
+    "wall_time": "2026-06-01T00:43:40.143038+08:00",
+    "mem_available_kb": 3779636,
+    "mem_total_kb": 7640460,
+    "memory_pressure": "normal",
+    "swap_free_kb": 758108,
+    "pgscan_direct": 22996,
+    "pgscan_kswapd": 2819046,
+    "battery_percent": 100,
+    "temperature_c": 36.6,
+    "thermal_risk": "normal",
+    "udp_in_datagrams": 28084,
+    "udp_out_datagrams": 28933,
+    "udp_socket_count": 80,
+    "foreground_package": null,
+    "surfaceflinger_pid": null,
+    "cameraserver_pid": null,
+    "mediacodec_pid": null,
+    "render_thread_observed": false
+  },
+  "system_after": {
+    "wall_time": "2026-06-01T00:45:21.321794+08:00",
+    "mem_available_kb": 3155820,
+    "mem_total_kb": 7640460,
+    "memory_pressure": "normal",
+    "swap_free_kb": 976144,
+    "pgscan_direct": 23540,
+    "pgscan_kswapd": 2931863,
+    "battery_percent": 100,
+    "temperature_c": 36.8,
+    "thermal_risk": "normal",
+    "udp_in_datagrams": 28826,
+    "udp_out_datagrams": 29730,
+    "udp_socket_count": 82,
+    "foreground_package": null,
+    "surfaceflinger_pid": null,
+    "cameraserver_pid": null,
+    "mediacodec_pid": null,
+    "render_thread_observed": false
+  },
+  "system_delta": {
+    "mem_available_delta_kb": -623816,
+    "udp_in_delta": 742,
+    "udp_out_delta": 797,
+    "pgscan_direct_delta": 544,
+    "pgscan_kswapd_delta": 112817,
+    "battery_percent_delta": 0,
+    "temperature_c_delta": 0.19999999999999574
+  },
+  "maple": {
+    "backend": "shell",
+    "predicted_app_id": 280,
+    "stage1": [
+      "App Process Runtime (80%)"
+    ]
+  },
+  "recommendations": [
+    {
+      "package_name": "com.android.chrome",
+      "label": "Chrome",
+      "category": "Network IO",
+      "confidence": 0.98
+    },
+    {
+      "package_name": "com.google.android.apps.messaging",
+      "label": "Messages",
+      "category": "Communication",
+      "confidence": 0.98
+    },
+    {
+      "package_name": "com.google.android.GoogleCamera",
+      "label": "Camera",
+      "category": "Camera Service",
+      "confidence": 0.9
+    }
+  ],
+  "actions": [
+    {
+      "name": "widget_update",
+      "target": "top3",
+      "status": "ok",
+      "detail": "published 3 real app recommendations",
+      "duration_ms": 3
+    },
+    {
+      "name": "latency_policy",
+      "target": "async_maple",
+      "status": "ok",
+      "detail": "MAPLE prediction ran asynchronously; completion latency=134.8s; slow runs still finish and still drive actions",
+      "duration_ms": 0
+    },
+    {
+      "name": "memory_policy",
+      "target": "preload_intensity",
+      "status": "ok",
+      "detail": "normal memory; lightweight warm launch remains enabled",
+      "duration_ms": 0
+    },
+    {
+      "name": "thermal_policy",
+      "target": "preload_intensity",
+      "status": "ok",
+      "detail": "normal battery thermal state",
+      "duration_ms": 0
+    },
+    {
+      "name": "network_candidate_priority",
+      "target": "com.android.chrome, com.google.android.apps.messaging",
+      "status": "ok",
+      "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps",
+      "duration_ms": 0
+    },
+    {
+      "name": "network_stats_refresh",
+      "target": "netstats",
+      "status": "ok",
+      "detail": "refreshed network stats before recommendation",
+      "duration_ms": 204
+    },
+    {
+      "name": "camera_media_candidate",
+      "target": "com.google.android.GoogleCamera",
+      "status": "ok",
+      "detail": "selected Camera for camera\/media follow-up warm launch",
+      "duration_ms": 0
+    },
+    {
+      "name": "display_ui_policy",
+      "target": "warm_launch_intensity",
+      "status": "ok",
+      "detail": "SurfaceFlinger\/RenderThread\/input evidence; keep prewarm count low to avoid jank, memory=normal",
+      "duration_ms": 0
+    },
+    {
+      "name": "binder_service_policy",
+      "target": "system_services",
+      "status": "ok",
+      "detail": "Binder\/system-service evidence kept as MAPLE scheduling context",
+      "duration_ms": 0
+    },
+    {
+      "name": "binder_service_refresh",
+      "target": "service_manager",
+      "status": "ok",
+      "detail": "queried service manager after high Binder activity",
+      "duration_ms": 306
+    },
+    {
+      "name": "warm_launch_policy",
+      "target": "top_apps",
+      "status": "planned",
+      "detail": "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+      "duration_ms": 0
+    }
+  ],
+  "latency": {
+    "mode": "real_usage_100_app_rotation",
+    "started_at_ms": 1780245815290,
+    "total_ms": 397559,
+    "foreground_ms": 16077,
+    "parsed_events": 15925,
+    "maple_timed_out": false,
+    "realtime_status": "completed",
+    "stages": [
+      {
+        "name": "capability_probe",
+        "duration_ms": 1059
+      },
+      {
+        "name": "local_runtime_preflight",
+        "duration_ms": 419
+      },
+      {
+        "name": "deploy_collector",
+        "duration_ms": 420
+      },
+      {
+        "name": "system_state_before",
+        "duration_ms": 2952
+      },
+      {
+        "name": "select_real_apps",
+        "duration_ms": 108
+      },
+      {
+        "name": "real_app_rotation",
+        "duration_ms": 94626
+      },
+      {
+        "name": "ebpf_trace_read",
+        "duration_ms": 1471
+      },
+      {
+        "name": "ebpf_parse",
+        "duration_ms": 1998
+      },
+      {
+        "name": "system_state_after",
+        "duration_ms": 2847
+      },
+      {
+        "name": "scenario_build",
+        "duration_ms": 3951
+      },
+      {
+        "name": "maple_inference",
+        "duration_ms": 24374
+      },
+      {
+        "name": "maple_app_mapping",
+        "duration_ms": 234
+      },
+      {
+        "name": "action_execution",
+        "duration_ms": 618
+      },
+      {
+        "name": "ablation_analysis",
+        "duration_ms": 262173
+      }
+    ]
+  },
+  "ablation_summary": {
+    "config_count": 8,
+    "maple_available_count": 8,
+    "changed_predicted_app_configs": [
+      "no_binder_service",
+      "no_memory",
+      "app_sequence_baseline"
+    ],
+    "changed_top1_app_configs": [
+      "no_network"
+    ],
+    "changed_predicted_scheduler_domain_configs": [
+      "no_network",
+      "no_camera_media",
+      "no_display_ui",
+      "no_binder_service"
+    ],
+    "avg_end_to_end_ms": 32271.125,
+    "max_end_to_end_ms": 79414,
+    "min_end_to_end_ms": 13852
+  },
+  "ablation_interpretation": "以 full_real_ebpf 为参照。预测 ID 改变的配置: no_binder_service, no_memory, app_sequence_baseline。Top-1 应用改变的配置: no_network。调度域改变的配置: no_network, no_camera_media, no_display_ui, no_binder_service。"
+}

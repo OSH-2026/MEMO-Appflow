@@ -10,7 +10,6 @@ import com.memoos.device.DevicePaths
 import com.memoos.device.RootShell
 import com.memoos.maple.MapleInferenceOrchestrator
 import com.memoos.maple.MapleScenario
-import com.memoos.perf.PipelineLatency
 import com.memoos.state.SystemStateCollector
 import com.memoos.state.SystemStateSnapshot
 import org.json.JSONArray
@@ -99,7 +98,6 @@ class RealEbpfAblationRunner(private val context: Context) {
                 recommendations = recommendations,
                 state = state,
                 latencyBeforeActionsMs = mapleDurationMs + mappingDurationMs,
-                realtimeBudgetMs = PipelineLatency.REALTIME_BUDGET_MS,
                 allowVisibleWarmLaunch = false,
                 asyncPrediction = true,
                 publishWidget = false,

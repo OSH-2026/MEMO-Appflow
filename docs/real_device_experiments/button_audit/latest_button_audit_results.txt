@@ -1,0 +1,32 @@
+Button audit on rooted Pixel 5, 2026-06-01.
+
+APK build installed before audit:
+  app/build/outputs/apk/debug/app-debug.apk
+
+Verified by UIAutomator tap, not by host-side service shortcut:
+  检查设备授权: tapped, service checked Magisk/root, raw eBPF collector, and MAPLE runtime.
+  停止后台任务: tapped, service appended pipeline_stop action.
+  打开: tapped first real Top-3 recommendation and launched the target app.
+  立即预热第 1 个推荐: tapped, ActionExecutor warm-launch path executed.
+  查看 eBPF 证据详情: tapped, opened EvidenceActivity.
+  返回 from eBPF 证据详情: tapped, returned to MainActivity.
+  查看完整使用报告: tapped, opened ReportActivity with usage report.
+  返回 from 使用报告: tapped, returned to MainActivity.
+  查看完整消融报告: tapped, opened ReportActivity with ablation report.
+  返回 from 消融报告: tapped, returned to MainActivity.
+  100 次真实使用分析: tapped, generated /sdcard/MEMO/reports/latest_usage_100_report.json.
+  手机压力 A/B 实验: tapped, generated /sdcard/MEMO/pressure/latest_pressure_experiment.json.
+  查看完整性能报告: tapped, opened ReportActivity with pressure A/B report.
+  返回 from 性能报告: tapped, returned to MainActivity.
+  隐藏高级诊断: tapped.
+  显示高级诊断: tapped.
+  查看完整性能报告入口排序: tapped after final rebuild; first screen contained 手机性能 A/B 报告, 综合压力改善, 启动耗时改善.
+
+Evidence files:
+  dataset_cache/phone_debug/button_audit_20260601_current2/*.xml and *.png
+  dataset_cache/phone_debug/button_audit_20260601_after_pressure/*.xml and *.png
+  dataset_cache/phone_debug/report_entry_order_20260601/*.xml and *.png
+
+Known UI behavior:
+  查看完整性能报告 only appears after 手机压力 A/B 实验 has produced a pressure report.
+  Some XML snapshots show only the current scroll viewport, so one missing search during the first pass was rechecked after pressure report generation.

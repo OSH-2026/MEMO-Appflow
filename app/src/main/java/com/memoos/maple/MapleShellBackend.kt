@@ -19,10 +19,10 @@ class MapleShellBackend(private val context: Context) {
         val result = RootShell.run(
             "cd ${DevicePaths.MEMO_ROOT} && nice -n 10 env LD_LIBRARY_PATH=${DevicePaths.MEMO_ROOT} ${DevicePaths.MAPLE_DEMO} --model '$modelPath' --scenarios '$publicScenario'",
             requireRoot = true,
-            timeoutMs = 420_000L,
+            timeoutMs = MAPLE_DEVICE_WATCHDOG_MS,
         )
         if (result.timedOut) {
-            return MaplePrediction.unavailable("MAPLE shell backend timed out after 420s on this emulator CPU")
+            return MaplePrediction.unavailable("MAPLE process did not finish before the device watchdog (${MAPLE_DEVICE_WATCHDOG_MS / 1000}s)")
         }
         if (!result.ok) {
             return MaplePrediction.unavailable("MAPLE shell backend failed: ${result.stderr.ifBlank { result.stdout }.take(300)}")
@@ -63,5 +63,9 @@ class MapleShellBackend(private val context: Context) {
             available = appId > 0 || categories.isNotEmpty(),
             error = if (appId > 0 || categories.isNotEmpty()) null else "Could not parse MAPLE demo output",
         )
+    }
+
+    private companion object {
+        const val MAPLE_DEVICE_WATCHDOG_MS = 3_600_000L
     }
 }

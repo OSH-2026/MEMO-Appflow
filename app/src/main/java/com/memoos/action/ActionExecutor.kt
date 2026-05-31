@@ -25,14 +25,11 @@ class ActionExecutor(private val context: Context) {
         recommendations: List<RecommendedApp>,
         state: SystemStateSnapshot,
         latencyBeforeActionsMs: Long = 0L,
-        realtimeBudgetMs: Long = PipelineLatency.REALTIME_BUDGET_MS,
         allowVisibleWarmLaunch: Boolean = false,
         asyncPrediction: Boolean = true,
         publishWidget: Boolean = true,
     ): List<ActionResult> {
         val results = mutableListOf<ActionResult>()
-        val staleForRealtime = !asyncPrediction &&
-            (latencyBeforeActionsMs > realtimeBudgetMs || prediction.error?.contains("timed out", ignoreCase = true) == true)
 
         results += timed {
             if (publishWidget) {
@@ -42,7 +39,7 @@ class ActionExecutor(private val context: Context) {
                 ActionResult("widget_update", "top3", "planned", "ablation metrics mode; product run would publish ${recommendations.size} real app recommendations")
             }
         }
-        results += latencyPolicyAction(latencyBeforeActionsMs, realtimeBudgetMs, staleForRealtime, asyncPrediction)
+        results += latencyPolicyAction(latencyBeforeActionsMs, asyncPrediction)
 
         val memory = effectiveMemoryPressure(state, scenario)
         val thermal = state.battery.thermalRisk
@@ -57,14 +54,13 @@ class ActionExecutor(private val context: Context) {
 
         val warmLimit = when {
             !allowVisibleWarmLaunch -> 0
-            staleForRealtime -> 0
             memory == "critical" || thermal == "critical" -> 0
             memory == "elevated" || thermal == "elevated" -> 1
             scenario.topCategories.any { it == "Display Composition" || it == "Media Codec" } -> 1
             else -> 2
         }
         if (warmLimit == 0) {
-            if (!allowVisibleWarmLaunch && !staleForRealtime) {
+            if (!allowVisibleWarmLaunch) {
                 results += ActionResult(
                     "warm_launch_policy",
                     "top_apps",
@@ -72,12 +68,7 @@ class ActionExecutor(private val context: Context) {
                     "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
                 )
             } else {
-                val detail = if (staleForRealtime) {
-                    "prediction latency ${PipelineLatency.formatMs(latencyBeforeActionsMs)} exceeded realtime budget ${PipelineLatency.formatMs(realtimeBudgetMs)}; skip stale prewarm"
-                } else {
-                    "memory=$memory thermal=$thermal; preloading would add pressure"
-                }
-                results += ActionResult("warm_launch", "top_apps", "skipped", detail)
+                results += ActionResult("warm_launch", "top_apps", "skipped", "memory=$memory thermal=$thermal; preloading would add pressure")
             }
         } else {
             recommendations.take(warmLimit).forEach { app ->
@@ -96,27 +87,20 @@ class ActionExecutor(private val context: Context) {
         return warmLaunch(app)
     }
 
-    private fun latencyPolicyAction(latencyBeforeActionsMs: Long, budgetMs: Long, stale: Boolean, asyncPrediction: Boolean): ActionResult {
+    private fun latencyPolicyAction(latencyBeforeActionsMs: Long, asyncPrediction: Boolean): ActionResult {
         return if (asyncPrediction) {
             ActionResult(
                 "latency_policy",
                 "async_maple",
                 "ok",
-                "MAPLE prediction ran asynchronously; foreground use was not blocked, completion latency=${PipelineLatency.formatMs(latencyBeforeActionsMs)}",
-            )
-        } else if (stale) {
-            ActionResult(
-                "latency_policy",
-                "realtime_budget",
-                "blocked",
-                "pipeline before actions=${PipelineLatency.formatMs(latencyBeforeActionsMs)}, budget=${PipelineLatency.formatMs(budgetMs)}; use result for analysis/widget, not aggressive scheduling",
+                "MAPLE prediction ran asynchronously; completion latency=${PipelineLatency.formatMs(latencyBeforeActionsMs)}; slow runs still finish and still drive actions",
             )
         } else {
             ActionResult(
                 "latency_policy",
-                "realtime_budget",
+                "completion_latency",
                 "ok",
-                "pipeline before actions=${PipelineLatency.formatMs(latencyBeforeActionsMs)}, budget=${PipelineLatency.formatMs(budgetMs)}",
+                "pipeline before actions=${PipelineLatency.formatMs(latencyBeforeActionsMs)}; no realtime cutoff is applied",
             )
         }
     }
@@ -170,10 +154,10 @@ class ActionExecutor(private val context: Context) {
     private fun memoryPressureActions(memory: String, hasRoot: Boolean, recommendations: List<RecommendedApp>): List<ActionResult> {
         val results = mutableListOf<ActionResult>()
         if (memory == "normal") {
-            results += ActionResult("memory_policy", "preload_budget", "ok", "normal memory; warm launch budget allowed")
+            results += ActionResult("memory_policy", "preload_intensity", "ok", "normal memory; lightweight warm launch remains enabled")
             return results
         }
-        results += ActionResult("memory_policy", "preload_budget", "ok", "memory=$memory; reducing warm launch aggressiveness")
+        results += ActionResult("memory_policy", "preload_intensity", "ok", "memory=$memory; limiting visible warm launch and trimming lower priority candidates")
         if (hasRoot) {
             results += timed {
                 val idle = RootShell.run("cmd activity idle-maintenance >/dev/null 2>&1", timeoutMs = 6_000L)
@@ -198,8 +182,8 @@ class ActionExecutor(private val context: Context) {
     }
 
     private fun thermalActions(thermal: String, hasRoot: Boolean): List<ActionResult> {
-        if (thermal == "normal") return listOf(ActionResult("thermal_policy", "preload_budget", "ok", "normal battery thermal state"))
-        val results = mutableListOf(ActionResult("thermal_policy", "preload_budget", "ok", "thermal=$thermal; deferring aggressive warm launch"))
+        if (thermal == "normal") return listOf(ActionResult("thermal_policy", "preload_intensity", "ok", "normal battery thermal state"))
+        val results = mutableListOf(ActionResult("thermal_policy", "preload_intensity", "ok", "thermal=$thermal; limiting camera/media warm launch"))
         if (hasRoot) {
             results += timed {
                 val fixedPerfOff = RootShell.run("cmd power set-fixed-performance-mode-enabled false >/dev/null 2>&1", timeoutMs = 3_000L)
@@ -249,7 +233,7 @@ class ActionExecutor(private val context: Context) {
         return listOf(
             ActionResult(
                 "display_ui_policy",
-                "warm_launch_budget",
+                "warm_launch_intensity",
                 "ok",
                 "SurfaceFlinger/RenderThread/input evidence; keep prewarm count low to avoid jank, memory=$memory",
             ),
