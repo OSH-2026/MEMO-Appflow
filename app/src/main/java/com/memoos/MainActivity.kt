@@ -108,6 +108,7 @@ class MainActivity : Activity() {
         root.addView(subtitle("观察真实手机使用，预测接下来可能用到的应用，并在后台做资源调度"))
         root.addView(statusPanel(state))
         root.addView(controlPanel(state))
+        root.addView(immediateOperationPanel(state))
         root.addView(recommendationsPanel(state))
         root.addView(maplePanel(state))
         root.addView(actionsPanel(state))
@@ -183,6 +184,9 @@ class MainActivity : Activity() {
         panel.addView(smallCaption("两个入口的区别"))
         panel.addView(body("智能优化是短窗口刷新：MEMO 立刻采集当前几秒的 eBPF 和系统状态，不主动切换其他应用，然后用 MAPLE 更新 Top-3 和调度动作。适合刚刚打开聊天、浏览器、相机、视频等场景后快速刷新推荐。"))
         panel.addView(body("自由体验是一段完整记录：先开始记录，离开 MEMO 打开若干真实应用，回到 MEMO 结束分析；MEMO 会生成这段时间的 app 序列、压缩 eBPF、MAPLE 结果、Top-3 和调度报告。"))
+        panel.addView(smallCaption("辅助入口"))
+        panel.addView(body("记录当前窗口：不主动打开其他应用，只对当前屏幕做一次短时真实 eBPF 采集、MAPLE 判断和调度更新。适合检查“现在这个页面”到底产生了什么系统证据。"))
+        panel.addView(body("停止后台任务：取消正在运行的采集、MAPLE 推理或自由体验记录，释放后台 collector；它不会生成新的分析报告。"))
         panel.addView(rowButton("检查设备授权", EBPFCollectorService.ACTION_CHECK_SETUP, primary = false))
         panel.addView(rowButton("智能优化：刷新当前推荐", EBPFCollectorService.ACTION_RUN_ONCE, primary = true))
         if (state.freeUsageSession.active) {
@@ -193,6 +197,23 @@ class MainActivity : Activity() {
         panel.addView(rowButton("记录当前窗口", EBPFCollectorService.ACTION_RECORD_CURRENT_USAGE, primary = false))
         panel.addView(rowButton("停止后台任务", EBPFCollectorService.ACTION_STOP, primary = false))
 
+        return panel
+    }
+
+    private fun immediateOperationPanel(state: LastMemoState): View {
+        val panel = verticalPanel()
+        panel.addView(label("即时操作状态"))
+        panel.addView(body("这里显示“记录当前窗口”和“停止后台任务”的最近执行结果。点完按钮后，如果功能真的执行了，这里的时间和状态会更新。"))
+        panel.addView(operationStatusCard(
+            title = "记录当前窗口",
+            description = "短时采集当前前台窗口，随后进入 MAPLE、Top-3 和系统动作流程。",
+            action = state.actions.lastOrNull { it.name == "current_window_record" },
+        ))
+        panel.addView(operationStatusCard(
+            title = "停止后台任务",
+            description = "取消后台采集/推理/自由体验记录，释放设备侧 collector。",
+            action = state.actions.lastOrNull { it.name == "pipeline_stop" },
+        ))
         return panel
     }
 
@@ -208,7 +229,9 @@ class MainActivity : Activity() {
         panel.addView(rowButton("手机压力 A/B 实验", EBPFCollectorService.ACTION_PRESSURE_EXPERIMENT, primary = false))
         panel.addView(rowButton("滚动/显示场景采集", EBPFCollectorService.ACTION_EXPERIMENT_SCROLL, primary = false))
         panel.addView(rowButton("通信场景采集", EBPFCollectorService.ACTION_EXPERIMENT_COMMUNICATION, primary = false))
+        panel.addView(rowButton("相机/图片场景采集", EBPFCollectorService.ACTION_EXPERIMENT_CAMERA, primary = false))
         panel.addView(rowButton("媒体场景采集", EBPFCollectorService.ACTION_EXPERIMENT_MEDIA, primary = false))
+        panel.addView(rowButton("支付/安全场景采集", EBPFCollectorService.ACTION_EXPERIMENT_PAYMENT, primary = false))
         panel.addView(rowButton("最新真实证据消融", EBPFCollectorService.ACTION_REAL_ABLATION_LATEST, primary = false))
         return panel
     }
@@ -233,12 +256,15 @@ class MainActivity : Activity() {
     private fun maplePanel(state: LastMemoState): View {
         val panel = verticalPanel()
         panel.addView(label("系统判断"))
+        panel.addView(body("这里是 MAPLE 对刚才系统证据的解释：它先判断接下来更可能需要哪些资源，再交给应用映射模块生成真正可打开的 Top-3。这里的内部 ID 和资源方向用于解释模型，不是让人直接打开的进程名。"))
         if (state.maple.available) {
             panel.addView(kv("推理引擎", state.maple.backend))
-            panel.addView(kv("内部预测 ID", state.maple.predictedAppId.takeIf { it > 0 }?.toString() ?: "无固定 ID"))
+            panel.addView(kv("MAPLE 内部 ID", state.maple.predictedAppId.takeIf { it > 0 }?.toString() ?: "无固定 ID"))
             if (state.maple.stage1.isNotEmpty()) {
-                panel.addView(body("接下来可能需要的资源："))
+                panel.addView(body("资源判断：分数越高，说明这类系统资源越可能马上有用。真正的应用列表看上面的 Top-3。"))
                 state.maple.stage1.take(4).forEach { panel.addView(chip(friendlyStageLabel(it))) }
+            } else {
+                panel.addView(body("MAPLE 已返回结果，但没有给出明确资源方向。推荐区仍会基于应用映射和当前证据给出可打开应用。"))
             }
         } else {
             panel.addView(statusText(if (state.maple.backend == "pending") "推理中" else "暂不可用", Color.rgb(180, 83, 9)))
@@ -492,8 +518,32 @@ class MainActivity : Activity() {
         }
         row.addView(text("${actionTitle(action.name)}：${friendlyActionTarget(action)}", 14f, Color.rgb(15, 23, 42), bold = true))
         row.addView(statusText(actionStatus(action.status), statusColor))
+        if (action.timestampMs > 0L) {
+            row.addView(text("执行时间：${formatTimestamp(action.timestampMs)}", 12f, Color.rgb(100, 116, 139), bottom = 2))
+        }
         if (action.detail.isNotBlank()) row.addView(text(friendlyActionDetail(action.detail), 12f, Color.rgb(71, 85, 105)))
         return row
+    }
+
+    private fun operationStatusCard(title: String, description: String, action: ActionState?): View {
+        return LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(dp(10), dp(9), dp(10), dp(9))
+            background = rounded(Color.rgb(248, 250, 252), dp(8))
+            layoutParams = LinearLayout.LayoutParams(match(), wrap()).apply { bottomMargin = dp(8) }
+            addView(text(title, 13f, Color.rgb(15, 23, 42), bold = true, bottom = 3))
+            addView(text(description, 12f, Color.rgb(71, 85, 105), bottom = 5))
+            if (action == null) {
+                addView(text("最近状态：还没有执行", 12f, Color.rgb(100, 116, 139)))
+            } else {
+                val color = if (action.status in setOf("ok", "completed")) Color.rgb(22, 101, 52) else Color.rgb(180, 83, 9)
+                addView(statusText("最近状态：${actionStatus(action.status)}", color))
+                addView(text("最近时间：${formatTimestamp(action.timestampMs)}", 12f, Color.rgb(100, 116, 139), bottom = 2))
+                if (action.detail.isNotBlank()) {
+                    addView(text(friendlyActionDetail(action.detail), 12f, Color.rgb(71, 85, 105)))
+                }
+            }
+        }
     }
 
     private fun verticalPanel(): LinearLayout {
@@ -664,6 +714,7 @@ class MainActivity : Activity() {
             "root_permission" -> "Root 授权"
             "collector_runtime" -> "eBPF 运行环境"
             "maple_runtime" -> "MAPLE 模型环境"
+            "current_window_record" -> "当前窗口记录"
             "pipeline_stop" -> "停止后台任务"
             "free_usage_session" -> "自由体验分析"
             "real_usage_100_analysis" -> "100 次真实使用分析"
@@ -843,6 +894,7 @@ class MainActivity : Activity() {
             "root_permission" -> "Magisk 授权"
             "collector_runtime" -> "eBPF 采集器"
             "maple_runtime" -> "本地模型"
+            "current_window_record" -> "当前前台窗口"
             "pipeline_stop" -> "后台任务"
             "free_usage_session" -> "自由体验流程"
             "real_usage_100_analysis" -> "真实使用报告"
@@ -866,7 +918,10 @@ class MainActivity : Activity() {
             .replace("root am start + HOME; label=", "已经启动并回到桌面完成预热：")
             .replace("no Top-3 recommendation yet; run smart optimization first", "还没有 Top-3 推荐，请先运行“智能优化：刷新当前推荐”。")
             .replace("no launchable activity", "这个应用没有可启动入口。")
+            .replace("canceled active free usage session and stopped eBPF collector, MAPLE process, and MEMO background work on this device", "已经取消正在记录的自由体验，并停止 eBPF 采集器、MAPLE 进程和 MEMO 后台任务。")
             .replace("stopped eBPF collector, MAPLE process, and MEMO background work on this device", "已经停止 eBPF 采集器、MAPLE 进程和 MEMO 后台任务。")
+            .replace("recorded current foreground window; parsed_events=", "已记录当前前台窗口；系统事件=")
+            .replace("; interaction=record_current_usage only; no app launch or synthetic evidence was injected", "；没有主动打开其他应用，也没有注入伪造证据。")
             .replace("free usage session is recording; leave MEMO, use any apps, then return and finish analysis", "自由体验正在记录。可以离开 MEMO 打开任意应用，回来点“结束体验并分析”。")
             .replace("free usage session is already recording; return to MEMO and finish analysis", "自由体验已经在记录。回来点“结束体验并分析”即可。")
             .replace("analyzed free usage session with ", "已经分析自由体验：")

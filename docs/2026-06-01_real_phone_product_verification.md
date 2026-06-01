@@ -53,6 +53,80 @@
 | 真实 eBPF 消融 | `app/src/main/java/com/memoos/ablation/RealEbpfAblationRunner.kt` |
 | 本地状态持久化 | `app/src/main/java/com/memoos/store/MemoStore.kt` |
 
+## 收尾回归与最新结果
+
+本节记录 2026-06-01 晚间收尾回归。完整归档见：
+
+```text
+docs/real_device_experiments/button_regression_2026_06_01/
+```
+
+### 结果文件
+
+| 文件 | 内容 |
+| --- | --- |
+| `latest_usage_100_report_after_button.json` | 最新 100 次真实使用分析 |
+| `latest_real_ablation_after_button.json` | 最新真实 eBPF 消融 |
+| `latest_pressure_experiment_after_button.json` | 最新手机压力 A/B |
+| `product_buttons_results.json` | 主产品按钮触发记录 |
+| `latest_real_user_experiment_after_button.txt` | 最新真实滚动/显示场景采集元数据 |
+| `latest_full_local_evaluation_after_button.txt` | 最新一键完整本地评估元数据 |
+
+### 最新 100 次真实使用
+
+| 指标 | 数值 |
+| --- | ---: |
+| 请求 app 打开 | 100 |
+| 实际观察 app 打开 | 100 |
+| 覆盖真实 app | 12 个 |
+| raw eBPF parsed events | 16295 |
+| MAPLE compressed eBPF signals | 180 |
+| eBPF signal 行数压缩 | 98.90% |
+| 平均启动 TotalTime | 171.45 ms |
+| P50 TotalTime | 131 ms |
+| 平均 WaitTime | 168.70 ms |
+| P50 WaitTime | 128 ms |
+| 完整设备端耗时 | 264.09 s |
+| 前台可见处理耗时 | 10.54 s |
+| Top-3 | Chrome, Messages, Camera |
+
+说明：raw trace 仍完整保留，MAPLE 只接收按时间窗口压缩后的 `event_type/detail/count/rate_per_sec`。这不是只看 eBPF，也不是只看 app sequence，而是把 app 时间线和同窗口 eBPF/system evidence 一起交给 MAPLE。
+
+### 最新消融
+
+| 指标 | 结果 |
+| --- | --- |
+| 配置数 | 8 |
+| MAPLE 可用 | 8/8 |
+| predicted app id 改变 | `no_memory`, `app_sequence_baseline` |
+| Top-1 app 改变 | `no_network` |
+| 调度域改变 | `no_network`, `no_camera_media`, `no_display_ui`, `no_binder_service` |
+| 平均端到端 | 14.46 s |
+| 范围 | 7.18 s 到 45.90 s |
+
+解释：`no_network` 改变 Top-1，`no_memory` 和 `app_sequence_baseline` 改变 predicted app id，camera/media、display/UI、binder/service 会改变调度域。也就是说深层系统证据确实影响预测和动作。
+
+### 最新压力 A/B
+
+| 指标 | MEMO-on 相对 baseline |
+| --- | ---: |
+| A/B workload | 6 组 |
+| 综合压力分数 | +37.19% |
+| 启动 TotalTime | +9.69% |
+| WaitTime | +9.46% |
+| CPU busy | +1.45% |
+| iowait | +35.77% |
+| MemAvailable 下降量 | -51.75% |
+| reclaim | +68.14% |
+
+分场景看，normal Chrome、crowded Magisk 改善明显；normal Magisk、normal Tencent Meeting、crowded Chrome 的启动时间变差但综合压力改善；crowded Tencent Meeting 是明确反例，综合压力 -13.12%。因此结论必须谨慎：当前结果支持 MEMO 在平均意义上降低系统压力，但不能宣称所有场景都提升。
+
+### 按钮回归
+
+主产品入口已经验证：检查设备授权、智能优化刷新推荐、记录当前窗口、立即预热第 1 个推荐、开始自由体验、结束体验并分析、停止后台任务。最后一次手动触发 `停止后台任务` 后，23:28 CST 设备上没有 `memo_libbpf_collector` 或 `maple_demo` 残留进程；状态中写入了带 `timestamp_ms` 的 `pipeline_stop`。
+
+`product_buttons_results.json` 里“停止后台任务”的 `reached_expected_action=false` 是历史判定脚本误判：同一条记录的 `selected_actions` 已包含 `pipeline_stop`。代码已修正为任何 stop 都追加可见的 timestamped action。
+
 ## 产品行为修正
 
 - 移除了产品 UI 里的“过慢就不做”口径。
@@ -154,18 +228,17 @@ docs/real_device_experiments/real_usage_100/latest_real_ablation_after_usage_100
 | 覆盖真实应用 | 12 个 |
 | timestamped app sequence | 100 条 |
 | timeline windows | 20 个 |
-| raw eBPF parsed events | 16257 |
+| raw eBPF parsed events | 16295 |
 | MAPLE compressed eBPF signals | 180 |
-| MAPLE scenario 大小 | 109055 bytes |
-| scenario 相比未压缩结构减少 | 37.24% |
-| 平均启动 TotalTime | 148.0 ms |
-| P50 启动 TotalTime | 126 ms |
+| eBPF signal 行数压缩 | 98.90% |
+| 平均启动 TotalTime | 171.45 ms |
+| P50 启动 TotalTime | 131 ms |
 | MAPLE backend | shell |
 | Top-3 | Chrome, Messages, Camera |
-| 完整设备端耗时 | 301.3 s |
-| 前台可见处理耗时 | 14.5 s |
+| 完整设备端耗时 | 264.09 s |
+| 前台可见处理耗时 | 10.54 s |
 
-解释：301.3 s 包含 100 次真实 app rotation、20 个分窗 eBPF 采集、MAPLE 推理、ActionExecutor、以及 8 组消融。用户看到的是 `已完成`，不会再看到“过慢实时状态”。MAPLE 输入已经包含 `app_catalog`、`observed_app_sequence`、`timeline_windows` 和 `compression`，即真实 app 序列、同时间窗 eBPF/system evidence、以及 raw rows 到压缩 signals 的对应关系。
+解释：264.09 s 包含 100 次真实 app rotation、20 个分窗 eBPF 采集、MAPLE 推理、ActionExecutor、以及 8 组消融。前台可见处理耗时为 10.54 s，主界面不会再显示“过慢实时状态”。MAPLE 输入已经包含 `app_catalog`、`observed_app_sequence`、`timeline_windows` 和 `compression`，即真实 app 序列、同时间窗 eBPF/system evidence、以及 raw rows 到压缩 signals 的对应关系。
 
 压缩的意义不是丢掉 eBPF，而是把重复系统事件变成更适合端侧小模型的统计证据。比如第一窗里 5 次真实 app 打开对应的压缩信号是：
 
@@ -177,7 +250,7 @@ MEMO_BINDER=14234, rate=2846.8/s
 MEMO_OPENAT=12605, rate=2521/s
 ```
 
-原始 16257 行仍在 `usage_100_raw_trace.trace`，MAPLE 实际使用 20 个窗口里的 180 条压缩 eBPF signal，scenario 从约 173759 bytes 降到 109055 bytes，减少 37.24%。
+原始 16295 行仍在 raw trace 中用于审计，MAPLE 实际使用 20 个窗口里的 180 条压缩 eBPF signal。按行数看，eBPF 输入从 16295 条审计事件压缩到 180 条模型信号，减少 98.90%。
 
 ## 性能 A/B 实验结果
 
@@ -211,15 +284,15 @@ docs/real_device_experiments/user_app_pressure/README.md
 | 指标 | MEMO-on 相对 baseline |
 | --- | ---: |
 | A/B workload | 6 组 |
-| 综合压力分数 | +29.70% |
-| 启动 TotalTime | +12.28% |
-| WaitTime | +13.74% |
-| CPU busy | +9.84% |
-| iowait | +33.40% |
-| MemAvailable 下降量 | -14.13% |
-| reclaim | +13.07% |
+| 综合压力分数 | +37.19% |
+| 启动 TotalTime | +9.69% |
+| WaitTime | +9.46% |
+| CPU busy | +1.45% |
+| iowait | +35.77% |
+| MemAvailable 下降量 | -51.75% |
+| reclaim | +68.14% |
 
-解读要诚实：这次平均结果支持 MEMO-on 有性能收益，尤其是综合压力、启动时间、CPU/iowait、reclaim。但不是所有场景都变好，`crowded_cached_apps / Tencent Meeting` 的综合压力分数是 -36.71%，MemAvailable 下降量平均也变差。
+解读要诚实：这次平均结果支持 MEMO-on 有性能收益，尤其是综合压力、iowait 和 reclaim。但不是所有场景都变好，`crowded_cached_apps / Tencent Meeting` 的综合压力分数是 -13.12%，MemAvailable 下降量平均也明显变差。
 
 ## 消融实验结果
 
@@ -249,8 +322,8 @@ docs/real_device_experiments/user_app_pressure/README.md
 | predicted app id 改变 | `no_network`, `no_memory`, `app_sequence_baseline` |
 | Top-1 改变 | `no_network` |
 | 调度域改变 | `no_network`, `no_camera_media`, `no_display_ui`, `no_binder_service` |
-| 平均端到端 | 18.5 s |
-| 范围 | 8.9 s 到 59.3 s |
+| 平均端到端 | 14.46 s |
+| 范围 | 7.18 s 到 45.90 s |
 
 解读：network 证据影响 Top-1，也会影响 MAPLE app id；memory、app-sequence baseline 也会影响 MAPLE app id；camera/display/binder 影响 ActionExecutor 的调度域。说明 eBPF 深层证据确实参与了推荐和调度，不只是统计装饰。
 
@@ -297,6 +370,6 @@ docs/real_device_experiments/button_audit/latest_button_audit_results.txt
 ```text
 Jingyi 这边已经把 MEMO-Appflow 从 host 脚本原型推进成真机端侧产品闭环。
 在 rooted Pixel 5 上，App 能从按钮启动真实 eBPF 采集、MAPLE 推理、Top-3 推荐、系统调度、Widget/报告展示。
-100 次真实 app 使用实验跑通，采到 16257 条 eBPF 兼容事件行，构造出 100 条 timestamped app sequence 和 20 个 app/eBPF 对齐时间窗，并把 MAPLE 输入压缩成 180 条 eBPF signal，scenario 大小减少 37.24%，产出 Chrome/Messages/Camera Top-3。
-压力 A/B 实验显示平均综合压力改善 29.70%，启动 TotalTime 改善 12.28%，但也记录了反例，不夸大。
+收尾回归中的 100 次真实 app 使用实验跑通，采到 16295 条 eBPF 兼容事件行，构造出 100 条 timestamped app sequence 和 20 个 app/eBPF 对齐时间窗，并把 MAPLE 输入压缩成 180 条 eBPF signal，产出 Chrome/Messages/Camera Top-3。
+压力 A/B 实验显示平均综合压力改善 37.19%，启动 TotalTime 改善 9.69%，WaitTime 改善 9.46%，但 MemAvailable 下降量变差 51.75%，crowded Tencent Meeting 是反例，不夸大。
 ```

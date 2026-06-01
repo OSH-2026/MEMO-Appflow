@@ -311,6 +311,8 @@ class RealEbpfAblationRunner(private val context: Context) {
             .put("target", target)
             .put("status", status)
             .put("detail", detail)
+            .put("duration_ms", durationMs)
+            .put("timestamp_ms", timestampMs)
     }
 
     private fun SystemStateSnapshot.toMetricsJson(): JSONObject {

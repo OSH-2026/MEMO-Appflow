@@ -49,7 +49,7 @@ class EBPFCollectorService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(NOTIFICATION_ID, notification("MEMO pipeline is running"))
         when (intent?.action) {
-            ACTION_STOP -> if (MemoStore(this).load().freeUsageSession.active) finishFreeUsageSession() else stopPipeline()
+            ACTION_STOP -> stopPipeline()
             ACTION_CHECK_SETUP -> checkDeviceSetup()
             ACTION_WARM_TOP_APP -> warmTopRecommendation()
             ACTION_FULL_LOCAL_EVALUATION -> runRealUserExperiment(RealUserExperimentPlanner.KIND_SCROLL, runAblationAfterMaple = true)
@@ -150,7 +150,19 @@ class EBPFCollectorService : Service() {
                         appendLine("description=${scenario.description}")
                     },
                 )
-                publishEvidenceThenRunMaple(timer, scenario, state, collected.events.size, runAblationAfterMaple)
+                val preActions = if (kind == RealUserExperimentPlanner.KIND_CURRENT) {
+                    listOf(
+                        ActionResult(
+                            "current_window_record",
+                            collected.rawTracePath,
+                            "ok",
+                            "recorded current foreground window; parsed_events=${collected.events.size}; interaction=${collected.interactionResult}",
+                        ),
+                    )
+                } else {
+                    emptyList()
+                }
+                publishEvidenceThenRunMaple(timer, scenario, state, collected.events.size, runAblationAfterMaple, preActions)
             } catch (exc: Exception) {
                 stopDeviceCollectors()
                 val latency = timer.snapshot(0, mapleTimedOut = false)
@@ -200,6 +212,7 @@ class EBPFCollectorService : Service() {
         state: SystemStateSnapshot,
         eventCount: Int,
         runAblationAfterMaple: Boolean = false,
+        preActions: List<ActionResult> = emptyList(),
     ) {
         val pendingLatency = timer.snapshot(eventCount, mapleTimedOut = false)
         File(getExternalFilesDir(null), "latest_pipeline_latency.json").writeText(pendingLatency.toJson().toString(2))
@@ -251,7 +264,7 @@ class EBPFCollectorService : Service() {
                 "completed",
                 "MAPLE result published after asynchronous inference; completion status=${latency.realtimeStatus}",
             )
-            val actions = baseActions + completion + ActionResult("latency_summary", "pipeline", latency.realtimeStatus, latency.summaryLine())
+            val actions = preActions + baseActions + completion + ActionResult("latency_summary", "pipeline", latency.realtimeStatus, latency.summaryLine())
             File(getExternalFilesDir(null), "latest_pipeline_latency.json").writeText(latency.toJson().toString(2))
             MemoStore(this).save(scenario, prediction, recommendations, actions, latency)
             if (runAblationAfterMaple) {
@@ -541,17 +554,29 @@ class EBPFCollectorService : Service() {
     }
 
     private fun stopPipeline() {
+        val activeFreeUsage = MemoStore(this).load().freeUsageSession.active
         runningTask?.cancel(true)
         mapleTask?.cancel(true)
         runningTask = null
         mapleTask = null
         stopDeviceCollectors(killMaple = true)
+        if (activeFreeUsage) {
+            val active = MemoStore(this).load().freeUsageSession
+            if (active.flagPath.isNotBlank()) {
+                RootShell.run("rm -f '${active.flagPath}'", timeoutMs = 2_000L)
+            }
+            MemoStore(this).clearFreeUsageSession()
+        }
         MemoStore(this).appendAction(
             ActionResult(
                 "pipeline_stop",
                 "background tasks",
                 "ok",
-                "stopped eBPF collector, MAPLE process, and MEMO background work on this device",
+                if (activeFreeUsage) {
+                    "canceled active free usage session and stopped eBPF collector, MAPLE process, and MEMO background work on this device"
+                } else {
+                    "stopped eBPF collector, MAPLE process, and MEMO background work on this device"
+                },
             ),
         )
         stopForeground(STOP_FOREGROUND_REMOVE)

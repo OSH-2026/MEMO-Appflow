@@ -16,6 +16,7 @@ data class ActionResult(
     val status: String,
     val detail: String,
     val durationMs: Long = 0L,
+    val timestampMs: Long = System.currentTimeMillis(),
 )
 
 class ActionExecutor(private val context: Context) {

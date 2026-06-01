@@ -110,6 +110,7 @@ adb install -r app\build\outputs\apk\debug\app-debug.apk
 - `docs/real_device_experiments/real_usage_100/`：Jingyi Guo 的 100 次真实 app 使用、eBPF 时间窗压缩、MAPLE 与调度闭环实验。
 - `docs/real_device_experiments/free_usage_session/`：Jingyi Guo 的自由体验实验，记录一段真实 app 使用并在设备内完成分析。
 - `docs/real_device_experiments/button_audit/`：App 主要按钮与产品入口的功能核验记录。
+- `docs/real_device_experiments/button_regression_2026_06_01/`：2026-06-01 收尾回归与最新真机结果，包含 100 次真实使用、消融、压力 A/B 与按钮状态归档。
 - `docs/report_versions/`：历史阶段报告，用来保留项目方向的演进过程。
 
 ## 2026-05-28 rooted phone 实验更新
@@ -123,7 +124,7 @@ docs/real_device_experiments/user_app_pressure/README.md
 docs/real_device_experiments/user_app_pressure/latest_pressure_experiment.json
 ```
 
-最新 6 个 A/B 对照的结论：MEMO-on 平均综合压力分数改善 29.70%，启动 TotalTime 改善 12.28%，WaitTime 改善 13.74%，CPU busy 改善 9.84%，iowait 改善 33.40%，reclaim 改善 13.07%；但 MemAvailable 下降量平均变差 14.13%，crowded Tencent Meeting 是反例。因此当前版本不能宣称全面提升手机性能，比较准确的说法是：这次真机实验支持 MEMO 能降低平均系统压力并改善部分启动体验，但不是所有场景都提升。
+最新 6 个 A/B 对照的结论：MEMO-on 平均综合压力分数改善 37.19%，启动 TotalTime 改善 9.69%，WaitTime 改善 9.46%，CPU busy 改善 1.45%，iowait 改善 35.77%，reclaim 改善 68.14%；但 MemAvailable 下降量平均变差 51.75%，crowded Tencent Meeting 是反例。因此当前版本不能宣称全面提升手机性能，比较准确的说法是：这次真机实验支持 MEMO 能降低平均系统压力并改善部分启动体验，但不是所有场景都提升。
 
 ## 会议记录
 
@@ -142,4 +143,4 @@ docs/real_device_experiments/user_app_pressure/latest_pressure_experiment.json
 | 9 | 2026-04-29 | 线上讨论：尝试加入 Android eBPF 系统证据采集，并把采集结果接到 MAPLE 大模型推理模块。同步修复 Android 14 emulator custom kernel 的 SurfaceFlinger 图形通道，使 UI 展示、`CONFIG_FTRACE_SYSCALLS` 和 eBPF 采集可以在同一虚拟机上演示。 |
 | 10 | 2026-05-06 | 讨论下一阶段方针：把产品逻辑全部迁到 Android emulator 内部，按未来 rooted phone 部署方式开发；补齐设备内采集、设备内结构化、MAPLE 调用、Top-3 真实应用推荐、动作执行和 Widget 展示。 |
 | 11 | 2026-05-27 | 交接工作：陈可为“强兼”了`bpftrace`，但是由于内核的版本低于最低支持，故它并不是好的方案。同时他完成了全部的交叉编译工作，现在交给郭璟仪迁移应用，因为context在那里。同时提出如果需要新的编译，把手机给陈可为继续交叉编译，因为维护了完整的内核树 |
-| 12 | 2026-06-01 | 郭璟仪在 rooted Pixel 5 真机上把 MEMO-Appflow 重新验证为端侧产品闭环：App 内完成 raw eBPF/libbpf 采集、Kotlin 解析、app 时间线与 eBPF 时间窗压缩、MAPLE 推理、Top-3 真实应用推荐、ActionExecutor 调度动作、Widget/报告展示，不依赖 host Python 或 bpftrace。新增并跑通 100 次真实使用分析、自由体验分析、真实 eBPF 消融和手机压力 A/B 实验；100 次真实使用采到 16257 条 eBPF 兼容事件，压缩后 MAPLE 输入减少 37.24%；A/B 平均结果为综合压力改善 29.70%、启动 TotalTime 改善 12.28%、WaitTime 改善 13.74%，但保留 MemAvailable 变差和 crowded Tencent Meeting 反例。详细结果见 `docs/2026-06-01_real_phone_product_verification.md` 与 `docs/real_device_experiments/`。 |
+| 12 | 2026-06-01 | 郭璟仪在 rooted Pixel 5 真机上把 MEMO-Appflow 重新验证为端侧产品闭环：App 内完成 raw eBPF/libbpf 采集、Kotlin 解析、app 时间线与 eBPF 时间窗压缩、MAPLE 推理、Top-3 真实应用推荐、ActionExecutor 调度动作、Widget/报告展示，不依赖 host Python 或 bpftrace。新增并跑通 100 次真实使用分析、自由体验分析、真实 eBPF 消融和手机压力 A/B 实验；收尾回归中 100 次真实使用采到 16295 条 eBPF 兼容事件，压缩成 180 条 MAPLE eBPF signal；A/B 平均结果为综合压力改善 37.19%、启动 TotalTime 改善 9.69%、WaitTime 改善 9.46%，但保留 MemAvailable 变差 51.75% 和 crowded Tencent Meeting 反例。详细结果见 `docs/2026-06-01_real_phone_product_verification.md`、`docs/real_device_experiments/` 与 `docs/real_device_experiments/button_regression_2026_06_01/`。 |

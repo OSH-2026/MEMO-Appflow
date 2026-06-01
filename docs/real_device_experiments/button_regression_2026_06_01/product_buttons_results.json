@@ -1,0 +1,1610 @@
+﻿[
+    {
+        "label":  "检查设备授权",
+        "action":  "com.memoos.action.CHECK_SETUP",
+        "waited_for":  "maple_runtime",
+        "reached_expected_action":  true,
+        "before_updated_at":  1780309030096,
+        "after_updated_at":  1780309669755,
+        "before_recommendations_updated_at":  1780309030096,
+        "after_recommendations_updated_at":  1780309030096,
+        "maple_backend":  "shell",
+        "maple_available":  true,
+        "selected_actions":  {
+                                 "value":  [
+                                               {
+                                                   "name":  "current_window_record",
+                                                   "target":  "/sdcard/MEMO/logs/real_user_1780308991412.trace",
+                                                   "status":  "ok",
+                                                   "detail":  "recorded current foreground window; parsed_events=2847; interaction=record_current_usage only; no app launch or synthetic evidence was injected",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309010705
+                                               },
+                                               {
+                                                   "name":  "widget_update",
+                                                   "target":  "top3",
+                                                   "status":  "ok",
+                                                   "detail":  "published 3 real app recommendations",
+                                                   "duration_ms":  1,
+                                                   "timestamp_ms":  1780309029667
+                                               },
+                                               {
+                                                   "name":  "latency_policy",
+                                                   "target":  "async_maple",
+                                                   "status":  "ok",
+                                                   "detail":  "MAPLE prediction ran asynchronously; completion latency=40.5s; slow runs still finish and still drive actions",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309029667
+                                               },
+                                               {
+                                                   "name":  "memory_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309029772
+                                               },
+                                               {
+                                                   "name":  "thermal_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal battery thermal state",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309029772
+                                               },
+                                               {
+                                                   "name":  "network_candidate_priority",
+                                                   "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                   "status":  "ok",
+                                                   "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309029772
+                                               },
+                                               {
+                                                   "name":  "network_stats_refresh",
+                                                   "target":  "netstats",
+                                                   "status":  "ok",
+                                                   "detail":  "refreshed network stats before recommendation",
+                                                   "duration_ms":  103,
+                                                   "timestamp_ms":  1780309029876
+                                               },
+                                               {
+                                                   "name":  "binder_service_policy",
+                                                   "target":  "system_services",
+                                                   "status":  "ok",
+                                                   "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309029876
+                                               },
+                                               {
+                                                   "name":  "binder_service_refresh",
+                                                   "target":  "service_manager",
+                                                   "status":  "ok",
+                                                   "detail":  "queried service manager after high Binder activity",
+                                                   "duration_ms":  207,
+                                                   "timestamp_ms":  1780309030083
+                                               },
+                                               {
+                                                   "name":  "warm_launch_policy",
+                                                   "target":  "top_apps",
+                                                   "status":  "planned",
+                                                   "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309030083
+                                               },
+                                               {
+                                                   "name":  "maple_background",
+                                                   "target":  "deep_reasoning",
+                                                   "status":  "completed",
+                                                   "detail":  "MAPLE result published after asynchronous inference; completion status=completed",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309030083
+                                               },
+                                               {
+                                                   "name":  "latency_summary",
+                                                   "target":  "pipeline",
+                                                   "status":  "completed",
+                                                   "detail":  "latency=completed foreground_observed=22.2s, MAPLE=18.7s, total=41.0s",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309030085
+                                               },
+                                               {
+                                                   "name":  "root_permission",
+                                                   "target":  "Magisk Superuser",
+                                                   "status":  "ok",
+                                                   "detail":  "superuser available to MEMO-Appflow (uid=0(root) gid=0(root) groups=0(root) context=u:r:magisk:s0)",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309668976
+                                               },
+                                               {
+                                                   "name":  "collector_runtime",
+                                                   "target":  "raw eBPF",
+                                                   "status":  "ok",
+                                                   "detail":  "raw collector and BPF object are deployed on device",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309669625
+                                               },
+                                               {
+                                                   "name":  "maple_runtime",
+                                                   "target":  "local model",
+                                                   "status":  "ok",
+                                                   "detail":  "MAPLE executable, engine library and GGUF model are readable on device",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309669748
+                                               }
+                                           ],
+                                 "Count":  15
+                             },
+        "all_recent_actions":  [
+                                   {
+                                       "value":  [
+                                                     {
+                                                         "name":  "current_window_record",
+                                                         "target":  "/sdcard/MEMO/logs/real_user_1780308991412.trace",
+                                                         "status":  "ok",
+                                                         "detail":  "recorded current foreground window; parsed_events=2847; interaction=record_current_usage only; no app launch or synthetic evidence was injected",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309010705
+                                                     },
+                                                     {
+                                                         "name":  "widget_update",
+                                                         "target":  "top3",
+                                                         "status":  "ok",
+                                                         "detail":  "published 3 real app recommendations",
+                                                         "duration_ms":  1,
+                                                         "timestamp_ms":  1780309029667
+                                                     },
+                                                     {
+                                                         "name":  "latency_policy",
+                                                         "target":  "async_maple",
+                                                         "status":  "ok",
+                                                         "detail":  "MAPLE prediction ran asynchronously; completion latency=40.5s; slow runs still finish and still drive actions",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309029667
+                                                     },
+                                                     {
+                                                         "name":  "memory_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309029772
+                                                     },
+                                                     {
+                                                         "name":  "thermal_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal battery thermal state",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309029772
+                                                     },
+                                                     {
+                                                         "name":  "network_candidate_priority",
+                                                         "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                         "status":  "ok",
+                                                         "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309029772
+                                                     },
+                                                     {
+                                                         "name":  "network_stats_refresh",
+                                                         "target":  "netstats",
+                                                         "status":  "ok",
+                                                         "detail":  "refreshed network stats before recommendation",
+                                                         "duration_ms":  103,
+                                                         "timestamp_ms":  1780309029876
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_policy",
+                                                         "target":  "system_services",
+                                                         "status":  "ok",
+                                                         "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309029876
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_refresh",
+                                                         "target":  "service_manager",
+                                                         "status":  "ok",
+                                                         "detail":  "queried service manager after high Binder activity",
+                                                         "duration_ms":  207,
+                                                         "timestamp_ms":  1780309030083
+                                                     },
+                                                     {
+                                                         "name":  "warm_launch_policy",
+                                                         "target":  "top_apps",
+                                                         "status":  "planned",
+                                                         "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309030083
+                                                     },
+                                                     {
+                                                         "name":  "maple_background",
+                                                         "target":  "deep_reasoning",
+                                                         "status":  "completed",
+                                                         "detail":  "MAPLE result published after asynchronous inference; completion status=completed",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309030083
+                                                     },
+                                                     {
+                                                         "name":  "latency_summary",
+                                                         "target":  "pipeline",
+                                                         "status":  "completed",
+                                                         "detail":  "latency=completed foreground_observed=22.2s, MAPLE=18.7s, total=41.0s",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309030085
+                                                     },
+                                                     {
+                                                         "name":  "root_permission",
+                                                         "target":  "Magisk Superuser",
+                                                         "status":  "ok",
+                                                         "detail":  "superuser available to MEMO-Appflow (uid=0(root) gid=0(root) groups=0(root) context=u:r:magisk:s0)",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309668976
+                                                     },
+                                                     {
+                                                         "name":  "collector_runtime",
+                                                         "target":  "raw eBPF",
+                                                         "status":  "ok",
+                                                         "detail":  "raw collector and BPF object are deployed on device",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309669625
+                                                     },
+                                                     {
+                                                         "name":  "maple_runtime",
+                                                         "target":  "local model",
+                                                         "status":  "ok",
+                                                         "detail":  "MAPLE executable, engine library and GGUF model are readable on device",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309669748
+                                                     }
+                                                 ],
+                                       "Count":  15
+                                   }
+                               ]
+    },
+    {
+        "label":  "智能优化：刷新当前推荐",
+        "action":  "com.memoos.action.RUN_ONCE",
+        "waited_for":  "maple_background",
+        "reached_expected_action":  true,
+        "before_updated_at":  1780309669755,
+        "after_updated_at":  1780309712854,
+        "before_recommendations_updated_at":  1780309030096,
+        "after_recommendations_updated_at":  1780309712854,
+        "maple_backend":  "shell",
+        "maple_available":  true,
+        "selected_actions":  {
+                                 "value":  [
+                                               {
+                                                   "name":  "widget_update",
+                                                   "target":  "top3",
+                                                   "status":  "ok",
+                                                   "detail":  "published 3 real app recommendations",
+                                                   "duration_ms":  2,
+                                                   "timestamp_ms":  1780309712427
+                                               },
+                                               {
+                                                   "name":  "latency_policy",
+                                                   "target":  "async_maple",
+                                                   "status":  "ok",
+                                                   "detail":  "MAPLE prediction ran asynchronously; completion latency=40.2s; slow runs still finish and still drive actions",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309712427
+                                               },
+                                               {
+                                                   "name":  "memory_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309712537
+                                               },
+                                               {
+                                                   "name":  "thermal_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal battery thermal state",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309712537
+                                               },
+                                               {
+                                                   "name":  "network_candidate_priority",
+                                                   "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                   "status":  "ok",
+                                                   "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309712537
+                                               },
+                                               {
+                                                   "name":  "network_stats_refresh",
+                                                   "target":  "netstats",
+                                                   "status":  "ok",
+                                                   "detail":  "refreshed network stats before recommendation",
+                                                   "duration_ms":  102,
+                                                   "timestamp_ms":  1780309712640
+                                               },
+                                               {
+                                                   "name":  "binder_service_policy",
+                                                   "target":  "system_services",
+                                                   "status":  "ok",
+                                                   "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309712640
+                                               },
+                                               {
+                                                   "name":  "binder_service_refresh",
+                                                   "target":  "service_manager",
+                                                   "status":  "ok",
+                                                   "detail":  "queried service manager after high Binder activity",
+                                                   "duration_ms":  206,
+                                                   "timestamp_ms":  1780309712846
+                                               },
+                                               {
+                                                   "name":  "warm_launch_policy",
+                                                   "target":  "top_apps",
+                                                   "status":  "planned",
+                                                   "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309712846
+                                               },
+                                               {
+                                                   "name":  "maple_background",
+                                                   "target":  "deep_reasoning",
+                                                   "status":  "completed",
+                                                   "detail":  "MAPLE result published after asynchronous inference; completion status=completed",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309712846
+                                               },
+                                               {
+                                                   "name":  "latency_summary",
+                                                   "target":  "pipeline",
+                                                   "status":  "completed",
+                                                   "detail":  "latency=completed foreground_observed=22.9s, MAPLE=17.7s, total=40.6s",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309712847
+                                               }
+                                           ],
+                                 "Count":  11
+                             },
+        "all_recent_actions":  [
+                                   {
+                                       "value":  [
+                                                     {
+                                                         "name":  "widget_update",
+                                                         "target":  "top3",
+                                                         "status":  "ok",
+                                                         "detail":  "published 3 real app recommendations",
+                                                         "duration_ms":  2,
+                                                         "timestamp_ms":  1780309712427
+                                                     },
+                                                     {
+                                                         "name":  "latency_policy",
+                                                         "target":  "async_maple",
+                                                         "status":  "ok",
+                                                         "detail":  "MAPLE prediction ran asynchronously; completion latency=40.2s; slow runs still finish and still drive actions",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309712427
+                                                     },
+                                                     {
+                                                         "name":  "memory_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309712537
+                                                     },
+                                                     {
+                                                         "name":  "thermal_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal battery thermal state",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309712537
+                                                     },
+                                                     {
+                                                         "name":  "network_candidate_priority",
+                                                         "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                         "status":  "ok",
+                                                         "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309712537
+                                                     },
+                                                     {
+                                                         "name":  "network_stats_refresh",
+                                                         "target":  "netstats",
+                                                         "status":  "ok",
+                                                         "detail":  "refreshed network stats before recommendation",
+                                                         "duration_ms":  102,
+                                                         "timestamp_ms":  1780309712640
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_policy",
+                                                         "target":  "system_services",
+                                                         "status":  "ok",
+                                                         "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309712640
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_refresh",
+                                                         "target":  "service_manager",
+                                                         "status":  "ok",
+                                                         "detail":  "queried service manager after high Binder activity",
+                                                         "duration_ms":  206,
+                                                         "timestamp_ms":  1780309712846
+                                                     },
+                                                     {
+                                                         "name":  "warm_launch_policy",
+                                                         "target":  "top_apps",
+                                                         "status":  "planned",
+                                                         "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309712846
+                                                     },
+                                                     {
+                                                         "name":  "maple_background",
+                                                         "target":  "deep_reasoning",
+                                                         "status":  "completed",
+                                                         "detail":  "MAPLE result published after asynchronous inference; completion status=completed",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309712846
+                                                     },
+                                                     {
+                                                         "name":  "latency_summary",
+                                                         "target":  "pipeline",
+                                                         "status":  "completed",
+                                                         "detail":  "latency=completed foreground_observed=22.9s, MAPLE=17.7s, total=40.6s",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309712847
+                                                     }
+                                                 ],
+                                       "Count":  11
+                                   }
+                               ]
+    },
+    {
+        "label":  "记录当前窗口",
+        "action":  "com.memoos.action.RECORD_CURRENT_USAGE",
+        "waited_for":  "current_window_record",
+        "reached_expected_action":  true,
+        "before_updated_at":  1780309712854,
+        "after_updated_at":  1780309755901,
+        "before_recommendations_updated_at":  1780309712854,
+        "after_recommendations_updated_at":  1780309755901,
+        "maple_backend":  "shell",
+        "maple_available":  true,
+        "selected_actions":  {
+                                 "value":  [
+                                               {
+                                                   "name":  "current_window_record",
+                                                   "target":  "/sdcard/MEMO/logs/real_user_1780309718382.trace",
+                                                   "status":  "ok",
+                                                   "detail":  "recorded current foreground window; parsed_events=2888; interaction=record_current_usage only; no app launch or synthetic evidence was injected",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309737274
+                                               },
+                                               {
+                                                   "name":  "widget_update",
+                                                   "target":  "top3",
+                                                   "status":  "ok",
+                                                   "detail":  "published 3 real app recommendations",
+                                                   "duration_ms":  2,
+                                                   "timestamp_ms":  1780309755487
+                                               },
+                                               {
+                                                   "name":  "latency_policy",
+                                                   "target":  "async_maple",
+                                                   "status":  "ok",
+                                                   "detail":  "MAPLE prediction ran asynchronously; completion latency=39.1s; slow runs still finish and still drive actions",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755487
+                                               },
+                                               {
+                                                   "name":  "memory_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755591
+                                               },
+                                               {
+                                                   "name":  "thermal_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal battery thermal state",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755591
+                                               },
+                                               {
+                                                   "name":  "network_candidate_priority",
+                                                   "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                   "status":  "ok",
+                                                   "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755591
+                                               },
+                                               {
+                                                   "name":  "network_stats_refresh",
+                                                   "target":  "netstats",
+                                                   "status":  "ok",
+                                                   "detail":  "refreshed network stats before recommendation",
+                                                   "duration_ms":  102,
+                                                   "timestamp_ms":  1780309755694
+                                               },
+                                               {
+                                                   "name":  "binder_service_policy",
+                                                   "target":  "system_services",
+                                                   "status":  "ok",
+                                                   "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755694
+                                               },
+                                               {
+                                                   "name":  "binder_service_refresh",
+                                                   "target":  "service_manager",
+                                                   "status":  "ok",
+                                                   "detail":  "queried service manager after high Binder activity",
+                                                   "duration_ms":  204,
+                                                   "timestamp_ms":  1780309755897
+                                               },
+                                               {
+                                                   "name":  "warm_launch_policy",
+                                                   "target":  "top_apps",
+                                                   "status":  "planned",
+                                                   "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755897
+                                               },
+                                               {
+                                                   "name":  "maple_background",
+                                                   "target":  "deep_reasoning",
+                                                   "status":  "completed",
+                                                   "detail":  "MAPLE result published after asynchronous inference; completion status=completed",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755897
+                                               },
+                                               {
+                                                   "name":  "latency_summary",
+                                                   "target":  "pipeline",
+                                                   "status":  "completed",
+                                                   "detail":  "latency=completed foreground_observed=21.5s, MAPLE=18.0s, total=39.5s",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755898
+                                               }
+                                           ],
+                                 "Count":  12
+                             },
+        "all_recent_actions":  [
+                                   {
+                                       "value":  [
+                                                     {
+                                                         "name":  "current_window_record",
+                                                         "target":  "/sdcard/MEMO/logs/real_user_1780309718382.trace",
+                                                         "status":  "ok",
+                                                         "detail":  "recorded current foreground window; parsed_events=2888; interaction=record_current_usage only; no app launch or synthetic evidence was injected",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309737274
+                                                     },
+                                                     {
+                                                         "name":  "widget_update",
+                                                         "target":  "top3",
+                                                         "status":  "ok",
+                                                         "detail":  "published 3 real app recommendations",
+                                                         "duration_ms":  2,
+                                                         "timestamp_ms":  1780309755487
+                                                     },
+                                                     {
+                                                         "name":  "latency_policy",
+                                                         "target":  "async_maple",
+                                                         "status":  "ok",
+                                                         "detail":  "MAPLE prediction ran asynchronously; completion latency=39.1s; slow runs still finish and still drive actions",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755487
+                                                     },
+                                                     {
+                                                         "name":  "memory_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755591
+                                                     },
+                                                     {
+                                                         "name":  "thermal_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal battery thermal state",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755591
+                                                     },
+                                                     {
+                                                         "name":  "network_candidate_priority",
+                                                         "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                         "status":  "ok",
+                                                         "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755591
+                                                     },
+                                                     {
+                                                         "name":  "network_stats_refresh",
+                                                         "target":  "netstats",
+                                                         "status":  "ok",
+                                                         "detail":  "refreshed network stats before recommendation",
+                                                         "duration_ms":  102,
+                                                         "timestamp_ms":  1780309755694
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_policy",
+                                                         "target":  "system_services",
+                                                         "status":  "ok",
+                                                         "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755694
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_refresh",
+                                                         "target":  "service_manager",
+                                                         "status":  "ok",
+                                                         "detail":  "queried service manager after high Binder activity",
+                                                         "duration_ms":  204,
+                                                         "timestamp_ms":  1780309755897
+                                                     },
+                                                     {
+                                                         "name":  "warm_launch_policy",
+                                                         "target":  "top_apps",
+                                                         "status":  "planned",
+                                                         "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755897
+                                                     },
+                                                     {
+                                                         "name":  "maple_background",
+                                                         "target":  "deep_reasoning",
+                                                         "status":  "completed",
+                                                         "detail":  "MAPLE result published after asynchronous inference; completion status=completed",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755897
+                                                     },
+                                                     {
+                                                         "name":  "latency_summary",
+                                                         "target":  "pipeline",
+                                                         "status":  "completed",
+                                                         "detail":  "latency=completed foreground_observed=21.5s, MAPLE=18.0s, total=39.5s",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755898
+                                                     }
+                                                 ],
+                                       "Count":  12
+                                   }
+                               ]
+    },
+    {
+        "label":  "立即预热第1个推荐",
+        "action":  "com.memoos.action.WARM_TOP_APP",
+        "waited_for":  "warm_launch",
+        "reached_expected_action":  true,
+        "before_updated_at":  1780309755901,
+        "after_updated_at":  1780309759050,
+        "before_recommendations_updated_at":  1780309755901,
+        "after_recommendations_updated_at":  1780309755901,
+        "maple_backend":  "shell",
+        "maple_available":  true,
+        "selected_actions":  {
+                                 "value":  [
+                                               {
+                                                   "name":  "current_window_record",
+                                                   "target":  "/sdcard/MEMO/logs/real_user_1780309718382.trace",
+                                                   "status":  "ok",
+                                                   "detail":  "recorded current foreground window; parsed_events=2888; interaction=record_current_usage only; no app launch or synthetic evidence was injected",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309737274
+                                               },
+                                               {
+                                                   "name":  "widget_update",
+                                                   "target":  "top3",
+                                                   "status":  "ok",
+                                                   "detail":  "published 3 real app recommendations",
+                                                   "duration_ms":  2,
+                                                   "timestamp_ms":  1780309755487
+                                               },
+                                               {
+                                                   "name":  "latency_policy",
+                                                   "target":  "async_maple",
+                                                   "status":  "ok",
+                                                   "detail":  "MAPLE prediction ran asynchronously; completion latency=39.1s; slow runs still finish and still drive actions",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755487
+                                               },
+                                               {
+                                                   "name":  "memory_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755591
+                                               },
+                                               {
+                                                   "name":  "thermal_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal battery thermal state",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755591
+                                               },
+                                               {
+                                                   "name":  "network_candidate_priority",
+                                                   "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                   "status":  "ok",
+                                                   "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755591
+                                               },
+                                               {
+                                                   "name":  "network_stats_refresh",
+                                                   "target":  "netstats",
+                                                   "status":  "ok",
+                                                   "detail":  "refreshed network stats before recommendation",
+                                                   "duration_ms":  102,
+                                                   "timestamp_ms":  1780309755694
+                                               },
+                                               {
+                                                   "name":  "binder_service_policy",
+                                                   "target":  "system_services",
+                                                   "status":  "ok",
+                                                   "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755694
+                                               },
+                                               {
+                                                   "name":  "binder_service_refresh",
+                                                   "target":  "service_manager",
+                                                   "status":  "ok",
+                                                   "detail":  "queried service manager after high Binder activity",
+                                                   "duration_ms":  204,
+                                                   "timestamp_ms":  1780309755897
+                                               },
+                                               {
+                                                   "name":  "warm_launch_policy",
+                                                   "target":  "top_apps",
+                                                   "status":  "planned",
+                                                   "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755897
+                                               },
+                                               {
+                                                   "name":  "maple_background",
+                                                   "target":  "deep_reasoning",
+                                                   "status":  "completed",
+                                                   "detail":  "MAPLE result published after asynchronous inference; completion status=completed",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755897
+                                               },
+                                               {
+                                                   "name":  "latency_summary",
+                                                   "target":  "pipeline",
+                                                   "status":  "completed",
+                                                   "detail":  "latency=completed foreground_observed=21.5s, MAPLE=18.0s, total=39.5s",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755898
+                                               },
+                                               {
+                                                   "name":  "warm_launch",
+                                                   "target":  "com.android.chrome",
+                                                   "status":  "ok",
+                                                   "detail":  "root am start + HOME; label=Chrome",
+                                                   "duration_ms":  1412,
+                                                   "timestamp_ms":  1780309759043
+                                               }
+                                           ],
+                                 "Count":  13
+                             },
+        "all_recent_actions":  [
+                                   {
+                                       "value":  [
+                                                     {
+                                                         "name":  "current_window_record",
+                                                         "target":  "/sdcard/MEMO/logs/real_user_1780309718382.trace",
+                                                         "status":  "ok",
+                                                         "detail":  "recorded current foreground window; parsed_events=2888; interaction=record_current_usage only; no app launch or synthetic evidence was injected",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309737274
+                                                     },
+                                                     {
+                                                         "name":  "widget_update",
+                                                         "target":  "top3",
+                                                         "status":  "ok",
+                                                         "detail":  "published 3 real app recommendations",
+                                                         "duration_ms":  2,
+                                                         "timestamp_ms":  1780309755487
+                                                     },
+                                                     {
+                                                         "name":  "latency_policy",
+                                                         "target":  "async_maple",
+                                                         "status":  "ok",
+                                                         "detail":  "MAPLE prediction ran asynchronously; completion latency=39.1s; slow runs still finish and still drive actions",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755487
+                                                     },
+                                                     {
+                                                         "name":  "memory_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755591
+                                                     },
+                                                     {
+                                                         "name":  "thermal_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal battery thermal state",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755591
+                                                     },
+                                                     {
+                                                         "name":  "network_candidate_priority",
+                                                         "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                         "status":  "ok",
+                                                         "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755591
+                                                     },
+                                                     {
+                                                         "name":  "network_stats_refresh",
+                                                         "target":  "netstats",
+                                                         "status":  "ok",
+                                                         "detail":  "refreshed network stats before recommendation",
+                                                         "duration_ms":  102,
+                                                         "timestamp_ms":  1780309755694
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_policy",
+                                                         "target":  "system_services",
+                                                         "status":  "ok",
+                                                         "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755694
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_refresh",
+                                                         "target":  "service_manager",
+                                                         "status":  "ok",
+                                                         "detail":  "queried service manager after high Binder activity",
+                                                         "duration_ms":  204,
+                                                         "timestamp_ms":  1780309755897
+                                                     },
+                                                     {
+                                                         "name":  "warm_launch_policy",
+                                                         "target":  "top_apps",
+                                                         "status":  "planned",
+                                                         "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755897
+                                                     },
+                                                     {
+                                                         "name":  "maple_background",
+                                                         "target":  "deep_reasoning",
+                                                         "status":  "completed",
+                                                         "detail":  "MAPLE result published after asynchronous inference; completion status=completed",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755897
+                                                     },
+                                                     {
+                                                         "name":  "latency_summary",
+                                                         "target":  "pipeline",
+                                                         "status":  "completed",
+                                                         "detail":  "latency=completed foreground_observed=21.5s, MAPLE=18.0s, total=39.5s",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755898
+                                                     },
+                                                     {
+                                                         "name":  "warm_launch",
+                                                         "target":  "com.android.chrome",
+                                                         "status":  "ok",
+                                                         "detail":  "root am start + HOME; label=Chrome",
+                                                         "duration_ms":  1412,
+                                                         "timestamp_ms":  1780309759043
+                                                     }
+                                                 ],
+                                       "Count":  13
+                                   }
+                               ]
+    },
+    {
+        "label":  "开始自由体验",
+        "action":  "com.memoos.action.FREE_USAGE_START",
+        "waited_for":  "free_usage_session",
+        "reached_expected_action":  true,
+        "before_updated_at":  1780309759050,
+        "after_updated_at":  1780309766470,
+        "before_recommendations_updated_at":  1780309755901,
+        "after_recommendations_updated_at":  1780309755901,
+        "maple_backend":  "shell",
+        "maple_available":  true,
+        "selected_actions":  {
+                                 "value":  [
+                                               {
+                                                   "name":  "current_window_record",
+                                                   "target":  "/sdcard/MEMO/logs/real_user_1780309718382.trace",
+                                                   "status":  "ok",
+                                                   "detail":  "recorded current foreground window; parsed_events=2888; interaction=record_current_usage only; no app launch or synthetic evidence was injected",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309737274
+                                               },
+                                               {
+                                                   "name":  "widget_update",
+                                                   "target":  "top3",
+                                                   "status":  "ok",
+                                                   "detail":  "published 3 real app recommendations",
+                                                   "duration_ms":  2,
+                                                   "timestamp_ms":  1780309755487
+                                               },
+                                               {
+                                                   "name":  "latency_policy",
+                                                   "target":  "async_maple",
+                                                   "status":  "ok",
+                                                   "detail":  "MAPLE prediction ran asynchronously; completion latency=39.1s; slow runs still finish and still drive actions",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755487
+                                               },
+                                               {
+                                                   "name":  "memory_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755591
+                                               },
+                                               {
+                                                   "name":  "thermal_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal battery thermal state",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755591
+                                               },
+                                               {
+                                                   "name":  "network_candidate_priority",
+                                                   "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                   "status":  "ok",
+                                                   "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755591
+                                               },
+                                               {
+                                                   "name":  "network_stats_refresh",
+                                                   "target":  "netstats",
+                                                   "status":  "ok",
+                                                   "detail":  "refreshed network stats before recommendation",
+                                                   "duration_ms":  102,
+                                                   "timestamp_ms":  1780309755694
+                                               },
+                                               {
+                                                   "name":  "binder_service_policy",
+                                                   "target":  "system_services",
+                                                   "status":  "ok",
+                                                   "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755694
+                                               },
+                                               {
+                                                   "name":  "binder_service_refresh",
+                                                   "target":  "service_manager",
+                                                   "status":  "ok",
+                                                   "detail":  "queried service manager after high Binder activity",
+                                                   "duration_ms":  204,
+                                                   "timestamp_ms":  1780309755897
+                                               },
+                                               {
+                                                   "name":  "warm_launch_policy",
+                                                   "target":  "top_apps",
+                                                   "status":  "planned",
+                                                   "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755897
+                                               },
+                                               {
+                                                   "name":  "maple_background",
+                                                   "target":  "deep_reasoning",
+                                                   "status":  "completed",
+                                                   "detail":  "MAPLE result published after asynchronous inference; completion status=completed",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755897
+                                               },
+                                               {
+                                                   "name":  "latency_summary",
+                                                   "target":  "pipeline",
+                                                   "status":  "completed",
+                                                   "detail":  "latency=completed foreground_observed=21.5s, MAPLE=18.0s, total=39.5s",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309755898
+                                               },
+                                               {
+                                                   "name":  "warm_launch",
+                                                   "target":  "com.android.chrome",
+                                                   "status":  "ok",
+                                                   "detail":  "root am start + HOME; label=Chrome",
+                                                   "duration_ms":  1412,
+                                                   "timestamp_ms":  1780309759043
+                                               },
+                                               {
+                                                   "name":  "free_usage_session",
+                                                   "target":  "active_background_capture",
+                                                   "status":  "ok",
+                                                   "detail":  "free usage session is recording; leave MEMO, use any apps, then return and finish analysis",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309766461
+                                               }
+                                           ],
+                                 "Count":  14
+                             },
+        "all_recent_actions":  [
+                                   {
+                                       "value":  [
+                                                     {
+                                                         "name":  "current_window_record",
+                                                         "target":  "/sdcard/MEMO/logs/real_user_1780309718382.trace",
+                                                         "status":  "ok",
+                                                         "detail":  "recorded current foreground window; parsed_events=2888; interaction=record_current_usage only; no app launch or synthetic evidence was injected",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309737274
+                                                     },
+                                                     {
+                                                         "name":  "widget_update",
+                                                         "target":  "top3",
+                                                         "status":  "ok",
+                                                         "detail":  "published 3 real app recommendations",
+                                                         "duration_ms":  2,
+                                                         "timestamp_ms":  1780309755487
+                                                     },
+                                                     {
+                                                         "name":  "latency_policy",
+                                                         "target":  "async_maple",
+                                                         "status":  "ok",
+                                                         "detail":  "MAPLE prediction ran asynchronously; completion latency=39.1s; slow runs still finish and still drive actions",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755487
+                                                     },
+                                                     {
+                                                         "name":  "memory_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755591
+                                                     },
+                                                     {
+                                                         "name":  "thermal_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal battery thermal state",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755591
+                                                     },
+                                                     {
+                                                         "name":  "network_candidate_priority",
+                                                         "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                         "status":  "ok",
+                                                         "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755591
+                                                     },
+                                                     {
+                                                         "name":  "network_stats_refresh",
+                                                         "target":  "netstats",
+                                                         "status":  "ok",
+                                                         "detail":  "refreshed network stats before recommendation",
+                                                         "duration_ms":  102,
+                                                         "timestamp_ms":  1780309755694
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_policy",
+                                                         "target":  "system_services",
+                                                         "status":  "ok",
+                                                         "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755694
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_refresh",
+                                                         "target":  "service_manager",
+                                                         "status":  "ok",
+                                                         "detail":  "queried service manager after high Binder activity",
+                                                         "duration_ms":  204,
+                                                         "timestamp_ms":  1780309755897
+                                                     },
+                                                     {
+                                                         "name":  "warm_launch_policy",
+                                                         "target":  "top_apps",
+                                                         "status":  "planned",
+                                                         "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755897
+                                                     },
+                                                     {
+                                                         "name":  "maple_background",
+                                                         "target":  "deep_reasoning",
+                                                         "status":  "completed",
+                                                         "detail":  "MAPLE result published after asynchronous inference; completion status=completed",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755897
+                                                     },
+                                                     {
+                                                         "name":  "latency_summary",
+                                                         "target":  "pipeline",
+                                                         "status":  "completed",
+                                                         "detail":  "latency=completed foreground_observed=21.5s, MAPLE=18.0s, total=39.5s",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309755898
+                                                     },
+                                                     {
+                                                         "name":  "warm_launch",
+                                                         "target":  "com.android.chrome",
+                                                         "status":  "ok",
+                                                         "detail":  "root am start + HOME; label=Chrome",
+                                                         "duration_ms":  1412,
+                                                         "timestamp_ms":  1780309759043
+                                                     },
+                                                     {
+                                                         "name":  "free_usage_session",
+                                                         "target":  "active_background_capture",
+                                                         "status":  "ok",
+                                                         "detail":  "free usage session is recording; leave MEMO, use any apps, then return and finish analysis",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309766461
+                                                     }
+                                                 ],
+                                       "Count":  14
+                                   }
+                               ]
+    },
+    {
+        "label":  "结束体验并分析",
+        "action":  "com.memoos.action.FREE_USAGE_FINISH",
+        "waited_for":  "free_usage_session",
+        "reached_expected_action":  true,
+        "before_updated_at":  1780309766470,
+        "after_updated_at":  1780309964530,
+        "before_recommendations_updated_at":  1780309755901,
+        "after_recommendations_updated_at":  1780309964428,
+        "maple_backend":  "shell",
+        "maple_available":  true,
+        "selected_actions":  {
+                                 "value":  [
+                                               {
+                                                   "name":  "widget_update",
+                                                   "target":  "top3",
+                                                   "status":  "ok",
+                                                   "detail":  "published 3 real app recommendations",
+                                                   "duration_ms":  1,
+                                                   "timestamp_ms":  1780309963666
+                                               },
+                                               {
+                                                   "name":  "latency_policy",
+                                                   "target":  "async_maple",
+                                                   "status":  "ok",
+                                                   "detail":  "MAPLE prediction ran asynchronously; completion latency=28.7s; slow runs still finish and still drive actions",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963667
+                                               },
+                                               {
+                                                   "name":  "memory_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963781
+                                               },
+                                               {
+                                                   "name":  "thermal_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal battery thermal state",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963781
+                                               },
+                                               {
+                                                   "name":  "network_candidate_priority",
+                                                   "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                   "status":  "ok",
+                                                   "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963782
+                                               },
+                                               {
+                                                   "name":  "network_stats_refresh",
+                                                   "target":  "netstats",
+                                                   "status":  "ok",
+                                                   "detail":  "refreshed network stats before recommendation",
+                                                   "duration_ms":  103,
+                                                   "timestamp_ms":  1780309963885
+                                               },
+                                               {
+                                                   "name":  "camera_media_candidate",
+                                                   "target":  "com.google.android.GoogleCamera",
+                                                   "status":  "ok",
+                                                   "detail":  "selected Camera for camera/media follow-up warm launch",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963885
+                                               },
+                                               {
+                                                   "name":  "binder_service_policy",
+                                                   "target":  "system_services",
+                                                   "status":  "ok",
+                                                   "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963885
+                                               },
+                                               {
+                                                   "name":  "binder_service_refresh",
+                                                   "target":  "service_manager",
+                                                   "status":  "ok",
+                                                   "detail":  "queried service manager after high Binder activity",
+                                                   "duration_ms":  304,
+                                                   "timestamp_ms":  1780309964188
+                                               },
+                                               {
+                                                   "name":  "warm_launch_policy",
+                                                   "target":  "top_apps",
+                                                   "status":  "planned",
+                                                   "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309964188
+                                               },
+                                               {
+                                                   "name":  "free_usage_session",
+                                                   "target":  "free_usage_report",
+                                                   "status":  "ok",
+                                                   "detail":  "analyzed free usage session with 5 observed app segments across 5 apps; report=/sdcard/MEMO/reports/latest_free_usage_report.json",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309964426
+                                               },
+                                               {
+                                                   "name":  "latency_summary",
+                                                   "target":  "pipeline",
+                                                   "status":  "completed",
+                                                   "detail":  "latency=completed foreground_observed=10.4s, MAPLE=18.8s, total=29.3s",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309964428
+                                               }
+                                           ],
+                                 "Count":  12
+                             },
+        "all_recent_actions":  [
+                                   {
+                                       "value":  [
+                                                     {
+                                                         "name":  "widget_update",
+                                                         "target":  "top3",
+                                                         "status":  "ok",
+                                                         "detail":  "published 3 real app recommendations",
+                                                         "duration_ms":  1,
+                                                         "timestamp_ms":  1780309963666
+                                                     },
+                                                     {
+                                                         "name":  "latency_policy",
+                                                         "target":  "async_maple",
+                                                         "status":  "ok",
+                                                         "detail":  "MAPLE prediction ran asynchronously; completion latency=28.7s; slow runs still finish and still drive actions",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963667
+                                                     },
+                                                     {
+                                                         "name":  "memory_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963781
+                                                     },
+                                                     {
+                                                         "name":  "thermal_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal battery thermal state",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963781
+                                                     },
+                                                     {
+                                                         "name":  "network_candidate_priority",
+                                                         "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                         "status":  "ok",
+                                                         "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963782
+                                                     },
+                                                     {
+                                                         "name":  "network_stats_refresh",
+                                                         "target":  "netstats",
+                                                         "status":  "ok",
+                                                         "detail":  "refreshed network stats before recommendation",
+                                                         "duration_ms":  103,
+                                                         "timestamp_ms":  1780309963885
+                                                     },
+                                                     {
+                                                         "name":  "camera_media_candidate",
+                                                         "target":  "com.google.android.GoogleCamera",
+                                                         "status":  "ok",
+                                                         "detail":  "selected Camera for camera/media follow-up warm launch",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963885
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_policy",
+                                                         "target":  "system_services",
+                                                         "status":  "ok",
+                                                         "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963885
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_refresh",
+                                                         "target":  "service_manager",
+                                                         "status":  "ok",
+                                                         "detail":  "queried service manager after high Binder activity",
+                                                         "duration_ms":  304,
+                                                         "timestamp_ms":  1780309964188
+                                                     },
+                                                     {
+                                                         "name":  "warm_launch_policy",
+                                                         "target":  "top_apps",
+                                                         "status":  "planned",
+                                                         "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309964188
+                                                     },
+                                                     {
+                                                         "name":  "free_usage_session",
+                                                         "target":  "free_usage_report",
+                                                         "status":  "ok",
+                                                         "detail":  "analyzed free usage session with 5 observed app segments across 5 apps; report=/sdcard/MEMO/reports/latest_free_usage_report.json",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309964426
+                                                     },
+                                                     {
+                                                         "name":  "latency_summary",
+                                                         "target":  "pipeline",
+                                                         "status":  "completed",
+                                                         "detail":  "latency=completed foreground_observed=10.4s, MAPLE=18.8s, total=29.3s",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309964428
+                                                     }
+                                                 ],
+                                       "Count":  12
+                                   }
+                               ]
+    },
+    {
+        "label":  "停止后台任务",
+        "action":  "com.memoos.action.STOP",
+        "waited_for":  "pipeline_stop",
+        "reached_expected_action":  false,
+        "before_updated_at":  1780310024954,
+        "after_updated_at":  1780310024954,
+        "before_recommendations_updated_at":  1780309964428,
+        "after_recommendations_updated_at":  1780309964428,
+        "maple_backend":  "shell",
+        "maple_available":  true,
+        "selected_actions":  {
+                                 "value":  [
+                                               {
+                                                   "name":  "widget_update",
+                                                   "target":  "top3",
+                                                   "status":  "ok",
+                                                   "detail":  "published 3 real app recommendations",
+                                                   "duration_ms":  1,
+                                                   "timestamp_ms":  1780309963666
+                                               },
+                                               {
+                                                   "name":  "latency_policy",
+                                                   "target":  "async_maple",
+                                                   "status":  "ok",
+                                                   "detail":  "MAPLE prediction ran asynchronously; completion latency=28.7s; slow runs still finish and still drive actions",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963667
+                                               },
+                                               {
+                                                   "name":  "memory_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963781
+                                               },
+                                               {
+                                                   "name":  "thermal_policy",
+                                                   "target":  "preload_intensity",
+                                                   "status":  "ok",
+                                                   "detail":  "normal battery thermal state",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963781
+                                               },
+                                               {
+                                                   "name":  "network_candidate_priority",
+                                                   "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                   "status":  "ok",
+                                                   "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963782
+                                               },
+                                               {
+                                                   "name":  "network_stats_refresh",
+                                                   "target":  "netstats",
+                                                   "status":  "ok",
+                                                   "detail":  "refreshed network stats before recommendation",
+                                                   "duration_ms":  103,
+                                                   "timestamp_ms":  1780309963885
+                                               },
+                                               {
+                                                   "name":  "camera_media_candidate",
+                                                   "target":  "com.google.android.GoogleCamera",
+                                                   "status":  "ok",
+                                                   "detail":  "selected Camera for camera/media follow-up warm launch",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963885
+                                               },
+                                               {
+                                                   "name":  "binder_service_policy",
+                                                   "target":  "system_services",
+                                                   "status":  "ok",
+                                                   "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309963885
+                                               },
+                                               {
+                                                   "name":  "binder_service_refresh",
+                                                   "target":  "service_manager",
+                                                   "status":  "ok",
+                                                   "detail":  "queried service manager after high Binder activity",
+                                                   "duration_ms":  304,
+                                                   "timestamp_ms":  1780309964188
+                                               },
+                                               {
+                                                   "name":  "warm_launch_policy",
+                                                   "target":  "top_apps",
+                                                   "status":  "planned",
+                                                   "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309964188
+                                               },
+                                               {
+                                                   "name":  "free_usage_session",
+                                                   "target":  "free_usage_report",
+                                                   "status":  "ok",
+                                                   "detail":  "analyzed free usage session with 5 observed app segments across 5 apps; report=/sdcard/MEMO/reports/latest_free_usage_report.json",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309964426
+                                               },
+                                               {
+                                                   "name":  "latency_summary",
+                                                   "target":  "pipeline",
+                                                   "status":  "completed",
+                                                   "detail":  "latency=completed foreground_observed=10.4s, MAPLE=18.8s, total=29.3s",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780309964428
+                                               },
+                                               {
+                                                   "name":  "pipeline_stop",
+                                                   "target":  "background tasks",
+                                                   "status":  "ok",
+                                                   "detail":  "stopped eBPF collector, MAPLE process, and MEMO background work on this device",
+                                                   "duration_ms":  0,
+                                                   "timestamp_ms":  1780310024947
+                                               }
+                                           ],
+                                 "Count":  13
+                             },
+        "all_recent_actions":  [
+                                   {
+                                       "value":  [
+                                                     {
+                                                         "name":  "widget_update",
+                                                         "target":  "top3",
+                                                         "status":  "ok",
+                                                         "detail":  "published 3 real app recommendations",
+                                                         "duration_ms":  1,
+                                                         "timestamp_ms":  1780309963666
+                                                     },
+                                                     {
+                                                         "name":  "latency_policy",
+                                                         "target":  "async_maple",
+                                                         "status":  "ok",
+                                                         "detail":  "MAPLE prediction ran asynchronously; completion latency=28.7s; slow runs still finish and still drive actions",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963667
+                                                     },
+                                                     {
+                                                         "name":  "memory_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal memory; lightweight warm launch remains enabled",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963781
+                                                     },
+                                                     {
+                                                         "name":  "thermal_policy",
+                                                         "target":  "preload_intensity",
+                                                         "status":  "ok",
+                                                         "detail":  "normal battery thermal state",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963781
+                                                     },
+                                                     {
+                                                         "name":  "network_candidate_priority",
+                                                         "target":  "com.android.chrome, com.google.android.apps.messaging",
+                                                         "status":  "ok",
+                                                         "detail":  "UDP sendto/recvfrom evidence prioritizes network-capable apps",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963782
+                                                     },
+                                                     {
+                                                         "name":  "network_stats_refresh",
+                                                         "target":  "netstats",
+                                                         "status":  "ok",
+                                                         "detail":  "refreshed network stats before recommendation",
+                                                         "duration_ms":  103,
+                                                         "timestamp_ms":  1780309963885
+                                                     },
+                                                     {
+                                                         "name":  "camera_media_candidate",
+                                                         "target":  "com.google.android.GoogleCamera",
+                                                         "status":  "ok",
+                                                         "detail":  "selected Camera for camera/media follow-up warm launch",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963885
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_policy",
+                                                         "target":  "system_services",
+                                                         "status":  "ok",
+                                                         "detail":  "Binder/system-service evidence kept as MAPLE scheduling context",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309963885
+                                                     },
+                                                     {
+                                                         "name":  "binder_service_refresh",
+                                                         "target":  "service_manager",
+                                                         "status":  "ok",
+                                                         "detail":  "queried service manager after high Binder activity",
+                                                         "duration_ms":  304,
+                                                         "timestamp_ms":  1780309964188
+                                                     },
+                                                     {
+                                                         "name":  "warm_launch_policy",
+                                                         "target":  "top_apps",
+                                                         "status":  "planned",
+                                                         "detail":  "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309964188
+                                                     },
+                                                     {
+                                                         "name":  "free_usage_session",
+                                                         "target":  "free_usage_report",
+                                                         "status":  "ok",
+                                                         "detail":  "analyzed free usage session with 5 observed app segments across 5 apps; report=/sdcard/MEMO/reports/latest_free_usage_report.json",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309964426
+                                                     },
+                                                     {
+                                                         "name":  "latency_summary",
+                                                         "target":  "pipeline",
+                                                         "status":  "completed",
+                                                         "detail":  "latency=completed foreground_observed=10.4s, MAPLE=18.8s, total=29.3s",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780309964428
+                                                     },
+                                                     {
+                                                         "name":  "pipeline_stop",
+                                                         "target":  "background tasks",
+                                                         "status":  "ok",
+                                                         "detail":  "stopped eBPF collector, MAPLE process, and MEMO background work on this device",
+                                                         "duration_ms":  0,
+                                                         "timestamp_ms":  1780310024947
+                                                     }
+                                                 ],
+                                       "Count":  13
+                                   }
+                               ]
+    }
+]

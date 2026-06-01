@@ -23,6 +23,7 @@ data class ActionState(
     val status: String,
     val detail: String,
     val durationMs: Long,
+    val timestampMs: Long,
 )
 
 data class MapleState(
@@ -120,7 +121,8 @@ class MemoStore(context: Context) {
                 .put("name", "pipeline_failure")
                 .put("target", "strict_runtime")
                 .put("status", "blocked")
-                .put("detail", message),
+                .put("detail", message)
+                .put("timestamp_ms", System.currentTimeMillis()),
         )
         prefs.edit()
             .putLong("updated_at", System.currentTimeMillis())
@@ -159,6 +161,7 @@ class MemoStore(context: Context) {
                 .put("status", it.status)
                 .put("detail", it.detail)
                 .put("duration_ms", it.durationMs)
+                .put("timestamp_ms", it.timestampMs)
         })
         val mapleObj = JSONObject()
             .put("available", prediction.available)
@@ -192,7 +195,8 @@ class MemoStore(context: Context) {
                 .put("target", action.target)
                 .put("status", action.status)
                 .put("detail", action.detail)
-                .put("duration_ms", action.durationMs),
+                .put("duration_ms", action.durationMs)
+                .put("timestamp_ms", action.timestampMs),
         )
         prefs.edit()
             .putLong("updated_at", System.currentTimeMillis())
@@ -349,6 +353,7 @@ class MemoStore(context: Context) {
                     status = obj.optString("status"),
                     detail = obj.optString("detail"),
                     durationMs = obj.optLong("duration_ms", 0L),
+                    timestampMs = obj.optLong("timestamp_ms", 0L),
                 )
             }
         } catch (_: Exception) {

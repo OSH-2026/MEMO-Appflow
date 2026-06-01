@@ -576,6 +576,7 @@ class FreeUsageSessionRunner(private val context: Context) {
             .put("status", status)
             .put("detail", detail)
             .put("duration_ms", durationMs)
+            .put("timestamp_ms", timestampMs)
     }
 
     private fun snapshotJson(state: SystemStateSnapshot): JSONObject {
