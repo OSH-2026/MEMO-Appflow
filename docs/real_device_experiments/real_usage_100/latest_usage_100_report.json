@@ -1,15 +1,15 @@
 {
   "schema_version": "memo.real_usage_100.v1",
   "experiment_type": "real_user_like_100_app_rotation",
-  "started_at_ms": 1780298489375,
-  "duration_ms": 301324,
+  "started_at_ms": 1780299669574,
+  "duration_ms": 300870,
   "interaction_count_requested": 100,
   "interaction_count_observed": 100,
   "interaction_command_ok": true,
   "app_pool_size": 12,
   "unique_apps_opened": 12,
-  "raw_trace_path": "\/sdcard\/MEMO\/logs\/usage_100_1780298489375.trace",
-  "scenario_id": "real_usage_100_1780298489375",
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/usage_100_1780299669574.trace",
+  "scenario_id": "real_usage_100_1780299669574",
   "report_files": {
     "usage_report": "\/sdcard\/MEMO\/reports\/latest_usage_100_report.json",
     "scenario": "\/sdcard\/MEMO\/scenarios\/latest_real_usage_maple_scenario.json",
@@ -87,13 +87,13 @@
     "Communication": 8
   },
   "launch_metrics": {
-    "avg_total_time_ms": 148.06521739130434,
-    "p50_total_time_ms": 123,
-    "avg_wait_time_ms": 147.34,
+    "avg_total_time_ms": 148,
+    "p50_total_time_ms": 126,
+    "avg_wait_time_ms": 145.36,
     "p50_wait_time_ms": 120,
     "launch_state_counts": {
-      "HOT": 77,
-      "WARM": 15,
+      "HOT": 79,
+      "WARM": 13,
       "UNKNOWN (0)": 8
     }
   },
@@ -111,11 +111,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298495000,
-      "end_wall_time_ms": 1780298496000,
+      "start_wall_time_ms": 1780299675000,
+      "end_wall_time_ms": 1780299676000,
       "launch_state": "HOT",
-      "total_time_ms": 229,
-      "wait_time_ms": 232,
+      "total_time_ms": 238,
+      "wait_time_ms": 246,
       "observed": true
     },
     {
@@ -129,11 +129,11 @@
         "Navigation\/Location",
         "Communication"
       ],
-      "start_wall_time_ms": 1780298496000,
-      "end_wall_time_ms": 1780298497000,
+      "start_wall_time_ms": 1780299676000,
+      "end_wall_time_ms": 1780299677000,
       "launch_state": "HOT",
-      "total_time_ms": 240,
-      "wait_time_ms": 251,
+      "total_time_ms": 352,
+      "wait_time_ms": 354,
       "observed": true
     },
     {
@@ -145,11 +145,11 @@
         "Display Composition",
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298497000,
-      "end_wall_time_ms": 1780298497000,
-      "launch_state": "HOT",
-      "total_time_ms": 62,
-      "wait_time_ms": 68,
+      "start_wall_time_ms": 1780299678000,
+      "end_wall_time_ms": 1780299678000,
+      "launch_state": "WARM",
+      "total_time_ms": 255,
+      "wait_time_ms": 257,
       "observed": true
     },
     {
@@ -159,11 +159,11 @@
       "categories": [
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298498000,
-      "end_wall_time_ms": 1780298498000,
+      "start_wall_time_ms": 1780299678000,
+      "end_wall_time_ms": 1780299679000,
       "launch_state": "HOT",
-      "total_time_ms": 81,
-      "wait_time_ms": 86,
+      "total_time_ms": 71,
+      "wait_time_ms": 78,
       "observed": true
     },
     {
@@ -179,11 +179,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298499000,
-      "end_wall_time_ms": 1780298499000,
+      "start_wall_time_ms": 1780299679000,
+      "end_wall_time_ms": 1780299680000,
       "launch_state": "HOT",
-      "total_time_ms": 110,
-      "wait_time_ms": 114,
+      "total_time_ms": 132,
+      "wait_time_ms": 148,
       "observed": true
     },
     {
@@ -199,11 +199,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298501000,
-      "end_wall_time_ms": 1780298502000,
+      "start_wall_time_ms": 1780299683000,
+      "end_wall_time_ms": 1780299683000,
       "launch_state": "HOT",
-      "total_time_ms": 116,
-      "wait_time_ms": 120,
+      "total_time_ms": 95,
+      "wait_time_ms": 97,
       "observed": true
     },
     {
@@ -218,11 +218,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298503000,
-      "end_wall_time_ms": 1780298503000,
+      "start_wall_time_ms": 1780299684000,
+      "end_wall_time_ms": 1780299684000,
       "launch_state": "WARM",
-      "total_time_ms": 199,
-      "wait_time_ms": 208,
+      "total_time_ms": 196,
+      "wait_time_ms": 205,
       "observed": true
     },
     {
@@ -237,11 +237,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298503000,
-      "end_wall_time_ms": 1780298504000,
+      "start_wall_time_ms": 1780299684000,
+      "end_wall_time_ms": 1780299685000,
       "launch_state": "HOT",
-      "total_time_ms": 169,
-      "wait_time_ms": 174,
+      "total_time_ms": 155,
+      "wait_time_ms": 158,
       "observed": true
     },
     {
@@ -256,11 +256,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298504000,
-      "end_wall_time_ms": 1780298505000,
+      "start_wall_time_ms": 1780299685000,
+      "end_wall_time_ms": 1780299686000,
       "launch_state": "UNKNOWN (0)",
       "total_time_ms": null,
-      "wait_time_ms": 59,
+      "wait_time_ms": 52,
       "observed": true
     },
     {
@@ -275,11 +275,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298505000,
-      "end_wall_time_ms": 1780298506000,
+      "start_wall_time_ms": 1780299686000,
+      "end_wall_time_ms": 1780299687000,
       "launch_state": "HOT",
-      "total_time_ms": 109,
-      "wait_time_ms": 113,
+      "total_time_ms": 113,
+      "wait_time_ms": 117,
       "observed": true
     },
     {
@@ -294,11 +294,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298508000,
-      "end_wall_time_ms": 1780298509000,
+      "start_wall_time_ms": 1780299689000,
+      "end_wall_time_ms": 1780299689000,
       "launch_state": "WARM",
-      "total_time_ms": 393,
-      "wait_time_ms": 396,
+      "total_time_ms": 429,
+      "wait_time_ms": 432,
       "observed": true
     },
     {
@@ -312,11 +312,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298509000,
-      "end_wall_time_ms": 1780298510000,
+      "start_wall_time_ms": 1780299690000,
+      "end_wall_time_ms": 1780299690000,
       "launch_state": "HOT",
-      "total_time_ms": 86,
-      "wait_time_ms": 92,
+      "total_time_ms": 79,
+      "wait_time_ms": 86,
       "observed": true
     },
     {
@@ -332,11 +332,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298510000,
-      "end_wall_time_ms": 1780298510000,
+      "start_wall_time_ms": 1780299691000,
+      "end_wall_time_ms": 1780299691000,
       "launch_state": "HOT",
-      "total_time_ms": 154,
-      "wait_time_ms": 159,
+      "total_time_ms": 168,
+      "wait_time_ms": 172,
       "observed": true
     },
     {
@@ -350,11 +350,11 @@
         "Navigation\/Location",
         "Communication"
       ],
-      "start_wall_time_ms": 1780298511000,
-      "end_wall_time_ms": 1780298512000,
+      "start_wall_time_ms": 1780299691000,
+      "end_wall_time_ms": 1780299692000,
       "launch_state": "HOT",
-      "total_time_ms": 135,
-      "wait_time_ms": 139,
+      "total_time_ms": 143,
+      "wait_time_ms": 145,
       "observed": true
     },
     {
@@ -366,11 +366,11 @@
         "Display Composition",
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298512000,
-      "end_wall_time_ms": 1780298512000,
+      "start_wall_time_ms": 1780299692000,
+      "end_wall_time_ms": 1780299693000,
       "launch_state": "HOT",
-      "total_time_ms": 68,
-      "wait_time_ms": 71,
+      "total_time_ms": 56,
+      "wait_time_ms": 61,
       "observed": true
     },
     {
@@ -380,11 +380,11 @@
       "categories": [
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298514000,
-      "end_wall_time_ms": 1780298515000,
+      "start_wall_time_ms": 1780299695000,
+      "end_wall_time_ms": 1780299695000,
       "launch_state": "HOT",
-      "total_time_ms": 60,
-      "wait_time_ms": 64,
+      "total_time_ms": 70,
+      "wait_time_ms": 73,
       "observed": true
     },
     {
@@ -400,11 +400,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298515000,
-      "end_wall_time_ms": 1780298515000,
+      "start_wall_time_ms": 1780299696000,
+      "end_wall_time_ms": 1780299696000,
       "launch_state": "HOT",
-      "total_time_ms": 68,
-      "wait_time_ms": 75,
+      "total_time_ms": 71,
+      "wait_time_ms": 74,
       "observed": true
     },
     {
@@ -420,10 +420,10 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298516000,
-      "end_wall_time_ms": 1780298516000,
+      "start_wall_time_ms": 1780299696000,
+      "end_wall_time_ms": 1780299697000,
       "launch_state": "HOT",
-      "total_time_ms": 52,
+      "total_time_ms": 50,
       "wait_time_ms": 55,
       "observed": true
     },
@@ -439,11 +439,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298517000,
-      "end_wall_time_ms": 1780298517000,
-      "launch_state": "WARM",
-      "total_time_ms": 207,
-      "wait_time_ms": 218,
+      "start_wall_time_ms": 1780299697000,
+      "end_wall_time_ms": 1780299698000,
+      "launch_state": "HOT",
+      "total_time_ms": 166,
+      "wait_time_ms": 173,
       "observed": true
     },
     {
@@ -458,11 +458,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298517000,
-      "end_wall_time_ms": 1780298518000,
+      "start_wall_time_ms": 1780299698000,
+      "end_wall_time_ms": 1780299699000,
       "launch_state": "HOT",
-      "total_time_ms": 147,
-      "wait_time_ms": 150,
+      "total_time_ms": 138,
+      "wait_time_ms": 141,
       "observed": true
     },
     {
@@ -477,8 +477,8 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298520000,
-      "end_wall_time_ms": 1780298520000,
+      "start_wall_time_ms": 1780299701000,
+      "end_wall_time_ms": 1780299701000,
       "launch_state": "UNKNOWN (0)",
       "total_time_ms": null,
       "wait_time_ms": 60,
@@ -496,11 +496,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298521000,
-      "end_wall_time_ms": 1780298522000,
+      "start_wall_time_ms": 1780299701000,
+      "end_wall_time_ms": 1780299702000,
       "launch_state": "HOT",
-      "total_time_ms": 107,
-      "wait_time_ms": 109,
+      "total_time_ms": 108,
+      "wait_time_ms": 110,
       "observed": true
     },
     {
@@ -515,11 +515,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298522000,
-      "end_wall_time_ms": 1780298522000,
+      "start_wall_time_ms": 1780299702000,
+      "end_wall_time_ms": 1780299703000,
       "launch_state": "WARM",
-      "total_time_ms": 347,
-      "wait_time_ms": 350,
+      "total_time_ms": 361,
+      "wait_time_ms": 371,
       "observed": true
     },
     {
@@ -533,11 +533,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298523000,
-      "end_wall_time_ms": 1780298523000,
+      "start_wall_time_ms": 1780299703000,
+      "end_wall_time_ms": 1780299704000,
       "launch_state": "HOT",
-      "total_time_ms": 63,
-      "wait_time_ms": 73,
+      "total_time_ms": 67,
+      "wait_time_ms": 71,
       "observed": true
     },
     {
@@ -553,11 +553,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298524000,
-      "end_wall_time_ms": 1780298524000,
+      "start_wall_time_ms": 1780299704000,
+      "end_wall_time_ms": 1780299705000,
       "launch_state": "HOT",
-      "total_time_ms": 192,
-      "wait_time_ms": 195,
+      "total_time_ms": 170,
+      "wait_time_ms": 173,
       "observed": true
     },
     {
@@ -571,11 +571,11 @@
         "Navigation\/Location",
         "Communication"
       ],
-      "start_wall_time_ms": 1780298526000,
-      "end_wall_time_ms": 1780298527000,
+      "start_wall_time_ms": 1780299707000,
+      "end_wall_time_ms": 1780299708000,
       "launch_state": "HOT",
-      "total_time_ms": 161,
-      "wait_time_ms": 164,
+      "total_time_ms": 155,
+      "wait_time_ms": 160,
       "observed": true
     },
     {
@@ -587,11 +587,11 @@
         "Display Composition",
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298527000,
-      "end_wall_time_ms": 1780298528000,
-      "launch_state": "WARM",
-      "total_time_ms": 235,
-      "wait_time_ms": 240,
+      "start_wall_time_ms": 1780299708000,
+      "end_wall_time_ms": 1780299708000,
+      "launch_state": "HOT",
+      "total_time_ms": 66,
+      "wait_time_ms": 69,
       "observed": true
     },
     {
@@ -601,11 +601,11 @@
       "categories": [
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298528000,
-      "end_wall_time_ms": 1780298529000,
+      "start_wall_time_ms": 1780299709000,
+      "end_wall_time_ms": 1780299709000,
       "launch_state": "HOT",
-      "total_time_ms": 74,
-      "wait_time_ms": 78,
+      "total_time_ms": 80,
+      "wait_time_ms": 83,
       "observed": true
     },
     {
@@ -621,11 +621,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298529000,
-      "end_wall_time_ms": 1780298530000,
+      "start_wall_time_ms": 1780299710000,
+      "end_wall_time_ms": 1780299710000,
       "launch_state": "HOT",
-      "total_time_ms": 61,
-      "wait_time_ms": 77,
+      "total_time_ms": 72,
+      "wait_time_ms": 75,
       "observed": true
     },
     {
@@ -641,11 +641,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298530000,
-      "end_wall_time_ms": 1780298531000,
+      "start_wall_time_ms": 1780299710000,
+      "end_wall_time_ms": 1780299711000,
       "launch_state": "HOT",
-      "total_time_ms": 106,
-      "wait_time_ms": 111,
+      "total_time_ms": 90,
+      "wait_time_ms": 96,
       "observed": true
     },
     {
@@ -660,11 +660,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298533000,
-      "end_wall_time_ms": 1780298533000,
+      "start_wall_time_ms": 1780299713000,
+      "end_wall_time_ms": 1780299713000,
       "launch_state": "HOT",
-      "total_time_ms": 201,
-      "wait_time_ms": 210,
+      "total_time_ms": 185,
+      "wait_time_ms": 200,
       "observed": true
     },
     {
@@ -679,11 +679,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298533000,
-      "end_wall_time_ms": 1780298534000,
+      "start_wall_time_ms": 1780299714000,
+      "end_wall_time_ms": 1780299714000,
       "launch_state": "HOT",
-      "total_time_ms": 148,
-      "wait_time_ms": 151,
+      "total_time_ms": 136,
+      "wait_time_ms": 140,
       "observed": true
     },
     {
@@ -698,11 +698,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298534000,
-      "end_wall_time_ms": 1780298535000,
+      "start_wall_time_ms": 1780299715000,
+      "end_wall_time_ms": 1780299715000,
       "launch_state": "UNKNOWN (0)",
       "total_time_ms": null,
-      "wait_time_ms": 57,
+      "wait_time_ms": 51,
       "observed": true
     },
     {
@@ -717,11 +717,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298535000,
-      "end_wall_time_ms": 1780298536000,
+      "start_wall_time_ms": 1780299715000,
+      "end_wall_time_ms": 1780299716000,
       "launch_state": "HOT",
-      "total_time_ms": 124,
-      "wait_time_ms": 128,
+      "total_time_ms": 119,
+      "wait_time_ms": 121,
       "observed": true
     },
     {
@@ -736,10 +736,10 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298536000,
-      "end_wall_time_ms": 1780298537000,
+      "start_wall_time_ms": 1780299716000,
+      "end_wall_time_ms": 1780299717000,
       "launch_state": "WARM",
-      "total_time_ms": 362,
+      "total_time_ms": 365,
       "wait_time_ms": 370,
       "observed": true
     },
@@ -754,11 +754,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298539000,
-      "end_wall_time_ms": 1780298539000,
+      "start_wall_time_ms": 1780299719000,
+      "end_wall_time_ms": 1780299720000,
       "launch_state": "HOT",
-      "total_time_ms": 86,
-      "wait_time_ms": 97,
+      "total_time_ms": 82,
+      "wait_time_ms": 85,
       "observed": true
     },
     {
@@ -774,11 +774,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298540000,
-      "end_wall_time_ms": 1780298540000,
+      "start_wall_time_ms": 1780299720000,
+      "end_wall_time_ms": 1780299720000,
       "launch_state": "HOT",
-      "total_time_ms": 142,
-      "wait_time_ms": 144,
+      "total_time_ms": 181,
+      "wait_time_ms": 188,
       "observed": true
     },
     {
@@ -792,11 +792,11 @@
         "Navigation\/Location",
         "Communication"
       ],
-      "start_wall_time_ms": 1780298540000,
-      "end_wall_time_ms": 1780298541000,
+      "start_wall_time_ms": 1780299721000,
+      "end_wall_time_ms": 1780299721000,
       "launch_state": "HOT",
-      "total_time_ms": 151,
-      "wait_time_ms": 157,
+      "total_time_ms": 136,
+      "wait_time_ms": 140,
       "observed": true
     },
     {
@@ -808,11 +808,11 @@
         "Display Composition",
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298542000,
-      "end_wall_time_ms": 1780298542000,
-      "launch_state": "HOT",
-      "total_time_ms": 65,
-      "wait_time_ms": 68,
+      "start_wall_time_ms": 1780299722000,
+      "end_wall_time_ms": 1780299722000,
+      "launch_state": "WARM",
+      "total_time_ms": 234,
+      "wait_time_ms": 237,
       "observed": true
     },
     {
@@ -822,11 +822,11 @@
       "categories": [
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298542000,
-      "end_wall_time_ms": 1780298543000,
+      "start_wall_time_ms": 1780299723000,
+      "end_wall_time_ms": 1780299723000,
       "launch_state": "HOT",
-      "total_time_ms": 81,
-      "wait_time_ms": 85,
+      "total_time_ms": 62,
+      "wait_time_ms": 66,
       "observed": true
     },
     {
@@ -842,11 +842,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298545000,
-      "end_wall_time_ms": 1780298545000,
+      "start_wall_time_ms": 1780299725000,
+      "end_wall_time_ms": 1780299726000,
       "launch_state": "HOT",
-      "total_time_ms": 71,
-      "wait_time_ms": 79,
+      "total_time_ms": 76,
+      "wait_time_ms": 85,
       "observed": true
     },
     {
@@ -862,11 +862,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298545000,
-      "end_wall_time_ms": 1780298546000,
+      "start_wall_time_ms": 1780299726000,
+      "end_wall_time_ms": 1780299727000,
       "launch_state": "HOT",
-      "total_time_ms": 99,
-      "wait_time_ms": 104,
+      "total_time_ms": 96,
+      "wait_time_ms": 101,
       "observed": true
     },
     {
@@ -881,11 +881,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298546000,
-      "end_wall_time_ms": 1780298547000,
+      "start_wall_time_ms": 1780299727000,
+      "end_wall_time_ms": 1780299727000,
       "launch_state": "WARM",
-      "total_time_ms": 204,
-      "wait_time_ms": 210,
+      "total_time_ms": 191,
+      "wait_time_ms": 199,
       "observed": true
     },
     {
@@ -900,11 +900,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298547000,
-      "end_wall_time_ms": 1780298548000,
+      "start_wall_time_ms": 1780299728000,
+      "end_wall_time_ms": 1780299728000,
       "launch_state": "HOT",
-      "total_time_ms": 134,
-      "wait_time_ms": 137,
+      "total_time_ms": 128,
+      "wait_time_ms": 131,
       "observed": true
     },
     {
@@ -919,11 +919,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298548000,
-      "end_wall_time_ms": 1780298548000,
+      "start_wall_time_ms": 1780299729000,
+      "end_wall_time_ms": 1780299729000,
       "launch_state": "UNKNOWN (0)",
       "total_time_ms": null,
-      "wait_time_ms": 48,
+      "wait_time_ms": 45,
       "observed": true
     },
     {
@@ -938,11 +938,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298550000,
-      "end_wall_time_ms": 1780298551000,
+      "start_wall_time_ms": 1780299731000,
+      "end_wall_time_ms": 1780299732000,
       "launch_state": "HOT",
-      "total_time_ms": 129,
-      "wait_time_ms": 135,
+      "total_time_ms": 176,
+      "wait_time_ms": 180,
       "observed": true
     },
     {
@@ -957,11 +957,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298552000,
-      "end_wall_time_ms": 1780298552000,
+      "start_wall_time_ms": 1780299732000,
+      "end_wall_time_ms": 1780299733000,
       "launch_state": "WARM",
-      "total_time_ms": 370,
-      "wait_time_ms": 372,
+      "total_time_ms": 348,
+      "wait_time_ms": 352,
       "observed": true
     },
     {
@@ -975,11 +975,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298552000,
-      "end_wall_time_ms": 1780298553000,
+      "start_wall_time_ms": 1780299733000,
+      "end_wall_time_ms": 1780299734000,
       "launch_state": "HOT",
-      "total_time_ms": 113,
-      "wait_time_ms": 117,
+      "total_time_ms": 105,
+      "wait_time_ms": 109,
       "observed": true
     },
     {
@@ -995,11 +995,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298554000,
-      "end_wall_time_ms": 1780298554000,
+      "start_wall_time_ms": 1780299734000,
+      "end_wall_time_ms": 1780299735000,
       "launch_state": "HOT",
-      "total_time_ms": 149,
-      "wait_time_ms": 153,
+      "total_time_ms": 144,
+      "wait_time_ms": 151,
       "observed": true
     },
     {
@@ -1013,11 +1013,11 @@
         "Navigation\/Location",
         "Communication"
       ],
-      "start_wall_time_ms": 1780298554000,
-      "end_wall_time_ms": 1780298555000,
+      "start_wall_time_ms": 1780299735000,
+      "end_wall_time_ms": 1780299736000,
       "launch_state": "HOT",
-      "total_time_ms": 205,
-      "wait_time_ms": 221,
+      "total_time_ms": 164,
+      "wait_time_ms": 169,
       "observed": true
     },
     {
@@ -1029,11 +1029,11 @@
         "Display Composition",
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298557000,
-      "end_wall_time_ms": 1780298557000,
+      "start_wall_time_ms": 1780299737000,
+      "end_wall_time_ms": 1780299738000,
       "launch_state": "HOT",
-      "total_time_ms": 65,
-      "wait_time_ms": 72,
+      "total_time_ms": 80,
+      "wait_time_ms": 83,
       "observed": true
     },
     {
@@ -1043,11 +1043,11 @@
       "categories": [
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298558000,
-      "end_wall_time_ms": 1780298558000,
+      "start_wall_time_ms": 1780299738000,
+      "end_wall_time_ms": 1780299739000,
       "launch_state": "HOT",
-      "total_time_ms": 64,
-      "wait_time_ms": 69,
+      "total_time_ms": 81,
+      "wait_time_ms": 86,
       "observed": true
     },
     {
@@ -1063,11 +1063,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298559000,
-      "end_wall_time_ms": 1780298559000,
+      "start_wall_time_ms": 1780299739000,
+      "end_wall_time_ms": 1780299739000,
       "launch_state": "HOT",
-      "total_time_ms": 59,
-      "wait_time_ms": 60,
+      "total_time_ms": 81,
+      "wait_time_ms": 84,
       "observed": true
     },
     {
@@ -1083,11 +1083,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298559000,
-      "end_wall_time_ms": 1780298560000,
+      "start_wall_time_ms": 1780299740000,
+      "end_wall_time_ms": 1780299740000,
       "launch_state": "HOT",
-      "total_time_ms": 112,
-      "wait_time_ms": 115,
+      "total_time_ms": 75,
+      "wait_time_ms": 79,
       "observed": true
     },
     {
@@ -1102,11 +1102,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298560000,
-      "end_wall_time_ms": 1780298561000,
+      "start_wall_time_ms": 1780299741000,
+      "end_wall_time_ms": 1780299741000,
       "launch_state": "HOT",
-      "total_time_ms": 163,
-      "wait_time_ms": 168,
+      "total_time_ms": 150,
+      "wait_time_ms": 156,
       "observed": true
     },
     {
@@ -1121,11 +1121,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298562000,
-      "end_wall_time_ms": 1780298563000,
+      "start_wall_time_ms": 1780299743000,
+      "end_wall_time_ms": 1780299744000,
       "launch_state": "HOT",
-      "total_time_ms": 174,
-      "wait_time_ms": 177,
+      "total_time_ms": 163,
+      "wait_time_ms": 168,
       "observed": true
     },
     {
@@ -1140,11 +1140,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298564000,
-      "end_wall_time_ms": 1780298564000,
+      "start_wall_time_ms": 1780299744000,
+      "end_wall_time_ms": 1780299744000,
       "launch_state": "UNKNOWN (0)",
       "total_time_ms": null,
-      "wait_time_ms": 66,
+      "wait_time_ms": 53,
       "observed": true
     },
     {
@@ -1159,10 +1159,10 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298564000,
-      "end_wall_time_ms": 1780298565000,
+      "start_wall_time_ms": 1780299745000,
+      "end_wall_time_ms": 1780299745000,
       "launch_state": "HOT",
-      "total_time_ms": 109,
+      "total_time_ms": 110,
       "wait_time_ms": 112,
       "observed": true
     },
@@ -1178,11 +1178,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298565000,
-      "end_wall_time_ms": 1780298566000,
+      "start_wall_time_ms": 1780299746000,
+      "end_wall_time_ms": 1780299746000,
       "launch_state": "WARM",
-      "total_time_ms": 399,
-      "wait_time_ms": 401,
+      "total_time_ms": 361,
+      "wait_time_ms": 375,
       "observed": true
     },
     {
@@ -1196,11 +1196,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298566000,
-      "end_wall_time_ms": 1780298567000,
+      "start_wall_time_ms": 1780299747000,
+      "end_wall_time_ms": 1780299747000,
       "launch_state": "HOT",
-      "total_time_ms": 71,
-      "wait_time_ms": 84,
+      "total_time_ms": 82,
+      "wait_time_ms": 114,
       "observed": true
     },
     {
@@ -1216,11 +1216,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298569000,
-      "end_wall_time_ms": 1780298569000,
+      "start_wall_time_ms": 1780299750000,
+      "end_wall_time_ms": 1780299750000,
       "launch_state": "HOT",
-      "total_time_ms": 134,
-      "wait_time_ms": 143,
+      "total_time_ms": 110,
+      "wait_time_ms": 113,
       "observed": true
     },
     {
@@ -1234,11 +1234,11 @@
         "Navigation\/Location",
         "Communication"
       ],
-      "start_wall_time_ms": 1780298570000,
-      "end_wall_time_ms": 1780298571000,
+      "start_wall_time_ms": 1780299750000,
+      "end_wall_time_ms": 1780299751000,
       "launch_state": "HOT",
-      "total_time_ms": 147,
-      "wait_time_ms": 150,
+      "total_time_ms": 156,
+      "wait_time_ms": 158,
       "observed": true
     },
     {
@@ -1250,11 +1250,11 @@
         "Display Composition",
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298571000,
-      "end_wall_time_ms": 1780298571000,
+      "start_wall_time_ms": 1780299751000,
+      "end_wall_time_ms": 1780299752000,
       "launch_state": "HOT",
-      "total_time_ms": 67,
-      "wait_time_ms": 70,
+      "total_time_ms": 78,
+      "wait_time_ms": 80,
       "observed": true
     },
     {
@@ -1264,11 +1264,11 @@
       "categories": [
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298571000,
-      "end_wall_time_ms": 1780298572000,
+      "start_wall_time_ms": 1780299752000,
+      "end_wall_time_ms": 1780299753000,
       "launch_state": "HOT",
-      "total_time_ms": 84,
-      "wait_time_ms": 88,
+      "total_time_ms": 76,
+      "wait_time_ms": 82,
       "observed": true
     },
     {
@@ -1284,11 +1284,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298572000,
-      "end_wall_time_ms": 1780298573000,
+      "start_wall_time_ms": 1780299753000,
+      "end_wall_time_ms": 1780299753000,
       "launch_state": "HOT",
-      "total_time_ms": 66,
-      "wait_time_ms": 91,
+      "total_time_ms": 82,
+      "wait_time_ms": 88,
       "observed": true
     },
     {
@@ -1304,11 +1304,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298575000,
-      "end_wall_time_ms": 1780298575000,
+      "start_wall_time_ms": 1780299755000,
+      "end_wall_time_ms": 1780299756000,
       "launch_state": "HOT",
-      "total_time_ms": 92,
-      "wait_time_ms": 96,
+      "total_time_ms": 116,
+      "wait_time_ms": 120,
       "observed": true
     },
     {
@@ -1323,11 +1323,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298576000,
-      "end_wall_time_ms": 1780298576000,
-      "launch_state": "WARM",
-      "total_time_ms": 214,
-      "wait_time_ms": 224,
+      "start_wall_time_ms": 1780299756000,
+      "end_wall_time_ms": 1780299757000,
+      "launch_state": "HOT",
+      "total_time_ms": 169,
+      "wait_time_ms": 175,
       "observed": true
     },
     {
@@ -1342,11 +1342,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298576000,
-      "end_wall_time_ms": 1780298577000,
+      "start_wall_time_ms": 1780299757000,
+      "end_wall_time_ms": 1780299758000,
       "launch_state": "HOT",
-      "total_time_ms": 159,
-      "wait_time_ms": 163,
+      "total_time_ms": 152,
+      "wait_time_ms": 155,
       "observed": true
     },
     {
@@ -1361,11 +1361,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298578000,
-      "end_wall_time_ms": 1780298578000,
+      "start_wall_time_ms": 1780299758000,
+      "end_wall_time_ms": 1780299758000,
       "launch_state": "UNKNOWN (0)",
       "total_time_ms": null,
-      "wait_time_ms": 137,
+      "wait_time_ms": 65,
       "observed": true
     },
     {
@@ -1380,11 +1380,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298578000,
-      "end_wall_time_ms": 1780298579000,
+      "start_wall_time_ms": 1780299759000,
+      "end_wall_time_ms": 1780299759000,
       "launch_state": "HOT",
-      "total_time_ms": 122,
-      "wait_time_ms": 126,
+      "total_time_ms": 126,
+      "wait_time_ms": 128,
       "observed": true
     },
     {
@@ -1399,11 +1399,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298581000,
-      "end_wall_time_ms": 1780298582000,
+      "start_wall_time_ms": 1780299761000,
+      "end_wall_time_ms": 1780299762000,
       "launch_state": "WARM",
-      "total_time_ms": 416,
-      "wait_time_ms": 419,
+      "total_time_ms": 387,
+      "wait_time_ms": 391,
       "observed": true
     },
     {
@@ -1417,11 +1417,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298582000,
-      "end_wall_time_ms": 1780298583000,
+      "start_wall_time_ms": 1780299762000,
+      "end_wall_time_ms": 1780299763000,
       "launch_state": "HOT",
-      "total_time_ms": 109,
-      "wait_time_ms": 115,
+      "total_time_ms": 120,
+      "wait_time_ms": 129,
       "observed": true
     },
     {
@@ -1437,11 +1437,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298583000,
-      "end_wall_time_ms": 1780298583000,
+      "start_wall_time_ms": 1780299763000,
+      "end_wall_time_ms": 1780299764000,
       "launch_state": "HOT",
-      "total_time_ms": 142,
-      "wait_time_ms": 147,
+      "total_time_ms": 176,
+      "wait_time_ms": 180,
       "observed": true
     },
     {
@@ -1455,11 +1455,11 @@
         "Navigation\/Location",
         "Communication"
       ],
-      "start_wall_time_ms": 1780298584000,
-      "end_wall_time_ms": 1780298585000,
+      "start_wall_time_ms": 1780299764000,
+      "end_wall_time_ms": 1780299765000,
       "launch_state": "HOT",
-      "total_time_ms": 212,
-      "wait_time_ms": 225,
+      "total_time_ms": 170,
+      "wait_time_ms": 172,
       "observed": true
     },
     {
@@ -1471,11 +1471,11 @@
         "Display Composition",
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298585000,
-      "end_wall_time_ms": 1780298585000,
+      "start_wall_time_ms": 1780299765000,
+      "end_wall_time_ms": 1780299766000,
       "launch_state": "HOT",
-      "total_time_ms": 67,
-      "wait_time_ms": 70,
+      "total_time_ms": 69,
+      "wait_time_ms": 72,
       "observed": true
     },
     {
@@ -1485,11 +1485,11 @@
       "categories": [
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298587000,
-      "end_wall_time_ms": 1780298588000,
+      "start_wall_time_ms": 1780299768000,
+      "end_wall_time_ms": 1780299768000,
       "launch_state": "HOT",
-      "total_time_ms": 84,
-      "wait_time_ms": 86,
+      "total_time_ms": 82,
+      "wait_time_ms": 85,
       "observed": true
     },
     {
@@ -1505,11 +1505,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298588000,
-      "end_wall_time_ms": 1780298589000,
+      "start_wall_time_ms": 1780299769000,
+      "end_wall_time_ms": 1780299769000,
       "launch_state": "HOT",
-      "total_time_ms": 76,
-      "wait_time_ms": 79,
+      "total_time_ms": 57,
+      "wait_time_ms": 66,
       "observed": true
     },
     {
@@ -1525,11 +1525,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298589000,
-      "end_wall_time_ms": 1780298590000,
+      "start_wall_time_ms": 1780299769000,
+      "end_wall_time_ms": 1780299770000,
       "launch_state": "HOT",
-      "total_time_ms": 90,
-      "wait_time_ms": 97,
+      "total_time_ms": 111,
+      "wait_time_ms": 115,
       "observed": true
     },
     {
@@ -1544,11 +1544,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298590000,
-      "end_wall_time_ms": 1780298590000,
+      "start_wall_time_ms": 1780299770000,
+      "end_wall_time_ms": 1780299771000,
       "launch_state": "WARM",
-      "total_time_ms": 211,
-      "wait_time_ms": 230,
+      "total_time_ms": 210,
+      "wait_time_ms": 216,
       "observed": true
     },
     {
@@ -1563,11 +1563,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298591000,
-      "end_wall_time_ms": 1780298591000,
+      "start_wall_time_ms": 1780299771000,
+      "end_wall_time_ms": 1780299772000,
       "launch_state": "HOT",
-      "total_time_ms": 134,
-      "wait_time_ms": 137,
+      "total_time_ms": 142,
+      "wait_time_ms": 145,
       "observed": true
     },
     {
@@ -1582,11 +1582,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298593000,
-      "end_wall_time_ms": 1780298594000,
+      "start_wall_time_ms": 1780299774000,
+      "end_wall_time_ms": 1780299774000,
       "launch_state": "UNKNOWN (0)",
       "total_time_ms": null,
-      "wait_time_ms": 72,
+      "wait_time_ms": 58,
       "observed": true
     },
     {
@@ -1601,11 +1601,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298594000,
-      "end_wall_time_ms": 1780298595000,
+      "start_wall_time_ms": 1780299774000,
+      "end_wall_time_ms": 1780299775000,
       "launch_state": "HOT",
-      "total_time_ms": 123,
-      "wait_time_ms": 128,
+      "total_time_ms": 108,
+      "wait_time_ms": 111,
       "observed": true
     },
     {
@@ -1620,11 +1620,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298595000,
-      "end_wall_time_ms": 1780298596000,
+      "start_wall_time_ms": 1780299775000,
+      "end_wall_time_ms": 1780299776000,
       "launch_state": "WARM",
-      "total_time_ms": 415,
-      "wait_time_ms": 419,
+      "total_time_ms": 417,
+      "wait_time_ms": 421,
       "observed": true
     },
     {
@@ -1638,11 +1638,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298596000,
-      "end_wall_time_ms": 1780298597000,
+      "start_wall_time_ms": 1780299776000,
+      "end_wall_time_ms": 1780299777000,
       "launch_state": "HOT",
-      "total_time_ms": 95,
-      "wait_time_ms": 118,
+      "total_time_ms": 124,
+      "wait_time_ms": 140,
       "observed": true
     },
     {
@@ -1658,11 +1658,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298597000,
-      "end_wall_time_ms": 1780298597000,
+      "start_wall_time_ms": 1780299777000,
+      "end_wall_time_ms": 1780299778000,
       "launch_state": "HOT",
-      "total_time_ms": 180,
-      "wait_time_ms": 186,
+      "total_time_ms": 175,
+      "wait_time_ms": 182,
       "observed": true
     },
     {
@@ -1676,11 +1676,11 @@
         "Navigation\/Location",
         "Communication"
       ],
-      "start_wall_time_ms": 1780298599000,
-      "end_wall_time_ms": 1780298600000,
+      "start_wall_time_ms": 1780299780000,
+      "end_wall_time_ms": 1780299781000,
       "launch_state": "HOT",
-      "total_time_ms": 182,
-      "wait_time_ms": 186,
+      "total_time_ms": 194,
+      "wait_time_ms": 197,
       "observed": true
     },
     {
@@ -1692,11 +1692,11 @@
         "Display Composition",
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298601000,
-      "end_wall_time_ms": 1780298601000,
+      "start_wall_time_ms": 1780299781000,
+      "end_wall_time_ms": 1780299781000,
       "launch_state": "HOT",
-      "total_time_ms": 68,
-      "wait_time_ms": 73,
+      "total_time_ms": 66,
+      "wait_time_ms": 69,
       "observed": true
     },
     {
@@ -1706,11 +1706,11 @@
       "categories": [
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298601000,
-      "end_wall_time_ms": 1780298602000,
+      "start_wall_time_ms": 1780299782000,
+      "end_wall_time_ms": 1780299782000,
       "launch_state": "HOT",
-      "total_time_ms": 82,
-      "wait_time_ms": 84,
+      "total_time_ms": 77,
+      "wait_time_ms": 79,
       "observed": true
     },
     {
@@ -1726,11 +1726,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298602000,
-      "end_wall_time_ms": 1780298602000,
+      "start_wall_time_ms": 1780299783000,
+      "end_wall_time_ms": 1780299783000,
       "launch_state": "HOT",
-      "total_time_ms": 82,
-      "wait_time_ms": 86,
+      "total_time_ms": 74,
+      "wait_time_ms": 82,
       "observed": true
     },
     {
@@ -1746,11 +1746,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298603000,
-      "end_wall_time_ms": 1780298603000,
+      "start_wall_time_ms": 1780299783000,
+      "end_wall_time_ms": 1780299784000,
       "launch_state": "HOT",
-      "total_time_ms": 103,
-      "wait_time_ms": 107,
+      "total_time_ms": 96,
+      "wait_time_ms": 99,
       "observed": true
     },
     {
@@ -1765,11 +1765,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298605000,
-      "end_wall_time_ms": 1780298606000,
+      "start_wall_time_ms": 1780299786000,
+      "end_wall_time_ms": 1780299786000,
       "launch_state": "HOT",
-      "total_time_ms": 218,
-      "wait_time_ms": 224,
+      "total_time_ms": 215,
+      "wait_time_ms": 222,
       "observed": true
     },
     {
@@ -1784,11 +1784,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298606000,
-      "end_wall_time_ms": 1780298607000,
+      "start_wall_time_ms": 1780299787000,
+      "end_wall_time_ms": 1780299787000,
       "launch_state": "HOT",
       "total_time_ms": 138,
-      "wait_time_ms": 141,
+      "wait_time_ms": 140,
       "observed": true
     },
     {
@@ -1803,11 +1803,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298607000,
-      "end_wall_time_ms": 1780298608000,
+      "start_wall_time_ms": 1780299788000,
+      "end_wall_time_ms": 1780299788000,
       "launch_state": "UNKNOWN (0)",
       "total_time_ms": null,
-      "wait_time_ms": 59,
+      "wait_time_ms": 56,
       "observed": true
     },
     {
@@ -1822,11 +1822,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298608000,
-      "end_wall_time_ms": 1780298609000,
+      "start_wall_time_ms": 1780299788000,
+      "end_wall_time_ms": 1780299789000,
       "launch_state": "HOT",
-      "total_time_ms": 112,
-      "wait_time_ms": 115,
+      "total_time_ms": 132,
+      "wait_time_ms": 134,
       "observed": true
     },
     {
@@ -1841,11 +1841,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298609000,
-      "end_wall_time_ms": 1780298610000,
+      "start_wall_time_ms": 1780299789000,
+      "end_wall_time_ms": 1780299790000,
       "launch_state": "WARM",
       "total_time_ms": 380,
-      "wait_time_ms": 388,
+      "wait_time_ms": 383,
       "observed": true
     },
     {
@@ -1859,11 +1859,11 @@
         "Navigation\/Location",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298612000,
-      "end_wall_time_ms": 1780298612000,
+      "start_wall_time_ms": 1780299792000,
+      "end_wall_time_ms": 1780299793000,
       "launch_state": "HOT",
-      "total_time_ms": 99,
-      "wait_time_ms": 135,
+      "total_time_ms": 91,
+      "wait_time_ms": 101,
       "observed": true
     },
     {
@@ -1879,11 +1879,11 @@
         "Communication",
         "Payment\/Security"
       ],
-      "start_wall_time_ms": 1780298613000,
-      "end_wall_time_ms": 1780298613000,
+      "start_wall_time_ms": 1780299793000,
+      "end_wall_time_ms": 1780299794000,
       "launch_state": "HOT",
-      "total_time_ms": 166,
-      "wait_time_ms": 168,
+      "total_time_ms": 177,
+      "wait_time_ms": 187,
       "observed": true
     },
     {
@@ -1897,11 +1897,11 @@
         "Navigation\/Location",
         "Communication"
       ],
-      "start_wall_time_ms": 1780298613000,
-      "end_wall_time_ms": 1780298614000,
+      "start_wall_time_ms": 1780299794000,
+      "end_wall_time_ms": 1780299795000,
       "launch_state": "HOT",
-      "total_time_ms": 144,
-      "wait_time_ms": 150,
+      "total_time_ms": 166,
+      "wait_time_ms": 172,
       "observed": true
     },
     {
@@ -1913,11 +1913,11 @@
         "Display Composition",
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298615000,
-      "end_wall_time_ms": 1780298615000,
-      "launch_state": "WARM",
-      "total_time_ms": 248,
-      "wait_time_ms": 251,
+      "start_wall_time_ms": 1780299795000,
+      "end_wall_time_ms": 1780299795000,
+      "launch_state": "HOT",
+      "total_time_ms": 64,
+      "wait_time_ms": 67,
       "observed": true
     },
     {
@@ -1927,19 +1927,19 @@
       "categories": [
         "Network IO"
       ],
-      "start_wall_time_ms": 1780298615000,
-      "end_wall_time_ms": 1780298616000,
+      "start_wall_time_ms": 1780299796000,
+      "end_wall_time_ms": 1780299796000,
       "launch_state": "HOT",
-      "total_time_ms": 80,
-      "wait_time_ms": 83,
+      "total_time_ms": 76,
+      "wait_time_ms": 79,
       "observed": true
     }
   ],
   "timeline_windows": [
     {
       "index": 1,
-      "start_wall_time_ms": 1780298495000,
-      "end_wall_time_ms": 1780298499000,
+      "start_wall_time_ms": 1780299675000,
+      "end_wall_time_ms": 1780299680000,
       "apps": [
         {
           "index": 1,
@@ -1954,11 +1954,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298495000,
-          "end_wall_time_ms": 1780298496000,
+          "start_wall_time_ms": 1780299675000,
+          "end_wall_time_ms": 1780299676000,
           "launch_state": "HOT",
-          "total_time_ms": 229,
-          "wait_time_ms": 232,
+          "total_time_ms": 238,
+          "wait_time_ms": 246,
           "observed": true
         },
         {
@@ -1972,11 +1972,11 @@
             "Navigation\/Location",
             "Communication"
           ],
-          "start_wall_time_ms": 1780298496000,
-          "end_wall_time_ms": 1780298497000,
+          "start_wall_time_ms": 1780299676000,
+          "end_wall_time_ms": 1780299677000,
           "launch_state": "HOT",
-          "total_time_ms": 240,
-          "wait_time_ms": 251,
+          "total_time_ms": 352,
+          "wait_time_ms": 354,
           "observed": true
         },
         {
@@ -1988,11 +1988,11 @@
             "Display Composition",
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298497000,
-          "end_wall_time_ms": 1780298497000,
-          "launch_state": "HOT",
-          "total_time_ms": 62,
-          "wait_time_ms": 68,
+          "start_wall_time_ms": 1780299678000,
+          "end_wall_time_ms": 1780299678000,
+          "launch_state": "WARM",
+          "total_time_ms": 255,
+          "wait_time_ms": 257,
           "observed": true
         },
         {
@@ -2002,11 +2002,11 @@
           "categories": [
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298498000,
-          "end_wall_time_ms": 1780298498000,
+          "start_wall_time_ms": 1780299678000,
+          "end_wall_time_ms": 1780299679000,
           "launch_state": "HOT",
-          "total_time_ms": 81,
-          "wait_time_ms": 86,
+          "total_time_ms": 71,
+          "wait_time_ms": 78,
           "observed": true
         },
         {
@@ -2022,11 +2022,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298499000,
-          "end_wall_time_ms": 1780298499000,
+          "start_wall_time_ms": 1780299679000,
+          "end_wall_time_ms": 1780299680000,
           "launch_state": "HOT",
-          "total_time_ms": 110,
-          "wait_time_ms": 114,
+          "total_time_ms": 132,
+          "wait_time_ms": 148,
           "observed": true
         }
       ],
@@ -2044,21 +2044,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 12541,
-        "MEMO_OPENAT": 11856,
+        "MEMO_BINDER": 14234,
+        "MEMO_OPENAT": 12605,
         "MEMO_MEMORY": 4,
-        "MEMO_SENDTO": 17114,
-        "MEMO_RECVFROM": 34269,
-        "MEMO_SCHED": 213621,
-        "MEMO_PROCESS_FORK": 338,
-        "MEMO_PROCESS_EXIT": 313,
-        "MEMO_PROCESS_EXEC": 108
-      }
+        "MEMO_SENDTO": 21059,
+        "MEMO_RECVFROM": 45334,
+        "MEMO_SCHED": 241725,
+        "MEMO_PROCESS_FORK": 349,
+        "MEMO_PROCESS_EXIT": 341,
+        "MEMO_PROCESS_EXEC": 109
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 241725,
+          "rate_per_sec": 48345
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 45334,
+          "rate_per_sec": 9066.8
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 21059,
+          "rate_per_sec": 4211.8
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 14234,
+          "rate_per_sec": 2846.8
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12605,
+          "rate_per_sec": 2521
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 349,
+          "rate_per_sec": 69.8
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 341,
+          "rate_per_sec": 68.2
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 109,
+          "rate_per_sec": 21.8
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 4,
+          "rate_per_sec": 0.8
+        }
+      ]
     },
     {
       "index": 2,
-      "start_wall_time_ms": 1780298501000,
-      "end_wall_time_ms": 1780298506000,
+      "start_wall_time_ms": 1780299683000,
+      "end_wall_time_ms": 1780299687000,
       "apps": [
         {
           "index": 6,
@@ -2073,11 +2129,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298501000,
-          "end_wall_time_ms": 1780298502000,
+          "start_wall_time_ms": 1780299683000,
+          "end_wall_time_ms": 1780299683000,
           "launch_state": "HOT",
-          "total_time_ms": 116,
-          "wait_time_ms": 120,
+          "total_time_ms": 95,
+          "wait_time_ms": 97,
           "observed": true
         },
         {
@@ -2092,11 +2148,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298503000,
-          "end_wall_time_ms": 1780298503000,
+          "start_wall_time_ms": 1780299684000,
+          "end_wall_time_ms": 1780299684000,
           "launch_state": "WARM",
-          "total_time_ms": 199,
-          "wait_time_ms": 208,
+          "total_time_ms": 196,
+          "wait_time_ms": 205,
           "observed": true
         },
         {
@@ -2111,11 +2167,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298503000,
-          "end_wall_time_ms": 1780298504000,
+          "start_wall_time_ms": 1780299684000,
+          "end_wall_time_ms": 1780299685000,
           "launch_state": "HOT",
-          "total_time_ms": 169,
-          "wait_time_ms": 174,
+          "total_time_ms": 155,
+          "wait_time_ms": 158,
           "observed": true
         },
         {
@@ -2130,11 +2186,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298504000,
-          "end_wall_time_ms": 1780298505000,
+          "start_wall_time_ms": 1780299685000,
+          "end_wall_time_ms": 1780299686000,
           "launch_state": "UNKNOWN (0)",
           "total_time_ms": null,
-          "wait_time_ms": 59,
+          "wait_time_ms": 52,
           "observed": true
         },
         {
@@ -2149,11 +2205,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298505000,
-          "end_wall_time_ms": 1780298506000,
+          "start_wall_time_ms": 1780299686000,
+          "end_wall_time_ms": 1780299687000,
           "launch_state": "HOT",
-          "total_time_ms": 109,
-          "wait_time_ms": 113,
+          "total_time_ms": 113,
+          "wait_time_ms": 117,
           "observed": true
         }
       ],
@@ -2161,7 +2217,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 4,
+        "MEMO_MEMORY": 8,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -2171,21 +2227,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 12431,
-        "MEMO_OPENAT": 12609,
-        "MEMO_MEMORY": 4,
-        "MEMO_SENDTO": 23522,
-        "MEMO_RECVFROM": 49763,
-        "MEMO_SCHED": 262016,
-        "MEMO_PROCESS_FORK": 306,
-        "MEMO_PROCESS_EXIT": 267,
-        "MEMO_PROCESS_EXEC": 111
-      }
+        "MEMO_BINDER": 14495,
+        "MEMO_OPENAT": 12360,
+        "MEMO_MEMORY": 8,
+        "MEMO_SENDTO": 23743,
+        "MEMO_RECVFROM": 53040,
+        "MEMO_SCHED": 262903,
+        "MEMO_PROCESS_FORK": 300,
+        "MEMO_PROCESS_EXIT": 264,
+        "MEMO_PROCESS_EXEC": 110
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 262903,
+          "rate_per_sec": 65725.75
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 53040,
+          "rate_per_sec": 13260
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 23743,
+          "rate_per_sec": 5935.75
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 14495,
+          "rate_per_sec": 3623.75
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12360,
+          "rate_per_sec": 3090
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 300,
+          "rate_per_sec": 75
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 264,
+          "rate_per_sec": 66
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 110,
+          "rate_per_sec": 27.5
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 8,
+          "rate_per_sec": 2
+        }
+      ]
     },
     {
       "index": 3,
-      "start_wall_time_ms": 1780298508000,
-      "end_wall_time_ms": 1780298512000,
+      "start_wall_time_ms": 1780299689000,
+      "end_wall_time_ms": 1780299693000,
       "apps": [
         {
           "index": 11,
@@ -2199,11 +2311,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298508000,
-          "end_wall_time_ms": 1780298509000,
+          "start_wall_time_ms": 1780299689000,
+          "end_wall_time_ms": 1780299689000,
           "launch_state": "WARM",
-          "total_time_ms": 393,
-          "wait_time_ms": 396,
+          "total_time_ms": 429,
+          "wait_time_ms": 432,
           "observed": true
         },
         {
@@ -2217,11 +2329,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298509000,
-          "end_wall_time_ms": 1780298510000,
+          "start_wall_time_ms": 1780299690000,
+          "end_wall_time_ms": 1780299690000,
           "launch_state": "HOT",
-          "total_time_ms": 86,
-          "wait_time_ms": 92,
+          "total_time_ms": 79,
+          "wait_time_ms": 86,
           "observed": true
         },
         {
@@ -2237,11 +2349,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298510000,
-          "end_wall_time_ms": 1780298510000,
+          "start_wall_time_ms": 1780299691000,
+          "end_wall_time_ms": 1780299691000,
           "launch_state": "HOT",
-          "total_time_ms": 154,
-          "wait_time_ms": 159,
+          "total_time_ms": 168,
+          "wait_time_ms": 172,
           "observed": true
         },
         {
@@ -2255,11 +2367,11 @@
             "Navigation\/Location",
             "Communication"
           ],
-          "start_wall_time_ms": 1780298511000,
-          "end_wall_time_ms": 1780298512000,
+          "start_wall_time_ms": 1780299691000,
+          "end_wall_time_ms": 1780299692000,
           "launch_state": "HOT",
-          "total_time_ms": 135,
-          "wait_time_ms": 139,
+          "total_time_ms": 143,
+          "wait_time_ms": 145,
           "observed": true
         },
         {
@@ -2271,11 +2383,11 @@
             "Display Composition",
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298512000,
-          "end_wall_time_ms": 1780298512000,
+          "start_wall_time_ms": 1780299692000,
+          "end_wall_time_ms": 1780299693000,
           "launch_state": "HOT",
-          "total_time_ms": 68,
-          "wait_time_ms": 71,
+          "total_time_ms": 56,
+          "wait_time_ms": 61,
           "observed": true
         }
       ],
@@ -2283,7 +2395,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 6,
+        "MEMO_MEMORY": 17,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -2293,21 +2405,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 16862,
-        "MEMO_OPENAT": 12004,
-        "MEMO_MEMORY": 6,
-        "MEMO_SENDTO": 16453,
-        "MEMO_RECVFROM": 34737,
-        "MEMO_SCHED": 262318,
-        "MEMO_PROCESS_FORK": 374,
-        "MEMO_PROCESS_EXIT": 326,
-        "MEMO_PROCESS_EXEC": 111
-      }
+        "MEMO_BINDER": 18239,
+        "MEMO_OPENAT": 11955,
+        "MEMO_MEMORY": 17,
+        "MEMO_SENDTO": 10623,
+        "MEMO_RECVFROM": 18047,
+        "MEMO_SCHED": 262269,
+        "MEMO_PROCESS_FORK": 400,
+        "MEMO_PROCESS_EXIT": 344,
+        "MEMO_PROCESS_EXEC": 108
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 262269,
+          "rate_per_sec": 65567.25
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 18239,
+          "rate_per_sec": 4559.75
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 18047,
+          "rate_per_sec": 4511.75
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 11955,
+          "rate_per_sec": 2988.75
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 10623,
+          "rate_per_sec": 2655.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 400,
+          "rate_per_sec": 100
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 344,
+          "rate_per_sec": 86
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 108,
+          "rate_per_sec": 27
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 17,
+          "rate_per_sec": 4.25
+        }
+      ]
     },
     {
       "index": 4,
-      "start_wall_time_ms": 1780298514000,
-      "end_wall_time_ms": 1780298518000,
+      "start_wall_time_ms": 1780299695000,
+      "end_wall_time_ms": 1780299699000,
       "apps": [
         {
           "index": 16,
@@ -2316,11 +2484,11 @@
           "categories": [
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298514000,
-          "end_wall_time_ms": 1780298515000,
+          "start_wall_time_ms": 1780299695000,
+          "end_wall_time_ms": 1780299695000,
           "launch_state": "HOT",
-          "total_time_ms": 60,
-          "wait_time_ms": 64,
+          "total_time_ms": 70,
+          "wait_time_ms": 73,
           "observed": true
         },
         {
@@ -2336,11 +2504,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298515000,
-          "end_wall_time_ms": 1780298515000,
+          "start_wall_time_ms": 1780299696000,
+          "end_wall_time_ms": 1780299696000,
           "launch_state": "HOT",
-          "total_time_ms": 68,
-          "wait_time_ms": 75,
+          "total_time_ms": 71,
+          "wait_time_ms": 74,
           "observed": true
         },
         {
@@ -2356,10 +2524,10 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298516000,
-          "end_wall_time_ms": 1780298516000,
+          "start_wall_time_ms": 1780299696000,
+          "end_wall_time_ms": 1780299697000,
           "launch_state": "HOT",
-          "total_time_ms": 52,
+          "total_time_ms": 50,
           "wait_time_ms": 55,
           "observed": true
         },
@@ -2375,11 +2543,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298517000,
-          "end_wall_time_ms": 1780298517000,
-          "launch_state": "WARM",
-          "total_time_ms": 207,
-          "wait_time_ms": 218,
+          "start_wall_time_ms": 1780299697000,
+          "end_wall_time_ms": 1780299698000,
+          "launch_state": "HOT",
+          "total_time_ms": 166,
+          "wait_time_ms": 173,
           "observed": true
         },
         {
@@ -2394,11 +2562,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298517000,
-          "end_wall_time_ms": 1780298518000,
+          "start_wall_time_ms": 1780299698000,
+          "end_wall_time_ms": 1780299699000,
           "launch_state": "HOT",
-          "total_time_ms": 147,
-          "wait_time_ms": 150,
+          "total_time_ms": 138,
+          "wait_time_ms": 141,
           "observed": true
         }
       ],
@@ -2406,7 +2574,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 5,
+        "MEMO_MEMORY": 11,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -2416,21 +2584,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 12847,
-        "MEMO_OPENAT": 12328,
-        "MEMO_MEMORY": 5,
-        "MEMO_SENDTO": 30185,
-        "MEMO_RECVFROM": 68152,
-        "MEMO_SCHED": 248375,
-        "MEMO_PROCESS_FORK": 248,
-        "MEMO_PROCESS_EXIT": 249,
+        "MEMO_BINDER": 12922,
+        "MEMO_OPENAT": 12591,
+        "MEMO_MEMORY": 11,
+        "MEMO_SENDTO": 32533,
+        "MEMO_RECVFROM": 72932,
+        "MEMO_SCHED": 255085,
+        "MEMO_PROCESS_FORK": 256,
+        "MEMO_PROCESS_EXIT": 262,
         "MEMO_PROCESS_EXEC": 110
-      }
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 255085,
+          "rate_per_sec": 63771.25
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 72932,
+          "rate_per_sec": 18233
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 32533,
+          "rate_per_sec": 8133.25
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 12922,
+          "rate_per_sec": 3230.5
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12591,
+          "rate_per_sec": 3147.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 262,
+          "rate_per_sec": 65.5
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 256,
+          "rate_per_sec": 64
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 110,
+          "rate_per_sec": 27.5
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 11,
+          "rate_per_sec": 2.75
+        }
+      ]
     },
     {
       "index": 5,
-      "start_wall_time_ms": 1780298520000,
-      "end_wall_time_ms": 1780298524000,
+      "start_wall_time_ms": 1780299701000,
+      "end_wall_time_ms": 1780299705000,
       "apps": [
         {
           "index": 21,
@@ -2444,8 +2668,8 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298520000,
-          "end_wall_time_ms": 1780298520000,
+          "start_wall_time_ms": 1780299701000,
+          "end_wall_time_ms": 1780299701000,
           "launch_state": "UNKNOWN (0)",
           "total_time_ms": null,
           "wait_time_ms": 60,
@@ -2463,11 +2687,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298521000,
-          "end_wall_time_ms": 1780298522000,
+          "start_wall_time_ms": 1780299701000,
+          "end_wall_time_ms": 1780299702000,
           "launch_state": "HOT",
-          "total_time_ms": 107,
-          "wait_time_ms": 109,
+          "total_time_ms": 108,
+          "wait_time_ms": 110,
           "observed": true
         },
         {
@@ -2482,11 +2706,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298522000,
-          "end_wall_time_ms": 1780298522000,
+          "start_wall_time_ms": 1780299702000,
+          "end_wall_time_ms": 1780299703000,
           "launch_state": "WARM",
-          "total_time_ms": 347,
-          "wait_time_ms": 350,
+          "total_time_ms": 361,
+          "wait_time_ms": 371,
           "observed": true
         },
         {
@@ -2500,11 +2724,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298523000,
-          "end_wall_time_ms": 1780298523000,
+          "start_wall_time_ms": 1780299703000,
+          "end_wall_time_ms": 1780299704000,
           "launch_state": "HOT",
-          "total_time_ms": 63,
-          "wait_time_ms": 73,
+          "total_time_ms": 67,
+          "wait_time_ms": 71,
           "observed": true
         },
         {
@@ -2520,11 +2744,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298524000,
-          "end_wall_time_ms": 1780298524000,
+          "start_wall_time_ms": 1780299704000,
+          "end_wall_time_ms": 1780299705000,
           "launch_state": "HOT",
-          "total_time_ms": 192,
-          "wait_time_ms": 195,
+          "total_time_ms": 170,
+          "wait_time_ms": 173,
           "observed": true
         }
       ],
@@ -2532,7 +2756,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 7,
+        "MEMO_MEMORY": 9,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -2542,21 +2766,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 15819,
-        "MEMO_OPENAT": 11700,
-        "MEMO_MEMORY": 7,
-        "MEMO_SENDTO": 18910,
-        "MEMO_RECVFROM": 40217,
-        "MEMO_SCHED": 254936,
-        "MEMO_PROCESS_FORK": 343,
-        "MEMO_PROCESS_EXIT": 318,
+        "MEMO_BINDER": 15983,
+        "MEMO_OPENAT": 13489,
+        "MEMO_MEMORY": 9,
+        "MEMO_SENDTO": 9386,
+        "MEMO_RECVFROM": 16676,
+        "MEMO_SCHED": 249422,
+        "MEMO_PROCESS_FORK": 339,
+        "MEMO_PROCESS_EXIT": 339,
         "MEMO_PROCESS_EXEC": 108
-      }
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 249422,
+          "rate_per_sec": 62355.5
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 16676,
+          "rate_per_sec": 4169
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 15983,
+          "rate_per_sec": 3995.75
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 13489,
+          "rate_per_sec": 3372.25
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 9386,
+          "rate_per_sec": 2346.5
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 339,
+          "rate_per_sec": 84.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 339,
+          "rate_per_sec": 84.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 108,
+          "rate_per_sec": 27
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 9,
+          "rate_per_sec": 2.25
+        }
+      ]
     },
     {
       "index": 6,
-      "start_wall_time_ms": 1780298526000,
-      "end_wall_time_ms": 1780298531000,
+      "start_wall_time_ms": 1780299707000,
+      "end_wall_time_ms": 1780299711000,
       "apps": [
         {
           "index": 26,
@@ -2569,11 +2849,11 @@
             "Navigation\/Location",
             "Communication"
           ],
-          "start_wall_time_ms": 1780298526000,
-          "end_wall_time_ms": 1780298527000,
+          "start_wall_time_ms": 1780299707000,
+          "end_wall_time_ms": 1780299708000,
           "launch_state": "HOT",
-          "total_time_ms": 161,
-          "wait_time_ms": 164,
+          "total_time_ms": 155,
+          "wait_time_ms": 160,
           "observed": true
         },
         {
@@ -2585,11 +2865,11 @@
             "Display Composition",
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298527000,
-          "end_wall_time_ms": 1780298528000,
-          "launch_state": "WARM",
-          "total_time_ms": 235,
-          "wait_time_ms": 240,
+          "start_wall_time_ms": 1780299708000,
+          "end_wall_time_ms": 1780299708000,
+          "launch_state": "HOT",
+          "total_time_ms": 66,
+          "wait_time_ms": 69,
           "observed": true
         },
         {
@@ -2599,11 +2879,11 @@
           "categories": [
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298528000,
-          "end_wall_time_ms": 1780298529000,
+          "start_wall_time_ms": 1780299709000,
+          "end_wall_time_ms": 1780299709000,
           "launch_state": "HOT",
-          "total_time_ms": 74,
-          "wait_time_ms": 78,
+          "total_time_ms": 80,
+          "wait_time_ms": 83,
           "observed": true
         },
         {
@@ -2619,11 +2899,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298529000,
-          "end_wall_time_ms": 1780298530000,
+          "start_wall_time_ms": 1780299710000,
+          "end_wall_time_ms": 1780299710000,
           "launch_state": "HOT",
-          "total_time_ms": 61,
-          "wait_time_ms": 77,
+          "total_time_ms": 72,
+          "wait_time_ms": 75,
           "observed": true
         },
         {
@@ -2639,11 +2919,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298530000,
-          "end_wall_time_ms": 1780298531000,
+          "start_wall_time_ms": 1780299710000,
+          "end_wall_time_ms": 1780299711000,
           "launch_state": "HOT",
-          "total_time_ms": 106,
-          "wait_time_ms": 111,
+          "total_time_ms": 90,
+          "wait_time_ms": 96,
           "observed": true
         }
       ],
@@ -2651,7 +2931,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 13,
+        "MEMO_MEMORY": 10,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -2661,21 +2941,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 12597,
-        "MEMO_OPENAT": 12303,
-        "MEMO_MEMORY": 13,
-        "MEMO_SENDTO": 23416,
-        "MEMO_RECVFROM": 52604,
-        "MEMO_SCHED": 254788,
-        "MEMO_PROCESS_FORK": 259,
-        "MEMO_PROCESS_EXIT": 262,
-        "MEMO_PROCESS_EXEC": 112
-      }
+        "MEMO_BINDER": 11431,
+        "MEMO_OPENAT": 12375,
+        "MEMO_MEMORY": 10,
+        "MEMO_SENDTO": 31626,
+        "MEMO_RECVFROM": 74690,
+        "MEMO_SCHED": 249891,
+        "MEMO_PROCESS_FORK": 242,
+        "MEMO_PROCESS_EXIT": 239,
+        "MEMO_PROCESS_EXEC": 109
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 249891,
+          "rate_per_sec": 62472.75
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 74690,
+          "rate_per_sec": 18672.5
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 31626,
+          "rate_per_sec": 7906.5
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12375,
+          "rate_per_sec": 3093.75
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 11431,
+          "rate_per_sec": 2857.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 242,
+          "rate_per_sec": 60.5
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 239,
+          "rate_per_sec": 59.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 109,
+          "rate_per_sec": 27.25
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 10,
+          "rate_per_sec": 2.5
+        }
+      ]
     },
     {
       "index": 7,
-      "start_wall_time_ms": 1780298533000,
-      "end_wall_time_ms": 1780298537000,
+      "start_wall_time_ms": 1780299713000,
+      "end_wall_time_ms": 1780299717000,
       "apps": [
         {
           "index": 31,
@@ -2689,11 +3025,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298533000,
-          "end_wall_time_ms": 1780298533000,
+          "start_wall_time_ms": 1780299713000,
+          "end_wall_time_ms": 1780299713000,
           "launch_state": "HOT",
-          "total_time_ms": 201,
-          "wait_time_ms": 210,
+          "total_time_ms": 185,
+          "wait_time_ms": 200,
           "observed": true
         },
         {
@@ -2708,11 +3044,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298533000,
-          "end_wall_time_ms": 1780298534000,
+          "start_wall_time_ms": 1780299714000,
+          "end_wall_time_ms": 1780299714000,
           "launch_state": "HOT",
-          "total_time_ms": 148,
-          "wait_time_ms": 151,
+          "total_time_ms": 136,
+          "wait_time_ms": 140,
           "observed": true
         },
         {
@@ -2727,11 +3063,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298534000,
-          "end_wall_time_ms": 1780298535000,
+          "start_wall_time_ms": 1780299715000,
+          "end_wall_time_ms": 1780299715000,
           "launch_state": "UNKNOWN (0)",
           "total_time_ms": null,
-          "wait_time_ms": 57,
+          "wait_time_ms": 51,
           "observed": true
         },
         {
@@ -2746,11 +3082,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298535000,
-          "end_wall_time_ms": 1780298536000,
+          "start_wall_time_ms": 1780299715000,
+          "end_wall_time_ms": 1780299716000,
           "launch_state": "HOT",
-          "total_time_ms": 124,
-          "wait_time_ms": 128,
+          "total_time_ms": 119,
+          "wait_time_ms": 121,
           "observed": true
         },
         {
@@ -2765,10 +3101,10 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298536000,
-          "end_wall_time_ms": 1780298537000,
+          "start_wall_time_ms": 1780299716000,
+          "end_wall_time_ms": 1780299717000,
           "launch_state": "WARM",
-          "total_time_ms": 362,
+          "total_time_ms": 365,
           "wait_time_ms": 370,
           "observed": true
         }
@@ -2777,7 +3113,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 5,
+        "MEMO_MEMORY": 2,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -2787,21 +3123,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 12858,
-        "MEMO_OPENAT": 11435,
-        "MEMO_MEMORY": 5,
-        "MEMO_SENDTO": 25459,
-        "MEMO_RECVFROM": 53630,
-        "MEMO_SCHED": 232526,
-        "MEMO_PROCESS_FORK": 249,
-        "MEMO_PROCESS_EXIT": 249,
-        "MEMO_PROCESS_EXEC": 109
-      }
+        "MEMO_BINDER": 12535,
+        "MEMO_OPENAT": 11402,
+        "MEMO_MEMORY": 2,
+        "MEMO_SENDTO": 8434,
+        "MEMO_RECVFROM": 16293,
+        "MEMO_SCHED": 214878,
+        "MEMO_PROCESS_FORK": 248,
+        "MEMO_PROCESS_EXIT": 237,
+        "MEMO_PROCESS_EXEC": 108
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 214878,
+          "rate_per_sec": 53719.5
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 16293,
+          "rate_per_sec": 4073.25
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 12535,
+          "rate_per_sec": 3133.75
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 11402,
+          "rate_per_sec": 2850.5
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 8434,
+          "rate_per_sec": 2108.5
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 248,
+          "rate_per_sec": 62
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 237,
+          "rate_per_sec": 59.25
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 108,
+          "rate_per_sec": 27
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 2,
+          "rate_per_sec": 0.5
+        }
+      ]
     },
     {
       "index": 8,
-      "start_wall_time_ms": 1780298539000,
-      "end_wall_time_ms": 1780298543000,
+      "start_wall_time_ms": 1780299719000,
+      "end_wall_time_ms": 1780299723000,
       "apps": [
         {
           "index": 36,
@@ -2814,11 +3206,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298539000,
-          "end_wall_time_ms": 1780298539000,
+          "start_wall_time_ms": 1780299719000,
+          "end_wall_time_ms": 1780299720000,
           "launch_state": "HOT",
-          "total_time_ms": 86,
-          "wait_time_ms": 97,
+          "total_time_ms": 82,
+          "wait_time_ms": 85,
           "observed": true
         },
         {
@@ -2834,11 +3226,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298540000,
-          "end_wall_time_ms": 1780298540000,
+          "start_wall_time_ms": 1780299720000,
+          "end_wall_time_ms": 1780299720000,
           "launch_state": "HOT",
-          "total_time_ms": 142,
-          "wait_time_ms": 144,
+          "total_time_ms": 181,
+          "wait_time_ms": 188,
           "observed": true
         },
         {
@@ -2852,11 +3244,11 @@
             "Navigation\/Location",
             "Communication"
           ],
-          "start_wall_time_ms": 1780298540000,
-          "end_wall_time_ms": 1780298541000,
+          "start_wall_time_ms": 1780299721000,
+          "end_wall_time_ms": 1780299721000,
           "launch_state": "HOT",
-          "total_time_ms": 151,
-          "wait_time_ms": 157,
+          "total_time_ms": 136,
+          "wait_time_ms": 140,
           "observed": true
         },
         {
@@ -2868,11 +3260,11 @@
             "Display Composition",
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298542000,
-          "end_wall_time_ms": 1780298542000,
-          "launch_state": "HOT",
-          "total_time_ms": 65,
-          "wait_time_ms": 68,
+          "start_wall_time_ms": 1780299722000,
+          "end_wall_time_ms": 1780299722000,
+          "launch_state": "WARM",
+          "total_time_ms": 234,
+          "wait_time_ms": 237,
           "observed": true
         },
         {
@@ -2882,11 +3274,11 @@
           "categories": [
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298542000,
-          "end_wall_time_ms": 1780298543000,
+          "start_wall_time_ms": 1780299723000,
+          "end_wall_time_ms": 1780299723000,
           "launch_state": "HOT",
-          "total_time_ms": 81,
-          "wait_time_ms": 85,
+          "total_time_ms": 62,
+          "wait_time_ms": 66,
           "observed": true
         }
       ],
@@ -2894,7 +3286,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 19,
+        "MEMO_MEMORY": 12,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -2904,21 +3296,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 16018,
-        "MEMO_OPENAT": 12498,
-        "MEMO_MEMORY": 19,
-        "MEMO_SENDTO": 27675,
-        "MEMO_RECVFROM": 59488,
-        "MEMO_SCHED": 280002,
-        "MEMO_PROCESS_FORK": 347,
-        "MEMO_PROCESS_EXIT": 323,
-        "MEMO_PROCESS_EXEC": 110
-      }
+        "MEMO_BINDER": 16801,
+        "MEMO_OPENAT": 12270,
+        "MEMO_MEMORY": 12,
+        "MEMO_SENDTO": 12753,
+        "MEMO_RECVFROM": 22876,
+        "MEMO_SCHED": 279168,
+        "MEMO_PROCESS_FORK": 361,
+        "MEMO_PROCESS_EXIT": 361,
+        "MEMO_PROCESS_EXEC": 112
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 279168,
+          "rate_per_sec": 69792
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 22876,
+          "rate_per_sec": 5719
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 16801,
+          "rate_per_sec": 4200.25
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 12753,
+          "rate_per_sec": 3188.25
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12270,
+          "rate_per_sec": 3067.5
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 361,
+          "rate_per_sec": 90.25
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 361,
+          "rate_per_sec": 90.25
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 112,
+          "rate_per_sec": 28
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 12,
+          "rate_per_sec": 3
+        }
+      ]
     },
     {
       "index": 9,
-      "start_wall_time_ms": 1780298545000,
-      "end_wall_time_ms": 1780298548000,
+      "start_wall_time_ms": 1780299725000,
+      "end_wall_time_ms": 1780299729000,
       "apps": [
         {
           "index": 41,
@@ -2933,11 +3381,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298545000,
-          "end_wall_time_ms": 1780298545000,
+          "start_wall_time_ms": 1780299725000,
+          "end_wall_time_ms": 1780299726000,
           "launch_state": "HOT",
-          "total_time_ms": 71,
-          "wait_time_ms": 79,
+          "total_time_ms": 76,
+          "wait_time_ms": 85,
           "observed": true
         },
         {
@@ -2953,11 +3401,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298545000,
-          "end_wall_time_ms": 1780298546000,
+          "start_wall_time_ms": 1780299726000,
+          "end_wall_time_ms": 1780299727000,
           "launch_state": "HOT",
-          "total_time_ms": 99,
-          "wait_time_ms": 104,
+          "total_time_ms": 96,
+          "wait_time_ms": 101,
           "observed": true
         },
         {
@@ -2972,11 +3420,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298546000,
-          "end_wall_time_ms": 1780298547000,
+          "start_wall_time_ms": 1780299727000,
+          "end_wall_time_ms": 1780299727000,
           "launch_state": "WARM",
-          "total_time_ms": 204,
-          "wait_time_ms": 210,
+          "total_time_ms": 191,
+          "wait_time_ms": 199,
           "observed": true
         },
         {
@@ -2991,11 +3439,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298547000,
-          "end_wall_time_ms": 1780298548000,
+          "start_wall_time_ms": 1780299728000,
+          "end_wall_time_ms": 1780299728000,
           "launch_state": "HOT",
-          "total_time_ms": 134,
-          "wait_time_ms": 137,
+          "total_time_ms": 128,
+          "wait_time_ms": 131,
           "observed": true
         },
         {
@@ -3010,11 +3458,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298548000,
-          "end_wall_time_ms": 1780298548000,
+          "start_wall_time_ms": 1780299729000,
+          "end_wall_time_ms": 1780299729000,
           "launch_state": "UNKNOWN (0)",
           "total_time_ms": null,
-          "wait_time_ms": 48,
+          "wait_time_ms": 45,
           "observed": true
         }
       ],
@@ -3022,7 +3470,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 4,
+        "MEMO_MEMORY": 12,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -3032,21 +3480,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 11409,
-        "MEMO_OPENAT": 11780,
-        "MEMO_MEMORY": 4,
-        "MEMO_SENDTO": 22106,
-        "MEMO_RECVFROM": 48891,
-        "MEMO_SCHED": 211772,
-        "MEMO_PROCESS_FORK": 233,
-        "MEMO_PROCESS_EXIT": 259,
+        "MEMO_BINDER": 11644,
+        "MEMO_OPENAT": 12300,
+        "MEMO_MEMORY": 12,
+        "MEMO_SENDTO": 14330,
+        "MEMO_RECVFROM": 31919,
+        "MEMO_SCHED": 209673,
+        "MEMO_PROCESS_FORK": 235,
+        "MEMO_PROCESS_EXIT": 241,
         "MEMO_PROCESS_EXEC": 107
-      }
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 209673,
+          "rate_per_sec": 52418.25
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 31919,
+          "rate_per_sec": 7979.75
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 14330,
+          "rate_per_sec": 3582.5
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12300,
+          "rate_per_sec": 3075
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 11644,
+          "rate_per_sec": 2911
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 241,
+          "rate_per_sec": 60.25
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 235,
+          "rate_per_sec": 58.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 107,
+          "rate_per_sec": 26.75
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 12,
+          "rate_per_sec": 3
+        }
+      ]
     },
     {
       "index": 10,
-      "start_wall_time_ms": 1780298550000,
-      "end_wall_time_ms": 1780298555000,
+      "start_wall_time_ms": 1780299731000,
+      "end_wall_time_ms": 1780299736000,
       "apps": [
         {
           "index": 46,
@@ -3060,11 +3564,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298550000,
-          "end_wall_time_ms": 1780298551000,
+          "start_wall_time_ms": 1780299731000,
+          "end_wall_time_ms": 1780299732000,
           "launch_state": "HOT",
-          "total_time_ms": 129,
-          "wait_time_ms": 135,
+          "total_time_ms": 176,
+          "wait_time_ms": 180,
           "observed": true
         },
         {
@@ -3079,11 +3583,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298552000,
-          "end_wall_time_ms": 1780298552000,
+          "start_wall_time_ms": 1780299732000,
+          "end_wall_time_ms": 1780299733000,
           "launch_state": "WARM",
-          "total_time_ms": 370,
-          "wait_time_ms": 372,
+          "total_time_ms": 348,
+          "wait_time_ms": 352,
           "observed": true
         },
         {
@@ -3097,11 +3601,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298552000,
-          "end_wall_time_ms": 1780298553000,
+          "start_wall_time_ms": 1780299733000,
+          "end_wall_time_ms": 1780299734000,
           "launch_state": "HOT",
-          "total_time_ms": 113,
-          "wait_time_ms": 117,
+          "total_time_ms": 105,
+          "wait_time_ms": 109,
           "observed": true
         },
         {
@@ -3117,11 +3621,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298554000,
-          "end_wall_time_ms": 1780298554000,
+          "start_wall_time_ms": 1780299734000,
+          "end_wall_time_ms": 1780299735000,
           "launch_state": "HOT",
-          "total_time_ms": 149,
-          "wait_time_ms": 153,
+          "total_time_ms": 144,
+          "wait_time_ms": 151,
           "observed": true
         },
         {
@@ -3135,11 +3639,11 @@
             "Navigation\/Location",
             "Communication"
           ],
-          "start_wall_time_ms": 1780298554000,
-          "end_wall_time_ms": 1780298555000,
+          "start_wall_time_ms": 1780299735000,
+          "end_wall_time_ms": 1780299736000,
           "launch_state": "HOT",
-          "total_time_ms": 205,
-          "wait_time_ms": 221,
+          "total_time_ms": 164,
+          "wait_time_ms": 169,
           "observed": true
         }
       ],
@@ -3147,7 +3651,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 14,
+        "MEMO_MEMORY": 13,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -3157,21 +3661,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 16948,
-        "MEMO_OPENAT": 12024,
-        "MEMO_MEMORY": 14,
-        "MEMO_SENDTO": 29093,
-        "MEMO_RECVFROM": 63065,
-        "MEMO_SCHED": 299715,
-        "MEMO_PROCESS_FORK": 361,
-        "MEMO_PROCESS_EXIT": 338,
+        "MEMO_BINDER": 17293,
+        "MEMO_OPENAT": 12632,
+        "MEMO_MEMORY": 13,
+        "MEMO_SENDTO": 21082,
+        "MEMO_RECVFROM": 43643,
+        "MEMO_SCHED": 302116,
+        "MEMO_PROCESS_FORK": 372,
+        "MEMO_PROCESS_EXIT": 351,
         "MEMO_PROCESS_EXEC": 113
-      }
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 302116,
+          "rate_per_sec": 60423.2
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 43643,
+          "rate_per_sec": 8728.6
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 21082,
+          "rate_per_sec": 4216.4
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 17293,
+          "rate_per_sec": 3458.6
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12632,
+          "rate_per_sec": 2526.4
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 372,
+          "rate_per_sec": 74.4
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 351,
+          "rate_per_sec": 70.2
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 113,
+          "rate_per_sec": 22.6
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 13,
+          "rate_per_sec": 2.6
+        }
+      ]
     },
     {
       "index": 11,
-      "start_wall_time_ms": 1780298557000,
-      "end_wall_time_ms": 1780298561000,
+      "start_wall_time_ms": 1780299737000,
+      "end_wall_time_ms": 1780299741000,
       "apps": [
         {
           "index": 51,
@@ -3182,11 +3742,11 @@
             "Display Composition",
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298557000,
-          "end_wall_time_ms": 1780298557000,
+          "start_wall_time_ms": 1780299737000,
+          "end_wall_time_ms": 1780299738000,
           "launch_state": "HOT",
-          "total_time_ms": 65,
-          "wait_time_ms": 72,
+          "total_time_ms": 80,
+          "wait_time_ms": 83,
           "observed": true
         },
         {
@@ -3196,11 +3756,11 @@
           "categories": [
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298558000,
-          "end_wall_time_ms": 1780298558000,
+          "start_wall_time_ms": 1780299738000,
+          "end_wall_time_ms": 1780299739000,
           "launch_state": "HOT",
-          "total_time_ms": 64,
-          "wait_time_ms": 69,
+          "total_time_ms": 81,
+          "wait_time_ms": 86,
           "observed": true
         },
         {
@@ -3216,11 +3776,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298559000,
-          "end_wall_time_ms": 1780298559000,
+          "start_wall_time_ms": 1780299739000,
+          "end_wall_time_ms": 1780299739000,
           "launch_state": "HOT",
-          "total_time_ms": 59,
-          "wait_time_ms": 60,
+          "total_time_ms": 81,
+          "wait_time_ms": 84,
           "observed": true
         },
         {
@@ -3236,11 +3796,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298559000,
-          "end_wall_time_ms": 1780298560000,
+          "start_wall_time_ms": 1780299740000,
+          "end_wall_time_ms": 1780299740000,
           "launch_state": "HOT",
-          "total_time_ms": 112,
-          "wait_time_ms": 115,
+          "total_time_ms": 75,
+          "wait_time_ms": 79,
           "observed": true
         },
         {
@@ -3255,11 +3815,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298560000,
-          "end_wall_time_ms": 1780298561000,
+          "start_wall_time_ms": 1780299741000,
+          "end_wall_time_ms": 1780299741000,
           "launch_state": "HOT",
-          "total_time_ms": 163,
-          "wait_time_ms": 168,
+          "total_time_ms": 150,
+          "wait_time_ms": 156,
           "observed": true
         }
       ],
@@ -3267,7 +3827,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 17,
+        "MEMO_MEMORY": 14,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -3277,21 +3837,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 12655,
-        "MEMO_OPENAT": 11991,
-        "MEMO_MEMORY": 17,
-        "MEMO_SENDTO": 14289,
-        "MEMO_RECVFROM": 31914,
-        "MEMO_SCHED": 212962,
-        "MEMO_PROCESS_FORK": 237,
-        "MEMO_PROCESS_EXIT": 240,
-        "MEMO_PROCESS_EXEC": 106
-      }
+        "MEMO_BINDER": 12782,
+        "MEMO_OPENAT": 12113,
+        "MEMO_MEMORY": 14,
+        "MEMO_SENDTO": 15860,
+        "MEMO_RECVFROM": 33735,
+        "MEMO_SCHED": 219974,
+        "MEMO_PROCESS_FORK": 243,
+        "MEMO_PROCESS_EXIT": 249,
+        "MEMO_PROCESS_EXEC": 105
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 219974,
+          "rate_per_sec": 54993.5
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 33735,
+          "rate_per_sec": 8433.75
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 15860,
+          "rate_per_sec": 3965
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 12782,
+          "rate_per_sec": 3195.5
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12113,
+          "rate_per_sec": 3028.25
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 249,
+          "rate_per_sec": 62.25
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 243,
+          "rate_per_sec": 60.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 105,
+          "rate_per_sec": 26.25
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 14,
+          "rate_per_sec": 3.5
+        }
+      ]
     },
     {
       "index": 12,
-      "start_wall_time_ms": 1780298562000,
-      "end_wall_time_ms": 1780298567000,
+      "start_wall_time_ms": 1780299743000,
+      "end_wall_time_ms": 1780299747000,
       "apps": [
         {
           "index": 56,
@@ -3305,11 +3921,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298562000,
-          "end_wall_time_ms": 1780298563000,
+          "start_wall_time_ms": 1780299743000,
+          "end_wall_time_ms": 1780299744000,
           "launch_state": "HOT",
-          "total_time_ms": 174,
-          "wait_time_ms": 177,
+          "total_time_ms": 163,
+          "wait_time_ms": 168,
           "observed": true
         },
         {
@@ -3324,11 +3940,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298564000,
-          "end_wall_time_ms": 1780298564000,
+          "start_wall_time_ms": 1780299744000,
+          "end_wall_time_ms": 1780299744000,
           "launch_state": "UNKNOWN (0)",
           "total_time_ms": null,
-          "wait_time_ms": 66,
+          "wait_time_ms": 53,
           "observed": true
         },
         {
@@ -3343,10 +3959,10 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298564000,
-          "end_wall_time_ms": 1780298565000,
+          "start_wall_time_ms": 1780299745000,
+          "end_wall_time_ms": 1780299745000,
           "launch_state": "HOT",
-          "total_time_ms": 109,
+          "total_time_ms": 110,
           "wait_time_ms": 112,
           "observed": true
         },
@@ -3362,11 +3978,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298565000,
-          "end_wall_time_ms": 1780298566000,
+          "start_wall_time_ms": 1780299746000,
+          "end_wall_time_ms": 1780299746000,
           "launch_state": "WARM",
-          "total_time_ms": 399,
-          "wait_time_ms": 401,
+          "total_time_ms": 361,
+          "wait_time_ms": 375,
           "observed": true
         },
         {
@@ -3380,11 +3996,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298566000,
-          "end_wall_time_ms": 1780298567000,
+          "start_wall_time_ms": 1780299747000,
+          "end_wall_time_ms": 1780299747000,
           "launch_state": "HOT",
-          "total_time_ms": 71,
-          "wait_time_ms": 84,
+          "total_time_ms": 82,
+          "wait_time_ms": 114,
           "observed": true
         }
       ],
@@ -3392,7 +4008,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 20,
+        "MEMO_MEMORY": 8,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -3402,21 +4018,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 15747,
-        "MEMO_OPENAT": 11626,
-        "MEMO_MEMORY": 20,
-        "MEMO_SENDTO": 20421,
-        "MEMO_RECVFROM": 40900,
-        "MEMO_SCHED": 272890,
+        "MEMO_BINDER": 15896,
+        "MEMO_OPENAT": 12888,
+        "MEMO_MEMORY": 8,
+        "MEMO_SENDTO": 22360,
+        "MEMO_RECVFROM": 46171,
+        "MEMO_SCHED": 279147,
         "MEMO_PROCESS_FORK": 348,
-        "MEMO_PROCESS_EXIT": 320,
+        "MEMO_PROCESS_EXIT": 268,
         "MEMO_PROCESS_EXEC": 112
-      }
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 279147,
+          "rate_per_sec": 69786.75
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 46171,
+          "rate_per_sec": 11542.75
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 22360,
+          "rate_per_sec": 5590
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 15896,
+          "rate_per_sec": 3974
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12888,
+          "rate_per_sec": 3222
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 348,
+          "rate_per_sec": 87
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 268,
+          "rate_per_sec": 67
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 112,
+          "rate_per_sec": 28
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 8,
+          "rate_per_sec": 2
+        }
+      ]
     },
     {
       "index": 13,
-      "start_wall_time_ms": 1780298569000,
-      "end_wall_time_ms": 1780298573000,
+      "start_wall_time_ms": 1780299750000,
+      "end_wall_time_ms": 1780299753000,
       "apps": [
         {
           "index": 61,
@@ -3431,11 +4103,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298569000,
-          "end_wall_time_ms": 1780298569000,
+          "start_wall_time_ms": 1780299750000,
+          "end_wall_time_ms": 1780299750000,
           "launch_state": "HOT",
-          "total_time_ms": 134,
-          "wait_time_ms": 143,
+          "total_time_ms": 110,
+          "wait_time_ms": 113,
           "observed": true
         },
         {
@@ -3449,11 +4121,11 @@
             "Navigation\/Location",
             "Communication"
           ],
-          "start_wall_time_ms": 1780298570000,
-          "end_wall_time_ms": 1780298571000,
+          "start_wall_time_ms": 1780299750000,
+          "end_wall_time_ms": 1780299751000,
           "launch_state": "HOT",
-          "total_time_ms": 147,
-          "wait_time_ms": 150,
+          "total_time_ms": 156,
+          "wait_time_ms": 158,
           "observed": true
         },
         {
@@ -3465,11 +4137,11 @@
             "Display Composition",
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298571000,
-          "end_wall_time_ms": 1780298571000,
+          "start_wall_time_ms": 1780299751000,
+          "end_wall_time_ms": 1780299752000,
           "launch_state": "HOT",
-          "total_time_ms": 67,
-          "wait_time_ms": 70,
+          "total_time_ms": 78,
+          "wait_time_ms": 80,
           "observed": true
         },
         {
@@ -3479,11 +4151,11 @@
           "categories": [
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298571000,
-          "end_wall_time_ms": 1780298572000,
+          "start_wall_time_ms": 1780299752000,
+          "end_wall_time_ms": 1780299753000,
           "launch_state": "HOT",
-          "total_time_ms": 84,
-          "wait_time_ms": 88,
+          "total_time_ms": 76,
+          "wait_time_ms": 82,
           "observed": true
         },
         {
@@ -3499,11 +4171,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298572000,
-          "end_wall_time_ms": 1780298573000,
+          "start_wall_time_ms": 1780299753000,
+          "end_wall_time_ms": 1780299753000,
           "launch_state": "HOT",
-          "total_time_ms": 66,
-          "wait_time_ms": 91,
+          "total_time_ms": 82,
+          "wait_time_ms": 88,
           "observed": true
         }
       ],
@@ -3511,7 +4183,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 12,
+        "MEMO_MEMORY": 13,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -3521,21 +4193,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 10983,
-        "MEMO_OPENAT": 11388,
-        "MEMO_MEMORY": 12,
-        "MEMO_SENDTO": 13611,
-        "MEMO_RECVFROM": 28642,
-        "MEMO_SCHED": 199529,
-        "MEMO_PROCESS_FORK": 238,
-        "MEMO_PROCESS_EXIT": 235,
+        "MEMO_BINDER": 11196,
+        "MEMO_OPENAT": 11617,
+        "MEMO_MEMORY": 13,
+        "MEMO_SENDTO": 12917,
+        "MEMO_RECVFROM": 27731,
+        "MEMO_SCHED": 206804,
+        "MEMO_PROCESS_FORK": 242,
+        "MEMO_PROCESS_EXIT": 250,
         "MEMO_PROCESS_EXEC": 107
-      }
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 206804,
+          "rate_per_sec": 68934.66666666667
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 27731,
+          "rate_per_sec": 9243.666666666666
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 12917,
+          "rate_per_sec": 4305.666666666667
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 11617,
+          "rate_per_sec": 3872.3333333333335
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 11196,
+          "rate_per_sec": 3732
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 250,
+          "rate_per_sec": 83.33333333333333
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 242,
+          "rate_per_sec": 80.66666666666667
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 107,
+          "rate_per_sec": 35.666666666666664
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 13,
+          "rate_per_sec": 4.333333333333333
+        }
+      ]
     },
     {
       "index": 14,
-      "start_wall_time_ms": 1780298575000,
-      "end_wall_time_ms": 1780298579000,
+      "start_wall_time_ms": 1780299755000,
+      "end_wall_time_ms": 1780299759000,
       "apps": [
         {
           "index": 66,
@@ -3550,11 +4278,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298575000,
-          "end_wall_time_ms": 1780298575000,
+          "start_wall_time_ms": 1780299755000,
+          "end_wall_time_ms": 1780299756000,
           "launch_state": "HOT",
-          "total_time_ms": 92,
-          "wait_time_ms": 96,
+          "total_time_ms": 116,
+          "wait_time_ms": 120,
           "observed": true
         },
         {
@@ -3569,11 +4297,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298576000,
-          "end_wall_time_ms": 1780298576000,
-          "launch_state": "WARM",
-          "total_time_ms": 214,
-          "wait_time_ms": 224,
+          "start_wall_time_ms": 1780299756000,
+          "end_wall_time_ms": 1780299757000,
+          "launch_state": "HOT",
+          "total_time_ms": 169,
+          "wait_time_ms": 175,
           "observed": true
         },
         {
@@ -3588,11 +4316,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298576000,
-          "end_wall_time_ms": 1780298577000,
+          "start_wall_time_ms": 1780299757000,
+          "end_wall_time_ms": 1780299758000,
           "launch_state": "HOT",
-          "total_time_ms": 159,
-          "wait_time_ms": 163,
+          "total_time_ms": 152,
+          "wait_time_ms": 155,
           "observed": true
         },
         {
@@ -3607,11 +4335,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298578000,
-          "end_wall_time_ms": 1780298578000,
+          "start_wall_time_ms": 1780299758000,
+          "end_wall_time_ms": 1780299758000,
           "launch_state": "UNKNOWN (0)",
           "total_time_ms": null,
-          "wait_time_ms": 137,
+          "wait_time_ms": 65,
           "observed": true
         },
         {
@@ -3626,11 +4354,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298578000,
-          "end_wall_time_ms": 1780298579000,
+          "start_wall_time_ms": 1780299759000,
+          "end_wall_time_ms": 1780299759000,
           "launch_state": "HOT",
-          "total_time_ms": 122,
-          "wait_time_ms": 126,
+          "total_time_ms": 126,
+          "wait_time_ms": 128,
           "observed": true
         }
       ],
@@ -3638,7 +4366,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 2,
+        "MEMO_MEMORY": 12,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -3648,21 +4376,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 12165,
-        "MEMO_OPENAT": 12123,
-        "MEMO_MEMORY": 2,
-        "MEMO_SENDTO": 34895,
-        "MEMO_RECVFROM": 78795,
-        "MEMO_SCHED": 265760,
-        "MEMO_PROCESS_FORK": 292,
-        "MEMO_PROCESS_EXIT": 254,
-        "MEMO_PROCESS_EXEC": 113
-      }
+        "MEMO_BINDER": 11772,
+        "MEMO_OPENAT": 12161,
+        "MEMO_MEMORY": 12,
+        "MEMO_SENDTO": 26282,
+        "MEMO_RECVFROM": 57370,
+        "MEMO_SCHED": 247782,
+        "MEMO_PROCESS_FORK": 242,
+        "MEMO_PROCESS_EXIT": 241,
+        "MEMO_PROCESS_EXEC": 111
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 247782,
+          "rate_per_sec": 61945.5
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 57370,
+          "rate_per_sec": 14342.5
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 26282,
+          "rate_per_sec": 6570.5
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12161,
+          "rate_per_sec": 3040.25
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 11772,
+          "rate_per_sec": 2943
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 242,
+          "rate_per_sec": 60.5
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 241,
+          "rate_per_sec": 60.25
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 111,
+          "rate_per_sec": 27.75
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 12,
+          "rate_per_sec": 3
+        }
+      ]
     },
     {
       "index": 15,
-      "start_wall_time_ms": 1780298581000,
-      "end_wall_time_ms": 1780298585000,
+      "start_wall_time_ms": 1780299761000,
+      "end_wall_time_ms": 1780299766000,
       "apps": [
         {
           "index": 71,
@@ -3676,11 +4460,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298581000,
-          "end_wall_time_ms": 1780298582000,
+          "start_wall_time_ms": 1780299761000,
+          "end_wall_time_ms": 1780299762000,
           "launch_state": "WARM",
-          "total_time_ms": 416,
-          "wait_time_ms": 419,
+          "total_time_ms": 387,
+          "wait_time_ms": 391,
           "observed": true
         },
         {
@@ -3694,11 +4478,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298582000,
-          "end_wall_time_ms": 1780298583000,
+          "start_wall_time_ms": 1780299762000,
+          "end_wall_time_ms": 1780299763000,
           "launch_state": "HOT",
-          "total_time_ms": 109,
-          "wait_time_ms": 115,
+          "total_time_ms": 120,
+          "wait_time_ms": 129,
           "observed": true
         },
         {
@@ -3714,11 +4498,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298583000,
-          "end_wall_time_ms": 1780298583000,
+          "start_wall_time_ms": 1780299763000,
+          "end_wall_time_ms": 1780299764000,
           "launch_state": "HOT",
-          "total_time_ms": 142,
-          "wait_time_ms": 147,
+          "total_time_ms": 176,
+          "wait_time_ms": 180,
           "observed": true
         },
         {
@@ -3732,11 +4516,11 @@
             "Navigation\/Location",
             "Communication"
           ],
-          "start_wall_time_ms": 1780298584000,
-          "end_wall_time_ms": 1780298585000,
+          "start_wall_time_ms": 1780299764000,
+          "end_wall_time_ms": 1780299765000,
           "launch_state": "HOT",
-          "total_time_ms": 212,
-          "wait_time_ms": 225,
+          "total_time_ms": 170,
+          "wait_time_ms": 172,
           "observed": true
         },
         {
@@ -3748,11 +4532,11 @@
             "Display Composition",
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298585000,
-          "end_wall_time_ms": 1780298585000,
+          "start_wall_time_ms": 1780299765000,
+          "end_wall_time_ms": 1780299766000,
           "launch_state": "HOT",
-          "total_time_ms": 67,
-          "wait_time_ms": 70,
+          "total_time_ms": 69,
+          "wait_time_ms": 72,
           "observed": true
         }
       ],
@@ -3760,7 +4544,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 7,
+        "MEMO_MEMORY": 16,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -3770,21 +4554,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 17695,
-        "MEMO_OPENAT": 11697,
-        "MEMO_MEMORY": 7,
-        "MEMO_SENDTO": 18643,
-        "MEMO_RECVFROM": 36998,
-        "MEMO_SCHED": 268244,
-        "MEMO_PROCESS_FORK": 364,
-        "MEMO_PROCESS_EXIT": 381,
-        "MEMO_PROCESS_EXEC": 110
-      }
+        "MEMO_BINDER": 17771,
+        "MEMO_OPENAT": 12478,
+        "MEMO_MEMORY": 16,
+        "MEMO_SENDTO": 17600,
+        "MEMO_RECVFROM": 35204,
+        "MEMO_SCHED": 271620,
+        "MEMO_PROCESS_FORK": 378,
+        "MEMO_PROCESS_EXIT": 380,
+        "MEMO_PROCESS_EXEC": 109
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 271620,
+          "rate_per_sec": 54324
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 35204,
+          "rate_per_sec": 7040.8
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 17771,
+          "rate_per_sec": 3554.2
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 17600,
+          "rate_per_sec": 3520
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12478,
+          "rate_per_sec": 2495.6
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 380,
+          "rate_per_sec": 76
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 378,
+          "rate_per_sec": 75.6
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 109,
+          "rate_per_sec": 21.8
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 16,
+          "rate_per_sec": 3.2
+        }
+      ]
     },
     {
       "index": 16,
-      "start_wall_time_ms": 1780298587000,
-      "end_wall_time_ms": 1780298591000,
+      "start_wall_time_ms": 1780299768000,
+      "end_wall_time_ms": 1780299772000,
       "apps": [
         {
           "index": 76,
@@ -3793,11 +4633,11 @@
           "categories": [
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298587000,
-          "end_wall_time_ms": 1780298588000,
+          "start_wall_time_ms": 1780299768000,
+          "end_wall_time_ms": 1780299768000,
           "launch_state": "HOT",
-          "total_time_ms": 84,
-          "wait_time_ms": 86,
+          "total_time_ms": 82,
+          "wait_time_ms": 85,
           "observed": true
         },
         {
@@ -3813,11 +4653,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298588000,
-          "end_wall_time_ms": 1780298589000,
+          "start_wall_time_ms": 1780299769000,
+          "end_wall_time_ms": 1780299769000,
           "launch_state": "HOT",
-          "total_time_ms": 76,
-          "wait_time_ms": 79,
+          "total_time_ms": 57,
+          "wait_time_ms": 66,
           "observed": true
         },
         {
@@ -3833,11 +4673,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298589000,
-          "end_wall_time_ms": 1780298590000,
+          "start_wall_time_ms": 1780299769000,
+          "end_wall_time_ms": 1780299770000,
           "launch_state": "HOT",
-          "total_time_ms": 90,
-          "wait_time_ms": 97,
+          "total_time_ms": 111,
+          "wait_time_ms": 115,
           "observed": true
         },
         {
@@ -3852,11 +4692,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298590000,
-          "end_wall_time_ms": 1780298590000,
+          "start_wall_time_ms": 1780299770000,
+          "end_wall_time_ms": 1780299771000,
           "launch_state": "WARM",
-          "total_time_ms": 211,
-          "wait_time_ms": 230,
+          "total_time_ms": 210,
+          "wait_time_ms": 216,
           "observed": true
         },
         {
@@ -3871,11 +4711,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298591000,
-          "end_wall_time_ms": 1780298591000,
+          "start_wall_time_ms": 1780299771000,
+          "end_wall_time_ms": 1780299772000,
           "launch_state": "HOT",
-          "total_time_ms": 134,
-          "wait_time_ms": 137,
+          "total_time_ms": 142,
+          "wait_time_ms": 145,
           "observed": true
         }
       ],
@@ -3883,7 +4723,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 4,
+        "MEMO_MEMORY": 10,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -3893,21 +4733,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 12905,
-        "MEMO_OPENAT": 12412,
-        "MEMO_MEMORY": 4,
-        "MEMO_SENDTO": 24615,
-        "MEMO_RECVFROM": 53426,
-        "MEMO_SCHED": 245841,
-        "MEMO_PROCESS_FORK": 247,
-        "MEMO_PROCESS_EXIT": 243,
-        "MEMO_PROCESS_EXEC": 111
-      }
+        "MEMO_BINDER": 12597,
+        "MEMO_OPENAT": 12425,
+        "MEMO_MEMORY": 10,
+        "MEMO_SENDTO": 32159,
+        "MEMO_RECVFROM": 74608,
+        "MEMO_SCHED": 253271,
+        "MEMO_PROCESS_FORK": 244,
+        "MEMO_PROCESS_EXIT": 240,
+        "MEMO_PROCESS_EXEC": 110
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 253271,
+          "rate_per_sec": 63317.75
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 74608,
+          "rate_per_sec": 18652
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 32159,
+          "rate_per_sec": 8039.75
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 12597,
+          "rate_per_sec": 3149.25
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12425,
+          "rate_per_sec": 3106.25
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 244,
+          "rate_per_sec": 61
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 240,
+          "rate_per_sec": 60
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 110,
+          "rate_per_sec": 27.5
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 10,
+          "rate_per_sec": 2.5
+        }
+      ]
     },
     {
       "index": 17,
-      "start_wall_time_ms": 1780298593000,
-      "end_wall_time_ms": 1780298597000,
+      "start_wall_time_ms": 1780299774000,
+      "end_wall_time_ms": 1780299778000,
       "apps": [
         {
           "index": 81,
@@ -3921,11 +4817,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298593000,
-          "end_wall_time_ms": 1780298594000,
+          "start_wall_time_ms": 1780299774000,
+          "end_wall_time_ms": 1780299774000,
           "launch_state": "UNKNOWN (0)",
           "total_time_ms": null,
-          "wait_time_ms": 72,
+          "wait_time_ms": 58,
           "observed": true
         },
         {
@@ -3940,11 +4836,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298594000,
-          "end_wall_time_ms": 1780298595000,
+          "start_wall_time_ms": 1780299774000,
+          "end_wall_time_ms": 1780299775000,
           "launch_state": "HOT",
-          "total_time_ms": 123,
-          "wait_time_ms": 128,
+          "total_time_ms": 108,
+          "wait_time_ms": 111,
           "observed": true
         },
         {
@@ -3959,11 +4855,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298595000,
-          "end_wall_time_ms": 1780298596000,
+          "start_wall_time_ms": 1780299775000,
+          "end_wall_time_ms": 1780299776000,
           "launch_state": "WARM",
-          "total_time_ms": 415,
-          "wait_time_ms": 419,
+          "total_time_ms": 417,
+          "wait_time_ms": 421,
           "observed": true
         },
         {
@@ -3977,11 +4873,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298596000,
-          "end_wall_time_ms": 1780298597000,
+          "start_wall_time_ms": 1780299776000,
+          "end_wall_time_ms": 1780299777000,
           "launch_state": "HOT",
-          "total_time_ms": 95,
-          "wait_time_ms": 118,
+          "total_time_ms": 124,
+          "wait_time_ms": 140,
           "observed": true
         },
         {
@@ -3997,11 +4893,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298597000,
-          "end_wall_time_ms": 1780298597000,
+          "start_wall_time_ms": 1780299777000,
+          "end_wall_time_ms": 1780299778000,
           "launch_state": "HOT",
-          "total_time_ms": 180,
-          "wait_time_ms": 186,
+          "total_time_ms": 175,
+          "wait_time_ms": 182,
           "observed": true
         }
       ],
@@ -4009,7 +4905,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 8,
+        "MEMO_MEMORY": 12,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -4019,21 +4915,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 15839,
-        "MEMO_OPENAT": 15130,
-        "MEMO_MEMORY": 8,
-        "MEMO_SENDTO": 17011,
-        "MEMO_RECVFROM": 36755,
-        "MEMO_SCHED": 253593,
-        "MEMO_PROCESS_FORK": 349,
+        "MEMO_BINDER": 15845,
+        "MEMO_OPENAT": 16497,
+        "MEMO_MEMORY": 12,
+        "MEMO_SENDTO": 10110,
+        "MEMO_RECVFROM": 18233,
+        "MEMO_SCHED": 291565,
+        "MEMO_PROCESS_FORK": 353,
         "MEMO_PROCESS_EXIT": 327,
-        "MEMO_PROCESS_EXEC": 118
-      }
+        "MEMO_PROCESS_EXEC": 119
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 291565,
+          "rate_per_sec": 72891.25
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 18233,
+          "rate_per_sec": 4558.25
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 16497,
+          "rate_per_sec": 4124.25
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 15845,
+          "rate_per_sec": 3961.25
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 10110,
+          "rate_per_sec": 2527.5
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 353,
+          "rate_per_sec": 88.25
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 327,
+          "rate_per_sec": 81.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 119,
+          "rate_per_sec": 29.75
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 12,
+          "rate_per_sec": 3
+        }
+      ]
     },
     {
       "index": 18,
-      "start_wall_time_ms": 1780298599000,
-      "end_wall_time_ms": 1780298603000,
+      "start_wall_time_ms": 1780299780000,
+      "end_wall_time_ms": 1780299784000,
       "apps": [
         {
           "index": 86,
@@ -4046,11 +4998,11 @@
             "Navigation\/Location",
             "Communication"
           ],
-          "start_wall_time_ms": 1780298599000,
-          "end_wall_time_ms": 1780298600000,
+          "start_wall_time_ms": 1780299780000,
+          "end_wall_time_ms": 1780299781000,
           "launch_state": "HOT",
-          "total_time_ms": 182,
-          "wait_time_ms": 186,
+          "total_time_ms": 194,
+          "wait_time_ms": 197,
           "observed": true
         },
         {
@@ -4062,11 +5014,11 @@
             "Display Composition",
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298601000,
-          "end_wall_time_ms": 1780298601000,
+          "start_wall_time_ms": 1780299781000,
+          "end_wall_time_ms": 1780299781000,
           "launch_state": "HOT",
-          "total_time_ms": 68,
-          "wait_time_ms": 73,
+          "total_time_ms": 66,
+          "wait_time_ms": 69,
           "observed": true
         },
         {
@@ -4076,11 +5028,11 @@
           "categories": [
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298601000,
-          "end_wall_time_ms": 1780298602000,
+          "start_wall_time_ms": 1780299782000,
+          "end_wall_time_ms": 1780299782000,
           "launch_state": "HOT",
-          "total_time_ms": 82,
-          "wait_time_ms": 84,
+          "total_time_ms": 77,
+          "wait_time_ms": 79,
           "observed": true
         },
         {
@@ -4096,11 +5048,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298602000,
-          "end_wall_time_ms": 1780298602000,
+          "start_wall_time_ms": 1780299783000,
+          "end_wall_time_ms": 1780299783000,
           "launch_state": "HOT",
-          "total_time_ms": 82,
-          "wait_time_ms": 86,
+          "total_time_ms": 74,
+          "wait_time_ms": 82,
           "observed": true
         },
         {
@@ -4116,11 +5068,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298603000,
-          "end_wall_time_ms": 1780298603000,
+          "start_wall_time_ms": 1780299783000,
+          "end_wall_time_ms": 1780299784000,
           "launch_state": "HOT",
-          "total_time_ms": 103,
-          "wait_time_ms": 107,
+          "total_time_ms": 96,
+          "wait_time_ms": 99,
           "observed": true
         }
       ],
@@ -4128,7 +5080,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 2,
+        "MEMO_MEMORY": 9,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -4138,21 +5090,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 11601,
-        "MEMO_OPENAT": 11704,
-        "MEMO_MEMORY": 2,
-        "MEMO_SENDTO": 31244,
-        "MEMO_RECVFROM": 72684,
-        "MEMO_SCHED": 250588,
-        "MEMO_PROCESS_FORK": 237,
-        "MEMO_PROCESS_EXIT": 236,
-        "MEMO_PROCESS_EXEC": 110
-      }
+        "MEMO_BINDER": 12258,
+        "MEMO_OPENAT": 12475,
+        "MEMO_MEMORY": 9,
+        "MEMO_SENDTO": 25958,
+        "MEMO_RECVFROM": 58181,
+        "MEMO_SCHED": 255374,
+        "MEMO_PROCESS_FORK": 247,
+        "MEMO_PROCESS_EXIT": 248,
+        "MEMO_PROCESS_EXEC": 109
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 255374,
+          "rate_per_sec": 63843.5
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 58181,
+          "rate_per_sec": 14545.25
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 25958,
+          "rate_per_sec": 6489.5
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12475,
+          "rate_per_sec": 3118.75
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 12258,
+          "rate_per_sec": 3064.5
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 248,
+          "rate_per_sec": 62
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 247,
+          "rate_per_sec": 61.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 109,
+          "rate_per_sec": 27.25
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 9,
+          "rate_per_sec": 2.25
+        }
+      ]
     },
     {
       "index": 19,
-      "start_wall_time_ms": 1780298605000,
-      "end_wall_time_ms": 1780298610000,
+      "start_wall_time_ms": 1780299786000,
+      "end_wall_time_ms": 1780299790000,
       "apps": [
         {
           "index": 91,
@@ -4166,11 +5174,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298605000,
-          "end_wall_time_ms": 1780298606000,
+          "start_wall_time_ms": 1780299786000,
+          "end_wall_time_ms": 1780299786000,
           "launch_state": "HOT",
-          "total_time_ms": 218,
-          "wait_time_ms": 224,
+          "total_time_ms": 215,
+          "wait_time_ms": 222,
           "observed": true
         },
         {
@@ -4185,11 +5193,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298606000,
-          "end_wall_time_ms": 1780298607000,
+          "start_wall_time_ms": 1780299787000,
+          "end_wall_time_ms": 1780299787000,
           "launch_state": "HOT",
           "total_time_ms": 138,
-          "wait_time_ms": 141,
+          "wait_time_ms": 140,
           "observed": true
         },
         {
@@ -4204,11 +5212,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298607000,
-          "end_wall_time_ms": 1780298608000,
+          "start_wall_time_ms": 1780299788000,
+          "end_wall_time_ms": 1780299788000,
           "launch_state": "UNKNOWN (0)",
           "total_time_ms": null,
-          "wait_time_ms": 59,
+          "wait_time_ms": 56,
           "observed": true
         },
         {
@@ -4223,11 +5231,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298608000,
-          "end_wall_time_ms": 1780298609000,
+          "start_wall_time_ms": 1780299788000,
+          "end_wall_time_ms": 1780299789000,
           "launch_state": "HOT",
-          "total_time_ms": 112,
-          "wait_time_ms": 115,
+          "total_time_ms": 132,
+          "wait_time_ms": 134,
           "observed": true
         },
         {
@@ -4242,11 +5250,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298609000,
-          "end_wall_time_ms": 1780298610000,
+          "start_wall_time_ms": 1780299789000,
+          "end_wall_time_ms": 1780299790000,
           "launch_state": "WARM",
           "total_time_ms": 380,
-          "wait_time_ms": 388,
+          "wait_time_ms": 383,
           "observed": true
         }
       ],
@@ -4254,7 +5262,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 1,
+        "MEMO_MEMORY": 9,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -4264,21 +5272,77 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 12160,
-        "MEMO_OPENAT": 11169,
-        "MEMO_MEMORY": 1,
-        "MEMO_SENDTO": 25151,
-        "MEMO_RECVFROM": 56739,
-        "MEMO_SCHED": 224952,
-        "MEMO_PROCESS_FORK": 244,
-        "MEMO_PROCESS_EXIT": 238,
-        "MEMO_PROCESS_EXEC": 109
-      }
+        "MEMO_BINDER": 12676,
+        "MEMO_OPENAT": 11601,
+        "MEMO_MEMORY": 9,
+        "MEMO_SENDTO": 16291,
+        "MEMO_RECVFROM": 33869,
+        "MEMO_SCHED": 225368,
+        "MEMO_PROCESS_FORK": 248,
+        "MEMO_PROCESS_EXIT": 242,
+        "MEMO_PROCESS_EXEC": 111
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 225368,
+          "rate_per_sec": 56342
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 33869,
+          "rate_per_sec": 8467.25
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 16291,
+          "rate_per_sec": 4072.75
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 12676,
+          "rate_per_sec": 3169
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 11601,
+          "rate_per_sec": 2900.25
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 248,
+          "rate_per_sec": 62
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 242,
+          "rate_per_sec": 60.5
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 111,
+          "rate_per_sec": 27.75
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 9,
+          "rate_per_sec": 2.25
+        }
+      ]
     },
     {
       "index": 20,
-      "start_wall_time_ms": 1780298612000,
-      "end_wall_time_ms": 1780298616000,
+      "start_wall_time_ms": 1780299792000,
+      "end_wall_time_ms": 1780299796000,
       "apps": [
         {
           "index": 96,
@@ -4291,11 +5355,11 @@
             "Navigation\/Location",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298612000,
-          "end_wall_time_ms": 1780298612000,
+          "start_wall_time_ms": 1780299792000,
+          "end_wall_time_ms": 1780299793000,
           "launch_state": "HOT",
-          "total_time_ms": 99,
-          "wait_time_ms": 135,
+          "total_time_ms": 91,
+          "wait_time_ms": 101,
           "observed": true
         },
         {
@@ -4311,11 +5375,11 @@
             "Communication",
             "Payment\/Security"
           ],
-          "start_wall_time_ms": 1780298613000,
-          "end_wall_time_ms": 1780298613000,
+          "start_wall_time_ms": 1780299793000,
+          "end_wall_time_ms": 1780299794000,
           "launch_state": "HOT",
-          "total_time_ms": 166,
-          "wait_time_ms": 168,
+          "total_time_ms": 177,
+          "wait_time_ms": 187,
           "observed": true
         },
         {
@@ -4329,11 +5393,11 @@
             "Navigation\/Location",
             "Communication"
           ],
-          "start_wall_time_ms": 1780298613000,
-          "end_wall_time_ms": 1780298614000,
+          "start_wall_time_ms": 1780299794000,
+          "end_wall_time_ms": 1780299795000,
           "launch_state": "HOT",
-          "total_time_ms": 144,
-          "wait_time_ms": 150,
+          "total_time_ms": 166,
+          "wait_time_ms": 172,
           "observed": true
         },
         {
@@ -4345,11 +5409,11 @@
             "Display Composition",
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298615000,
-          "end_wall_time_ms": 1780298615000,
-          "launch_state": "WARM",
-          "total_time_ms": 248,
-          "wait_time_ms": 251,
+          "start_wall_time_ms": 1780299795000,
+          "end_wall_time_ms": 1780299795000,
+          "launch_state": "HOT",
+          "total_time_ms": 64,
+          "wait_time_ms": 67,
           "observed": true
         },
         {
@@ -4359,11 +5423,11 @@
           "categories": [
             "Network IO"
           ],
-          "start_wall_time_ms": 1780298615000,
-          "end_wall_time_ms": 1780298616000,
+          "start_wall_time_ms": 1780299796000,
+          "end_wall_time_ms": 1780299796000,
           "launch_state": "HOT",
-          "total_time_ms": 80,
-          "wait_time_ms": 83,
+          "total_time_ms": 76,
+          "wait_time_ms": 79,
           "observed": true
         }
       ],
@@ -4371,7 +5435,7 @@
         "MEMO_STATUS": 2,
         "MEMO_BINDER": 100,
         "MEMO_OPENAT": 100,
-        "MEMO_MEMORY": 6,
+        "MEMO_MEMORY": 16,
         "MEMO_SENDTO": 100,
         "MEMO_RECVFROM": 100,
         "MEMO_SCHED": 100,
@@ -4381,25 +5445,81 @@
       },
       "ebpf_counter_totals": {
         "MEMO_STATUS": 0,
-        "MEMO_BINDER": 16585,
-        "MEMO_OPENAT": 12059,
-        "MEMO_MEMORY": 6,
-        "MEMO_SENDTO": 27321,
-        "MEMO_RECVFROM": 59083,
-        "MEMO_SCHED": 289596,
-        "MEMO_PROCESS_FORK": 354,
-        "MEMO_PROCESS_EXIT": 333,
-        "MEMO_PROCESS_EXEC": 112
-      }
+        "MEMO_BINDER": 16234,
+        "MEMO_OPENAT": 12420,
+        "MEMO_MEMORY": 16,
+        "MEMO_SENDTO": 26825,
+        "MEMO_RECVFROM": 56796,
+        "MEMO_SCHED": 281511,
+        "MEMO_PROCESS_FORK": 347,
+        "MEMO_PROCESS_EXIT": 350,
+        "MEMO_PROCESS_EXEC": 110
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 281511,
+          "rate_per_sec": 70377.75
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 56796,
+          "rate_per_sec": 14199
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 26825,
+          "rate_per_sec": 6706.25
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 16234,
+          "rate_per_sec": 4058.5
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 12420,
+          "rate_per_sec": 3105
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 350,
+          "rate_per_sec": 87.5
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 347,
+          "rate_per_sec": 86.75
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 110,
+          "rate_per_sec": 27.5
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 16,
+          "rate_per_sec": 4
+        }
+      ]
     }
   ],
   "ebpf": {
-    "parsed_events": 16200,
+    "parsed_events": 16257,
     "event_counts": {
       "MEMO_STATUS": 40,
       "MEMO_BINDER": 2000,
       "MEMO_OPENAT": 2000,
-      "MEMO_MEMORY": 160,
+      "MEMO_MEMORY": 217,
       "MEMO_SENDTO": 2000,
       "MEMO_RECVFROM": 2000,
       "MEMO_SCHED": 2000,
@@ -4419,19 +5539,19 @@
     ]
   },
   "system_before": {
-    "wall_time": "2026-06-01T15:21:34.311828+08:00",
-    "mem_available_kb": 3726688,
+    "wall_time": "2026-06-01T15:41:14.593681+08:00",
+    "mem_available_kb": 3619916,
     "mem_total_kb": 7640460,
     "memory_pressure": "normal",
-    "swap_free_kb": 940084,
+    "swap_free_kb": 869308,
     "pgscan_direct": 28727,
-    "pgscan_kswapd": 3123919,
-    "battery_percent": 88,
+    "pgscan_kswapd": 3134929,
+    "battery_percent": 91,
     "temperature_c": 33.5,
     "thermal_risk": "normal",
-    "udp_in_datagrams": 35472,
-    "udp_out_datagrams": 36229,
-    "udp_socket_count": 79,
+    "udp_in_datagrams": 36256,
+    "udp_out_datagrams": 37030,
+    "udp_socket_count": 78,
     "foreground_package": null,
     "surfaceflinger_pid": null,
     "cameraserver_pid": null,
@@ -4439,18 +5559,18 @@
     "render_thread_observed": false
   },
   "system_after": {
-    "wall_time": "2026-06-01T15:23:42.519436+08:00",
-    "mem_available_kb": 3233460,
+    "wall_time": "2026-06-01T15:43:22.778888+08:00",
+    "mem_available_kb": 3273856,
     "mem_total_kb": 7640460,
     "memory_pressure": "normal",
-    "swap_free_kb": 1022024,
+    "swap_free_kb": 1027984,
     "pgscan_direct": 28727,
-    "pgscan_kswapd": 3134929,
-    "battery_percent": 88,
+    "pgscan_kswapd": 3193260,
+    "battery_percent": 92,
     "temperature_c": 33.8,
     "thermal_risk": "normal",
-    "udp_in_datagrams": 36169,
-    "udp_out_datagrams": 36940,
+    "udp_in_datagrams": 36911,
+    "udp_out_datagrams": 37722,
     "udp_socket_count": 80,
     "foreground_package": null,
     "surfaceflinger_pid": null,
@@ -4459,12 +5579,12 @@
     "render_thread_observed": false
   },
   "system_delta": {
-    "mem_available_delta_kb": -493228,
-    "udp_in_delta": 697,
-    "udp_out_delta": 711,
+    "mem_available_delta_kb": -346060,
+    "udp_in_delta": 655,
+    "udp_out_delta": 692,
     "pgscan_direct_delta": 0,
-    "pgscan_kswapd_delta": 11010,
-    "battery_percent_delta": 0,
+    "pgscan_kswapd_delta": 58331,
+    "battery_percent_delta": 1,
     "temperature_c_delta": 0.29999999999999716
   },
   "maple": {
@@ -4500,13 +5620,13 @@
       "target": "top3",
       "status": "ok",
       "detail": "published 3 real app recommendations",
-      "duration_ms": 5
+      "duration_ms": 4
     },
     {
       "name": "latency_policy",
       "target": "async_maple",
       "status": "ok",
-      "detail": "MAPLE prediction ran asynchronously; completion latency=146.7s; slow runs still finish and still drive actions",
+      "detail": "MAPLE prediction ran asynchronously; completion latency=146.9s; slow runs still finish and still drive actions",
       "duration_ms": 0
     },
     {
@@ -4563,7 +5683,7 @@
       "target": "service_manager",
       "status": "ok",
       "detail": "queried service manager after high Binder activity",
-      "duration_ms": 204
+      "duration_ms": 203
     },
     {
       "name": "warm_launch_policy",
@@ -4575,68 +5695,68 @@
   ],
   "latency": {
     "mode": "real_usage_100_app_rotation",
-    "started_at_ms": 1780298489375,
-    "total_ms": 301325,
-    "foreground_ms": 14502,
-    "parsed_events": 16200,
+    "started_at_ms": 1780299669574,
+    "total_ms": 300870,
+    "foreground_ms": 14527,
+    "parsed_events": 16257,
     "maple_timed_out": false,
     "realtime_status": "completed",
     "stages": [
       {
         "name": "capability_probe",
-        "duration_ms": 1207
+        "duration_ms": 1156
       },
       {
         "name": "local_runtime_preflight",
-        "duration_ms": 415
-      },
-      {
-        "name": "deploy_collector",
         "duration_ms": 424
       },
       {
+        "name": "deploy_collector",
+        "duration_ms": 535
+      },
+      {
         "name": "system_state_before",
-        "duration_ms": 2889
+        "duration_ms": 2902
       },
       {
         "name": "select_real_apps",
-        "duration_ms": 151
+        "duration_ms": 156
       },
       {
         "name": "real_app_rotation",
-        "duration_ms": 123092
+        "duration_ms": 123067
       },
       {
         "name": "ebpf_trace_read",
-        "duration_ms": 780
+        "duration_ms": 799
       },
       {
         "name": "ebpf_parse",
-        "duration_ms": 1208
+        "duration_ms": 1190
       },
       {
         "name": "system_state_after",
-        "duration_ms": 2874
+        "duration_ms": 2860
       },
       {
         "name": "scenario_build",
-        "duration_ms": 3981
+        "duration_ms": 3878
       },
       {
         "name": "maple_inference",
-        "duration_ms": 8984
+        "duration_ms": 9196
       },
       {
         "name": "maple_app_mapping",
-        "duration_ms": 154
+        "duration_ms": 210
       },
       {
         "name": "action_execution",
-        "duration_ms": 419
+        "duration_ms": 417
       },
       {
         "name": "ablation_analysis",
-        "duration_ms": 154032
+        "duration_ms": 153358
       }
     ]
   },
@@ -4657,9 +5777,9 @@
       "no_display_ui",
       "no_binder_service"
     ],
-    "avg_end_to_end_ms": 18539.5,
-    "max_end_to_end_ms": 58108,
-    "min_end_to_end_ms": 8363
+    "avg_end_to_end_ms": 18490.125,
+    "max_end_to_end_ms": 59281,
+    "min_end_to_end_ms": 8865
   },
   "ablation_interpretation": "以 full_real_ebpf 为参照。预测 ID 改变的配置: no_network, no_memory, app_sequence_baseline。Top-1 应用改变的配置: no_network。调度域改变的配置: no_network, no_camera_media, no_display_ui, no_binder_service。"
 }

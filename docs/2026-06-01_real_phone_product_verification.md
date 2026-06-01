@@ -30,6 +30,7 @@
 | 100 次真实 app 使用实验 | `app/src/main/java/com/memoos/perf/RealUsageSessionRunner.kt` |
 | raw eBPF 解析 | `app/src/main/java/com/memoos/ebpf/EBPFTraceParser.kt` |
 | MAPLE scenario 构造 | `app/src/main/java/com/memoos/maple/MapleScenarioBuilder.kt` |
+| MAPLE 输入时间窗压缩 | `app/src/main/java/com/memoos/perf/RealUsageSessionRunner.kt`、`app/src/main/java/com/memoos/maple/MapleScenarioBuilder.kt` |
 | MAPLE shell 调用 | `app/src/main/java/com/memoos/maple/MapleShellBackend.kt` |
 | 真实应用 Top-3 映射 | `app/src/main/java/com/memoos/action/AppIdMapping.kt` |
 | 系统调度动作 | `app/src/main/java/com/memoos/action/ActionExecutor.kt` |
@@ -44,6 +45,7 @@
 - 新逻辑不再因为 MAPLE 慢就跳过预测或动作；状态只有完成、失败或 MAPLE watchdog。
 - `realtime_budget_ms` 不再写入新的 latency JSON。
 - Evidence 页不再写“演示数据”口径，而是展示“采集文件、采集开始时间、真实收到的前 N 条事件、原始记录”。
+- MAPLE 输入不再重复塞入大量 raw eBPF 行，而是把同一时间窗内的重复事件压缩成 `event_type/detail/count/rate_per_sec`；原始 trace 仍保留给审计。
 - 主界面新增“手机性能 A/B 实验”面板，把性能结果格式化给用户看，不直接扔 JSON。
 - ReportActivity 新增性能 A/B 报告区。
 
@@ -70,15 +72,30 @@ docs/real_device_experiments/real_usage_100/latest_real_ablation_after_usage_100
 | 覆盖真实应用 | 12 个 |
 | timestamped app sequence | 100 条 |
 | timeline windows | 20 个 |
-| eBPF parsed events | 16200 |
-| 平均启动 TotalTime | 148.1 ms |
-| P50 启动 TotalTime | 123 ms |
+| raw eBPF parsed events | 16257 |
+| MAPLE compressed eBPF signals | 180 |
+| MAPLE scenario 大小 | 109055 bytes |
+| scenario 相比未压缩结构减少 | 37.24% |
+| 平均启动 TotalTime | 148.0 ms |
+| P50 启动 TotalTime | 126 ms |
 | MAPLE backend | shell |
 | Top-3 | Chrome, Messages, Camera |
 | 完整设备端耗时 | 301.3 s |
 | 前台可见处理耗时 | 14.5 s |
 
-解释：301.3 s 包含 100 次真实 app rotation、20 个分窗 eBPF 采集、MAPLE 推理、ActionExecutor、以及 8 组消融。用户看到的是 `已完成`，不会再看到“过慢实时状态”。MAPLE 输入已经包含 `observed_app_sequence` 和 `timeline_windows`，即真实 app 序列和同时间窗 eBPF/system evidence。
+解释：301.3 s 包含 100 次真实 app rotation、20 个分窗 eBPF 采集、MAPLE 推理、ActionExecutor、以及 8 组消融。用户看到的是 `已完成`，不会再看到“过慢实时状态”。MAPLE 输入已经包含 `app_catalog`、`observed_app_sequence`、`timeline_windows` 和 `compression`，即真实 app 序列、同时间窗 eBPF/system evidence、以及 raw rows 到压缩 signals 的对应关系。
+
+压缩的意义不是丢掉 eBPF，而是把重复系统事件变成更适合端侧小模型的统计证据。比如第一窗里 5 次真实 app 打开对应的压缩信号是：
+
+```text
+MEMO_SCHED=241725, rate=48345/s
+MEMO_RECVFROM=45334, rate=9066.8/s
+MEMO_SENDTO=21059, rate=4211.8/s
+MEMO_BINDER=14234, rate=2846.8/s
+MEMO_OPENAT=12605, rate=2521/s
+```
+
+原始 16257 行仍在 `usage_100_raw_trace.trace`，MAPLE 实际使用 20 个窗口里的 180 条压缩 eBPF signal，scenario 从约 173759 bytes 降到 109055 bytes，减少 37.24%。
 
 ## 性能 A/B 实验结果
 
@@ -115,13 +132,13 @@ docs/real_device_experiments/user_app_pressure/README.md
 | --- | --- |
 | 配置数 | 8 |
 | MAPLE 可用 | 8/8 |
-| predicted app id 改变 | `no_binder_service`, `no_memory`, `app_sequence_baseline` |
+| predicted app id 改变 | `no_network`, `no_memory`, `app_sequence_baseline` |
 | Top-1 改变 | `no_network` |
 | 调度域改变 | `no_network`, `no_camera_media`, `no_display_ui`, `no_binder_service` |
-| 平均端到端 | 32.3 s |
-| 范围 | 13.9 s 到 79.4 s |
+| 平均端到端 | 18.5 s |
+| 范围 | 8.9 s 到 59.3 s |
 
-解读：network 证据影响 Top-1；binder、memory、app-sequence baseline 会影响 MAPLE app id；camera/display/binder 影响 ActionExecutor 的调度域。说明 eBPF 深层证据确实参与了推荐和调度，不只是统计装饰。
+解读：network 证据影响 Top-1，也会影响 MAPLE app id；memory、app-sequence baseline 也会影响 MAPLE app id；camera/display/binder 影响 ActionExecutor 的调度域。说明 eBPF 深层证据确实参与了推荐和调度，不只是统计装饰。
 
 ## 按钮审计
 
@@ -155,6 +172,6 @@ docs/real_device_experiments/button_audit/latest_button_audit_results.txt
 ```text
 Jingyi 这边已经把 MEMO-Appflow 从 host 脚本原型推进成真机端侧产品闭环。
 在 rooted Pixel 5 上，App 能从按钮启动真实 eBPF 采集、MAPLE 推理、Top-3 推荐、系统调度、Widget/报告展示。
-100 次真实 app 使用实验跑通，采到 16200 条 eBPF 兼容事件行，构造出 100 条 timestamped app sequence 和 20 个 app/eBPF 对齐时间窗，并产出 Chrome/Messages/Camera Top-3。
+100 次真实 app 使用实验跑通，采到 16257 条 eBPF 兼容事件行，构造出 100 条 timestamped app sequence 和 20 个 app/eBPF 对齐时间窗，并把 MAPLE 输入压缩成 180 条 eBPF signal，scenario 大小减少 37.24%，产出 Chrome/Messages/Camera Top-3。
 压力 A/B 实验显示平均综合压力改善 29.70%，启动 TotalTime 改善 12.28%，但也记录了反例，不夸大。
 ```

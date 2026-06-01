@@ -1,8 +1,8 @@
 {
   "schema_version": "memo.real_ebpf_ablation.v1",
   "source": "android_device_side_real_ebpf",
-  "base_scenario_id": "real_usage_100_1780298489375",
-  "base_description": "User-like Android session: MEMO opened real launchable apps 100 times, collected raw eBPF evidence, then ran MAPLE and scheduling actions on device. Raw trace: \/sdcard\/MEMO\/logs\/usage_100_1780298489375.trace.",
+  "base_scenario_id": "real_usage_100_1780299669574",
+  "base_description": "User-like Android session: MEMO opened real launchable apps 100 times, collected raw eBPF evidence, then ran MAPLE and scheduling actions on device. Raw trace: \/sdcard\/MEMO\/logs\/usage_100_1780299669574.trace.",
   "configs": [
     "full_real_ebpf",
     "no_network",
@@ -16,14 +16,14 @@
   "metrics_scope": "MAPLE prediction, real Top-3 app mapping, non-intrusive scheduler action profile, and latency",
   "system_state": {
     "memory_pressure": "normal",
-    "mem_available_kb": 3427128,
+    "mem_available_kb": 3490684,
     "mem_total_kb": 7640460,
-    "swap_free_kb": 851124,
-    "battery_percent": 88,
+    "swap_free_kb": 853416,
+    "battery_percent": 92,
     "thermal_risk": "normal",
-    "temperature_c": 33.8,
-    "udp_in_datagrams": 36170,
-    "udp_out_datagrams": 36941,
+    "temperature_c": 33.7,
+    "udp_in_datagrams": 36912,
+    "udp_out_datagrams": 37723,
     "udp_socket_count": 80,
     "foreground_package": null,
     "surfaceflinger_pid": null,
@@ -48,9 +48,9 @@
       "no_display_ui",
       "no_binder_service"
     ],
-    "avg_end_to_end_ms": 18539.5,
-    "max_end_to_end_ms": 58108,
-    "min_end_to_end_ms": 8363
+    "avg_end_to_end_ms": 18490.125,
+    "max_end_to_end_ms": 59281,
+    "min_end_to_end_ms": 8865
   },
   "results": [
     {
@@ -65,15 +65,15 @@
         "Memory Management"
       ],
       "evidence_lines": [
-        "16200 device-side eBPF records in the observed Android window",
+        "16257 device-side eBPF records in the observed Android window",
         "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
         "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
-        "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
-        "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
-        "timeline_window 3 2026-06-01T15:21:48+08:00..2026-06-01T15:21:52+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262318,MEMO_RECVFROM=34737,MEMO_BINDER=16862]",
-        "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
-        "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
-        "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
+        "timeline_window 1 2026-06-01T15:41:15+08:00..2026-06-01T15:41:20+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=241725,MEMO_RECVFROM=45334,MEMO_SENDTO=21059]",
+        "timeline_window 2 2026-06-01T15:41:23+08:00..2026-06-01T15:41:27+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262903,MEMO_RECVFROM=53040,MEMO_SENDTO=23743]",
+        "timeline_window 3 2026-06-01T15:41:29+08:00..2026-06-01T15:41:33+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262269,MEMO_BINDER=18239,MEMO_RECVFROM=18047]",
+        "timeline_window 4 2026-06-01T15:41:35+08:00..2026-06-01T15:41:39+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=255085,MEMO_RECVFROM=72932,MEMO_SENDTO=32533]",
+        "timeline_window 5 2026-06-01T15:41:41+08:00..2026-06-01T15:41:45+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=249422,MEMO_RECVFROM=16676,MEMO_BINDER=15983]",
+        "timeline_window 6 2026-06-01T15:41:47+08:00..2026-06-01T15:41:51+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=249891,MEMO_RECVFROM=74690,MEMO_SENDTO=31626]",
         "event_type MEMO_BINDER: count=2000",
         "event_type MEMO_OPENAT: count=2000",
         "event_type MEMO_SENDTO: count=2000",
@@ -86,10 +86,10 @@
         "MAPLE evidence\/resource category Camera Service: count=420",
         "MAPLE evidence\/resource category Media Codec: count=420"
       ],
-      "maple_duration_ms": 11291,
-      "app_mapping_duration_ms": 177,
+      "maple_duration_ms": 8787,
+      "app_mapping_duration_ms": 245,
       "action_duration_ms": 514,
-      "end_to_end_ms": 11982,
+      "end_to_end_ms": 9546,
       "maple_available": true,
       "maple_backend": "shell",
       "predicted_app_id": 220,
@@ -122,7 +122,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=11.5s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=9.0s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -235,10 +235,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 11291,
-          "app_mapping": 177,
+          "maple": 8787,
+          "app_mapping": 245,
           "actions": 514,
-          "total": 11982
+          "total": 9546
         }
       },
       "error": null,
@@ -264,7 +264,7 @@
         "Memory Management"
       ],
       "evidence_lines": [
-        "16200 device-side eBPF records in the observed Android window",
+        "16257 device-side eBPF records in the observed Android window",
         "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
         "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
         "event_type MEMO_BINDER: count=2000",
@@ -276,10 +276,10 @@
         "MAPLE evidence\/resource category Camera Service: count=420",
         "MAPLE evidence\/resource category Media Codec: count=420"
       ],
-      "maple_duration_ms": 20434,
-      "app_mapping_duration_ms": 207,
-      "action_duration_ms": 310,
-      "end_to_end_ms": 20951,
+      "maple_duration_ms": 18227,
+      "app_mapping_duration_ms": 238,
+      "action_duration_ms": 307,
+      "end_to_end_ms": 18772,
       "maple_available": true,
       "maple_backend": "shell",
       "predicted_app_id": 260,
@@ -312,7 +312,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=20.6s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=18.5s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -408,10 +408,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 20434,
-          "app_mapping": 207,
-          "actions": 310,
-          "total": 20951
+          "maple": 18227,
+          "app_mapping": 238,
+          "actions": 307,
+          "total": 18772
         }
       },
       "error": null,
@@ -422,8 +422,8 @@
         "top3_jaccard": 0.5,
         "top1_same": false,
         "action_domain_jaccard": 0.875,
-        "maple_latency_delta_ms": 9143,
-        "end_to_end_delta_ms": 8969
+        "maple_latency_delta_ms": 9440,
+        "end_to_end_delta_ms": 9226
       }
     },
     {
@@ -436,15 +436,15 @@
         "Memory Management"
       ],
       "evidence_lines": [
-        "16200 device-side eBPF records in the observed Android window",
+        "16257 device-side eBPF records in the observed Android window",
         "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
         "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
-        "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
-        "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
-        "timeline_window 3 2026-06-01T15:21:48+08:00..2026-06-01T15:21:52+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262318,MEMO_RECVFROM=34737,MEMO_BINDER=16862]",
-        "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
-        "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
-        "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
+        "timeline_window 1 2026-06-01T15:41:15+08:00..2026-06-01T15:41:20+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=241725,MEMO_RECVFROM=45334,MEMO_SENDTO=21059]",
+        "timeline_window 2 2026-06-01T15:41:23+08:00..2026-06-01T15:41:27+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262903,MEMO_RECVFROM=53040,MEMO_SENDTO=23743]",
+        "timeline_window 3 2026-06-01T15:41:29+08:00..2026-06-01T15:41:33+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262269,MEMO_BINDER=18239,MEMO_RECVFROM=18047]",
+        "timeline_window 4 2026-06-01T15:41:35+08:00..2026-06-01T15:41:39+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=255085,MEMO_RECVFROM=72932,MEMO_SENDTO=32533]",
+        "timeline_window 5 2026-06-01T15:41:41+08:00..2026-06-01T15:41:45+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=249422,MEMO_RECVFROM=16676,MEMO_BINDER=15983]",
+        "timeline_window 6 2026-06-01T15:41:47+08:00..2026-06-01T15:41:51+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=249891,MEMO_RECVFROM=74690,MEMO_SENDTO=31626]",
         "event_type MEMO_BINDER: count=2000",
         "event_type MEMO_OPENAT: count=2000",
         "event_type MEMO_SENDTO: count=2000",
@@ -455,10 +455,10 @@
         "event_type MEMO_PROCESS_EXEC: count=2000",
         "MAPLE evidence\/resource category Network IO: count=720"
       ],
-      "maple_duration_ms": 8486,
-      "app_mapping_duration_ms": 176,
-      "action_duration_ms": 512,
-      "end_to_end_ms": 9174,
+      "maple_duration_ms": 8987,
+      "app_mapping_duration_ms": 169,
+      "action_duration_ms": 414,
+      "end_to_end_ms": 9570,
       "maple_available": true,
       "maple_backend": "shell",
       "predicted_app_id": 220,
@@ -491,7 +491,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=8.7s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=9.2s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -595,10 +595,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 8486,
-          "app_mapping": 176,
-          "actions": 512,
-          "total": 9174
+          "maple": 8987,
+          "app_mapping": 169,
+          "actions": 414,
+          "total": 9570
         }
       },
       "error": null,
@@ -609,8 +609,8 @@
         "top3_jaccard": 0.5,
         "top1_same": true,
         "action_domain_jaccard": 0.875,
-        "maple_latency_delta_ms": -2805,
-        "end_to_end_delta_ms": -2808
+        "maple_latency_delta_ms": 200,
+        "end_to_end_delta_ms": 24
       }
     },
     {
@@ -624,15 +624,15 @@
         "Memory Management"
       ],
       "evidence_lines": [
-        "16200 device-side eBPF records in the observed Android window",
+        "16257 device-side eBPF records in the observed Android window",
         "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
         "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
-        "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
-        "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
-        "timeline_window 3 2026-06-01T15:21:48+08:00..2026-06-01T15:21:52+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262318,MEMO_RECVFROM=34737,MEMO_BINDER=16862]",
-        "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
-        "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
-        "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
+        "timeline_window 1 2026-06-01T15:41:15+08:00..2026-06-01T15:41:20+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=241725,MEMO_RECVFROM=45334,MEMO_SENDTO=21059]",
+        "timeline_window 2 2026-06-01T15:41:23+08:00..2026-06-01T15:41:27+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262903,MEMO_RECVFROM=53040,MEMO_SENDTO=23743]",
+        "timeline_window 3 2026-06-01T15:41:29+08:00..2026-06-01T15:41:33+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262269,MEMO_BINDER=18239,MEMO_RECVFROM=18047]",
+        "timeline_window 4 2026-06-01T15:41:35+08:00..2026-06-01T15:41:39+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=255085,MEMO_RECVFROM=72932,MEMO_SENDTO=32533]",
+        "timeline_window 5 2026-06-01T15:41:41+08:00..2026-06-01T15:41:45+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=249422,MEMO_RECVFROM=16676,MEMO_BINDER=15983]",
+        "timeline_window 6 2026-06-01T15:41:47+08:00..2026-06-01T15:41:51+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=249891,MEMO_RECVFROM=74690,MEMO_SENDTO=31626]",
         "event_type MEMO_BINDER: count=2000",
         "event_type MEMO_OPENAT: count=2000",
         "event_type MEMO_SENDTO: count=2000",
@@ -645,10 +645,10 @@
         "MAPLE evidence\/resource category Camera Service: count=420",
         "MAPLE evidence\/resource category Media Codec: count=420"
       ],
-      "maple_duration_ms": 7782,
-      "app_mapping_duration_ms": 168,
-      "action_duration_ms": 413,
-      "end_to_end_ms": 8363,
+      "maple_duration_ms": 8173,
+      "app_mapping_duration_ms": 180,
+      "action_duration_ms": 512,
+      "end_to_end_ms": 8865,
       "maple_available": true,
       "maple_backend": "shell",
       "predicted_app_id": 220,
@@ -681,7 +681,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=8.0s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=8.4s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -785,10 +785,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 7782,
-          "app_mapping": 168,
-          "actions": 413,
-          "total": 8363
+          "maple": 8173,
+          "app_mapping": 180,
+          "actions": 512,
+          "total": 8865
         }
       },
       "error": null,
@@ -799,8 +799,8 @@
         "top3_jaccard": 1,
         "top1_same": true,
         "action_domain_jaccard": 0.875,
-        "maple_latency_delta_ms": -3509,
-        "end_to_end_delta_ms": -3619
+        "maple_latency_delta_ms": -614,
+        "end_to_end_delta_ms": -681
       }
     },
     {
@@ -814,14 +814,13 @@
         "Memory Management"
       ],
       "evidence_lines": [
-        "16200 device-side eBPF records in the observed Android window",
+        "16257 device-side eBPF records in the observed Android window",
         "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
         "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
-        "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
-        "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
-        "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
-        "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
-        "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
+        "timeline_window 1 2026-06-01T15:41:15+08:00..2026-06-01T15:41:20+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=241725,MEMO_RECVFROM=45334,MEMO_SENDTO=21059]",
+        "timeline_window 2 2026-06-01T15:41:23+08:00..2026-06-01T15:41:27+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262903,MEMO_RECVFROM=53040,MEMO_SENDTO=23743]",
+        "timeline_window 4 2026-06-01T15:41:35+08:00..2026-06-01T15:41:39+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=255085,MEMO_RECVFROM=72932,MEMO_SENDTO=32533]",
+        "timeline_window 6 2026-06-01T15:41:47+08:00..2026-06-01T15:41:51+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=249891,MEMO_RECVFROM=74690,MEMO_SENDTO=31626]",
         "event_type MEMO_OPENAT: count=2000",
         "event_type MEMO_SENDTO: count=2000",
         "event_type MEMO_RECVFROM: count=2000",
@@ -833,10 +832,10 @@
         "MAPLE evidence\/resource category Camera Service: count=420",
         "MAPLE evidence\/resource category Media Codec: count=420"
       ],
-      "maple_duration_ms": 8470,
-      "app_mapping_duration_ms": 219,
-      "action_duration_ms": 208,
-      "end_to_end_ms": 8897,
+      "maple_duration_ms": 9289,
+      "app_mapping_duration_ms": 187,
+      "action_duration_ms": 209,
+      "end_to_end_ms": 9685,
       "maple_available": true,
       "maple_backend": "shell",
       "predicted_app_id": 220,
@@ -869,7 +868,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=8.7s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=9.5s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -966,10 +965,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 8470,
-          "app_mapping": 219,
-          "actions": 208,
-          "total": 8897
+          "maple": 9289,
+          "app_mapping": 187,
+          "actions": 209,
+          "total": 9685
         }
       },
       "error": null,
@@ -980,8 +979,8 @@
         "top3_jaccard": 0.5,
         "top1_same": true,
         "action_domain_jaccard": 0.875,
-        "maple_latency_delta_ms": -2821,
-        "end_to_end_delta_ms": -3085
+        "maple_latency_delta_ms": 502,
+        "end_to_end_delta_ms": 139
       }
     },
     {
@@ -995,15 +994,15 @@
         "Android Service IPC"
       ],
       "evidence_lines": [
-        "16200 device-side eBPF records in the observed Android window",
+        "16257 device-side eBPF records in the observed Android window",
         "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
         "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
-        "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
-        "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
-        "timeline_window 3 2026-06-01T15:21:48+08:00..2026-06-01T15:21:52+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262318,MEMO_RECVFROM=34737,MEMO_BINDER=16862]",
-        "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
-        "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
-        "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
+        "timeline_window 1 2026-06-01T15:41:15+08:00..2026-06-01T15:41:20+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=241725,MEMO_RECVFROM=45334,MEMO_SENDTO=21059]",
+        "timeline_window 2 2026-06-01T15:41:23+08:00..2026-06-01T15:41:27+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262903,MEMO_RECVFROM=53040,MEMO_SENDTO=23743]",
+        "timeline_window 3 2026-06-01T15:41:29+08:00..2026-06-01T15:41:33+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262269,MEMO_BINDER=18239,MEMO_RECVFROM=18047]",
+        "timeline_window 4 2026-06-01T15:41:35+08:00..2026-06-01T15:41:39+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=255085,MEMO_RECVFROM=72932,MEMO_SENDTO=32533]",
+        "timeline_window 5 2026-06-01T15:41:41+08:00..2026-06-01T15:41:45+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=249422,MEMO_RECVFROM=16676,MEMO_BINDER=15983]",
+        "timeline_window 6 2026-06-01T15:41:47+08:00..2026-06-01T15:41:51+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=249891,MEMO_RECVFROM=74690,MEMO_SENDTO=31626]",
         "event_type MEMO_BINDER: count=2000",
         "event_type MEMO_OPENAT: count=2000",
         "event_type MEMO_SENDTO: count=2000",
@@ -1016,10 +1015,10 @@
         "MAPLE evidence\/resource category Camera Service: count=420",
         "MAPLE evidence\/resource category Media Codec: count=420"
       ],
-      "maple_duration_ms": 19737,
-      "app_mapping_duration_ms": 209,
+      "maple_duration_ms": 20142,
+      "app_mapping_duration_ms": 220,
       "action_duration_ms": 512,
-      "end_to_end_ms": 20458,
+      "end_to_end_ms": 20874,
       "maple_available": true,
       "maple_backend": "shell",
       "predicted_app_id": 260,
@@ -1052,7 +1051,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=19.9s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=20.4s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -1162,10 +1161,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 19737,
-          "app_mapping": 209,
+          "maple": 20142,
+          "app_mapping": 220,
           "actions": 512,
-          "total": 20458
+          "total": 20874
         }
       },
       "error": null,
@@ -1176,8 +1175,8 @@
         "top3_jaccard": 1,
         "top1_same": true,
         "action_domain_jaccard": 1,
-        "maple_latency_delta_ms": 8446,
-        "end_to_end_delta_ms": 8476
+        "maple_latency_delta_ms": 11355,
+        "end_to_end_delta_ms": 11328
       }
     },
     {
@@ -1204,10 +1203,10 @@
         "MAPLE evidence\/resource category Camera Service: count=420",
         "MAPLE evidence\/resource category Media Codec: count=420"
       ],
-      "maple_duration_ms": 9796,
-      "app_mapping_duration_ms": 173,
-      "action_duration_ms": 414,
-      "end_to_end_ms": 10383,
+      "maple_duration_ms": 10775,
+      "app_mapping_duration_ms": 142,
+      "action_duration_ms": 411,
+      "end_to_end_ms": 11328,
       "maple_available": true,
       "maple_backend": "shell",
       "predicted_app_id": 220,
@@ -1240,7 +1239,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=10.0s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=10.9s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -1353,10 +1352,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 9796,
-          "app_mapping": 173,
-          "actions": 414,
-          "total": 10383
+          "maple": 10775,
+          "app_mapping": 142,
+          "actions": 411,
+          "total": 11328
         }
       },
       "error": null,
@@ -1367,8 +1366,8 @@
         "top3_jaccard": 1,
         "top1_same": true,
         "action_domain_jaccard": 1,
-        "maple_latency_delta_ms": -1495,
-        "end_to_end_delta_ms": -1599
+        "maple_latency_delta_ms": 1988,
+        "end_to_end_delta_ms": 1782
       }
     },
     {
@@ -1383,10 +1382,10 @@
         "Memory Management"
       ],
       "evidence_lines": [],
-      "maple_duration_ms": 57516,
-      "app_mapping_duration_ms": 181,
-      "action_duration_ms": 411,
-      "end_to_end_ms": 58108,
+      "maple_duration_ms": 58711,
+      "app_mapping_duration_ms": 158,
+      "action_duration_ms": 412,
+      "end_to_end_ms": 59281,
       "maple_available": true,
       "maple_backend": "shell",
       "predicted_app_id": 250,
@@ -1419,7 +1418,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=57.7s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=58.9s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -1531,10 +1530,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 57516,
-          "app_mapping": 181,
-          "actions": 411,
-          "total": 58108
+          "maple": 58711,
+          "app_mapping": 158,
+          "actions": 412,
+          "total": 59281
         }
       },
       "error": null,
@@ -1545,8 +1544,8 @@
         "top3_jaccard": 1,
         "top1_same": true,
         "action_domain_jaccard": 1,
-        "maple_latency_delta_ms": 46225,
-        "end_to_end_delta_ms": 46126
+        "maple_latency_delta_ms": 49924,
+        "end_to_end_delta_ms": 49735
       }
     }
   ]

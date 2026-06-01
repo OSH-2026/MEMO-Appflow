@@ -24,6 +24,13 @@ data class MapleAppTimelineEntry(
     val observed: Boolean,
 )
 
+data class CompressedEbpfSignal(
+    val eventType: String,
+    val detail: String,
+    val count: Long,
+    val ratePerSec: Double,
+)
+
 data class MapleTimelineWindow(
     val index: Int,
     val startWallTimeMs: Long,
@@ -31,6 +38,7 @@ data class MapleTimelineWindow(
     val apps: List<MapleAppTimelineEntry>,
     val ebpfEventCounts: Map<String, Int>,
     val ebpfCounterTotals: Map<String, Long>,
+    val compressedEbpf: List<CompressedEbpfSignal>,
 )
 
 data class MapleScenario(
@@ -105,9 +113,11 @@ class MapleScenarioBuilder(private val context: Context) {
             .put("prediction_time", state.wallTime.ifBlank { ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) })
             .put("points_of_interest", JSONArray(pointsOfInterest(state, topCategories)))
             .put("installed_apps", installedApps)
-            .put("observed_app_sequence", JSONArray(appTimeline.take(MAX_APP_SEQUENCE_FOR_MAPLE).map { it.toJson() }))
+            .put("app_catalog", appCatalogJson(appTimeline))
+            .put("observed_app_sequence", JSONArray(appTimeline.take(MAX_APP_SEQUENCE_FOR_MAPLE).map { it.toCompactJson() }))
             .put("timeline_windows", JSONArray(timelineWindows.take(MAX_TIMELINE_WINDOWS_FOR_MAPLE).map { it.toJson() }))
             .put("system_evidence", JSONArray(compactEvidenceForMaple(evidenceLines)))
+            .put("compression", compressionSummary(events, appTimeline, timelineWindows))
             .put("memory_pressure", memoryPressure(events, state))
             .put(
                 "scheduler_goal",
@@ -169,8 +179,7 @@ class MapleScenarioBuilder(private val context: Context) {
         }
         timelineWindows.take(6).forEach { window ->
             val apps = window.apps.joinToString(",") { it.label }
-            val topCounters = window.ebpfCounterTotals.entries.sortedByDescending { it.value }.take(3)
-                .joinToString(",") { "${it.key}=${it.value}" }
+            val topCounters = window.compressedEbpf.take(3).joinToString(",") { "${it.eventType}=${it.count}" }
             lines += "timeline_window ${window.index} ${isoTime(window.startWallTimeMs)}..${isoTime(window.endWallTimeMs)} apps=[$apps] ebpf=[$topCounters]"
         }
         eventCounts.entries.sortedByDescending { it.value }.take(8).forEach {
@@ -299,12 +308,11 @@ class MapleScenarioBuilder(private val context: Context) {
         return points.take(6)
     }
 
-    private fun MapleAppTimelineEntry.toJson(): JSONObject {
+    private fun MapleAppTimelineEntry.toCompactJson(): JSONObject {
         return JSONObject()
             .put("index", index)
             .put("package_name", packageName)
             .put("label", label)
-            .put("categories", JSONArray(categories))
             .putNullable("start_wall_time_ms", startWallTimeMs)
             .putNullable("start_time", startWallTimeMs?.let { isoTime(it) })
             .putNullable("end_wall_time_ms", endWallTimeMs)
@@ -322,9 +330,46 @@ class MapleScenarioBuilder(private val context: Context) {
             .put("start_time", isoTime(startWallTimeMs))
             .put("end_wall_time_ms", endWallTimeMs)
             .put("end_time", isoTime(endWallTimeMs))
-            .put("apps", JSONArray(apps.map { it.toJson() }))
-            .put("ebpf_event_counts", JSONObject(ebpfEventCounts.mapValues { it.value }))
-            .put("ebpf_counter_totals", JSONObject(ebpfCounterTotals.mapValues { it.value }))
+            .put("app_sequence_indexes", JSONArray(apps.map { it.index }))
+            .put("app_labels", JSONArray(apps.map { it.label }))
+            .put("app_packages", JSONArray(apps.map { it.packageName }))
+            .put("compressed_ebpf", JSONArray(compressedEbpf.map { it.toJson() }))
+    }
+
+    private fun CompressedEbpfSignal.toJson(): JSONObject {
+        return JSONObject()
+            .put("event_type", eventType)
+            .put("detail", detail)
+            .put("count", count)
+            .put("rate_per_sec", ratePerSec)
+    }
+
+    private fun appCatalogJson(appTimeline: List<MapleAppTimelineEntry>): JSONObject {
+        val catalog = JSONObject()
+        appTimeline.distinctBy { it.packageName }.forEach { app ->
+            catalog.put(
+                app.packageName,
+                JSONObject()
+                    .put("label", app.label)
+                    .put("categories", JSONArray(app.categories)),
+            )
+        }
+        return catalog
+    }
+
+    private fun compressionSummary(
+        events: List<EBPFEvent>,
+        appTimeline: List<MapleAppTimelineEntry>,
+        timelineWindows: List<MapleTimelineWindow>,
+    ): JSONObject {
+        val compressedSignals = timelineWindows.sumOf { it.compressedEbpf.size }
+        return JSONObject()
+            .put("strategy", "windowed_count_aggregation")
+            .put("raw_ebpf_rows_for_audit", events.size)
+            .put("observed_app_sequence_rows", appTimeline.size)
+            .put("timeline_windows", timelineWindows.size)
+            .put("compressed_ebpf_signal_rows", compressedSignals)
+            .put("model_input_note", "MAPLE receives repeated eBPF activity as per-window event_type/detail/count/rate_per_sec instead of expanded raw rows.")
     }
 
     private fun JSONObject.putNullable(name: String, value: Any?): JSONObject {

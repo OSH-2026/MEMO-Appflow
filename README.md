@@ -120,7 +120,7 @@ docs/real_device_experiments/user_app_pressure/README.md
 docs/real_device_experiments/user_app_pressure/latest_pressure_experiment.json
 ```
 
-本次 6 个 A/B 对照的结论：MEMO-on 平均综合压力分数改善 35.41%，MemAvailable 下降量改善 62.10%，reclaim 改善 56.08%；但 app 启动耗时基本持平（+0.15%），CPU busy 和 iowait 略差。因此当前版本不能宣称全面提升手机性能，比较准确的说法是：在 crowded cached-app 场景下，MEMO 更明显地降低内存/reclaim 压力和部分 jank，但后台 MAPLE/eBPF/调度仍有开销。
+最新 6 个 A/B 对照的结论：MEMO-on 平均综合压力分数改善 29.70%，启动 TotalTime 改善 12.28%，WaitTime 改善 13.74%，CPU busy 改善 9.84%，iowait 改善 33.40%，reclaim 改善 13.07%；但 MemAvailable 下降量平均变差 14.13%，crowded Tencent Meeting 是反例。因此当前版本不能宣称全面提升手机性能，比较准确的说法是：这次真机实验支持 MEMO 能降低平均系统压力并改善部分启动体验，但不是所有场景都提升。
 
 ## 会议记录
 
@@ -144,7 +144,7 @@ docs/real_device_experiments/user_app_pressure/latest_pressure_experiment.json
 
 把 MEMO-Appflow 在 rooted Pixel 5 真机上重新验证为端侧产品闭环：从 App 按钮启动真实 app 使用、raw eBPF 采集、Kotlin 解析、MAPLE 推理、Top-3 真实应用推荐、ActionExecutor 调度动作、Widget/报告展示，不依赖 host Python 或 bpftrace。
 
-本次新增并跑通 `100 次真实使用分析`：真实打开 app 100 次，覆盖 12 个真实可启动应用，采到 16200 条 eBPF 兼容事件行，并把 MAPLE 输入升级为 100 条 timestamped app sequence + 20 个 app/eBPF 对齐时间窗。MAPLE shell 输出 Top-3 为 Chrome、Messages、Camera，并基于同一次真实 eBPF scenario 跑了 8 组消融。消融显示 `no_network` 会改变 Top-1，`no_network`、`no_memory`、`app_sequence_baseline` 会改变 MAPLE predicted app id，说明 app 时间线和深层 eBPF 证据都会影响推荐和调度。
+本次新增并跑通 `100 次真实使用分析`：真实打开 app 100 次，覆盖 12 个真实可启动应用，采到 16257 条 eBPF 兼容事件行，并把 MAPLE 输入升级为 100 条 timestamped app sequence + 20 个 app/eBPF 对齐时间窗。为了减少端侧小模型输入里的重复行，MAPLE scenario 新增 `app_catalog` 和 `compression`，把同一时间窗内重复 eBPF 事件压缩成 `event_type/detail/count/rate_per_sec`；raw trace 仍完整保留用于审计，实际模型输入从原先约 173759 bytes 降到 109055 bytes，减少 37.24%。MAPLE shell 输出 Top-3 为 Chrome、Messages、Camera，并基于同一次真实 eBPF scenario 跑了 8 组消融。消融显示 `no_network` 会改变 Top-1，`no_network`、`no_memory`、`app_sequence_baseline` 会改变 MAPLE predicted app id，说明 app 时间线和深层 eBPF 证据都会影响推荐和调度。
 
 同时重新跑了 `手机压力 A/B 实验`，比较 MEMO-off baseline 和 MEMO-on 后续真实 app workload。6 组 A/B 的平均结果：综合压力分数改善 29.70%，启动 TotalTime 改善 12.28%，WaitTime 改善 13.74%，CPU busy 改善 9.84%，iowait 改善 33.40%，reclaim 改善 13.07%；但 MemAvailable 下降量平均变差 14.13%，crowded Tencent Meeting 是反例。因此当前结论是：这次真机实验支持 MEMO 能降低平均系统压力并改善部分启动体验，但不能声称所有场景都提升。
 

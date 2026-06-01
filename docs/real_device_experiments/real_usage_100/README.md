@@ -34,7 +34,7 @@
 手机端原始路径：
 
 ```text
-/sdcard/MEMO/logs/usage_100_1780298489375.trace
+/sdcard/MEMO/logs/usage_100_1780299669574.trace
 /sdcard/MEMO/scenarios/latest_real_usage_maple_scenario.json
 /sdcard/MEMO/reports/latest_usage_100_report.json
 /sdcard/MEMO/ablations/latest_real_ablation.json
@@ -49,10 +49,13 @@
 | 覆盖真实应用 | 12 个 |
 | timestamped app sequence | 100 条 |
 | timeline windows | 20 个，每 5 次 app 使用一窗 |
-| eBPF parsed events | 16200 条 |
-| 平均启动 TotalTime | 148.1 ms |
-| P50 启动 TotalTime | 123 ms |
-| 平均 WaitTime | 147.3 ms |
+| raw eBPF parsed events | 16257 条 |
+| MAPLE compressed eBPF signals | 180 条 |
+| MAPLE scenario 大小 | 109055 bytes |
+| scenario 相比未压缩结构减少 | 37.24% |
+| 平均启动 TotalTime | 148.0 ms |
+| P50 启动 TotalTime | 126 ms |
+| 平均 WaitTime | 145.36 ms |
 | P50 WaitTime | 120 ms |
 | MAPLE backend | shell |
 | MAPLE predicted app id | 220 |
@@ -63,22 +66,40 @@
 
 这里的 301.3 s 包括 100 次 app rotation、20 个分窗 eBPF 采集、MAPLE 推理和 8 组消融实验。产品 UI 不再显示“过慢实时状态”，也不会因为 MAPLE 慢就跳过；状态为 `completed`。
 
+## MAPLE 输入压缩优化
+
+原始 eBPF trace 本身仍完整保留在 `usage_100_raw_trace.trace`，用于审计和复现；但 MAPLE 不再直接吃大量重复 raw 行。新的模型输入先按 app 时间窗聚合，把同一时间窗内重复出现的 eBPF 事件压成：
+
+```json
+{
+  "event_type": "MEMO_RECVFROM",
+  "detail": "recvfrom",
+  "count": 45334,
+  "rate_per_sec": 9066.8
+}
+```
+
+这次 run 里，审计用 raw eBPF 行数是 16257，给 MAPLE 的压缩 eBPF signal 是 180 条。也就是保留“这个时间窗网络、Binder、调度、文件访问到底有多活跃”的信息，但不把上万条高度重复的 raw line 全部塞进小模型。`latest_real_usage_maple_scenario.json` 中的 `compression` 字段记录了压缩策略和行数变化。
+
 ## MAPLE 输入里的时间线
 
-这版不再只给 MAPLE 一个全局 eBPF 汇总。`latest_real_usage_maple_scenario.json` 里新增两类时间对齐字段：
+这版不再只给 MAPLE 一个全局 eBPF 汇总。`latest_real_usage_maple_scenario.json` 里新增了 app catalog、真实 app 时间线、eBPF 时间窗和压缩摘要：
 
 | 字段 | 含义 |
 | --- | --- |
-| `observed_app_sequence` | 100 条按时间排序的真实 app 使用记录，每条包含 package、label、category、start/end timestamp、launch state、TotalTime、WaitTime |
-| `timeline_windows` | 20 个时间窗，每窗包含 5 次真实 app 使用，以及同一时间窗内 raw eBPF counter totals |
+| `app_catalog` | 本次实验涉及的真实 app 元数据，集中保存 label 和 category，避免在每条 app 事件里重复写一遍 |
+| `observed_app_sequence` | 100 条按时间排序的真实 app 使用记录，每条包含 package、label、start/end timestamp、launch state、TotalTime、WaitTime |
+| `timeline_windows` | 20 个时间窗，每窗包含 5 次真实 app 使用，以及同一时间窗内压缩后的 eBPF event/count/rate |
+| `compression` | raw rows、app sequence rows、timeline windows、compressed signal rows 等压缩摘要 |
 
 第一窗示例：
 
 ```text
-2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00
+2026-06-01T15:41:15+08:00..2026-06-01T15:41:20+08:00
 apps = Chrome -> Tencent Meeting -> Termux -> Magisk -> Photos
-eBPF = MEMO_SCHED=213621, MEMO_RECVFROM=34269, MEMO_SENDTO=17114,
-       MEMO_BINDER=12541, MEMO_OPENAT=11856
+compressed eBPF = MEMO_SCHED=241725, MEMO_RECVFROM=45334,
+                  MEMO_SENDTO=21059, MEMO_BINDER=14234,
+                  MEMO_OPENAT=12605
 ```
 
 也就是说，MAPLE 现在同时看到“用户按时间用了哪些 app”和“同一时间窗里系统层发生了什么”，而不是只看 eBPF。
@@ -97,18 +118,18 @@ eBPF = MEMO_SCHED=213621, MEMO_RECVFROM=34269, MEMO_SENDTO=17114,
 | `MEMO_PROCESS_FORK` | 2000 |
 | `MEMO_PROCESS_EXIT` | 2000 |
 | `MEMO_PROCESS_EXEC` | 2000 |
-| `MEMO_MEMORY` | 160 |
+| `MEMO_MEMORY` | 217 |
 | `MEMO_STATUS` | 40 |
 
 系统状态变化：
 
 | 指标 | 变化 |
 | --- | ---: |
-| MemAvailable | -493228 kB |
-| UDP in datagrams | +697 |
-| UDP out datagrams | +711 |
+| MemAvailable | -346060 kB |
+| UDP in datagrams | +655 |
+| UDP out datagrams | +692 |
 | pgscan_direct | 0 |
-| pgscan_kswapd | +11010 |
+| pgscan_kswapd | +58331 |
 | 温度 | +0.3 C |
 
 这说明实验确实覆盖了 app 切换、文件/库访问、网络收发、Binder/service、调度、内存回收等系统层信号。

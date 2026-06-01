@@ -15,6 +15,7 @@ import com.memoos.ebpf.EBPFEvent
 import com.memoos.ebpf.EBPFTraceParser
 import com.memoos.maple.MapleInferenceOrchestrator
 import com.memoos.maple.MapleAppTimelineEntry
+import com.memoos.maple.CompressedEbpfSignal
 import com.memoos.maple.MaplePrediction
 import com.memoos.maple.MapleScenario
 import com.memoos.maple.MapleScenarioBuilder
@@ -186,10 +187,10 @@ class RealUsageSessionRunner(private val context: Context) {
                 timeoutMs = 3_000L,
             )
             waitForCollector(windowTrace)
-            val startWall = System.currentTimeMillis()
+            val fallbackStartWall = System.currentTimeMillis()
             val command = buildInteractionCommand(windowSteps)
             val output = RootShell.run(command, requireRoot = true, timeoutMs = (durationSec * 1_000L).coerceAtLeast(60_000L))
-            val endWall = System.currentTimeMillis()
+            val fallbackEndWall = System.currentTimeMillis()
             allOk = allOk && output.ok
             outputText.appendLine(output.stdout)
             outputText.appendLine(output.stderr)
@@ -200,13 +201,18 @@ class RealUsageSessionRunner(private val context: Context) {
             val rawLines = readMemoLines(windowTrace, maxLines = MAX_EVENTS_PER_TIMELINE_WINDOW + 32)
             val events = EBPFTraceParser.parseLines(rawLines.asSequence())
             val launches = parseLaunchStats(output.stdout + "\n" + output.stderr, windowSteps)
+            val windowStartWall = launches.mapNotNull { it.startWallTimeMs }.minOrNull() ?: fallbackStartWall
+            val windowEndWall = launches.mapNotNull { it.endWallTimeMs }.maxOrNull() ?: fallbackEndWall
+            val eventCounts = events.groupingBy { it.eventType }.eachCount()
+            val counterTotals = counterTotals(events)
             windows += MapleTimelineWindow(
                 index = windowIndex + 1,
-                startWallTimeMs = launches.mapNotNull { it.startWallTimeMs }.minOrNull() ?: startWall,
-                endWallTimeMs = launches.mapNotNull { it.endWallTimeMs }.maxOrNull() ?: endWall,
+                startWallTimeMs = windowStartWall,
+                endWallTimeMs = windowEndWall,
                 apps = launches.map { it.toMapleTimelineEntry() },
-                ebpfEventCounts = events.groupingBy { it.eventType }.eachCount(),
-                ebpfCounterTotals = counterTotals(events),
+                ebpfEventCounts = eventCounts,
+                ebpfCounterTotals = counterTotals,
+                compressedEbpf = compressEbpfSignals(windowStartWall, windowEndWall, eventCounts, counterTotals),
             )
         }
         return InteractionRun(allOk, outputText.toString(), windows)
@@ -415,6 +421,47 @@ class RealUsageSessionRunner(private val context: Context) {
         return totals
     }
 
+    private fun compressEbpfSignals(
+        startWallTimeMs: Long,
+        endWallTimeMs: Long,
+        eventCounts: Map<String, Int>,
+        counterTotals: Map<String, Long>,
+    ): List<CompressedEbpfSignal> {
+        val durationSec = ((endWallTimeMs - startWallTimeMs).coerceAtLeast(1L)).toDouble() / 1000.0
+        val keys = (counterTotals.keys + eventCounts.keys)
+            .filter { it != "MEMO_STATUS" }
+            .distinct()
+        return keys.mapNotNull { eventType ->
+            val count = counterTotals[eventType] ?: eventCounts[eventType]?.toLong() ?: return@mapNotNull null
+            if (count <= 0L) return@mapNotNull null
+            CompressedEbpfSignal(
+                eventType = eventType,
+                detail = eventDetail(eventType),
+                count = count,
+                ratePerSec = count / durationSec,
+            )
+        }.sortedWith(compareByDescending<CompressedEbpfSignal> { it.count }.thenBy { it.eventType })
+    }
+
+    private fun eventDetail(eventType: String): String {
+        return when (eventType) {
+            "MEMO_BINDER" -> "binder_transaction"
+            "MEMO_OPENAT" -> "openat"
+            "MEMO_SENDTO" -> "sendto"
+            "MEMO_RECVFROM" -> "recvfrom"
+            "MEMO_SCHED" -> "sched_switch_or_wakeup"
+            "MEMO_PROCESS_FORK" -> "process_fork"
+            "MEMO_PROCESS_EXIT" -> "process_exit"
+            "MEMO_PROCESS_EXEC" -> "process_exec"
+            "MEMO_MEMORY" -> "reclaim_or_kswapd"
+            "MEMO_RECLAIM_BEGIN" -> "direct_reclaim_begin"
+            "MEMO_RECLAIM_END" -> "direct_reclaim_end"
+            "MEMO_KSWAPD_WAKE" -> "kswapd_wake"
+            "MEMO_INPUT" -> "input_event"
+            else -> eventType.removePrefix("MEMO_").lowercase(Locale.US)
+        }
+    }
+
     private fun LaunchObservation.toMapleTimelineEntry(): MapleAppTimelineEntry {
         return MapleAppTimelineEntry(
             index = index,
@@ -452,6 +499,15 @@ class RealUsageSessionRunner(private val context: Context) {
             .put("apps", JSONArray(apps.map { it.toJsonForReport() }))
             .put("ebpf_event_counts", JSONObject(ebpfEventCounts.mapValues { it.value }))
             .put("ebpf_counter_totals", JSONObject(ebpfCounterTotals.mapValues { it.value }))
+            .put("compressed_ebpf", JSONArray(compressedEbpf.map { it.toJsonForReport() }))
+    }
+
+    private fun CompressedEbpfSignal.toJsonForReport(): JSONObject {
+        return JSONObject()
+            .put("event_type", eventType)
+            .put("detail", detail)
+            .put("count", count)
+            .put("rate_per_sec", ratePerSec)
     }
 
     private fun SystemStateSnapshot.toJson(): JSONObject {
