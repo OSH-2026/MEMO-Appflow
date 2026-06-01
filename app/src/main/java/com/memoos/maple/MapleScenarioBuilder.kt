@@ -6,8 +6,32 @@ import com.memoos.ebpf.EBPFEvent
 import com.memoos.state.SystemStateSnapshot
 import org.json.JSONArray
 import org.json.JSONObject
+import java.time.Instant
+import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+
+data class MapleAppTimelineEntry(
+    val index: Int,
+    val packageName: String,
+    val label: String,
+    val categories: List<String>,
+    val startWallTimeMs: Long?,
+    val endWallTimeMs: Long?,
+    val launchState: String?,
+    val totalTimeMs: Long?,
+    val waitTimeMs: Long?,
+    val observed: Boolean,
+)
+
+data class MapleTimelineWindow(
+    val index: Int,
+    val startWallTimeMs: Long,
+    val endWallTimeMs: Long,
+    val apps: List<MapleAppTimelineEntry>,
+    val ebpfEventCounts: Map<String, Int>,
+    val ebpfCounterTotals: Map<String, Long>,
+)
 
 data class MapleScenario(
     val scenarioId: String,
@@ -27,6 +51,8 @@ class MapleScenarioBuilder(private val context: Context) {
         description: String = "Android device-side eBPF and system-state window",
         targetPackage: String? = null,
         targetCategories: List<String> = emptyList(),
+        appTimeline: List<MapleAppTimelineEntry> = emptyList(),
+        timelineWindows: List<MapleTimelineWindow> = emptyList(),
     ): MapleScenario {
         val eventCounts = events.groupingBy { it.eventType }.eachCount()
         val categoryCounts = mutableMapOf<String, Int>()
@@ -41,6 +67,11 @@ class MapleScenarioBuilder(private val context: Context) {
         state.process.foregroundPackage?.let { addCategory(AppIdMapping.categoryForPackage(it), 4) }
         targetPackage?.let { addCategory(AppIdMapping.categoryForPackage(it), 480) }
         targetCategories.forEach { addCategory(it, 180) }
+        appTimeline.forEach { app ->
+            app.categories.ifEmpty { listOf(AppIdMapping.categoryForPackage(app.packageName)) }
+                .take(3)
+                .forEach { addCategory(it, 24) }
+        }
         if ((state.network.udpOutDatagrams ?: 0) + (state.network.udpInDatagrams ?: 0) > 0) {
             addCategory("Network IO", 3)
         }
@@ -55,7 +86,16 @@ class MapleScenarioBuilder(private val context: Context) {
             .map { it.key }
             .ifEmpty { listOf("Android Service IPC") }
             .take(6)
-        val evidenceLines = buildEvidenceLines(events, state, eventCounts, categoryCounts, targetPackage, targetCategories)
+        val evidenceLines = buildEvidenceLines(
+            events = events,
+            state = state,
+            eventCounts = eventCounts,
+            categoryCounts = categoryCounts,
+            targetPackage = targetPackage,
+            targetCategories = targetCategories,
+            appTimeline = appTimeline,
+            timelineWindows = timelineWindows,
+        )
         val installedApps = AppIdMapping.installedAppsForMaple(context, topCategories)
         val historicalIds = topCategories.map { AppIdMapping.categoryId(it) }
 
@@ -65,6 +105,8 @@ class MapleScenarioBuilder(private val context: Context) {
             .put("prediction_time", state.wallTime.ifBlank { ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) })
             .put("points_of_interest", JSONArray(pointsOfInterest(state, topCategories)))
             .put("installed_apps", installedApps)
+            .put("observed_app_sequence", JSONArray(appTimeline.take(MAX_APP_SEQUENCE_FOR_MAPLE).map { it.toJson() }))
+            .put("timeline_windows", JSONArray(timelineWindows.take(MAX_TIMELINE_WINDOWS_FOR_MAPLE).map { it.toJson() }))
             .put("system_evidence", JSONArray(compactEvidenceForMaple(evidenceLines)))
             .put("memory_pressure", memoryPressure(events, state))
             .put(
@@ -75,6 +117,8 @@ class MapleScenarioBuilder(private val context: Context) {
         val summary = JSONObject()
             .put("event_counts", JSONObject(eventCounts.mapValues { it.value }))
             .put("category_counts", JSONObject(categoryCounts.mapValues { it.value }))
+            .put("observed_app_count", appTimeline.size)
+            .put("timeline_window_count", timelineWindows.size)
             .put("memory_pressure", contextObj.getString("memory_pressure"))
             .put("foreground_package", state.process.foregroundPackage ?: JSONObject.NULL)
 
@@ -108,11 +152,26 @@ class MapleScenarioBuilder(private val context: Context) {
         categoryCounts: Map<String, Int>,
         targetPackage: String?,
         targetCategories: List<String>,
+        appTimeline: List<MapleAppTimelineEntry>,
+        timelineWindows: List<MapleTimelineWindow>,
     ): List<String> {
         val lines = mutableListOf<String>()
         lines += "${events.size} device-side eBPF records in the observed Android window"
         targetPackage?.let {
             lines += "observed user action target app=$it categories=${targetCategories.joinToString()}"
+        }
+        if (appTimeline.isNotEmpty()) {
+            val uniqueApps = appTimeline.map { it.packageName }.distinct().size
+            val first = appTimeline.first()
+            val last = appTimeline.last()
+            lines += "timestamped app sequence length=${appTimeline.size} unique_apps=$uniqueApps first=${first.label}/${first.packageName} last=${last.label}/${last.packageName}"
+            lines += "recent app order=" + appTimeline.take(12).joinToString(" -> ") { "${it.index}:${it.label}" }
+        }
+        timelineWindows.take(6).forEach { window ->
+            val apps = window.apps.joinToString(",") { it.label }
+            val topCounters = window.ebpfCounterTotals.entries.sortedByDescending { it.value }.take(3)
+                .joinToString(",") { "${it.key}=${it.value}" }
+            lines += "timeline_window ${window.index} ${isoTime(window.startWallTimeMs)}..${isoTime(window.endWallTimeMs)} apps=[$apps] ebpf=[$topCounters]"
         }
         eventCounts.entries.sortedByDescending { it.value }.take(8).forEach {
             lines += "event_type ${it.key}: count=${it.value}"
@@ -185,7 +244,7 @@ class MapleScenarioBuilder(private val context: Context) {
     private fun compactEvidenceForMaple(lines: List<String>): List<String> {
         return lines
             .filterNot { it.startsWith("process swapper/") || it.startsWith("process sleep") || it.startsWith("process pkill") }
-            .take(14)
+            .take(20)
     }
 
     private fun fileCategory(raw: String?): String {
@@ -240,4 +299,47 @@ class MapleScenarioBuilder(private val context: Context) {
         return points.take(6)
     }
 
+    private fun MapleAppTimelineEntry.toJson(): JSONObject {
+        return JSONObject()
+            .put("index", index)
+            .put("package_name", packageName)
+            .put("label", label)
+            .put("categories", JSONArray(categories))
+            .putNullable("start_wall_time_ms", startWallTimeMs)
+            .putNullable("start_time", startWallTimeMs?.let { isoTime(it) })
+            .putNullable("end_wall_time_ms", endWallTimeMs)
+            .putNullable("end_time", endWallTimeMs?.let { isoTime(it) })
+            .putNullable("launch_state", launchState)
+            .putNullable("total_time_ms", totalTimeMs)
+            .putNullable("wait_time_ms", waitTimeMs)
+            .put("observed", observed)
+    }
+
+    private fun MapleTimelineWindow.toJson(): JSONObject {
+        return JSONObject()
+            .put("index", index)
+            .put("start_wall_time_ms", startWallTimeMs)
+            .put("start_time", isoTime(startWallTimeMs))
+            .put("end_wall_time_ms", endWallTimeMs)
+            .put("end_time", isoTime(endWallTimeMs))
+            .put("apps", JSONArray(apps.map { it.toJson() }))
+            .put("ebpf_event_counts", JSONObject(ebpfEventCounts.mapValues { it.value }))
+            .put("ebpf_counter_totals", JSONObject(ebpfCounterTotals.mapValues { it.value }))
+    }
+
+    private fun JSONObject.putNullable(name: String, value: Any?): JSONObject {
+        put(name, value ?: JSONObject.NULL)
+        return this
+    }
+
+    private companion object {
+        const val MAX_APP_SEQUENCE_FOR_MAPLE = 120
+        const val MAX_TIMELINE_WINDOWS_FOR_MAPLE = 32
+
+        fun isoTime(wallTimeMs: Long): String {
+            return Instant.ofEpochMilli(wallTimeMs)
+                .atZone(ZoneId.systemDefault())
+                .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        }
+    }
 }

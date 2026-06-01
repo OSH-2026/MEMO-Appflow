@@ -144,7 +144,7 @@ docs/real_device_experiments/user_app_pressure/latest_pressure_experiment.json
 
 把 MEMO-Appflow 在 rooted Pixel 5 真机上重新验证为端侧产品闭环：从 App 按钮启动真实 app 使用、raw eBPF 采集、Kotlin 解析、MAPLE 推理、Top-3 真实应用推荐、ActionExecutor 调度动作、Widget/报告展示，不依赖 host Python 或 bpftrace。
 
-本次新增并跑通 `100 次真实使用分析`：真实打开 app 100 次，覆盖 12 个真实可启动应用，采到 15925 条 eBPF 事件，MAPLE shell 输出 Top-3 为 Chrome、Messages、Camera，并基于同一次真实 eBPF scenario 跑了 8 组消融。消融显示 `no_network` 会改变 Top-1，`no_binder_service`、`no_memory`、`app_sequence_baseline` 会改变 MAPLE predicted app id，说明深层 eBPF 证据确实影响推荐和调度。
+本次新增并跑通 `100 次真实使用分析`：真实打开 app 100 次，覆盖 12 个真实可启动应用，采到 16200 条 eBPF 兼容事件行，并把 MAPLE 输入升级为 100 条 timestamped app sequence + 20 个 app/eBPF 对齐时间窗。MAPLE shell 输出 Top-3 为 Chrome、Messages、Camera，并基于同一次真实 eBPF scenario 跑了 8 组消融。消融显示 `no_network` 会改变 Top-1，`no_network`、`no_memory`、`app_sequence_baseline` 会改变 MAPLE predicted app id，说明 app 时间线和深层 eBPF 证据都会影响推荐和调度。
 
 同时重新跑了 `手机压力 A/B 实验`，比较 MEMO-off baseline 和 MEMO-on 后续真实 app workload。6 组 A/B 的平均结果：综合压力分数改善 29.70%，启动 TotalTime 改善 12.28%，WaitTime 改善 13.74%，CPU busy 改善 9.84%，iowait 改善 33.40%，reclaim 改善 13.07%；但 MemAvailable 下降量平均变差 14.13%，crowded Tencent Meeting 是反例。因此当前结论是：这次真机实验支持 MEMO 能降低平均系统压力并改善部分启动体验，但不能声称所有场景都提升。
 

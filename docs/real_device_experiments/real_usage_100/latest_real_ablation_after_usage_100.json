@@ -1,8 +1,8 @@
 {
   "schema_version": "memo.real_ebpf_ablation.v1",
   "source": "android_device_side_real_ebpf",
-  "base_scenario_id": "real_usage_100_1780245815290",
-  "base_description": "User-like Android session: MEMO opened real launchable apps 100 times, collected raw eBPF evidence, then ran MAPLE and scheduling actions on device. Raw trace: \/sdcard\/MEMO\/logs\/usage_100_1780245815290.trace.",
+  "base_scenario_id": "real_usage_100_1780298489375",
+  "base_description": "User-like Android session: MEMO opened real launchable apps 100 times, collected raw eBPF evidence, then ran MAPLE and scheduling actions on device. Raw trace: \/sdcard\/MEMO\/logs\/usage_100_1780298489375.trace.",
   "configs": [
     "full_real_ebpf",
     "no_network",
@@ -16,15 +16,15 @@
   "metrics_scope": "MAPLE prediction, real Top-3 app mapping, non-intrusive scheduler action profile, and latency",
   "system_state": {
     "memory_pressure": "normal",
-    "mem_available_kb": 3385852,
+    "mem_available_kb": 3427128,
     "mem_total_kb": 7640460,
-    "swap_free_kb": 743380,
-    "battery_percent": 100,
+    "swap_free_kb": 851124,
+    "battery_percent": 88,
     "thermal_risk": "normal",
-    "temperature_c": 37.1,
-    "udp_in_datagrams": 28827,
-    "udp_out_datagrams": 29731,
-    "udp_socket_count": 82,
+    "temperature_c": 33.8,
+    "udp_in_datagrams": 36170,
+    "udp_out_datagrams": 36941,
+    "udp_socket_count": 80,
     "foreground_package": null,
     "surfaceflinger_pid": null,
     "cameraserver_pid": null,
@@ -35,7 +35,7 @@
     "config_count": 8,
     "maple_available_count": 8,
     "changed_predicted_app_configs": [
-      "no_binder_service",
+      "no_network",
       "no_memory",
       "app_sequence_baseline"
     ],
@@ -48,9 +48,9 @@
       "no_display_ui",
       "no_binder_service"
     ],
-    "avg_end_to_end_ms": 32271.125,
-    "max_end_to_end_ms": 79414,
-    "min_end_to_end_ms": 13852
+    "avg_end_to_end_ms": 18539.5,
+    "max_end_to_end_ms": 58108,
+    "min_end_to_end_ms": 8363
   },
   "results": [
     {
@@ -58,14 +58,22 @@
       "description": "Full real eBPF evidence",
       "enabled_categories": [
         "Network IO",
-        "Android Service IPC",
-        "Memory Management",
-        "App Process Runtime",
         "Camera Service",
-        "Display Composition"
+        "Display Composition",
+        "Media Codec",
+        "Android Service IPC",
+        "Memory Management"
       ],
       "evidence_lines": [
-        "15925 device-side eBPF records in the observed Android window",
+        "16200 device-side eBPF records in the observed Android window",
+        "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
+        "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
+        "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
+        "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
+        "timeline_window 3 2026-06-01T15:21:48+08:00..2026-06-01T15:21:52+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262318,MEMO_RECVFROM=34737,MEMO_BINDER=16862]",
+        "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
+        "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
+        "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
         "event_type MEMO_BINDER: count=2000",
         "event_type MEMO_OPENAT: count=2000",
         "event_type MEMO_SENDTO: count=2000",
@@ -73,22 +81,20 @@
         "event_type MEMO_SCHED: count=2000",
         "event_type MEMO_PROCESS_FORK: count=2000",
         "event_type MEMO_PROCESS_EXIT: count=2000",
-        "event_type MEMO_PROCESS_EXEC: count=1618",
+        "event_type MEMO_PROCESS_EXEC: count=2000",
         "MAPLE evidence\/resource category Network IO: count=720",
-        "MAPLE evidence\/resource category Android Service IPC: count=360",
-        "MAPLE evidence\/resource category Memory Management: count=360",
-        "MAPLE evidence\/resource category App Process Runtime: count=180",
-        "MAPLE evidence\/resource category Camera Service: count=180"
+        "MAPLE evidence\/resource category Camera Service: count=420",
+        "MAPLE evidence\/resource category Media Codec: count=420"
       ],
-      "maple_duration_ms": 24356,
-      "app_mapping_duration_ms": 169,
-      "action_duration_ms": 517,
-      "end_to_end_ms": 25042,
+      "maple_duration_ms": 11291,
+      "app_mapping_duration_ms": 177,
+      "action_duration_ms": 514,
+      "end_to_end_ms": 11982,
       "maple_available": true,
       "maple_backend": "shell",
-      "predicted_app_id": 280,
+      "predicted_app_id": 220,
       "stage1": [
-        "App Process Runtime (80%)"
+        "Memory Management (100%)"
       ],
       "top_apps": [
         "Chrome (com.android.chrome)",
@@ -116,7 +122,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=24.5s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=11.5s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -179,19 +185,20 @@
         "top3_app_count": 3,
         "top3_are_real_launchable_apps": true,
         "evidence_domain_count": 5,
-        "predicted_domain_count": 3,
-        "evidence_to_prediction_domain_jaccard": 0.6,
+        "predicted_domain_count": 4,
+        "evidence_to_prediction_domain_jaccard": 0.8,
         "predicted_domains": [
+          "memory",
           "network",
           "binder_service",
           "camera_media"
         ],
         "evidence_domains": [
           "network",
-          "binder_service",
-          "memory",
           "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service",
+          "memory"
         ]
       },
       "predicted_scheduling_metrics": {
@@ -204,10 +211,10 @@
         "blocked_count": 0,
         "predicted_resource_domains": [
           "network",
-          "binder_service",
-          "memory",
           "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service",
+          "memory"
         ],
         "action_domains": [
           "widget",
@@ -228,10 +235,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 24356,
-          "app_mapping": 169,
-          "actions": 517,
-          "total": 25042
+          "maple": 11291,
+          "app_mapping": 177,
+          "actions": 514,
+          "total": 11982
         }
       },
       "error": null,
@@ -250,34 +257,34 @@
       "config_id": "no_network",
       "description": "Remove sendto\/recvfrom and Network IO evidence",
       "enabled_categories": [
-        "Android Service IPC",
-        "Memory Management",
-        "App Process Runtime",
         "Camera Service",
-        "Display Composition"
+        "Display Composition",
+        "Media Codec",
+        "Android Service IPC",
+        "Memory Management"
       ],
       "evidence_lines": [
-        "15925 device-side eBPF records in the observed Android window",
+        "16200 device-side eBPF records in the observed Android window",
+        "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
+        "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
         "event_type MEMO_BINDER: count=2000",
         "event_type MEMO_OPENAT: count=2000",
         "event_type MEMO_SCHED: count=2000",
         "event_type MEMO_PROCESS_FORK: count=2000",
         "event_type MEMO_PROCESS_EXIT: count=2000",
-        "event_type MEMO_PROCESS_EXEC: count=1618",
-        "MAPLE evidence\/resource category Android Service IPC: count=360",
-        "MAPLE evidence\/resource category Memory Management: count=360",
-        "MAPLE evidence\/resource category App Process Runtime: count=180",
-        "MAPLE evidence\/resource category Camera Service: count=180"
+        "event_type MEMO_PROCESS_EXEC: count=2000",
+        "MAPLE evidence\/resource category Camera Service: count=420",
+        "MAPLE evidence\/resource category Media Codec: count=420"
       ],
-      "maple_duration_ms": 21132,
-      "app_mapping_duration_ms": 160,
-      "action_duration_ms": 308,
-      "end_to_end_ms": 21600,
+      "maple_duration_ms": 20434,
+      "app_mapping_duration_ms": 207,
+      "action_duration_ms": 310,
+      "end_to_end_ms": 20951,
       "maple_available": true,
       "maple_backend": "shell",
-      "predicted_app_id": 280,
+      "predicted_app_id": 260,
       "stage1": [
-        "App Process Runtime (80%)"
+        "Media Codec (100%)"
       ],
       "top_apps": [
         "Messages (com.google.android.apps.messaging)",
@@ -292,7 +299,7 @@
       "top_app_categories": [
         "Communication",
         "Camera Service",
-        "Display Composition"
+        "Media Codec"
       ],
       "actions": [
         {
@@ -305,7 +312,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=21.3s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=20.6s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -356,18 +363,17 @@
         "top3_app_count": 3,
         "top3_are_real_launchable_apps": true,
         "evidence_domain_count": 4,
-        "predicted_domain_count": 3,
-        "evidence_to_prediction_domain_jaccard": 0.75,
+        "predicted_domain_count": 2,
+        "evidence_to_prediction_domain_jaccard": 0.5,
         "predicted_domains": [
-          "binder_service",
           "camera_media",
-          "display_ui"
+          "binder_service"
         ],
         "evidence_domains": [
-          "binder_service",
-          "memory",
           "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service",
+          "memory"
         ]
       },
       "predicted_scheduling_metrics": {
@@ -379,10 +385,10 @@
         "failed_count": 0,
         "blocked_count": 0,
         "predicted_resource_domains": [
-          "binder_service",
-          "memory",
           "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service",
+          "memory"
         ],
         "action_domains": [
           "widget",
@@ -402,22 +408,22 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 21132,
-          "app_mapping": 160,
-          "actions": 308,
-          "total": 21600
+          "maple": 20434,
+          "app_mapping": 207,
+          "actions": 310,
+          "total": 20951
         }
       },
       "error": null,
       "comparison_to_full": {
         "reference": "full_real_ebpf",
-        "predicted_app_same": true,
-        "stage1_jaccard": 1,
+        "predicted_app_same": false,
+        "stage1_jaccard": 0,
         "top3_jaccard": 0.5,
         "top1_same": false,
         "action_domain_jaccard": 0.875,
-        "maple_latency_delta_ms": -3224,
-        "end_to_end_delta_ms": -3442
+        "maple_latency_delta_ms": 9143,
+        "end_to_end_delta_ms": 8969
       }
     },
     {
@@ -425,13 +431,20 @@
       "description": "Remove camera and media evidence",
       "enabled_categories": [
         "Network IO",
+        "Display Composition",
         "Android Service IPC",
-        "Memory Management",
-        "App Process Runtime",
-        "Display Composition"
+        "Memory Management"
       ],
       "evidence_lines": [
-        "15925 device-side eBPF records in the observed Android window",
+        "16200 device-side eBPF records in the observed Android window",
+        "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
+        "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
+        "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
+        "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
+        "timeline_window 3 2026-06-01T15:21:48+08:00..2026-06-01T15:21:52+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262318,MEMO_RECVFROM=34737,MEMO_BINDER=16862]",
+        "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
+        "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
+        "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
         "event_type MEMO_BINDER: count=2000",
         "event_type MEMO_OPENAT: count=2000",
         "event_type MEMO_SENDTO: count=2000",
@@ -439,399 +452,32 @@
         "event_type MEMO_SCHED: count=2000",
         "event_type MEMO_PROCESS_FORK: count=2000",
         "event_type MEMO_PROCESS_EXIT: count=2000",
-        "event_type MEMO_PROCESS_EXEC: count=1618",
-        "MAPLE evidence\/resource category Network IO: count=720",
-        "MAPLE evidence\/resource category Android Service IPC: count=360",
-        "MAPLE evidence\/resource category Memory Management: count=360",
-        "MAPLE evidence\/resource category App Process Runtime: count=180"
+        "event_type MEMO_PROCESS_EXEC: count=2000",
+        "MAPLE evidence\/resource category Network IO: count=720"
       ],
-      "maple_duration_ms": 26304,
-      "app_mapping_duration_ms": 175,
-      "action_duration_ms": 717,
-      "end_to_end_ms": 27196,
-      "maple_available": true,
-      "maple_backend": "shell",
-      "predicted_app_id": 280,
-      "stage1": [
-        "App Process Runtime (80%)"
-      ],
-      "top_apps": [
-        "Chrome (com.android.chrome)",
-        "Messages (com.google.android.apps.messaging)",
-        "Termux (com.termux)"
-      ],
-      "top_app_packages": [
-        "com.android.chrome",
-        "com.google.android.apps.messaging",
-        "com.termux"
-      ],
-      "top_app_categories": [
-        "Network IO",
-        "Communication",
-        "Display Composition"
-      ],
-      "actions": [
-        {
-          "name": "widget_update",
-          "target": "top3",
-          "status": "planned",
-          "detail": "ablation metrics mode; product run would publish 3 real app recommendations"
-        },
-        {
-          "name": "latency_policy",
-          "target": "async_maple",
-          "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=26.5s; slow runs still finish and still drive actions"
-        },
-        {
-          "name": "memory_policy",
-          "target": "preload_intensity",
-          "status": "ok",
-          "detail": "normal memory; lightweight warm launch remains enabled"
-        },
-        {
-          "name": "thermal_policy",
-          "target": "preload_intensity",
-          "status": "ok",
-          "detail": "normal battery thermal state"
-        },
-        {
-          "name": "network_candidate_priority",
-          "target": "com.android.chrome, com.google.android.apps.messaging",
-          "status": "ok",
-          "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps"
-        },
-        {
-          "name": "network_stats_refresh",
-          "target": "netstats",
-          "status": "ok",
-          "detail": "refreshed network stats before recommendation"
-        },
-        {
-          "name": "display_ui_policy",
-          "target": "warm_launch_intensity",
-          "status": "ok",
-          "detail": "SurfaceFlinger\/RenderThread\/input evidence; keep prewarm count low to avoid jank, memory=normal"
-        },
-        {
-          "name": "binder_service_policy",
-          "target": "system_services",
-          "status": "ok",
-          "detail": "Binder\/system-service evidence kept as MAPLE scheduling context"
-        },
-        {
-          "name": "binder_service_refresh",
-          "target": "service_manager",
-          "status": "ok",
-          "detail": "queried service manager after high Binder activity"
-        },
-        {
-          "name": "warm_launch_policy",
-          "target": "top_apps",
-          "status": "planned",
-          "detail": "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute"
-        }
-      ],
-      "prediction_metrics": {
-        "maple_available": true,
-        "stage1_category_count": 1,
-        "top3_app_count": 3,
-        "top3_are_real_launchable_apps": true,
-        "evidence_domain_count": 4,
-        "predicted_domain_count": 3,
-        "evidence_to_prediction_domain_jaccard": 0.75,
-        "predicted_domains": [
-          "network",
-          "binder_service",
-          "display_ui"
-        ],
-        "evidence_domains": [
-          "network",
-          "binder_service",
-          "memory",
-          "display_ui"
-        ]
-      },
-      "predicted_scheduling_metrics": {
-        "metric_type": "predicted_scheduler_profile",
-        "action_count": 10,
-        "ok_count": 8,
-        "planned_count": 2,
-        "skipped_count": 0,
-        "failed_count": 0,
-        "blocked_count": 0,
-        "predicted_resource_domains": [
-          "network",
-          "binder_service",
-          "memory",
-          "display_ui"
-        ],
-        "action_domains": [
-          "widget",
-          "latency",
-          "memory",
-          "power_thermal",
-          "network",
-          "display_ui",
-          "binder_service"
-        ],
-        "resource_alignment_score": 0.5714285714285714,
-        "scheduler_intensity_score": 3.3,
-        "scheduler_intensity_normalized": 0.4714285714285714,
-        "top3_real_app_count": 3,
-        "would_publish_widget": true,
-        "would_warm_launch_count": 0,
-        "pressure_suppression_count": 0,
-        "non_intrusive_suppression_count": 0,
-        "latency_ms": {
-          "maple": 26304,
-          "app_mapping": 175,
-          "actions": 717,
-          "total": 27196
-        }
-      },
-      "error": null,
-      "comparison_to_full": {
-        "reference": "full_real_ebpf",
-        "predicted_app_same": true,
-        "stage1_jaccard": 1,
-        "top3_jaccard": 0.5,
-        "top1_same": true,
-        "action_domain_jaccard": 0.875,
-        "maple_latency_delta_ms": 1948,
-        "end_to_end_delta_ms": 2154
-      }
-    },
-    {
-      "config_id": "no_display_ui",
-      "description": "Remove SurfaceFlinger\/RenderThread\/display evidence",
-      "enabled_categories": [
-        "Network IO",
-        "Android Service IPC",
-        "Memory Management",
-        "App Process Runtime",
-        "Camera Service"
-      ],
-      "evidence_lines": [
-        "15925 device-side eBPF records in the observed Android window",
-        "event_type MEMO_BINDER: count=2000",
-        "event_type MEMO_OPENAT: count=2000",
-        "event_type MEMO_SENDTO: count=2000",
-        "event_type MEMO_RECVFROM: count=2000",
-        "event_type MEMO_SCHED: count=2000",
-        "event_type MEMO_PROCESS_FORK: count=2000",
-        "event_type MEMO_PROCESS_EXIT: count=2000",
-        "event_type MEMO_PROCESS_EXEC: count=1618",
-        "MAPLE evidence\/resource category Network IO: count=720",
-        "MAPLE evidence\/resource category Android Service IPC: count=360",
-        "MAPLE evidence\/resource category Memory Management: count=360",
-        "MAPLE evidence\/resource category App Process Runtime: count=180",
-        "MAPLE evidence\/resource category Camera Service: count=180"
-      ],
-      "maple_duration_ms": 28727,
-      "app_mapping_duration_ms": 196,
-      "action_duration_ms": 621,
-      "end_to_end_ms": 29544,
-      "maple_available": true,
-      "maple_backend": "shell",
-      "predicted_app_id": 280,
-      "stage1": [
-        "App Process Runtime (80%)"
-      ],
-      "top_apps": [
-        "Chrome (com.android.chrome)",
-        "Messages (com.google.android.apps.messaging)",
-        "Camera (com.google.android.GoogleCamera)"
-      ],
-      "top_app_packages": [
-        "com.android.chrome",
-        "com.google.android.apps.messaging",
-        "com.google.android.GoogleCamera"
-      ],
-      "top_app_categories": [
-        "Network IO",
-        "Communication",
-        "Camera Service"
-      ],
-      "actions": [
-        {
-          "name": "widget_update",
-          "target": "top3",
-          "status": "planned",
-          "detail": "ablation metrics mode; product run would publish 3 real app recommendations"
-        },
-        {
-          "name": "latency_policy",
-          "target": "async_maple",
-          "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=28.9s; slow runs still finish and still drive actions"
-        },
-        {
-          "name": "memory_policy",
-          "target": "preload_intensity",
-          "status": "ok",
-          "detail": "normal memory; lightweight warm launch remains enabled"
-        },
-        {
-          "name": "thermal_policy",
-          "target": "preload_intensity",
-          "status": "ok",
-          "detail": "normal battery thermal state"
-        },
-        {
-          "name": "network_candidate_priority",
-          "target": "com.android.chrome, com.google.android.apps.messaging",
-          "status": "ok",
-          "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps"
-        },
-        {
-          "name": "network_stats_refresh",
-          "target": "netstats",
-          "status": "ok",
-          "detail": "refreshed network stats before recommendation"
-        },
-        {
-          "name": "camera_media_candidate",
-          "target": "com.google.android.GoogleCamera",
-          "status": "ok",
-          "detail": "selected Camera for camera\/media follow-up warm launch"
-        },
-        {
-          "name": "binder_service_policy",
-          "target": "system_services",
-          "status": "ok",
-          "detail": "Binder\/system-service evidence kept as MAPLE scheduling context"
-        },
-        {
-          "name": "binder_service_refresh",
-          "target": "service_manager",
-          "status": "ok",
-          "detail": "queried service manager after high Binder activity"
-        },
-        {
-          "name": "warm_launch_policy",
-          "target": "top_apps",
-          "status": "planned",
-          "detail": "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute"
-        }
-      ],
-      "prediction_metrics": {
-        "maple_available": true,
-        "stage1_category_count": 1,
-        "top3_app_count": 3,
-        "top3_are_real_launchable_apps": true,
-        "evidence_domain_count": 4,
-        "predicted_domain_count": 3,
-        "evidence_to_prediction_domain_jaccard": 0.75,
-        "predicted_domains": [
-          "network",
-          "binder_service",
-          "camera_media"
-        ],
-        "evidence_domains": [
-          "network",
-          "binder_service",
-          "memory",
-          "camera_media"
-        ]
-      },
-      "predicted_scheduling_metrics": {
-        "metric_type": "predicted_scheduler_profile",
-        "action_count": 10,
-        "ok_count": 8,
-        "planned_count": 2,
-        "skipped_count": 0,
-        "failed_count": 0,
-        "blocked_count": 0,
-        "predicted_resource_domains": [
-          "network",
-          "binder_service",
-          "memory",
-          "camera_media"
-        ],
-        "action_domains": [
-          "widget",
-          "latency",
-          "memory",
-          "power_thermal",
-          "network",
-          "camera_media",
-          "binder_service"
-        ],
-        "resource_alignment_score": 0.5714285714285714,
-        "scheduler_intensity_score": 3.5,
-        "scheduler_intensity_normalized": 0.5,
-        "top3_real_app_count": 3,
-        "would_publish_widget": true,
-        "would_warm_launch_count": 0,
-        "pressure_suppression_count": 0,
-        "non_intrusive_suppression_count": 0,
-        "latency_ms": {
-          "maple": 28727,
-          "app_mapping": 196,
-          "actions": 621,
-          "total": 29544
-        }
-      },
-      "error": null,
-      "comparison_to_full": {
-        "reference": "full_real_ebpf",
-        "predicted_app_same": true,
-        "stage1_jaccard": 1,
-        "top3_jaccard": 1,
-        "top1_same": true,
-        "action_domain_jaccard": 0.875,
-        "maple_latency_delta_ms": 4371,
-        "end_to_end_delta_ms": 4502
-      }
-    },
-    {
-      "config_id": "no_binder_service",
-      "description": "Remove Binder and Android service evidence",
-      "enabled_categories": [
-        "Network IO",
-        "Memory Management",
-        "App Process Runtime",
-        "Camera Service",
-        "Display Composition"
-      ],
-      "evidence_lines": [
-        "15925 device-side eBPF records in the observed Android window",
-        "event_type MEMO_OPENAT: count=2000",
-        "event_type MEMO_SENDTO: count=2000",
-        "event_type MEMO_RECVFROM: count=2000",
-        "event_type MEMO_SCHED: count=2000",
-        "event_type MEMO_PROCESS_FORK: count=2000",
-        "event_type MEMO_PROCESS_EXIT: count=2000",
-        "event_type MEMO_PROCESS_EXEC: count=1618",
-        "MAPLE evidence\/resource category Network IO: count=720",
-        "MAPLE evidence\/resource category Memory Management: count=360",
-        "MAPLE evidence\/resource category App Process Runtime: count=180",
-        "MAPLE evidence\/resource category Camera Service: count=180"
-      ],
-      "maple_duration_ms": 13239,
-      "app_mapping_duration_ms": 198,
-      "action_duration_ms": 415,
-      "end_to_end_ms": 13852,
+      "maple_duration_ms": 8486,
+      "app_mapping_duration_ms": 176,
+      "action_duration_ms": 512,
+      "end_to_end_ms": 9174,
       "maple_available": true,
       "maple_backend": "shell",
       "predicted_app_id": 220,
       "stage1": [
-        "Memory Management (80%)"
+        "Memory Management (100%)"
       ],
       "top_apps": [
         "Chrome (com.android.chrome)",
-        "Camera (com.google.android.GoogleCamera)",
+        "Messages (com.google.android.apps.messaging)",
         "Termux (com.termux)"
       ],
       "top_app_packages": [
         "com.android.chrome",
-        "com.google.android.GoogleCamera",
+        "com.google.android.apps.messaging",
         "com.termux"
       ],
       "top_app_categories": [
         "Network IO",
-        "Camera Service",
+        "Communication",
         "Display Composition"
       ],
       "actions": [
@@ -845,7 +491,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=13.4s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=8.7s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -861,7 +507,7 @@
         },
         {
           "name": "network_candidate_priority",
-          "target": "com.android.chrome",
+          "target": "com.android.chrome, com.google.android.apps.messaging",
           "status": "ok",
           "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps"
         },
@@ -872,16 +518,22 @@
           "detail": "refreshed network stats before recommendation"
         },
         {
-          "name": "camera_media_candidate",
-          "target": "com.google.android.GoogleCamera",
-          "status": "ok",
-          "detail": "selected Camera for camera\/media follow-up warm launch"
-        },
-        {
           "name": "display_ui_policy",
           "target": "warm_launch_intensity",
           "status": "ok",
           "detail": "SurfaceFlinger\/RenderThread\/input evidence; keep prewarm count low to avoid jank, memory=normal"
+        },
+        {
+          "name": "binder_service_policy",
+          "target": "system_services",
+          "status": "ok",
+          "detail": "Binder\/system-service evidence kept as MAPLE scheduling context"
+        },
+        {
+          "name": "binder_service_refresh",
+          "target": "service_manager",
+          "status": "ok",
+          "detail": "queried service manager after high Binder activity"
         },
         {
           "name": "warm_launch_policy",
@@ -901,29 +553,29 @@
         "predicted_domains": [
           "memory",
           "network",
-          "camera_media",
+          "binder_service",
           "display_ui"
         ],
         "evidence_domains": [
           "network",
-          "memory",
-          "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service",
+          "memory"
         ]
       },
       "predicted_scheduling_metrics": {
         "metric_type": "predicted_scheduler_profile",
-        "action_count": 9,
-        "ok_count": 7,
+        "action_count": 10,
+        "ok_count": 8,
         "planned_count": 2,
         "skipped_count": 0,
         "failed_count": 0,
         "blocked_count": 0,
         "predicted_resource_domains": [
           "network",
-          "memory",
-          "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service",
+          "memory"
         ],
         "action_domains": [
           "widget",
@@ -931,48 +583,56 @@
           "memory",
           "power_thermal",
           "network",
-          "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service"
         ],
         "resource_alignment_score": 0.5714285714285714,
-        "scheduler_intensity_score": 3.1,
-        "scheduler_intensity_normalized": 0.4428571428571429,
+        "scheduler_intensity_score": 3.3,
+        "scheduler_intensity_normalized": 0.4714285714285714,
         "top3_real_app_count": 3,
         "would_publish_widget": true,
         "would_warm_launch_count": 0,
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 13239,
-          "app_mapping": 198,
-          "actions": 415,
-          "total": 13852
+          "maple": 8486,
+          "app_mapping": 176,
+          "actions": 512,
+          "total": 9174
         }
       },
       "error": null,
       "comparison_to_full": {
         "reference": "full_real_ebpf",
-        "predicted_app_same": false,
-        "stage1_jaccard": 0,
+        "predicted_app_same": true,
+        "stage1_jaccard": 1,
         "top3_jaccard": 0.5,
         "top1_same": true,
         "action_domain_jaccard": 0.875,
-        "maple_latency_delta_ms": -11117,
-        "end_to_end_delta_ms": -11190
+        "maple_latency_delta_ms": -2805,
+        "end_to_end_delta_ms": -2808
       }
     },
     {
-      "config_id": "no_memory",
-      "description": "Remove memory pressure\/reclaim evidence",
+      "config_id": "no_display_ui",
+      "description": "Remove SurfaceFlinger\/RenderThread\/display evidence",
       "enabled_categories": [
         "Network IO",
-        "Android Service IPC",
-        "App Process Runtime",
         "Camera Service",
-        "Display Composition"
+        "Media Codec",
+        "Android Service IPC",
+        "Memory Management"
       ],
       "evidence_lines": [
-        "15925 device-side eBPF records in the observed Android window",
+        "16200 device-side eBPF records in the observed Android window",
+        "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
+        "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
+        "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
+        "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
+        "timeline_window 3 2026-06-01T15:21:48+08:00..2026-06-01T15:21:52+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262318,MEMO_RECVFROM=34737,MEMO_BINDER=16862]",
+        "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
+        "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
+        "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
         "event_type MEMO_BINDER: count=2000",
         "event_type MEMO_OPENAT: count=2000",
         "event_type MEMO_SENDTO: count=2000",
@@ -980,21 +640,20 @@
         "event_type MEMO_SCHED: count=2000",
         "event_type MEMO_PROCESS_FORK: count=2000",
         "event_type MEMO_PROCESS_EXIT: count=2000",
-        "event_type MEMO_PROCESS_EXEC: count=1618",
+        "event_type MEMO_PROCESS_EXEC: count=2000",
         "MAPLE evidence\/resource category Network IO: count=720",
-        "MAPLE evidence\/resource category Android Service IPC: count=360",
-        "MAPLE evidence\/resource category App Process Runtime: count=180",
-        "MAPLE evidence\/resource category Camera Service: count=180"
+        "MAPLE evidence\/resource category Camera Service: count=420",
+        "MAPLE evidence\/resource category Media Codec: count=420"
       ],
-      "maple_duration_ms": 28737,
-      "app_mapping_duration_ms": 198,
-      "action_duration_ms": 718,
-      "end_to_end_ms": 29653,
+      "maple_duration_ms": 7782,
+      "app_mapping_duration_ms": 168,
+      "action_duration_ms": 413,
+      "end_to_end_ms": 8363,
       "maple_available": true,
       "maple_backend": "shell",
-      "predicted_app_id": 245,
+      "predicted_app_id": 220,
       "stage1": [
-        "Network IO (100%)"
+        "Memory Management (100%)"
       ],
       "top_apps": [
         "Chrome (com.android.chrome)",
@@ -1022,7 +681,378 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=28.9s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=8.0s; slow runs still finish and still drive actions"
+        },
+        {
+          "name": "memory_policy",
+          "target": "preload_intensity",
+          "status": "ok",
+          "detail": "normal memory; lightweight warm launch remains enabled"
+        },
+        {
+          "name": "thermal_policy",
+          "target": "preload_intensity",
+          "status": "ok",
+          "detail": "normal battery thermal state"
+        },
+        {
+          "name": "network_candidate_priority",
+          "target": "com.android.chrome, com.google.android.apps.messaging",
+          "status": "ok",
+          "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps"
+        },
+        {
+          "name": "network_stats_refresh",
+          "target": "netstats",
+          "status": "ok",
+          "detail": "refreshed network stats before recommendation"
+        },
+        {
+          "name": "camera_media_candidate",
+          "target": "com.google.android.GoogleCamera",
+          "status": "ok",
+          "detail": "selected Camera for camera\/media follow-up warm launch"
+        },
+        {
+          "name": "binder_service_policy",
+          "target": "system_services",
+          "status": "ok",
+          "detail": "Binder\/system-service evidence kept as MAPLE scheduling context"
+        },
+        {
+          "name": "binder_service_refresh",
+          "target": "service_manager",
+          "status": "ok",
+          "detail": "queried service manager after high Binder activity"
+        },
+        {
+          "name": "warm_launch_policy",
+          "target": "top_apps",
+          "status": "planned",
+          "detail": "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute"
+        }
+      ],
+      "prediction_metrics": {
+        "maple_available": true,
+        "stage1_category_count": 1,
+        "top3_app_count": 3,
+        "top3_are_real_launchable_apps": true,
+        "evidence_domain_count": 4,
+        "predicted_domain_count": 4,
+        "evidence_to_prediction_domain_jaccard": 1,
+        "predicted_domains": [
+          "memory",
+          "network",
+          "binder_service",
+          "camera_media"
+        ],
+        "evidence_domains": [
+          "network",
+          "camera_media",
+          "binder_service",
+          "memory"
+        ]
+      },
+      "predicted_scheduling_metrics": {
+        "metric_type": "predicted_scheduler_profile",
+        "action_count": 10,
+        "ok_count": 8,
+        "planned_count": 2,
+        "skipped_count": 0,
+        "failed_count": 0,
+        "blocked_count": 0,
+        "predicted_resource_domains": [
+          "network",
+          "camera_media",
+          "binder_service",
+          "memory"
+        ],
+        "action_domains": [
+          "widget",
+          "latency",
+          "memory",
+          "power_thermal",
+          "network",
+          "camera_media",
+          "binder_service"
+        ],
+        "resource_alignment_score": 0.5714285714285714,
+        "scheduler_intensity_score": 3.5,
+        "scheduler_intensity_normalized": 0.5,
+        "top3_real_app_count": 3,
+        "would_publish_widget": true,
+        "would_warm_launch_count": 0,
+        "pressure_suppression_count": 0,
+        "non_intrusive_suppression_count": 0,
+        "latency_ms": {
+          "maple": 7782,
+          "app_mapping": 168,
+          "actions": 413,
+          "total": 8363
+        }
+      },
+      "error": null,
+      "comparison_to_full": {
+        "reference": "full_real_ebpf",
+        "predicted_app_same": true,
+        "stage1_jaccard": 1,
+        "top3_jaccard": 1,
+        "top1_same": true,
+        "action_domain_jaccard": 0.875,
+        "maple_latency_delta_ms": -3509,
+        "end_to_end_delta_ms": -3619
+      }
+    },
+    {
+      "config_id": "no_binder_service",
+      "description": "Remove Binder and Android service evidence",
+      "enabled_categories": [
+        "Network IO",
+        "Camera Service",
+        "Display Composition",
+        "Media Codec",
+        "Memory Management"
+      ],
+      "evidence_lines": [
+        "16200 device-side eBPF records in the observed Android window",
+        "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
+        "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
+        "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
+        "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
+        "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
+        "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
+        "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
+        "event_type MEMO_OPENAT: count=2000",
+        "event_type MEMO_SENDTO: count=2000",
+        "event_type MEMO_RECVFROM: count=2000",
+        "event_type MEMO_SCHED: count=2000",
+        "event_type MEMO_PROCESS_FORK: count=2000",
+        "event_type MEMO_PROCESS_EXIT: count=2000",
+        "event_type MEMO_PROCESS_EXEC: count=2000",
+        "MAPLE evidence\/resource category Network IO: count=720",
+        "MAPLE evidence\/resource category Camera Service: count=420",
+        "MAPLE evidence\/resource category Media Codec: count=420"
+      ],
+      "maple_duration_ms": 8470,
+      "app_mapping_duration_ms": 219,
+      "action_duration_ms": 208,
+      "end_to_end_ms": 8897,
+      "maple_available": true,
+      "maple_backend": "shell",
+      "predicted_app_id": 220,
+      "stage1": [
+        "Memory Management (100%)"
+      ],
+      "top_apps": [
+        "Chrome (com.android.chrome)",
+        "Camera (com.google.android.GoogleCamera)",
+        "Termux (com.termux)"
+      ],
+      "top_app_packages": [
+        "com.android.chrome",
+        "com.google.android.GoogleCamera",
+        "com.termux"
+      ],
+      "top_app_categories": [
+        "Network IO",
+        "Camera Service",
+        "Media Codec"
+      ],
+      "actions": [
+        {
+          "name": "widget_update",
+          "target": "top3",
+          "status": "planned",
+          "detail": "ablation metrics mode; product run would publish 3 real app recommendations"
+        },
+        {
+          "name": "latency_policy",
+          "target": "async_maple",
+          "status": "ok",
+          "detail": "MAPLE prediction ran asynchronously; completion latency=8.7s; slow runs still finish and still drive actions"
+        },
+        {
+          "name": "memory_policy",
+          "target": "preload_intensity",
+          "status": "ok",
+          "detail": "normal memory; lightweight warm launch remains enabled"
+        },
+        {
+          "name": "thermal_policy",
+          "target": "preload_intensity",
+          "status": "ok",
+          "detail": "normal battery thermal state"
+        },
+        {
+          "name": "network_candidate_priority",
+          "target": "com.android.chrome, com.termux",
+          "status": "ok",
+          "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps"
+        },
+        {
+          "name": "network_stats_refresh",
+          "target": "netstats",
+          "status": "ok",
+          "detail": "refreshed network stats before recommendation"
+        },
+        {
+          "name": "camera_media_candidate",
+          "target": "com.google.android.GoogleCamera",
+          "status": "ok",
+          "detail": "selected Camera for camera\/media follow-up warm launch"
+        },
+        {
+          "name": "display_ui_policy",
+          "target": "warm_launch_intensity",
+          "status": "ok",
+          "detail": "SurfaceFlinger\/RenderThread\/input evidence; keep prewarm count low to avoid jank, memory=normal"
+        },
+        {
+          "name": "warm_launch_policy",
+          "target": "top_apps",
+          "status": "planned",
+          "detail": "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute"
+        }
+      ],
+      "prediction_metrics": {
+        "maple_available": true,
+        "stage1_category_count": 1,
+        "top3_app_count": 3,
+        "top3_are_real_launchable_apps": true,
+        "evidence_domain_count": 4,
+        "predicted_domain_count": 3,
+        "evidence_to_prediction_domain_jaccard": 0.75,
+        "predicted_domains": [
+          "memory",
+          "network",
+          "camera_media"
+        ],
+        "evidence_domains": [
+          "network",
+          "camera_media",
+          "display_ui",
+          "memory"
+        ]
+      },
+      "predicted_scheduling_metrics": {
+        "metric_type": "predicted_scheduler_profile",
+        "action_count": 9,
+        "ok_count": 7,
+        "planned_count": 2,
+        "skipped_count": 0,
+        "failed_count": 0,
+        "blocked_count": 0,
+        "predicted_resource_domains": [
+          "network",
+          "camera_media",
+          "display_ui",
+          "memory"
+        ],
+        "action_domains": [
+          "widget",
+          "latency",
+          "memory",
+          "power_thermal",
+          "network",
+          "camera_media",
+          "display_ui"
+        ],
+        "resource_alignment_score": 0.5714285714285714,
+        "scheduler_intensity_score": 3.1,
+        "scheduler_intensity_normalized": 0.4428571428571429,
+        "top3_real_app_count": 3,
+        "would_publish_widget": true,
+        "would_warm_launch_count": 0,
+        "pressure_suppression_count": 0,
+        "non_intrusive_suppression_count": 0,
+        "latency_ms": {
+          "maple": 8470,
+          "app_mapping": 219,
+          "actions": 208,
+          "total": 8897
+        }
+      },
+      "error": null,
+      "comparison_to_full": {
+        "reference": "full_real_ebpf",
+        "predicted_app_same": true,
+        "stage1_jaccard": 1,
+        "top3_jaccard": 0.5,
+        "top1_same": true,
+        "action_domain_jaccard": 0.875,
+        "maple_latency_delta_ms": -2821,
+        "end_to_end_delta_ms": -3085
+      }
+    },
+    {
+      "config_id": "no_memory",
+      "description": "Remove memory pressure\/reclaim evidence",
+      "enabled_categories": [
+        "Network IO",
+        "Camera Service",
+        "Display Composition",
+        "Media Codec",
+        "Android Service IPC"
+      ],
+      "evidence_lines": [
+        "16200 device-side eBPF records in the observed Android window",
+        "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
+        "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
+        "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
+        "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
+        "timeline_window 3 2026-06-01T15:21:48+08:00..2026-06-01T15:21:52+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262318,MEMO_RECVFROM=34737,MEMO_BINDER=16862]",
+        "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
+        "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
+        "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
+        "event_type MEMO_BINDER: count=2000",
+        "event_type MEMO_OPENAT: count=2000",
+        "event_type MEMO_SENDTO: count=2000",
+        "event_type MEMO_RECVFROM: count=2000",
+        "event_type MEMO_SCHED: count=2000",
+        "event_type MEMO_PROCESS_FORK: count=2000",
+        "event_type MEMO_PROCESS_EXIT: count=2000",
+        "event_type MEMO_PROCESS_EXEC: count=2000",
+        "MAPLE evidence\/resource category Network IO: count=720",
+        "MAPLE evidence\/resource category Camera Service: count=420",
+        "MAPLE evidence\/resource category Media Codec: count=420"
+      ],
+      "maple_duration_ms": 19737,
+      "app_mapping_duration_ms": 209,
+      "action_duration_ms": 512,
+      "end_to_end_ms": 20458,
+      "maple_available": true,
+      "maple_backend": "shell",
+      "predicted_app_id": 260,
+      "stage1": [
+        "Media Codec (80%)"
+      ],
+      "top_apps": [
+        "Chrome (com.android.chrome)",
+        "Messages (com.google.android.apps.messaging)",
+        "Camera (com.google.android.GoogleCamera)"
+      ],
+      "top_app_packages": [
+        "com.android.chrome",
+        "com.google.android.apps.messaging",
+        "com.google.android.GoogleCamera"
+      ],
+      "top_app_categories": [
+        "Network IO",
+        "Communication",
+        "Camera Service"
+      ],
+      "actions": [
+        {
+          "name": "widget_update",
+          "target": "top3",
+          "status": "planned",
+          "detail": "ablation metrics mode; product run would publish 3 real app recommendations"
+        },
+        {
+          "name": "latency_policy",
+          "target": "async_maple",
+          "status": "ok",
+          "detail": "MAPLE prediction ran asynchronously; completion latency=19.9s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -1088,15 +1118,15 @@
         "predicted_domain_count": 3,
         "evidence_to_prediction_domain_jaccard": 0.75,
         "predicted_domains": [
+          "camera_media",
           "network",
-          "binder_service",
-          "camera_media"
+          "binder_service"
         ],
         "evidence_domains": [
           "network",
-          "binder_service",
           "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service"
         ]
       },
       "predicted_scheduling_metrics": {
@@ -1109,9 +1139,9 @@
         "blocked_count": 0,
         "predicted_resource_domains": [
           "network",
-          "binder_service",
           "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service"
         ],
         "action_domains": [
           "widget",
@@ -1132,10 +1162,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 28737,
-          "app_mapping": 198,
-          "actions": 718,
-          "total": 29653
+          "maple": 19737,
+          "app_mapping": 209,
+          "actions": 512,
+          "total": 20458
         }
       },
       "error": null,
@@ -1146,8 +1176,8 @@
         "top3_jaccard": 1,
         "top1_same": true,
         "action_domain_jaccard": 1,
-        "maple_latency_delta_ms": 4381,
-        "end_to_end_delta_ms": 4611
+        "maple_latency_delta_ms": 8446,
+        "end_to_end_delta_ms": 8476
       }
     },
     {
@@ -1155,11 +1185,11 @@
       "description": "Keep only aggregate eBPF counters, remove target-action hint",
       "enabled_categories": [
         "Network IO",
-        "Android Service IPC",
-        "Memory Management",
-        "App Process Runtime",
         "Camera Service",
-        "Display Composition"
+        "Display Composition",
+        "Media Codec",
+        "Android Service IPC",
+        "Memory Management"
       ],
       "evidence_lines": [
         "event_type MEMO_BINDER: count=2000",
@@ -1169,22 +1199,20 @@
         "event_type MEMO_SCHED: count=2000",
         "event_type MEMO_PROCESS_FORK: count=2000",
         "event_type MEMO_PROCESS_EXIT: count=2000",
-        "event_type MEMO_PROCESS_EXEC: count=1618",
+        "event_type MEMO_PROCESS_EXEC: count=2000",
         "MAPLE evidence\/resource category Network IO: count=720",
-        "MAPLE evidence\/resource category Android Service IPC: count=360",
-        "MAPLE evidence\/resource category Memory Management: count=360",
-        "MAPLE evidence\/resource category App Process Runtime: count=180",
-        "MAPLE evidence\/resource category Camera Service: count=180"
+        "MAPLE evidence\/resource category Camera Service: count=420",
+        "MAPLE evidence\/resource category Media Codec: count=420"
       ],
-      "maple_duration_ms": 30948,
-      "app_mapping_duration_ms": 196,
-      "action_duration_ms": 724,
-      "end_to_end_ms": 31868,
+      "maple_duration_ms": 9796,
+      "app_mapping_duration_ms": 173,
+      "action_duration_ms": 414,
+      "end_to_end_ms": 10383,
       "maple_available": true,
       "maple_backend": "shell",
-      "predicted_app_id": 280,
+      "predicted_app_id": 220,
       "stage1": [
-        "App Process Runtime (80%)"
+        "Memory Management (100%)"
       ],
       "top_apps": [
         "Chrome (com.android.chrome)",
@@ -1212,7 +1240,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=31.1s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=10.0s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -1275,19 +1303,20 @@
         "top3_app_count": 3,
         "top3_are_real_launchable_apps": true,
         "evidence_domain_count": 5,
-        "predicted_domain_count": 3,
-        "evidence_to_prediction_domain_jaccard": 0.6,
+        "predicted_domain_count": 4,
+        "evidence_to_prediction_domain_jaccard": 0.8,
         "predicted_domains": [
+          "memory",
           "network",
           "binder_service",
           "camera_media"
         ],
         "evidence_domains": [
           "network",
-          "binder_service",
-          "memory",
           "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service",
+          "memory"
         ]
       },
       "predicted_scheduling_metrics": {
@@ -1300,10 +1329,10 @@
         "blocked_count": 0,
         "predicted_resource_domains": [
           "network",
-          "binder_service",
-          "memory",
           "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service",
+          "memory"
         ],
         "action_domains": [
           "widget",
@@ -1324,10 +1353,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 30948,
-          "app_mapping": 196,
-          "actions": 724,
-          "total": 31868
+          "maple": 9796,
+          "app_mapping": 173,
+          "actions": 414,
+          "total": 10383
         }
       },
       "error": null,
@@ -1338,8 +1367,8 @@
         "top3_jaccard": 1,
         "top1_same": true,
         "action_domain_jaccard": 1,
-        "maple_latency_delta_ms": 6592,
-        "end_to_end_delta_ms": 6826
+        "maple_latency_delta_ms": -1495,
+        "end_to_end_delta_ms": -1599
       }
     },
     {
@@ -1347,17 +1376,17 @@
       "description": "Keep app\/category sequence only, remove all eBPF\/system evidence",
       "enabled_categories": [
         "Network IO",
-        "Android Service IPC",
-        "Memory Management",
-        "App Process Runtime",
         "Camera Service",
-        "Display Composition"
+        "Display Composition",
+        "Media Codec",
+        "Android Service IPC",
+        "Memory Management"
       ],
       "evidence_lines": [],
-      "maple_duration_ms": 78528,
-      "app_mapping_duration_ms": 162,
-      "action_duration_ms": 724,
-      "end_to_end_ms": 79414,
+      "maple_duration_ms": 57516,
+      "app_mapping_duration_ms": 181,
+      "action_duration_ms": 411,
+      "end_to_end_ms": 58108,
       "maple_available": true,
       "maple_backend": "shell",
       "predicted_app_id": 250,
@@ -1390,7 +1419,7 @@
           "name": "latency_policy",
           "target": "async_maple",
           "status": "ok",
-          "detail": "MAPLE prediction ran asynchronously; completion latency=78.7s; slow runs still finish and still drive actions"
+          "detail": "MAPLE prediction ran asynchronously; completion latency=57.7s; slow runs still finish and still drive actions"
         },
         {
           "name": "memory_policy",
@@ -1462,10 +1491,10 @@
         ],
         "evidence_domains": [
           "network",
-          "binder_service",
-          "memory",
           "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service",
+          "memory"
         ]
       },
       "predicted_scheduling_metrics": {
@@ -1478,10 +1507,10 @@
         "blocked_count": 0,
         "predicted_resource_domains": [
           "network",
-          "binder_service",
-          "memory",
           "camera_media",
-          "display_ui"
+          "display_ui",
+          "binder_service",
+          "memory"
         ],
         "action_domains": [
           "widget",
@@ -1502,10 +1531,10 @@
         "pressure_suppression_count": 0,
         "non_intrusive_suppression_count": 0,
         "latency_ms": {
-          "maple": 78528,
-          "app_mapping": 162,
-          "actions": 724,
-          "total": 79414
+          "maple": 57516,
+          "app_mapping": 181,
+          "actions": 411,
+          "total": 58108
         }
       },
       "error": null,
@@ -1516,8 +1545,8 @@
         "top3_jaccard": 1,
         "top1_same": true,
         "action_domain_jaccard": 1,
-        "maple_latency_delta_ms": 54172,
-        "end_to_end_delta_ms": 54372
+        "maple_latency_delta_ms": 46225,
+        "end_to_end_delta_ms": 46126
       }
     }
   ]

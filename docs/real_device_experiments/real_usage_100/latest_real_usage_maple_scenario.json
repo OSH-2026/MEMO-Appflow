@@ -1,0 +1,4871 @@
+{
+  "schema_version": "memo.maple_scenarios.v1",
+  "generated_at": "2026-06-01T15:23:45.955637+08:00",
+  "scenarios": [
+    {
+      "id": "real_usage_100_1780298489375",
+      "description": "User-like Android session: MEMO opened real launchable apps 100 times, collected raw eBPF evidence, then ran MAPLE and scheduling actions on device. Raw trace: \/sdcard\/MEMO\/logs\/usage_100_1780298489375.trace.",
+      "source": "android_device_side",
+      "context": {
+        "historical_app_categories": [
+          "Network IO",
+          "Camera Service",
+          "Display Composition",
+          "Media Codec",
+          "Android Service IPC",
+          "Memory Management"
+        ],
+        "historical_app_ids": [
+          245,
+          250,
+          115,
+          260,
+          110,
+          220
+        ],
+        "prediction_time": "2026-06-01T15:23:42.519436+08:00",
+        "points_of_interest": [
+          "camera or photo workflow",
+          "video\/audio playback workflow",
+          "active network communication",
+          "active UI rendering or scrolling"
+        ],
+        "installed_apps": {
+          "Network IO": [
+            245,
+            246,
+            247,
+            248,
+            249,
+            250
+          ],
+          "Camera Service": [
+            250,
+            251,
+            252,
+            253,
+            254
+          ],
+          "Display Composition": [
+            115
+          ],
+          "Media Codec": [
+            260,
+            261,
+            262,
+            263,
+            264,
+            265
+          ],
+          "Communication": [
+            110,
+            111
+          ],
+          "Memory Management": [
+            220
+          ],
+          "App Process Runtime": [
+            280,
+            281,
+            282,
+            283,
+            284
+          ],
+          "Navigation\/Location": [
+            270
+          ]
+        },
+        "observed_app_sequence": [
+          {
+            "index": 1,
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "categories": [
+              "Network IO",
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298495000,
+            "start_time": "2026-06-01T15:21:35+08:00",
+            "end_wall_time_ms": 1780298496000,
+            "end_time": "2026-06-01T15:21:36+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 229,
+            "wait_time_ms": 232,
+            "observed": true
+          },
+          {
+            "index": 2,
+            "package_name": "com.tencent.wemeet.app",
+            "label": "Tencent Meeting",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication"
+            ],
+            "start_wall_time_ms": 1780298496000,
+            "start_time": "2026-06-01T15:21:36+08:00",
+            "end_wall_time_ms": 1780298497000,
+            "end_time": "2026-06-01T15:21:37+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 240,
+            "wait_time_ms": 251,
+            "observed": true
+          },
+          {
+            "index": 3,
+            "package_name": "com.termux",
+            "label": "Termux",
+            "categories": [
+              "Media Codec",
+              "Display Composition",
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298497000,
+            "start_time": "2026-06-01T15:21:37+08:00",
+            "end_wall_time_ms": 1780298497000,
+            "end_time": "2026-06-01T15:21:37+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 62,
+            "wait_time_ms": 68,
+            "observed": true
+          },
+          {
+            "index": 4,
+            "package_name": "com.topjohnwu.magisk",
+            "label": "Magisk",
+            "categories": [
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298498000,
+            "start_time": "2026-06-01T15:21:38+08:00",
+            "end_wall_time_ms": 1780298498000,
+            "end_time": "2026-06-01T15:21:38+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 81,
+            "wait_time_ms": 86,
+            "observed": true
+          },
+          {
+            "index": 5,
+            "package_name": "com.google.android.apps.photos",
+            "label": "Photos",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Display Composition",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298499000,
+            "start_time": "2026-06-01T15:21:39+08:00",
+            "end_wall_time_ms": 1780298499000,
+            "end_time": "2026-06-01T15:21:39+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 110,
+            "wait_time_ms": 114,
+            "observed": true
+          },
+          {
+            "index": 6,
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "categories": [
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298501000,
+            "start_time": "2026-06-01T15:21:41+08:00",
+            "end_wall_time_ms": 1780298502000,
+            "end_time": "2026-06-01T15:21:42+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 116,
+            "wait_time_ms": 120,
+            "observed": true
+          },
+          {
+            "index": 7,
+            "package_name": "com.google.android.googlequicksearchbox",
+            "label": "Google",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298503000,
+            "start_time": "2026-06-01T15:21:43+08:00",
+            "end_wall_time_ms": 1780298503000,
+            "end_time": "2026-06-01T15:21:43+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 199,
+            "wait_time_ms": 208,
+            "observed": true
+          },
+          {
+            "index": 8,
+            "package_name": "com.google.android.apps.maps",
+            "label": "Maps",
+            "categories": [
+              "Navigation\/Location",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298503000,
+            "start_time": "2026-06-01T15:21:43+08:00",
+            "end_wall_time_ms": 1780298504000,
+            "end_time": "2026-06-01T15:21:44+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 169,
+            "wait_time_ms": 174,
+            "observed": true
+          },
+          {
+            "index": 9,
+            "package_name": "com.google.android.apps.safetyhub",
+            "label": "Personal Safety",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298504000,
+            "start_time": "2026-06-01T15:21:44+08:00",
+            "end_wall_time_ms": 1780298505000,
+            "end_time": "2026-06-01T15:21:45+08:00",
+            "launch_state": "UNKNOWN (0)",
+            "total_time_ms": null,
+            "wait_time_ms": 59,
+            "observed": true
+          },
+          {
+            "index": 10,
+            "package_name": "com.google.android.dialer",
+            "label": "Phone",
+            "categories": [
+              "Communication",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298505000,
+            "start_time": "2026-06-01T15:21:45+08:00",
+            "end_wall_time_ms": 1780298506000,
+            "end_time": "2026-06-01T15:21:46+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 109,
+            "wait_time_ms": 113,
+            "observed": true
+          },
+          {
+            "index": 11,
+            "package_name": "com.google.android.youtube",
+            "label": "YouTube",
+            "categories": [
+              "Media Codec",
+              "Camera Service",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298508000,
+            "start_time": "2026-06-01T15:21:48+08:00",
+            "end_wall_time_ms": 1780298509000,
+            "end_time": "2026-06-01T15:21:49+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 393,
+            "wait_time_ms": 396,
+            "observed": true
+          },
+          {
+            "index": 12,
+            "package_name": "com.google.android.GoogleCamera",
+            "label": "Camera",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298509000,
+            "start_time": "2026-06-01T15:21:49+08:00",
+            "end_wall_time_ms": 1780298510000,
+            "end_time": "2026-06-01T15:21:50+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 86,
+            "wait_time_ms": 92,
+            "observed": true
+          },
+          {
+            "index": 13,
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "categories": [
+              "Network IO",
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298510000,
+            "start_time": "2026-06-01T15:21:50+08:00",
+            "end_wall_time_ms": 1780298510000,
+            "end_time": "2026-06-01T15:21:50+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 154,
+            "wait_time_ms": 159,
+            "observed": true
+          },
+          {
+            "index": 14,
+            "package_name": "com.tencent.wemeet.app",
+            "label": "Tencent Meeting",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication"
+            ],
+            "start_wall_time_ms": 1780298511000,
+            "start_time": "2026-06-01T15:21:51+08:00",
+            "end_wall_time_ms": 1780298512000,
+            "end_time": "2026-06-01T15:21:52+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 135,
+            "wait_time_ms": 139,
+            "observed": true
+          },
+          {
+            "index": 15,
+            "package_name": "com.termux",
+            "label": "Termux",
+            "categories": [
+              "Media Codec",
+              "Display Composition",
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298512000,
+            "start_time": "2026-06-01T15:21:52+08:00",
+            "end_wall_time_ms": 1780298512000,
+            "end_time": "2026-06-01T15:21:52+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 68,
+            "wait_time_ms": 71,
+            "observed": true
+          },
+          {
+            "index": 16,
+            "package_name": "com.topjohnwu.magisk",
+            "label": "Magisk",
+            "categories": [
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298514000,
+            "start_time": "2026-06-01T15:21:54+08:00",
+            "end_wall_time_ms": 1780298515000,
+            "end_time": "2026-06-01T15:21:55+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 60,
+            "wait_time_ms": 64,
+            "observed": true
+          },
+          {
+            "index": 17,
+            "package_name": "com.google.android.apps.photos",
+            "label": "Photos",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Display Composition",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298515000,
+            "start_time": "2026-06-01T15:21:55+08:00",
+            "end_wall_time_ms": 1780298515000,
+            "end_time": "2026-06-01T15:21:55+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 68,
+            "wait_time_ms": 75,
+            "observed": true
+          },
+          {
+            "index": 18,
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "categories": [
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298516000,
+            "start_time": "2026-06-01T15:21:56+08:00",
+            "end_wall_time_ms": 1780298516000,
+            "end_time": "2026-06-01T15:21:56+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 52,
+            "wait_time_ms": 55,
+            "observed": true
+          },
+          {
+            "index": 19,
+            "package_name": "com.google.android.googlequicksearchbox",
+            "label": "Google",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298517000,
+            "start_time": "2026-06-01T15:21:57+08:00",
+            "end_wall_time_ms": 1780298517000,
+            "end_time": "2026-06-01T15:21:57+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 207,
+            "wait_time_ms": 218,
+            "observed": true
+          },
+          {
+            "index": 20,
+            "package_name": "com.google.android.apps.maps",
+            "label": "Maps",
+            "categories": [
+              "Navigation\/Location",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298517000,
+            "start_time": "2026-06-01T15:21:57+08:00",
+            "end_wall_time_ms": 1780298518000,
+            "end_time": "2026-06-01T15:21:58+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 147,
+            "wait_time_ms": 150,
+            "observed": true
+          },
+          {
+            "index": 21,
+            "package_name": "com.google.android.apps.safetyhub",
+            "label": "Personal Safety",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298520000,
+            "start_time": "2026-06-01T15:22:00+08:00",
+            "end_wall_time_ms": 1780298520000,
+            "end_time": "2026-06-01T15:22:00+08:00",
+            "launch_state": "UNKNOWN (0)",
+            "total_time_ms": null,
+            "wait_time_ms": 60,
+            "observed": true
+          },
+          {
+            "index": 22,
+            "package_name": "com.google.android.dialer",
+            "label": "Phone",
+            "categories": [
+              "Communication",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298521000,
+            "start_time": "2026-06-01T15:22:01+08:00",
+            "end_wall_time_ms": 1780298522000,
+            "end_time": "2026-06-01T15:22:02+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 107,
+            "wait_time_ms": 109,
+            "observed": true
+          },
+          {
+            "index": 23,
+            "package_name": "com.google.android.youtube",
+            "label": "YouTube",
+            "categories": [
+              "Media Codec",
+              "Camera Service",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298522000,
+            "start_time": "2026-06-01T15:22:02+08:00",
+            "end_wall_time_ms": 1780298522000,
+            "end_time": "2026-06-01T15:22:02+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 347,
+            "wait_time_ms": 350,
+            "observed": true
+          },
+          {
+            "index": 24,
+            "package_name": "com.google.android.GoogleCamera",
+            "label": "Camera",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298523000,
+            "start_time": "2026-06-01T15:22:03+08:00",
+            "end_wall_time_ms": 1780298523000,
+            "end_time": "2026-06-01T15:22:03+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 63,
+            "wait_time_ms": 73,
+            "observed": true
+          },
+          {
+            "index": 25,
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "categories": [
+              "Network IO",
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298524000,
+            "start_time": "2026-06-01T15:22:04+08:00",
+            "end_wall_time_ms": 1780298524000,
+            "end_time": "2026-06-01T15:22:04+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 192,
+            "wait_time_ms": 195,
+            "observed": true
+          },
+          {
+            "index": 26,
+            "package_name": "com.tencent.wemeet.app",
+            "label": "Tencent Meeting",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication"
+            ],
+            "start_wall_time_ms": 1780298526000,
+            "start_time": "2026-06-01T15:22:06+08:00",
+            "end_wall_time_ms": 1780298527000,
+            "end_time": "2026-06-01T15:22:07+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 161,
+            "wait_time_ms": 164,
+            "observed": true
+          },
+          {
+            "index": 27,
+            "package_name": "com.termux",
+            "label": "Termux",
+            "categories": [
+              "Media Codec",
+              "Display Composition",
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298527000,
+            "start_time": "2026-06-01T15:22:07+08:00",
+            "end_wall_time_ms": 1780298528000,
+            "end_time": "2026-06-01T15:22:08+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 235,
+            "wait_time_ms": 240,
+            "observed": true
+          },
+          {
+            "index": 28,
+            "package_name": "com.topjohnwu.magisk",
+            "label": "Magisk",
+            "categories": [
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298528000,
+            "start_time": "2026-06-01T15:22:08+08:00",
+            "end_wall_time_ms": 1780298529000,
+            "end_time": "2026-06-01T15:22:09+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 74,
+            "wait_time_ms": 78,
+            "observed": true
+          },
+          {
+            "index": 29,
+            "package_name": "com.google.android.apps.photos",
+            "label": "Photos",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Display Composition",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298529000,
+            "start_time": "2026-06-01T15:22:09+08:00",
+            "end_wall_time_ms": 1780298530000,
+            "end_time": "2026-06-01T15:22:10+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 61,
+            "wait_time_ms": 77,
+            "observed": true
+          },
+          {
+            "index": 30,
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "categories": [
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298530000,
+            "start_time": "2026-06-01T15:22:10+08:00",
+            "end_wall_time_ms": 1780298531000,
+            "end_time": "2026-06-01T15:22:11+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 106,
+            "wait_time_ms": 111,
+            "observed": true
+          },
+          {
+            "index": 31,
+            "package_name": "com.google.android.googlequicksearchbox",
+            "label": "Google",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298533000,
+            "start_time": "2026-06-01T15:22:13+08:00",
+            "end_wall_time_ms": 1780298533000,
+            "end_time": "2026-06-01T15:22:13+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 201,
+            "wait_time_ms": 210,
+            "observed": true
+          },
+          {
+            "index": 32,
+            "package_name": "com.google.android.apps.maps",
+            "label": "Maps",
+            "categories": [
+              "Navigation\/Location",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298533000,
+            "start_time": "2026-06-01T15:22:13+08:00",
+            "end_wall_time_ms": 1780298534000,
+            "end_time": "2026-06-01T15:22:14+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 148,
+            "wait_time_ms": 151,
+            "observed": true
+          },
+          {
+            "index": 33,
+            "package_name": "com.google.android.apps.safetyhub",
+            "label": "Personal Safety",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298534000,
+            "start_time": "2026-06-01T15:22:14+08:00",
+            "end_wall_time_ms": 1780298535000,
+            "end_time": "2026-06-01T15:22:15+08:00",
+            "launch_state": "UNKNOWN (0)",
+            "total_time_ms": null,
+            "wait_time_ms": 57,
+            "observed": true
+          },
+          {
+            "index": 34,
+            "package_name": "com.google.android.dialer",
+            "label": "Phone",
+            "categories": [
+              "Communication",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298535000,
+            "start_time": "2026-06-01T15:22:15+08:00",
+            "end_wall_time_ms": 1780298536000,
+            "end_time": "2026-06-01T15:22:16+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 124,
+            "wait_time_ms": 128,
+            "observed": true
+          },
+          {
+            "index": 35,
+            "package_name": "com.google.android.youtube",
+            "label": "YouTube",
+            "categories": [
+              "Media Codec",
+              "Camera Service",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298536000,
+            "start_time": "2026-06-01T15:22:16+08:00",
+            "end_wall_time_ms": 1780298537000,
+            "end_time": "2026-06-01T15:22:17+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 362,
+            "wait_time_ms": 370,
+            "observed": true
+          },
+          {
+            "index": 36,
+            "package_name": "com.google.android.GoogleCamera",
+            "label": "Camera",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298539000,
+            "start_time": "2026-06-01T15:22:19+08:00",
+            "end_wall_time_ms": 1780298539000,
+            "end_time": "2026-06-01T15:22:19+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 86,
+            "wait_time_ms": 97,
+            "observed": true
+          },
+          {
+            "index": 37,
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "categories": [
+              "Network IO",
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298540000,
+            "start_time": "2026-06-01T15:22:20+08:00",
+            "end_wall_time_ms": 1780298540000,
+            "end_time": "2026-06-01T15:22:20+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 142,
+            "wait_time_ms": 144,
+            "observed": true
+          },
+          {
+            "index": 38,
+            "package_name": "com.tencent.wemeet.app",
+            "label": "Tencent Meeting",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication"
+            ],
+            "start_wall_time_ms": 1780298540000,
+            "start_time": "2026-06-01T15:22:20+08:00",
+            "end_wall_time_ms": 1780298541000,
+            "end_time": "2026-06-01T15:22:21+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 151,
+            "wait_time_ms": 157,
+            "observed": true
+          },
+          {
+            "index": 39,
+            "package_name": "com.termux",
+            "label": "Termux",
+            "categories": [
+              "Media Codec",
+              "Display Composition",
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298542000,
+            "start_time": "2026-06-01T15:22:22+08:00",
+            "end_wall_time_ms": 1780298542000,
+            "end_time": "2026-06-01T15:22:22+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 65,
+            "wait_time_ms": 68,
+            "observed": true
+          },
+          {
+            "index": 40,
+            "package_name": "com.topjohnwu.magisk",
+            "label": "Magisk",
+            "categories": [
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298542000,
+            "start_time": "2026-06-01T15:22:22+08:00",
+            "end_wall_time_ms": 1780298543000,
+            "end_time": "2026-06-01T15:22:23+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 81,
+            "wait_time_ms": 85,
+            "observed": true
+          },
+          {
+            "index": 41,
+            "package_name": "com.google.android.apps.photos",
+            "label": "Photos",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Display Composition",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298545000,
+            "start_time": "2026-06-01T15:22:25+08:00",
+            "end_wall_time_ms": 1780298545000,
+            "end_time": "2026-06-01T15:22:25+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 71,
+            "wait_time_ms": 79,
+            "observed": true
+          },
+          {
+            "index": 42,
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "categories": [
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298545000,
+            "start_time": "2026-06-01T15:22:25+08:00",
+            "end_wall_time_ms": 1780298546000,
+            "end_time": "2026-06-01T15:22:26+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 99,
+            "wait_time_ms": 104,
+            "observed": true
+          },
+          {
+            "index": 43,
+            "package_name": "com.google.android.googlequicksearchbox",
+            "label": "Google",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298546000,
+            "start_time": "2026-06-01T15:22:26+08:00",
+            "end_wall_time_ms": 1780298547000,
+            "end_time": "2026-06-01T15:22:27+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 204,
+            "wait_time_ms": 210,
+            "observed": true
+          },
+          {
+            "index": 44,
+            "package_name": "com.google.android.apps.maps",
+            "label": "Maps",
+            "categories": [
+              "Navigation\/Location",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298547000,
+            "start_time": "2026-06-01T15:22:27+08:00",
+            "end_wall_time_ms": 1780298548000,
+            "end_time": "2026-06-01T15:22:28+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 134,
+            "wait_time_ms": 137,
+            "observed": true
+          },
+          {
+            "index": 45,
+            "package_name": "com.google.android.apps.safetyhub",
+            "label": "Personal Safety",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298548000,
+            "start_time": "2026-06-01T15:22:28+08:00",
+            "end_wall_time_ms": 1780298548000,
+            "end_time": "2026-06-01T15:22:28+08:00",
+            "launch_state": "UNKNOWN (0)",
+            "total_time_ms": null,
+            "wait_time_ms": 48,
+            "observed": true
+          },
+          {
+            "index": 46,
+            "package_name": "com.google.android.dialer",
+            "label": "Phone",
+            "categories": [
+              "Communication",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298550000,
+            "start_time": "2026-06-01T15:22:30+08:00",
+            "end_wall_time_ms": 1780298551000,
+            "end_time": "2026-06-01T15:22:31+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 129,
+            "wait_time_ms": 135,
+            "observed": true
+          },
+          {
+            "index": 47,
+            "package_name": "com.google.android.youtube",
+            "label": "YouTube",
+            "categories": [
+              "Media Codec",
+              "Camera Service",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298552000,
+            "start_time": "2026-06-01T15:22:32+08:00",
+            "end_wall_time_ms": 1780298552000,
+            "end_time": "2026-06-01T15:22:32+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 370,
+            "wait_time_ms": 372,
+            "observed": true
+          },
+          {
+            "index": 48,
+            "package_name": "com.google.android.GoogleCamera",
+            "label": "Camera",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298552000,
+            "start_time": "2026-06-01T15:22:32+08:00",
+            "end_wall_time_ms": 1780298553000,
+            "end_time": "2026-06-01T15:22:33+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 113,
+            "wait_time_ms": 117,
+            "observed": true
+          },
+          {
+            "index": 49,
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "categories": [
+              "Network IO",
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298554000,
+            "start_time": "2026-06-01T15:22:34+08:00",
+            "end_wall_time_ms": 1780298554000,
+            "end_time": "2026-06-01T15:22:34+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 149,
+            "wait_time_ms": 153,
+            "observed": true
+          },
+          {
+            "index": 50,
+            "package_name": "com.tencent.wemeet.app",
+            "label": "Tencent Meeting",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication"
+            ],
+            "start_wall_time_ms": 1780298554000,
+            "start_time": "2026-06-01T15:22:34+08:00",
+            "end_wall_time_ms": 1780298555000,
+            "end_time": "2026-06-01T15:22:35+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 205,
+            "wait_time_ms": 221,
+            "observed": true
+          },
+          {
+            "index": 51,
+            "package_name": "com.termux",
+            "label": "Termux",
+            "categories": [
+              "Media Codec",
+              "Display Composition",
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298557000,
+            "start_time": "2026-06-01T15:22:37+08:00",
+            "end_wall_time_ms": 1780298557000,
+            "end_time": "2026-06-01T15:22:37+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 65,
+            "wait_time_ms": 72,
+            "observed": true
+          },
+          {
+            "index": 52,
+            "package_name": "com.topjohnwu.magisk",
+            "label": "Magisk",
+            "categories": [
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298558000,
+            "start_time": "2026-06-01T15:22:38+08:00",
+            "end_wall_time_ms": 1780298558000,
+            "end_time": "2026-06-01T15:22:38+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 64,
+            "wait_time_ms": 69,
+            "observed": true
+          },
+          {
+            "index": 53,
+            "package_name": "com.google.android.apps.photos",
+            "label": "Photos",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Display Composition",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298559000,
+            "start_time": "2026-06-01T15:22:39+08:00",
+            "end_wall_time_ms": 1780298559000,
+            "end_time": "2026-06-01T15:22:39+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 59,
+            "wait_time_ms": 60,
+            "observed": true
+          },
+          {
+            "index": 54,
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "categories": [
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298559000,
+            "start_time": "2026-06-01T15:22:39+08:00",
+            "end_wall_time_ms": 1780298560000,
+            "end_time": "2026-06-01T15:22:40+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 112,
+            "wait_time_ms": 115,
+            "observed": true
+          },
+          {
+            "index": 55,
+            "package_name": "com.google.android.googlequicksearchbox",
+            "label": "Google",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298560000,
+            "start_time": "2026-06-01T15:22:40+08:00",
+            "end_wall_time_ms": 1780298561000,
+            "end_time": "2026-06-01T15:22:41+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 163,
+            "wait_time_ms": 168,
+            "observed": true
+          },
+          {
+            "index": 56,
+            "package_name": "com.google.android.apps.maps",
+            "label": "Maps",
+            "categories": [
+              "Navigation\/Location",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298562000,
+            "start_time": "2026-06-01T15:22:42+08:00",
+            "end_wall_time_ms": 1780298563000,
+            "end_time": "2026-06-01T15:22:43+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 174,
+            "wait_time_ms": 177,
+            "observed": true
+          },
+          {
+            "index": 57,
+            "package_name": "com.google.android.apps.safetyhub",
+            "label": "Personal Safety",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298564000,
+            "start_time": "2026-06-01T15:22:44+08:00",
+            "end_wall_time_ms": 1780298564000,
+            "end_time": "2026-06-01T15:22:44+08:00",
+            "launch_state": "UNKNOWN (0)",
+            "total_time_ms": null,
+            "wait_time_ms": 66,
+            "observed": true
+          },
+          {
+            "index": 58,
+            "package_name": "com.google.android.dialer",
+            "label": "Phone",
+            "categories": [
+              "Communication",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298564000,
+            "start_time": "2026-06-01T15:22:44+08:00",
+            "end_wall_time_ms": 1780298565000,
+            "end_time": "2026-06-01T15:22:45+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 109,
+            "wait_time_ms": 112,
+            "observed": true
+          },
+          {
+            "index": 59,
+            "package_name": "com.google.android.youtube",
+            "label": "YouTube",
+            "categories": [
+              "Media Codec",
+              "Camera Service",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298565000,
+            "start_time": "2026-06-01T15:22:45+08:00",
+            "end_wall_time_ms": 1780298566000,
+            "end_time": "2026-06-01T15:22:46+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 399,
+            "wait_time_ms": 401,
+            "observed": true
+          },
+          {
+            "index": 60,
+            "package_name": "com.google.android.GoogleCamera",
+            "label": "Camera",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298566000,
+            "start_time": "2026-06-01T15:22:46+08:00",
+            "end_wall_time_ms": 1780298567000,
+            "end_time": "2026-06-01T15:22:47+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 71,
+            "wait_time_ms": 84,
+            "observed": true
+          },
+          {
+            "index": 61,
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "categories": [
+              "Network IO",
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298569000,
+            "start_time": "2026-06-01T15:22:49+08:00",
+            "end_wall_time_ms": 1780298569000,
+            "end_time": "2026-06-01T15:22:49+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 134,
+            "wait_time_ms": 143,
+            "observed": true
+          },
+          {
+            "index": 62,
+            "package_name": "com.tencent.wemeet.app",
+            "label": "Tencent Meeting",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication"
+            ],
+            "start_wall_time_ms": 1780298570000,
+            "start_time": "2026-06-01T15:22:50+08:00",
+            "end_wall_time_ms": 1780298571000,
+            "end_time": "2026-06-01T15:22:51+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 147,
+            "wait_time_ms": 150,
+            "observed": true
+          },
+          {
+            "index": 63,
+            "package_name": "com.termux",
+            "label": "Termux",
+            "categories": [
+              "Media Codec",
+              "Display Composition",
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298571000,
+            "start_time": "2026-06-01T15:22:51+08:00",
+            "end_wall_time_ms": 1780298571000,
+            "end_time": "2026-06-01T15:22:51+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 67,
+            "wait_time_ms": 70,
+            "observed": true
+          },
+          {
+            "index": 64,
+            "package_name": "com.topjohnwu.magisk",
+            "label": "Magisk",
+            "categories": [
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298571000,
+            "start_time": "2026-06-01T15:22:51+08:00",
+            "end_wall_time_ms": 1780298572000,
+            "end_time": "2026-06-01T15:22:52+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 84,
+            "wait_time_ms": 88,
+            "observed": true
+          },
+          {
+            "index": 65,
+            "package_name": "com.google.android.apps.photos",
+            "label": "Photos",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Display Composition",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298572000,
+            "start_time": "2026-06-01T15:22:52+08:00",
+            "end_wall_time_ms": 1780298573000,
+            "end_time": "2026-06-01T15:22:53+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 66,
+            "wait_time_ms": 91,
+            "observed": true
+          },
+          {
+            "index": 66,
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "categories": [
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298575000,
+            "start_time": "2026-06-01T15:22:55+08:00",
+            "end_wall_time_ms": 1780298575000,
+            "end_time": "2026-06-01T15:22:55+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 92,
+            "wait_time_ms": 96,
+            "observed": true
+          },
+          {
+            "index": 67,
+            "package_name": "com.google.android.googlequicksearchbox",
+            "label": "Google",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298576000,
+            "start_time": "2026-06-01T15:22:56+08:00",
+            "end_wall_time_ms": 1780298576000,
+            "end_time": "2026-06-01T15:22:56+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 214,
+            "wait_time_ms": 224,
+            "observed": true
+          },
+          {
+            "index": 68,
+            "package_name": "com.google.android.apps.maps",
+            "label": "Maps",
+            "categories": [
+              "Navigation\/Location",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298576000,
+            "start_time": "2026-06-01T15:22:56+08:00",
+            "end_wall_time_ms": 1780298577000,
+            "end_time": "2026-06-01T15:22:57+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 159,
+            "wait_time_ms": 163,
+            "observed": true
+          },
+          {
+            "index": 69,
+            "package_name": "com.google.android.apps.safetyhub",
+            "label": "Personal Safety",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298578000,
+            "start_time": "2026-06-01T15:22:58+08:00",
+            "end_wall_time_ms": 1780298578000,
+            "end_time": "2026-06-01T15:22:58+08:00",
+            "launch_state": "UNKNOWN (0)",
+            "total_time_ms": null,
+            "wait_time_ms": 137,
+            "observed": true
+          },
+          {
+            "index": 70,
+            "package_name": "com.google.android.dialer",
+            "label": "Phone",
+            "categories": [
+              "Communication",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298578000,
+            "start_time": "2026-06-01T15:22:58+08:00",
+            "end_wall_time_ms": 1780298579000,
+            "end_time": "2026-06-01T15:22:59+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 122,
+            "wait_time_ms": 126,
+            "observed": true
+          },
+          {
+            "index": 71,
+            "package_name": "com.google.android.youtube",
+            "label": "YouTube",
+            "categories": [
+              "Media Codec",
+              "Camera Service",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298581000,
+            "start_time": "2026-06-01T15:23:01+08:00",
+            "end_wall_time_ms": 1780298582000,
+            "end_time": "2026-06-01T15:23:02+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 416,
+            "wait_time_ms": 419,
+            "observed": true
+          },
+          {
+            "index": 72,
+            "package_name": "com.google.android.GoogleCamera",
+            "label": "Camera",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298582000,
+            "start_time": "2026-06-01T15:23:02+08:00",
+            "end_wall_time_ms": 1780298583000,
+            "end_time": "2026-06-01T15:23:03+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 109,
+            "wait_time_ms": 115,
+            "observed": true
+          },
+          {
+            "index": 73,
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "categories": [
+              "Network IO",
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298583000,
+            "start_time": "2026-06-01T15:23:03+08:00",
+            "end_wall_time_ms": 1780298583000,
+            "end_time": "2026-06-01T15:23:03+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 142,
+            "wait_time_ms": 147,
+            "observed": true
+          },
+          {
+            "index": 74,
+            "package_name": "com.tencent.wemeet.app",
+            "label": "Tencent Meeting",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication"
+            ],
+            "start_wall_time_ms": 1780298584000,
+            "start_time": "2026-06-01T15:23:04+08:00",
+            "end_wall_time_ms": 1780298585000,
+            "end_time": "2026-06-01T15:23:05+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 212,
+            "wait_time_ms": 225,
+            "observed": true
+          },
+          {
+            "index": 75,
+            "package_name": "com.termux",
+            "label": "Termux",
+            "categories": [
+              "Media Codec",
+              "Display Composition",
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298585000,
+            "start_time": "2026-06-01T15:23:05+08:00",
+            "end_wall_time_ms": 1780298585000,
+            "end_time": "2026-06-01T15:23:05+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 67,
+            "wait_time_ms": 70,
+            "observed": true
+          },
+          {
+            "index": 76,
+            "package_name": "com.topjohnwu.magisk",
+            "label": "Magisk",
+            "categories": [
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298587000,
+            "start_time": "2026-06-01T15:23:07+08:00",
+            "end_wall_time_ms": 1780298588000,
+            "end_time": "2026-06-01T15:23:08+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 84,
+            "wait_time_ms": 86,
+            "observed": true
+          },
+          {
+            "index": 77,
+            "package_name": "com.google.android.apps.photos",
+            "label": "Photos",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Display Composition",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298588000,
+            "start_time": "2026-06-01T15:23:08+08:00",
+            "end_wall_time_ms": 1780298589000,
+            "end_time": "2026-06-01T15:23:09+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 76,
+            "wait_time_ms": 79,
+            "observed": true
+          },
+          {
+            "index": 78,
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "categories": [
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298589000,
+            "start_time": "2026-06-01T15:23:09+08:00",
+            "end_wall_time_ms": 1780298590000,
+            "end_time": "2026-06-01T15:23:10+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 90,
+            "wait_time_ms": 97,
+            "observed": true
+          },
+          {
+            "index": 79,
+            "package_name": "com.google.android.googlequicksearchbox",
+            "label": "Google",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298590000,
+            "start_time": "2026-06-01T15:23:10+08:00",
+            "end_wall_time_ms": 1780298590000,
+            "end_time": "2026-06-01T15:23:10+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 211,
+            "wait_time_ms": 230,
+            "observed": true
+          },
+          {
+            "index": 80,
+            "package_name": "com.google.android.apps.maps",
+            "label": "Maps",
+            "categories": [
+              "Navigation\/Location",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298591000,
+            "start_time": "2026-06-01T15:23:11+08:00",
+            "end_wall_time_ms": 1780298591000,
+            "end_time": "2026-06-01T15:23:11+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 134,
+            "wait_time_ms": 137,
+            "observed": true
+          },
+          {
+            "index": 81,
+            "package_name": "com.google.android.apps.safetyhub",
+            "label": "Personal Safety",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298593000,
+            "start_time": "2026-06-01T15:23:13+08:00",
+            "end_wall_time_ms": 1780298594000,
+            "end_time": "2026-06-01T15:23:14+08:00",
+            "launch_state": "UNKNOWN (0)",
+            "total_time_ms": null,
+            "wait_time_ms": 72,
+            "observed": true
+          },
+          {
+            "index": 82,
+            "package_name": "com.google.android.dialer",
+            "label": "Phone",
+            "categories": [
+              "Communication",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298594000,
+            "start_time": "2026-06-01T15:23:14+08:00",
+            "end_wall_time_ms": 1780298595000,
+            "end_time": "2026-06-01T15:23:15+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 123,
+            "wait_time_ms": 128,
+            "observed": true
+          },
+          {
+            "index": 83,
+            "package_name": "com.google.android.youtube",
+            "label": "YouTube",
+            "categories": [
+              "Media Codec",
+              "Camera Service",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298595000,
+            "start_time": "2026-06-01T15:23:15+08:00",
+            "end_wall_time_ms": 1780298596000,
+            "end_time": "2026-06-01T15:23:16+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 415,
+            "wait_time_ms": 419,
+            "observed": true
+          },
+          {
+            "index": 84,
+            "package_name": "com.google.android.GoogleCamera",
+            "label": "Camera",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298596000,
+            "start_time": "2026-06-01T15:23:16+08:00",
+            "end_wall_time_ms": 1780298597000,
+            "end_time": "2026-06-01T15:23:17+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 95,
+            "wait_time_ms": 118,
+            "observed": true
+          },
+          {
+            "index": 85,
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "categories": [
+              "Network IO",
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298597000,
+            "start_time": "2026-06-01T15:23:17+08:00",
+            "end_wall_time_ms": 1780298597000,
+            "end_time": "2026-06-01T15:23:17+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 180,
+            "wait_time_ms": 186,
+            "observed": true
+          },
+          {
+            "index": 86,
+            "package_name": "com.tencent.wemeet.app",
+            "label": "Tencent Meeting",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication"
+            ],
+            "start_wall_time_ms": 1780298599000,
+            "start_time": "2026-06-01T15:23:19+08:00",
+            "end_wall_time_ms": 1780298600000,
+            "end_time": "2026-06-01T15:23:20+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 182,
+            "wait_time_ms": 186,
+            "observed": true
+          },
+          {
+            "index": 87,
+            "package_name": "com.termux",
+            "label": "Termux",
+            "categories": [
+              "Media Codec",
+              "Display Composition",
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298601000,
+            "start_time": "2026-06-01T15:23:21+08:00",
+            "end_wall_time_ms": 1780298601000,
+            "end_time": "2026-06-01T15:23:21+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 68,
+            "wait_time_ms": 73,
+            "observed": true
+          },
+          {
+            "index": 88,
+            "package_name": "com.topjohnwu.magisk",
+            "label": "Magisk",
+            "categories": [
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298601000,
+            "start_time": "2026-06-01T15:23:21+08:00",
+            "end_wall_time_ms": 1780298602000,
+            "end_time": "2026-06-01T15:23:22+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 82,
+            "wait_time_ms": 84,
+            "observed": true
+          },
+          {
+            "index": 89,
+            "package_name": "com.google.android.apps.photos",
+            "label": "Photos",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Display Composition",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298602000,
+            "start_time": "2026-06-01T15:23:22+08:00",
+            "end_wall_time_ms": 1780298602000,
+            "end_time": "2026-06-01T15:23:22+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 82,
+            "wait_time_ms": 86,
+            "observed": true
+          },
+          {
+            "index": 90,
+            "package_name": "com.android.settings",
+            "label": "Settings",
+            "categories": [
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298603000,
+            "start_time": "2026-06-01T15:23:23+08:00",
+            "end_wall_time_ms": 1780298603000,
+            "end_time": "2026-06-01T15:23:23+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 103,
+            "wait_time_ms": 107,
+            "observed": true
+          },
+          {
+            "index": 91,
+            "package_name": "com.google.android.googlequicksearchbox",
+            "label": "Google",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298605000,
+            "start_time": "2026-06-01T15:23:25+08:00",
+            "end_wall_time_ms": 1780298606000,
+            "end_time": "2026-06-01T15:23:26+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 218,
+            "wait_time_ms": 224,
+            "observed": true
+          },
+          {
+            "index": 92,
+            "package_name": "com.google.android.apps.maps",
+            "label": "Maps",
+            "categories": [
+              "Navigation\/Location",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298606000,
+            "start_time": "2026-06-01T15:23:26+08:00",
+            "end_wall_time_ms": 1780298607000,
+            "end_time": "2026-06-01T15:23:27+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 138,
+            "wait_time_ms": 141,
+            "observed": true
+          },
+          {
+            "index": 93,
+            "package_name": "com.google.android.apps.safetyhub",
+            "label": "Personal Safety",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298607000,
+            "start_time": "2026-06-01T15:23:27+08:00",
+            "end_wall_time_ms": 1780298608000,
+            "end_time": "2026-06-01T15:23:28+08:00",
+            "launch_state": "UNKNOWN (0)",
+            "total_time_ms": null,
+            "wait_time_ms": 59,
+            "observed": true
+          },
+          {
+            "index": 94,
+            "package_name": "com.google.android.dialer",
+            "label": "Phone",
+            "categories": [
+              "Communication",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298608000,
+            "start_time": "2026-06-01T15:23:28+08:00",
+            "end_wall_time_ms": 1780298609000,
+            "end_time": "2026-06-01T15:23:29+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 112,
+            "wait_time_ms": 115,
+            "observed": true
+          },
+          {
+            "index": 95,
+            "package_name": "com.google.android.youtube",
+            "label": "YouTube",
+            "categories": [
+              "Media Codec",
+              "Camera Service",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298609000,
+            "start_time": "2026-06-01T15:23:29+08:00",
+            "end_wall_time_ms": 1780298610000,
+            "end_time": "2026-06-01T15:23:30+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 380,
+            "wait_time_ms": 388,
+            "observed": true
+          },
+          {
+            "index": 96,
+            "package_name": "com.google.android.GoogleCamera",
+            "label": "Camera",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298612000,
+            "start_time": "2026-06-01T15:23:32+08:00",
+            "end_wall_time_ms": 1780298612000,
+            "end_time": "2026-06-01T15:23:32+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 99,
+            "wait_time_ms": 135,
+            "observed": true
+          },
+          {
+            "index": 97,
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "categories": [
+              "Network IO",
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Navigation\/Location",
+              "Communication",
+              "Payment\/Security"
+            ],
+            "start_wall_time_ms": 1780298613000,
+            "start_time": "2026-06-01T15:23:33+08:00",
+            "end_wall_time_ms": 1780298613000,
+            "end_time": "2026-06-01T15:23:33+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 166,
+            "wait_time_ms": 168,
+            "observed": true
+          },
+          {
+            "index": 98,
+            "package_name": "com.tencent.wemeet.app",
+            "label": "Tencent Meeting",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation\/Location",
+              "Communication"
+            ],
+            "start_wall_time_ms": 1780298613000,
+            "start_time": "2026-06-01T15:23:33+08:00",
+            "end_wall_time_ms": 1780298614000,
+            "end_time": "2026-06-01T15:23:34+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 144,
+            "wait_time_ms": 150,
+            "observed": true
+          },
+          {
+            "index": 99,
+            "package_name": "com.termux",
+            "label": "Termux",
+            "categories": [
+              "Media Codec",
+              "Display Composition",
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298615000,
+            "start_time": "2026-06-01T15:23:35+08:00",
+            "end_wall_time_ms": 1780298615000,
+            "end_time": "2026-06-01T15:23:35+08:00",
+            "launch_state": "WARM",
+            "total_time_ms": 248,
+            "wait_time_ms": 251,
+            "observed": true
+          },
+          {
+            "index": 100,
+            "package_name": "com.topjohnwu.magisk",
+            "label": "Magisk",
+            "categories": [
+              "Network IO"
+            ],
+            "start_wall_time_ms": 1780298615000,
+            "start_time": "2026-06-01T15:23:35+08:00",
+            "end_wall_time_ms": 1780298616000,
+            "end_time": "2026-06-01T15:23:36+08:00",
+            "launch_state": "HOT",
+            "total_time_ms": 80,
+            "wait_time_ms": 83,
+            "observed": true
+          }
+        ],
+        "timeline_windows": [
+          {
+            "index": 1,
+            "start_wall_time_ms": 1780298495000,
+            "start_time": "2026-06-01T15:21:35+08:00",
+            "end_wall_time_ms": 1780298499000,
+            "end_time": "2026-06-01T15:21:39+08:00",
+            "apps": [
+              {
+                "index": 1,
+                "package_name": "com.android.chrome",
+                "label": "Chrome",
+                "categories": [
+                  "Network IO",
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298495000,
+                "start_time": "2026-06-01T15:21:35+08:00",
+                "end_wall_time_ms": 1780298496000,
+                "end_time": "2026-06-01T15:21:36+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 229,
+                "wait_time_ms": 232,
+                "observed": true
+              },
+              {
+                "index": 2,
+                "package_name": "com.tencent.wemeet.app",
+                "label": "Tencent Meeting",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication"
+                ],
+                "start_wall_time_ms": 1780298496000,
+                "start_time": "2026-06-01T15:21:36+08:00",
+                "end_wall_time_ms": 1780298497000,
+                "end_time": "2026-06-01T15:21:37+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 240,
+                "wait_time_ms": 251,
+                "observed": true
+              },
+              {
+                "index": 3,
+                "package_name": "com.termux",
+                "label": "Termux",
+                "categories": [
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298497000,
+                "start_time": "2026-06-01T15:21:37+08:00",
+                "end_wall_time_ms": 1780298497000,
+                "end_time": "2026-06-01T15:21:37+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 62,
+                "wait_time_ms": 68,
+                "observed": true
+              },
+              {
+                "index": 4,
+                "package_name": "com.topjohnwu.magisk",
+                "label": "Magisk",
+                "categories": [
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298498000,
+                "start_time": "2026-06-01T15:21:38+08:00",
+                "end_wall_time_ms": 1780298498000,
+                "end_time": "2026-06-01T15:21:38+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 81,
+                "wait_time_ms": 86,
+                "observed": true
+              },
+              {
+                "index": 5,
+                "package_name": "com.google.android.apps.photos",
+                "label": "Photos",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298499000,
+                "start_time": "2026-06-01T15:21:39+08:00",
+                "end_wall_time_ms": 1780298499000,
+                "end_time": "2026-06-01T15:21:39+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 110,
+                "wait_time_ms": 114,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 4,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 12541,
+              "MEMO_OPENAT": 11856,
+              "MEMO_MEMORY": 4,
+              "MEMO_SENDTO": 17114,
+              "MEMO_RECVFROM": 34269,
+              "MEMO_SCHED": 213621,
+              "MEMO_PROCESS_FORK": 338,
+              "MEMO_PROCESS_EXIT": 313,
+              "MEMO_PROCESS_EXEC": 108
+            }
+          },
+          {
+            "index": 2,
+            "start_wall_time_ms": 1780298501000,
+            "start_time": "2026-06-01T15:21:41+08:00",
+            "end_wall_time_ms": 1780298506000,
+            "end_time": "2026-06-01T15:21:46+08:00",
+            "apps": [
+              {
+                "index": 6,
+                "package_name": "com.android.settings",
+                "label": "Settings",
+                "categories": [
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298501000,
+                "start_time": "2026-06-01T15:21:41+08:00",
+                "end_wall_time_ms": 1780298502000,
+                "end_time": "2026-06-01T15:21:42+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 116,
+                "wait_time_ms": 120,
+                "observed": true
+              },
+              {
+                "index": 7,
+                "package_name": "com.google.android.googlequicksearchbox",
+                "label": "Google",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298503000,
+                "start_time": "2026-06-01T15:21:43+08:00",
+                "end_wall_time_ms": 1780298503000,
+                "end_time": "2026-06-01T15:21:43+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 199,
+                "wait_time_ms": 208,
+                "observed": true
+              },
+              {
+                "index": 8,
+                "package_name": "com.google.android.apps.maps",
+                "label": "Maps",
+                "categories": [
+                  "Navigation\/Location",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298503000,
+                "start_time": "2026-06-01T15:21:43+08:00",
+                "end_wall_time_ms": 1780298504000,
+                "end_time": "2026-06-01T15:21:44+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 169,
+                "wait_time_ms": 174,
+                "observed": true
+              },
+              {
+                "index": 9,
+                "package_name": "com.google.android.apps.safetyhub",
+                "label": "Personal Safety",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298504000,
+                "start_time": "2026-06-01T15:21:44+08:00",
+                "end_wall_time_ms": 1780298505000,
+                "end_time": "2026-06-01T15:21:45+08:00",
+                "launch_state": "UNKNOWN (0)",
+                "total_time_ms": null,
+                "wait_time_ms": 59,
+                "observed": true
+              },
+              {
+                "index": 10,
+                "package_name": "com.google.android.dialer",
+                "label": "Phone",
+                "categories": [
+                  "Communication",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298505000,
+                "start_time": "2026-06-01T15:21:45+08:00",
+                "end_wall_time_ms": 1780298506000,
+                "end_time": "2026-06-01T15:21:46+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 109,
+                "wait_time_ms": 113,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 4,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 12431,
+              "MEMO_OPENAT": 12609,
+              "MEMO_MEMORY": 4,
+              "MEMO_SENDTO": 23522,
+              "MEMO_RECVFROM": 49763,
+              "MEMO_SCHED": 262016,
+              "MEMO_PROCESS_FORK": 306,
+              "MEMO_PROCESS_EXIT": 267,
+              "MEMO_PROCESS_EXEC": 111
+            }
+          },
+          {
+            "index": 3,
+            "start_wall_time_ms": 1780298508000,
+            "start_time": "2026-06-01T15:21:48+08:00",
+            "end_wall_time_ms": 1780298512000,
+            "end_time": "2026-06-01T15:21:52+08:00",
+            "apps": [
+              {
+                "index": 11,
+                "package_name": "com.google.android.youtube",
+                "label": "YouTube",
+                "categories": [
+                  "Media Codec",
+                  "Camera Service",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298508000,
+                "start_time": "2026-06-01T15:21:48+08:00",
+                "end_wall_time_ms": 1780298509000,
+                "end_time": "2026-06-01T15:21:49+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 393,
+                "wait_time_ms": 396,
+                "observed": true
+              },
+              {
+                "index": 12,
+                "package_name": "com.google.android.GoogleCamera",
+                "label": "Camera",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298509000,
+                "start_time": "2026-06-01T15:21:49+08:00",
+                "end_wall_time_ms": 1780298510000,
+                "end_time": "2026-06-01T15:21:50+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 86,
+                "wait_time_ms": 92,
+                "observed": true
+              },
+              {
+                "index": 13,
+                "package_name": "com.android.chrome",
+                "label": "Chrome",
+                "categories": [
+                  "Network IO",
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298510000,
+                "start_time": "2026-06-01T15:21:50+08:00",
+                "end_wall_time_ms": 1780298510000,
+                "end_time": "2026-06-01T15:21:50+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 154,
+                "wait_time_ms": 159,
+                "observed": true
+              },
+              {
+                "index": 14,
+                "package_name": "com.tencent.wemeet.app",
+                "label": "Tencent Meeting",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication"
+                ],
+                "start_wall_time_ms": 1780298511000,
+                "start_time": "2026-06-01T15:21:51+08:00",
+                "end_wall_time_ms": 1780298512000,
+                "end_time": "2026-06-01T15:21:52+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 135,
+                "wait_time_ms": 139,
+                "observed": true
+              },
+              {
+                "index": 15,
+                "package_name": "com.termux",
+                "label": "Termux",
+                "categories": [
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298512000,
+                "start_time": "2026-06-01T15:21:52+08:00",
+                "end_wall_time_ms": 1780298512000,
+                "end_time": "2026-06-01T15:21:52+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 68,
+                "wait_time_ms": 71,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 6,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 16862,
+              "MEMO_OPENAT": 12004,
+              "MEMO_MEMORY": 6,
+              "MEMO_SENDTO": 16453,
+              "MEMO_RECVFROM": 34737,
+              "MEMO_SCHED": 262318,
+              "MEMO_PROCESS_FORK": 374,
+              "MEMO_PROCESS_EXIT": 326,
+              "MEMO_PROCESS_EXEC": 111
+            }
+          },
+          {
+            "index": 4,
+            "start_wall_time_ms": 1780298514000,
+            "start_time": "2026-06-01T15:21:54+08:00",
+            "end_wall_time_ms": 1780298518000,
+            "end_time": "2026-06-01T15:21:58+08:00",
+            "apps": [
+              {
+                "index": 16,
+                "package_name": "com.topjohnwu.magisk",
+                "label": "Magisk",
+                "categories": [
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298514000,
+                "start_time": "2026-06-01T15:21:54+08:00",
+                "end_wall_time_ms": 1780298515000,
+                "end_time": "2026-06-01T15:21:55+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 60,
+                "wait_time_ms": 64,
+                "observed": true
+              },
+              {
+                "index": 17,
+                "package_name": "com.google.android.apps.photos",
+                "label": "Photos",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298515000,
+                "start_time": "2026-06-01T15:21:55+08:00",
+                "end_wall_time_ms": 1780298515000,
+                "end_time": "2026-06-01T15:21:55+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 68,
+                "wait_time_ms": 75,
+                "observed": true
+              },
+              {
+                "index": 18,
+                "package_name": "com.android.settings",
+                "label": "Settings",
+                "categories": [
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298516000,
+                "start_time": "2026-06-01T15:21:56+08:00",
+                "end_wall_time_ms": 1780298516000,
+                "end_time": "2026-06-01T15:21:56+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 52,
+                "wait_time_ms": 55,
+                "observed": true
+              },
+              {
+                "index": 19,
+                "package_name": "com.google.android.googlequicksearchbox",
+                "label": "Google",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298517000,
+                "start_time": "2026-06-01T15:21:57+08:00",
+                "end_wall_time_ms": 1780298517000,
+                "end_time": "2026-06-01T15:21:57+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 207,
+                "wait_time_ms": 218,
+                "observed": true
+              },
+              {
+                "index": 20,
+                "package_name": "com.google.android.apps.maps",
+                "label": "Maps",
+                "categories": [
+                  "Navigation\/Location",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298517000,
+                "start_time": "2026-06-01T15:21:57+08:00",
+                "end_wall_time_ms": 1780298518000,
+                "end_time": "2026-06-01T15:21:58+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 147,
+                "wait_time_ms": 150,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 5,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 12847,
+              "MEMO_OPENAT": 12328,
+              "MEMO_MEMORY": 5,
+              "MEMO_SENDTO": 30185,
+              "MEMO_RECVFROM": 68152,
+              "MEMO_SCHED": 248375,
+              "MEMO_PROCESS_FORK": 248,
+              "MEMO_PROCESS_EXIT": 249,
+              "MEMO_PROCESS_EXEC": 110
+            }
+          },
+          {
+            "index": 5,
+            "start_wall_time_ms": 1780298520000,
+            "start_time": "2026-06-01T15:22:00+08:00",
+            "end_wall_time_ms": 1780298524000,
+            "end_time": "2026-06-01T15:22:04+08:00",
+            "apps": [
+              {
+                "index": 21,
+                "package_name": "com.google.android.apps.safetyhub",
+                "label": "Personal Safety",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298520000,
+                "start_time": "2026-06-01T15:22:00+08:00",
+                "end_wall_time_ms": 1780298520000,
+                "end_time": "2026-06-01T15:22:00+08:00",
+                "launch_state": "UNKNOWN (0)",
+                "total_time_ms": null,
+                "wait_time_ms": 60,
+                "observed": true
+              },
+              {
+                "index": 22,
+                "package_name": "com.google.android.dialer",
+                "label": "Phone",
+                "categories": [
+                  "Communication",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298521000,
+                "start_time": "2026-06-01T15:22:01+08:00",
+                "end_wall_time_ms": 1780298522000,
+                "end_time": "2026-06-01T15:22:02+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 107,
+                "wait_time_ms": 109,
+                "observed": true
+              },
+              {
+                "index": 23,
+                "package_name": "com.google.android.youtube",
+                "label": "YouTube",
+                "categories": [
+                  "Media Codec",
+                  "Camera Service",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298522000,
+                "start_time": "2026-06-01T15:22:02+08:00",
+                "end_wall_time_ms": 1780298522000,
+                "end_time": "2026-06-01T15:22:02+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 347,
+                "wait_time_ms": 350,
+                "observed": true
+              },
+              {
+                "index": 24,
+                "package_name": "com.google.android.GoogleCamera",
+                "label": "Camera",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298523000,
+                "start_time": "2026-06-01T15:22:03+08:00",
+                "end_wall_time_ms": 1780298523000,
+                "end_time": "2026-06-01T15:22:03+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 63,
+                "wait_time_ms": 73,
+                "observed": true
+              },
+              {
+                "index": 25,
+                "package_name": "com.android.chrome",
+                "label": "Chrome",
+                "categories": [
+                  "Network IO",
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298524000,
+                "start_time": "2026-06-01T15:22:04+08:00",
+                "end_wall_time_ms": 1780298524000,
+                "end_time": "2026-06-01T15:22:04+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 192,
+                "wait_time_ms": 195,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 7,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 15819,
+              "MEMO_OPENAT": 11700,
+              "MEMO_MEMORY": 7,
+              "MEMO_SENDTO": 18910,
+              "MEMO_RECVFROM": 40217,
+              "MEMO_SCHED": 254936,
+              "MEMO_PROCESS_FORK": 343,
+              "MEMO_PROCESS_EXIT": 318,
+              "MEMO_PROCESS_EXEC": 108
+            }
+          },
+          {
+            "index": 6,
+            "start_wall_time_ms": 1780298526000,
+            "start_time": "2026-06-01T15:22:06+08:00",
+            "end_wall_time_ms": 1780298531000,
+            "end_time": "2026-06-01T15:22:11+08:00",
+            "apps": [
+              {
+                "index": 26,
+                "package_name": "com.tencent.wemeet.app",
+                "label": "Tencent Meeting",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication"
+                ],
+                "start_wall_time_ms": 1780298526000,
+                "start_time": "2026-06-01T15:22:06+08:00",
+                "end_wall_time_ms": 1780298527000,
+                "end_time": "2026-06-01T15:22:07+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 161,
+                "wait_time_ms": 164,
+                "observed": true
+              },
+              {
+                "index": 27,
+                "package_name": "com.termux",
+                "label": "Termux",
+                "categories": [
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298527000,
+                "start_time": "2026-06-01T15:22:07+08:00",
+                "end_wall_time_ms": 1780298528000,
+                "end_time": "2026-06-01T15:22:08+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 235,
+                "wait_time_ms": 240,
+                "observed": true
+              },
+              {
+                "index": 28,
+                "package_name": "com.topjohnwu.magisk",
+                "label": "Magisk",
+                "categories": [
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298528000,
+                "start_time": "2026-06-01T15:22:08+08:00",
+                "end_wall_time_ms": 1780298529000,
+                "end_time": "2026-06-01T15:22:09+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 74,
+                "wait_time_ms": 78,
+                "observed": true
+              },
+              {
+                "index": 29,
+                "package_name": "com.google.android.apps.photos",
+                "label": "Photos",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298529000,
+                "start_time": "2026-06-01T15:22:09+08:00",
+                "end_wall_time_ms": 1780298530000,
+                "end_time": "2026-06-01T15:22:10+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 61,
+                "wait_time_ms": 77,
+                "observed": true
+              },
+              {
+                "index": 30,
+                "package_name": "com.android.settings",
+                "label": "Settings",
+                "categories": [
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298530000,
+                "start_time": "2026-06-01T15:22:10+08:00",
+                "end_wall_time_ms": 1780298531000,
+                "end_time": "2026-06-01T15:22:11+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 106,
+                "wait_time_ms": 111,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 13,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 12597,
+              "MEMO_OPENAT": 12303,
+              "MEMO_MEMORY": 13,
+              "MEMO_SENDTO": 23416,
+              "MEMO_RECVFROM": 52604,
+              "MEMO_SCHED": 254788,
+              "MEMO_PROCESS_FORK": 259,
+              "MEMO_PROCESS_EXIT": 262,
+              "MEMO_PROCESS_EXEC": 112
+            }
+          },
+          {
+            "index": 7,
+            "start_wall_time_ms": 1780298533000,
+            "start_time": "2026-06-01T15:22:13+08:00",
+            "end_wall_time_ms": 1780298537000,
+            "end_time": "2026-06-01T15:22:17+08:00",
+            "apps": [
+              {
+                "index": 31,
+                "package_name": "com.google.android.googlequicksearchbox",
+                "label": "Google",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298533000,
+                "start_time": "2026-06-01T15:22:13+08:00",
+                "end_wall_time_ms": 1780298533000,
+                "end_time": "2026-06-01T15:22:13+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 201,
+                "wait_time_ms": 210,
+                "observed": true
+              },
+              {
+                "index": 32,
+                "package_name": "com.google.android.apps.maps",
+                "label": "Maps",
+                "categories": [
+                  "Navigation\/Location",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298533000,
+                "start_time": "2026-06-01T15:22:13+08:00",
+                "end_wall_time_ms": 1780298534000,
+                "end_time": "2026-06-01T15:22:14+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 148,
+                "wait_time_ms": 151,
+                "observed": true
+              },
+              {
+                "index": 33,
+                "package_name": "com.google.android.apps.safetyhub",
+                "label": "Personal Safety",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298534000,
+                "start_time": "2026-06-01T15:22:14+08:00",
+                "end_wall_time_ms": 1780298535000,
+                "end_time": "2026-06-01T15:22:15+08:00",
+                "launch_state": "UNKNOWN (0)",
+                "total_time_ms": null,
+                "wait_time_ms": 57,
+                "observed": true
+              },
+              {
+                "index": 34,
+                "package_name": "com.google.android.dialer",
+                "label": "Phone",
+                "categories": [
+                  "Communication",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298535000,
+                "start_time": "2026-06-01T15:22:15+08:00",
+                "end_wall_time_ms": 1780298536000,
+                "end_time": "2026-06-01T15:22:16+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 124,
+                "wait_time_ms": 128,
+                "observed": true
+              },
+              {
+                "index": 35,
+                "package_name": "com.google.android.youtube",
+                "label": "YouTube",
+                "categories": [
+                  "Media Codec",
+                  "Camera Service",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298536000,
+                "start_time": "2026-06-01T15:22:16+08:00",
+                "end_wall_time_ms": 1780298537000,
+                "end_time": "2026-06-01T15:22:17+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 362,
+                "wait_time_ms": 370,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 5,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 12858,
+              "MEMO_OPENAT": 11435,
+              "MEMO_MEMORY": 5,
+              "MEMO_SENDTO": 25459,
+              "MEMO_RECVFROM": 53630,
+              "MEMO_SCHED": 232526,
+              "MEMO_PROCESS_FORK": 249,
+              "MEMO_PROCESS_EXIT": 249,
+              "MEMO_PROCESS_EXEC": 109
+            }
+          },
+          {
+            "index": 8,
+            "start_wall_time_ms": 1780298539000,
+            "start_time": "2026-06-01T15:22:19+08:00",
+            "end_wall_time_ms": 1780298543000,
+            "end_time": "2026-06-01T15:22:23+08:00",
+            "apps": [
+              {
+                "index": 36,
+                "package_name": "com.google.android.GoogleCamera",
+                "label": "Camera",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298539000,
+                "start_time": "2026-06-01T15:22:19+08:00",
+                "end_wall_time_ms": 1780298539000,
+                "end_time": "2026-06-01T15:22:19+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 86,
+                "wait_time_ms": 97,
+                "observed": true
+              },
+              {
+                "index": 37,
+                "package_name": "com.android.chrome",
+                "label": "Chrome",
+                "categories": [
+                  "Network IO",
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298540000,
+                "start_time": "2026-06-01T15:22:20+08:00",
+                "end_wall_time_ms": 1780298540000,
+                "end_time": "2026-06-01T15:22:20+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 142,
+                "wait_time_ms": 144,
+                "observed": true
+              },
+              {
+                "index": 38,
+                "package_name": "com.tencent.wemeet.app",
+                "label": "Tencent Meeting",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication"
+                ],
+                "start_wall_time_ms": 1780298540000,
+                "start_time": "2026-06-01T15:22:20+08:00",
+                "end_wall_time_ms": 1780298541000,
+                "end_time": "2026-06-01T15:22:21+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 151,
+                "wait_time_ms": 157,
+                "observed": true
+              },
+              {
+                "index": 39,
+                "package_name": "com.termux",
+                "label": "Termux",
+                "categories": [
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298542000,
+                "start_time": "2026-06-01T15:22:22+08:00",
+                "end_wall_time_ms": 1780298542000,
+                "end_time": "2026-06-01T15:22:22+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 65,
+                "wait_time_ms": 68,
+                "observed": true
+              },
+              {
+                "index": 40,
+                "package_name": "com.topjohnwu.magisk",
+                "label": "Magisk",
+                "categories": [
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298542000,
+                "start_time": "2026-06-01T15:22:22+08:00",
+                "end_wall_time_ms": 1780298543000,
+                "end_time": "2026-06-01T15:22:23+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 81,
+                "wait_time_ms": 85,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 19,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 16018,
+              "MEMO_OPENAT": 12498,
+              "MEMO_MEMORY": 19,
+              "MEMO_SENDTO": 27675,
+              "MEMO_RECVFROM": 59488,
+              "MEMO_SCHED": 280002,
+              "MEMO_PROCESS_FORK": 347,
+              "MEMO_PROCESS_EXIT": 323,
+              "MEMO_PROCESS_EXEC": 110
+            }
+          },
+          {
+            "index": 9,
+            "start_wall_time_ms": 1780298545000,
+            "start_time": "2026-06-01T15:22:25+08:00",
+            "end_wall_time_ms": 1780298548000,
+            "end_time": "2026-06-01T15:22:28+08:00",
+            "apps": [
+              {
+                "index": 41,
+                "package_name": "com.google.android.apps.photos",
+                "label": "Photos",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298545000,
+                "start_time": "2026-06-01T15:22:25+08:00",
+                "end_wall_time_ms": 1780298545000,
+                "end_time": "2026-06-01T15:22:25+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 71,
+                "wait_time_ms": 79,
+                "observed": true
+              },
+              {
+                "index": 42,
+                "package_name": "com.android.settings",
+                "label": "Settings",
+                "categories": [
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298545000,
+                "start_time": "2026-06-01T15:22:25+08:00",
+                "end_wall_time_ms": 1780298546000,
+                "end_time": "2026-06-01T15:22:26+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 99,
+                "wait_time_ms": 104,
+                "observed": true
+              },
+              {
+                "index": 43,
+                "package_name": "com.google.android.googlequicksearchbox",
+                "label": "Google",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298546000,
+                "start_time": "2026-06-01T15:22:26+08:00",
+                "end_wall_time_ms": 1780298547000,
+                "end_time": "2026-06-01T15:22:27+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 204,
+                "wait_time_ms": 210,
+                "observed": true
+              },
+              {
+                "index": 44,
+                "package_name": "com.google.android.apps.maps",
+                "label": "Maps",
+                "categories": [
+                  "Navigation\/Location",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298547000,
+                "start_time": "2026-06-01T15:22:27+08:00",
+                "end_wall_time_ms": 1780298548000,
+                "end_time": "2026-06-01T15:22:28+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 134,
+                "wait_time_ms": 137,
+                "observed": true
+              },
+              {
+                "index": 45,
+                "package_name": "com.google.android.apps.safetyhub",
+                "label": "Personal Safety",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298548000,
+                "start_time": "2026-06-01T15:22:28+08:00",
+                "end_wall_time_ms": 1780298548000,
+                "end_time": "2026-06-01T15:22:28+08:00",
+                "launch_state": "UNKNOWN (0)",
+                "total_time_ms": null,
+                "wait_time_ms": 48,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 4,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 11409,
+              "MEMO_OPENAT": 11780,
+              "MEMO_MEMORY": 4,
+              "MEMO_SENDTO": 22106,
+              "MEMO_RECVFROM": 48891,
+              "MEMO_SCHED": 211772,
+              "MEMO_PROCESS_FORK": 233,
+              "MEMO_PROCESS_EXIT": 259,
+              "MEMO_PROCESS_EXEC": 107
+            }
+          },
+          {
+            "index": 10,
+            "start_wall_time_ms": 1780298550000,
+            "start_time": "2026-06-01T15:22:30+08:00",
+            "end_wall_time_ms": 1780298555000,
+            "end_time": "2026-06-01T15:22:35+08:00",
+            "apps": [
+              {
+                "index": 46,
+                "package_name": "com.google.android.dialer",
+                "label": "Phone",
+                "categories": [
+                  "Communication",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298550000,
+                "start_time": "2026-06-01T15:22:30+08:00",
+                "end_wall_time_ms": 1780298551000,
+                "end_time": "2026-06-01T15:22:31+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 129,
+                "wait_time_ms": 135,
+                "observed": true
+              },
+              {
+                "index": 47,
+                "package_name": "com.google.android.youtube",
+                "label": "YouTube",
+                "categories": [
+                  "Media Codec",
+                  "Camera Service",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298552000,
+                "start_time": "2026-06-01T15:22:32+08:00",
+                "end_wall_time_ms": 1780298552000,
+                "end_time": "2026-06-01T15:22:32+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 370,
+                "wait_time_ms": 372,
+                "observed": true
+              },
+              {
+                "index": 48,
+                "package_name": "com.google.android.GoogleCamera",
+                "label": "Camera",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298552000,
+                "start_time": "2026-06-01T15:22:32+08:00",
+                "end_wall_time_ms": 1780298553000,
+                "end_time": "2026-06-01T15:22:33+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 113,
+                "wait_time_ms": 117,
+                "observed": true
+              },
+              {
+                "index": 49,
+                "package_name": "com.android.chrome",
+                "label": "Chrome",
+                "categories": [
+                  "Network IO",
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298554000,
+                "start_time": "2026-06-01T15:22:34+08:00",
+                "end_wall_time_ms": 1780298554000,
+                "end_time": "2026-06-01T15:22:34+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 149,
+                "wait_time_ms": 153,
+                "observed": true
+              },
+              {
+                "index": 50,
+                "package_name": "com.tencent.wemeet.app",
+                "label": "Tencent Meeting",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication"
+                ],
+                "start_wall_time_ms": 1780298554000,
+                "start_time": "2026-06-01T15:22:34+08:00",
+                "end_wall_time_ms": 1780298555000,
+                "end_time": "2026-06-01T15:22:35+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 205,
+                "wait_time_ms": 221,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 14,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 16948,
+              "MEMO_OPENAT": 12024,
+              "MEMO_MEMORY": 14,
+              "MEMO_SENDTO": 29093,
+              "MEMO_RECVFROM": 63065,
+              "MEMO_SCHED": 299715,
+              "MEMO_PROCESS_FORK": 361,
+              "MEMO_PROCESS_EXIT": 338,
+              "MEMO_PROCESS_EXEC": 113
+            }
+          },
+          {
+            "index": 11,
+            "start_wall_time_ms": 1780298557000,
+            "start_time": "2026-06-01T15:22:37+08:00",
+            "end_wall_time_ms": 1780298561000,
+            "end_time": "2026-06-01T15:22:41+08:00",
+            "apps": [
+              {
+                "index": 51,
+                "package_name": "com.termux",
+                "label": "Termux",
+                "categories": [
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298557000,
+                "start_time": "2026-06-01T15:22:37+08:00",
+                "end_wall_time_ms": 1780298557000,
+                "end_time": "2026-06-01T15:22:37+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 65,
+                "wait_time_ms": 72,
+                "observed": true
+              },
+              {
+                "index": 52,
+                "package_name": "com.topjohnwu.magisk",
+                "label": "Magisk",
+                "categories": [
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298558000,
+                "start_time": "2026-06-01T15:22:38+08:00",
+                "end_wall_time_ms": 1780298558000,
+                "end_time": "2026-06-01T15:22:38+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 64,
+                "wait_time_ms": 69,
+                "observed": true
+              },
+              {
+                "index": 53,
+                "package_name": "com.google.android.apps.photos",
+                "label": "Photos",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298559000,
+                "start_time": "2026-06-01T15:22:39+08:00",
+                "end_wall_time_ms": 1780298559000,
+                "end_time": "2026-06-01T15:22:39+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 59,
+                "wait_time_ms": 60,
+                "observed": true
+              },
+              {
+                "index": 54,
+                "package_name": "com.android.settings",
+                "label": "Settings",
+                "categories": [
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298559000,
+                "start_time": "2026-06-01T15:22:39+08:00",
+                "end_wall_time_ms": 1780298560000,
+                "end_time": "2026-06-01T15:22:40+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 112,
+                "wait_time_ms": 115,
+                "observed": true
+              },
+              {
+                "index": 55,
+                "package_name": "com.google.android.googlequicksearchbox",
+                "label": "Google",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298560000,
+                "start_time": "2026-06-01T15:22:40+08:00",
+                "end_wall_time_ms": 1780298561000,
+                "end_time": "2026-06-01T15:22:41+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 163,
+                "wait_time_ms": 168,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 17,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 12655,
+              "MEMO_OPENAT": 11991,
+              "MEMO_MEMORY": 17,
+              "MEMO_SENDTO": 14289,
+              "MEMO_RECVFROM": 31914,
+              "MEMO_SCHED": 212962,
+              "MEMO_PROCESS_FORK": 237,
+              "MEMO_PROCESS_EXIT": 240,
+              "MEMO_PROCESS_EXEC": 106
+            }
+          },
+          {
+            "index": 12,
+            "start_wall_time_ms": 1780298562000,
+            "start_time": "2026-06-01T15:22:42+08:00",
+            "end_wall_time_ms": 1780298567000,
+            "end_time": "2026-06-01T15:22:47+08:00",
+            "apps": [
+              {
+                "index": 56,
+                "package_name": "com.google.android.apps.maps",
+                "label": "Maps",
+                "categories": [
+                  "Navigation\/Location",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298562000,
+                "start_time": "2026-06-01T15:22:42+08:00",
+                "end_wall_time_ms": 1780298563000,
+                "end_time": "2026-06-01T15:22:43+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 174,
+                "wait_time_ms": 177,
+                "observed": true
+              },
+              {
+                "index": 57,
+                "package_name": "com.google.android.apps.safetyhub",
+                "label": "Personal Safety",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298564000,
+                "start_time": "2026-06-01T15:22:44+08:00",
+                "end_wall_time_ms": 1780298564000,
+                "end_time": "2026-06-01T15:22:44+08:00",
+                "launch_state": "UNKNOWN (0)",
+                "total_time_ms": null,
+                "wait_time_ms": 66,
+                "observed": true
+              },
+              {
+                "index": 58,
+                "package_name": "com.google.android.dialer",
+                "label": "Phone",
+                "categories": [
+                  "Communication",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298564000,
+                "start_time": "2026-06-01T15:22:44+08:00",
+                "end_wall_time_ms": 1780298565000,
+                "end_time": "2026-06-01T15:22:45+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 109,
+                "wait_time_ms": 112,
+                "observed": true
+              },
+              {
+                "index": 59,
+                "package_name": "com.google.android.youtube",
+                "label": "YouTube",
+                "categories": [
+                  "Media Codec",
+                  "Camera Service",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298565000,
+                "start_time": "2026-06-01T15:22:45+08:00",
+                "end_wall_time_ms": 1780298566000,
+                "end_time": "2026-06-01T15:22:46+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 399,
+                "wait_time_ms": 401,
+                "observed": true
+              },
+              {
+                "index": 60,
+                "package_name": "com.google.android.GoogleCamera",
+                "label": "Camera",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298566000,
+                "start_time": "2026-06-01T15:22:46+08:00",
+                "end_wall_time_ms": 1780298567000,
+                "end_time": "2026-06-01T15:22:47+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 71,
+                "wait_time_ms": 84,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 20,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 15747,
+              "MEMO_OPENAT": 11626,
+              "MEMO_MEMORY": 20,
+              "MEMO_SENDTO": 20421,
+              "MEMO_RECVFROM": 40900,
+              "MEMO_SCHED": 272890,
+              "MEMO_PROCESS_FORK": 348,
+              "MEMO_PROCESS_EXIT": 320,
+              "MEMO_PROCESS_EXEC": 112
+            }
+          },
+          {
+            "index": 13,
+            "start_wall_time_ms": 1780298569000,
+            "start_time": "2026-06-01T15:22:49+08:00",
+            "end_wall_time_ms": 1780298573000,
+            "end_time": "2026-06-01T15:22:53+08:00",
+            "apps": [
+              {
+                "index": 61,
+                "package_name": "com.android.chrome",
+                "label": "Chrome",
+                "categories": [
+                  "Network IO",
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298569000,
+                "start_time": "2026-06-01T15:22:49+08:00",
+                "end_wall_time_ms": 1780298569000,
+                "end_time": "2026-06-01T15:22:49+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 134,
+                "wait_time_ms": 143,
+                "observed": true
+              },
+              {
+                "index": 62,
+                "package_name": "com.tencent.wemeet.app",
+                "label": "Tencent Meeting",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication"
+                ],
+                "start_wall_time_ms": 1780298570000,
+                "start_time": "2026-06-01T15:22:50+08:00",
+                "end_wall_time_ms": 1780298571000,
+                "end_time": "2026-06-01T15:22:51+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 147,
+                "wait_time_ms": 150,
+                "observed": true
+              },
+              {
+                "index": 63,
+                "package_name": "com.termux",
+                "label": "Termux",
+                "categories": [
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298571000,
+                "start_time": "2026-06-01T15:22:51+08:00",
+                "end_wall_time_ms": 1780298571000,
+                "end_time": "2026-06-01T15:22:51+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 67,
+                "wait_time_ms": 70,
+                "observed": true
+              },
+              {
+                "index": 64,
+                "package_name": "com.topjohnwu.magisk",
+                "label": "Magisk",
+                "categories": [
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298571000,
+                "start_time": "2026-06-01T15:22:51+08:00",
+                "end_wall_time_ms": 1780298572000,
+                "end_time": "2026-06-01T15:22:52+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 84,
+                "wait_time_ms": 88,
+                "observed": true
+              },
+              {
+                "index": 65,
+                "package_name": "com.google.android.apps.photos",
+                "label": "Photos",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298572000,
+                "start_time": "2026-06-01T15:22:52+08:00",
+                "end_wall_time_ms": 1780298573000,
+                "end_time": "2026-06-01T15:22:53+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 66,
+                "wait_time_ms": 91,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 12,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 10983,
+              "MEMO_OPENAT": 11388,
+              "MEMO_MEMORY": 12,
+              "MEMO_SENDTO": 13611,
+              "MEMO_RECVFROM": 28642,
+              "MEMO_SCHED": 199529,
+              "MEMO_PROCESS_FORK": 238,
+              "MEMO_PROCESS_EXIT": 235,
+              "MEMO_PROCESS_EXEC": 107
+            }
+          },
+          {
+            "index": 14,
+            "start_wall_time_ms": 1780298575000,
+            "start_time": "2026-06-01T15:22:55+08:00",
+            "end_wall_time_ms": 1780298579000,
+            "end_time": "2026-06-01T15:22:59+08:00",
+            "apps": [
+              {
+                "index": 66,
+                "package_name": "com.android.settings",
+                "label": "Settings",
+                "categories": [
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298575000,
+                "start_time": "2026-06-01T15:22:55+08:00",
+                "end_wall_time_ms": 1780298575000,
+                "end_time": "2026-06-01T15:22:55+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 92,
+                "wait_time_ms": 96,
+                "observed": true
+              },
+              {
+                "index": 67,
+                "package_name": "com.google.android.googlequicksearchbox",
+                "label": "Google",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298576000,
+                "start_time": "2026-06-01T15:22:56+08:00",
+                "end_wall_time_ms": 1780298576000,
+                "end_time": "2026-06-01T15:22:56+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 214,
+                "wait_time_ms": 224,
+                "observed": true
+              },
+              {
+                "index": 68,
+                "package_name": "com.google.android.apps.maps",
+                "label": "Maps",
+                "categories": [
+                  "Navigation\/Location",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298576000,
+                "start_time": "2026-06-01T15:22:56+08:00",
+                "end_wall_time_ms": 1780298577000,
+                "end_time": "2026-06-01T15:22:57+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 159,
+                "wait_time_ms": 163,
+                "observed": true
+              },
+              {
+                "index": 69,
+                "package_name": "com.google.android.apps.safetyhub",
+                "label": "Personal Safety",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298578000,
+                "start_time": "2026-06-01T15:22:58+08:00",
+                "end_wall_time_ms": 1780298578000,
+                "end_time": "2026-06-01T15:22:58+08:00",
+                "launch_state": "UNKNOWN (0)",
+                "total_time_ms": null,
+                "wait_time_ms": 137,
+                "observed": true
+              },
+              {
+                "index": 70,
+                "package_name": "com.google.android.dialer",
+                "label": "Phone",
+                "categories": [
+                  "Communication",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298578000,
+                "start_time": "2026-06-01T15:22:58+08:00",
+                "end_wall_time_ms": 1780298579000,
+                "end_time": "2026-06-01T15:22:59+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 122,
+                "wait_time_ms": 126,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 2,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 12165,
+              "MEMO_OPENAT": 12123,
+              "MEMO_MEMORY": 2,
+              "MEMO_SENDTO": 34895,
+              "MEMO_RECVFROM": 78795,
+              "MEMO_SCHED": 265760,
+              "MEMO_PROCESS_FORK": 292,
+              "MEMO_PROCESS_EXIT": 254,
+              "MEMO_PROCESS_EXEC": 113
+            }
+          },
+          {
+            "index": 15,
+            "start_wall_time_ms": 1780298581000,
+            "start_time": "2026-06-01T15:23:01+08:00",
+            "end_wall_time_ms": 1780298585000,
+            "end_time": "2026-06-01T15:23:05+08:00",
+            "apps": [
+              {
+                "index": 71,
+                "package_name": "com.google.android.youtube",
+                "label": "YouTube",
+                "categories": [
+                  "Media Codec",
+                  "Camera Service",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298581000,
+                "start_time": "2026-06-01T15:23:01+08:00",
+                "end_wall_time_ms": 1780298582000,
+                "end_time": "2026-06-01T15:23:02+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 416,
+                "wait_time_ms": 419,
+                "observed": true
+              },
+              {
+                "index": 72,
+                "package_name": "com.google.android.GoogleCamera",
+                "label": "Camera",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298582000,
+                "start_time": "2026-06-01T15:23:02+08:00",
+                "end_wall_time_ms": 1780298583000,
+                "end_time": "2026-06-01T15:23:03+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 109,
+                "wait_time_ms": 115,
+                "observed": true
+              },
+              {
+                "index": 73,
+                "package_name": "com.android.chrome",
+                "label": "Chrome",
+                "categories": [
+                  "Network IO",
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298583000,
+                "start_time": "2026-06-01T15:23:03+08:00",
+                "end_wall_time_ms": 1780298583000,
+                "end_time": "2026-06-01T15:23:03+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 142,
+                "wait_time_ms": 147,
+                "observed": true
+              },
+              {
+                "index": 74,
+                "package_name": "com.tencent.wemeet.app",
+                "label": "Tencent Meeting",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication"
+                ],
+                "start_wall_time_ms": 1780298584000,
+                "start_time": "2026-06-01T15:23:04+08:00",
+                "end_wall_time_ms": 1780298585000,
+                "end_time": "2026-06-01T15:23:05+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 212,
+                "wait_time_ms": 225,
+                "observed": true
+              },
+              {
+                "index": 75,
+                "package_name": "com.termux",
+                "label": "Termux",
+                "categories": [
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298585000,
+                "start_time": "2026-06-01T15:23:05+08:00",
+                "end_wall_time_ms": 1780298585000,
+                "end_time": "2026-06-01T15:23:05+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 67,
+                "wait_time_ms": 70,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 7,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 17695,
+              "MEMO_OPENAT": 11697,
+              "MEMO_MEMORY": 7,
+              "MEMO_SENDTO": 18643,
+              "MEMO_RECVFROM": 36998,
+              "MEMO_SCHED": 268244,
+              "MEMO_PROCESS_FORK": 364,
+              "MEMO_PROCESS_EXIT": 381,
+              "MEMO_PROCESS_EXEC": 110
+            }
+          },
+          {
+            "index": 16,
+            "start_wall_time_ms": 1780298587000,
+            "start_time": "2026-06-01T15:23:07+08:00",
+            "end_wall_time_ms": 1780298591000,
+            "end_time": "2026-06-01T15:23:11+08:00",
+            "apps": [
+              {
+                "index": 76,
+                "package_name": "com.topjohnwu.magisk",
+                "label": "Magisk",
+                "categories": [
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298587000,
+                "start_time": "2026-06-01T15:23:07+08:00",
+                "end_wall_time_ms": 1780298588000,
+                "end_time": "2026-06-01T15:23:08+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 84,
+                "wait_time_ms": 86,
+                "observed": true
+              },
+              {
+                "index": 77,
+                "package_name": "com.google.android.apps.photos",
+                "label": "Photos",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298588000,
+                "start_time": "2026-06-01T15:23:08+08:00",
+                "end_wall_time_ms": 1780298589000,
+                "end_time": "2026-06-01T15:23:09+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 76,
+                "wait_time_ms": 79,
+                "observed": true
+              },
+              {
+                "index": 78,
+                "package_name": "com.android.settings",
+                "label": "Settings",
+                "categories": [
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298589000,
+                "start_time": "2026-06-01T15:23:09+08:00",
+                "end_wall_time_ms": 1780298590000,
+                "end_time": "2026-06-01T15:23:10+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 90,
+                "wait_time_ms": 97,
+                "observed": true
+              },
+              {
+                "index": 79,
+                "package_name": "com.google.android.googlequicksearchbox",
+                "label": "Google",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298590000,
+                "start_time": "2026-06-01T15:23:10+08:00",
+                "end_wall_time_ms": 1780298590000,
+                "end_time": "2026-06-01T15:23:10+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 211,
+                "wait_time_ms": 230,
+                "observed": true
+              },
+              {
+                "index": 80,
+                "package_name": "com.google.android.apps.maps",
+                "label": "Maps",
+                "categories": [
+                  "Navigation\/Location",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298591000,
+                "start_time": "2026-06-01T15:23:11+08:00",
+                "end_wall_time_ms": 1780298591000,
+                "end_time": "2026-06-01T15:23:11+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 134,
+                "wait_time_ms": 137,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 4,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 12905,
+              "MEMO_OPENAT": 12412,
+              "MEMO_MEMORY": 4,
+              "MEMO_SENDTO": 24615,
+              "MEMO_RECVFROM": 53426,
+              "MEMO_SCHED": 245841,
+              "MEMO_PROCESS_FORK": 247,
+              "MEMO_PROCESS_EXIT": 243,
+              "MEMO_PROCESS_EXEC": 111
+            }
+          },
+          {
+            "index": 17,
+            "start_wall_time_ms": 1780298593000,
+            "start_time": "2026-06-01T15:23:13+08:00",
+            "end_wall_time_ms": 1780298597000,
+            "end_time": "2026-06-01T15:23:17+08:00",
+            "apps": [
+              {
+                "index": 81,
+                "package_name": "com.google.android.apps.safetyhub",
+                "label": "Personal Safety",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298593000,
+                "start_time": "2026-06-01T15:23:13+08:00",
+                "end_wall_time_ms": 1780298594000,
+                "end_time": "2026-06-01T15:23:14+08:00",
+                "launch_state": "UNKNOWN (0)",
+                "total_time_ms": null,
+                "wait_time_ms": 72,
+                "observed": true
+              },
+              {
+                "index": 82,
+                "package_name": "com.google.android.dialer",
+                "label": "Phone",
+                "categories": [
+                  "Communication",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298594000,
+                "start_time": "2026-06-01T15:23:14+08:00",
+                "end_wall_time_ms": 1780298595000,
+                "end_time": "2026-06-01T15:23:15+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 123,
+                "wait_time_ms": 128,
+                "observed": true
+              },
+              {
+                "index": 83,
+                "package_name": "com.google.android.youtube",
+                "label": "YouTube",
+                "categories": [
+                  "Media Codec",
+                  "Camera Service",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298595000,
+                "start_time": "2026-06-01T15:23:15+08:00",
+                "end_wall_time_ms": 1780298596000,
+                "end_time": "2026-06-01T15:23:16+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 415,
+                "wait_time_ms": 419,
+                "observed": true
+              },
+              {
+                "index": 84,
+                "package_name": "com.google.android.GoogleCamera",
+                "label": "Camera",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298596000,
+                "start_time": "2026-06-01T15:23:16+08:00",
+                "end_wall_time_ms": 1780298597000,
+                "end_time": "2026-06-01T15:23:17+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 95,
+                "wait_time_ms": 118,
+                "observed": true
+              },
+              {
+                "index": 85,
+                "package_name": "com.android.chrome",
+                "label": "Chrome",
+                "categories": [
+                  "Network IO",
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298597000,
+                "start_time": "2026-06-01T15:23:17+08:00",
+                "end_wall_time_ms": 1780298597000,
+                "end_time": "2026-06-01T15:23:17+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 180,
+                "wait_time_ms": 186,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 8,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 15839,
+              "MEMO_OPENAT": 15130,
+              "MEMO_MEMORY": 8,
+              "MEMO_SENDTO": 17011,
+              "MEMO_RECVFROM": 36755,
+              "MEMO_SCHED": 253593,
+              "MEMO_PROCESS_FORK": 349,
+              "MEMO_PROCESS_EXIT": 327,
+              "MEMO_PROCESS_EXEC": 118
+            }
+          },
+          {
+            "index": 18,
+            "start_wall_time_ms": 1780298599000,
+            "start_time": "2026-06-01T15:23:19+08:00",
+            "end_wall_time_ms": 1780298603000,
+            "end_time": "2026-06-01T15:23:23+08:00",
+            "apps": [
+              {
+                "index": 86,
+                "package_name": "com.tencent.wemeet.app",
+                "label": "Tencent Meeting",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication"
+                ],
+                "start_wall_time_ms": 1780298599000,
+                "start_time": "2026-06-01T15:23:19+08:00",
+                "end_wall_time_ms": 1780298600000,
+                "end_time": "2026-06-01T15:23:20+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 182,
+                "wait_time_ms": 186,
+                "observed": true
+              },
+              {
+                "index": 87,
+                "package_name": "com.termux",
+                "label": "Termux",
+                "categories": [
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298601000,
+                "start_time": "2026-06-01T15:23:21+08:00",
+                "end_wall_time_ms": 1780298601000,
+                "end_time": "2026-06-01T15:23:21+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 68,
+                "wait_time_ms": 73,
+                "observed": true
+              },
+              {
+                "index": 88,
+                "package_name": "com.topjohnwu.magisk",
+                "label": "Magisk",
+                "categories": [
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298601000,
+                "start_time": "2026-06-01T15:23:21+08:00",
+                "end_wall_time_ms": 1780298602000,
+                "end_time": "2026-06-01T15:23:22+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 82,
+                "wait_time_ms": 84,
+                "observed": true
+              },
+              {
+                "index": 89,
+                "package_name": "com.google.android.apps.photos",
+                "label": "Photos",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298602000,
+                "start_time": "2026-06-01T15:23:22+08:00",
+                "end_wall_time_ms": 1780298602000,
+                "end_time": "2026-06-01T15:23:22+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 82,
+                "wait_time_ms": 86,
+                "observed": true
+              },
+              {
+                "index": 90,
+                "package_name": "com.android.settings",
+                "label": "Settings",
+                "categories": [
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298603000,
+                "start_time": "2026-06-01T15:23:23+08:00",
+                "end_wall_time_ms": 1780298603000,
+                "end_time": "2026-06-01T15:23:23+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 103,
+                "wait_time_ms": 107,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 2,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 11601,
+              "MEMO_OPENAT": 11704,
+              "MEMO_MEMORY": 2,
+              "MEMO_SENDTO": 31244,
+              "MEMO_RECVFROM": 72684,
+              "MEMO_SCHED": 250588,
+              "MEMO_PROCESS_FORK": 237,
+              "MEMO_PROCESS_EXIT": 236,
+              "MEMO_PROCESS_EXEC": 110
+            }
+          },
+          {
+            "index": 19,
+            "start_wall_time_ms": 1780298605000,
+            "start_time": "2026-06-01T15:23:25+08:00",
+            "end_wall_time_ms": 1780298610000,
+            "end_time": "2026-06-01T15:23:30+08:00",
+            "apps": [
+              {
+                "index": 91,
+                "package_name": "com.google.android.googlequicksearchbox",
+                "label": "Google",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298605000,
+                "start_time": "2026-06-01T15:23:25+08:00",
+                "end_wall_time_ms": 1780298606000,
+                "end_time": "2026-06-01T15:23:26+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 218,
+                "wait_time_ms": 224,
+                "observed": true
+              },
+              {
+                "index": 92,
+                "package_name": "com.google.android.apps.maps",
+                "label": "Maps",
+                "categories": [
+                  "Navigation\/Location",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298606000,
+                "start_time": "2026-06-01T15:23:26+08:00",
+                "end_wall_time_ms": 1780298607000,
+                "end_time": "2026-06-01T15:23:27+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 138,
+                "wait_time_ms": 141,
+                "observed": true
+              },
+              {
+                "index": 93,
+                "package_name": "com.google.android.apps.safetyhub",
+                "label": "Personal Safety",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298607000,
+                "start_time": "2026-06-01T15:23:27+08:00",
+                "end_wall_time_ms": 1780298608000,
+                "end_time": "2026-06-01T15:23:28+08:00",
+                "launch_state": "UNKNOWN (0)",
+                "total_time_ms": null,
+                "wait_time_ms": 59,
+                "observed": true
+              },
+              {
+                "index": 94,
+                "package_name": "com.google.android.dialer",
+                "label": "Phone",
+                "categories": [
+                  "Communication",
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298608000,
+                "start_time": "2026-06-01T15:23:28+08:00",
+                "end_wall_time_ms": 1780298609000,
+                "end_time": "2026-06-01T15:23:29+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 112,
+                "wait_time_ms": 115,
+                "observed": true
+              },
+              {
+                "index": 95,
+                "package_name": "com.google.android.youtube",
+                "label": "YouTube",
+                "categories": [
+                  "Media Codec",
+                  "Camera Service",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298609000,
+                "start_time": "2026-06-01T15:23:29+08:00",
+                "end_wall_time_ms": 1780298610000,
+                "end_time": "2026-06-01T15:23:30+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 380,
+                "wait_time_ms": 388,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 1,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 12160,
+              "MEMO_OPENAT": 11169,
+              "MEMO_MEMORY": 1,
+              "MEMO_SENDTO": 25151,
+              "MEMO_RECVFROM": 56739,
+              "MEMO_SCHED": 224952,
+              "MEMO_PROCESS_FORK": 244,
+              "MEMO_PROCESS_EXIT": 238,
+              "MEMO_PROCESS_EXEC": 109
+            }
+          },
+          {
+            "index": 20,
+            "start_wall_time_ms": 1780298612000,
+            "start_time": "2026-06-01T15:23:32+08:00",
+            "end_wall_time_ms": 1780298616000,
+            "end_time": "2026-06-01T15:23:36+08:00",
+            "apps": [
+              {
+                "index": 96,
+                "package_name": "com.google.android.GoogleCamera",
+                "label": "Camera",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298612000,
+                "start_time": "2026-06-01T15:23:32+08:00",
+                "end_wall_time_ms": 1780298612000,
+                "end_time": "2026-06-01T15:23:32+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 99,
+                "wait_time_ms": 135,
+                "observed": true
+              },
+              {
+                "index": 97,
+                "package_name": "com.android.chrome",
+                "label": "Chrome",
+                "categories": [
+                  "Network IO",
+                  "App Process Runtime",
+                  "Camera Service",
+                  "Media Codec",
+                  "Navigation\/Location",
+                  "Communication",
+                  "Payment\/Security"
+                ],
+                "start_wall_time_ms": 1780298613000,
+                "start_time": "2026-06-01T15:23:33+08:00",
+                "end_wall_time_ms": 1780298613000,
+                "end_time": "2026-06-01T15:23:33+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 166,
+                "wait_time_ms": 168,
+                "observed": true
+              },
+              {
+                "index": 98,
+                "package_name": "com.tencent.wemeet.app",
+                "label": "Tencent Meeting",
+                "categories": [
+                  "Camera Service",
+                  "Media Codec",
+                  "Network IO",
+                  "Navigation\/Location",
+                  "Communication"
+                ],
+                "start_wall_time_ms": 1780298613000,
+                "start_time": "2026-06-01T15:23:33+08:00",
+                "end_wall_time_ms": 1780298614000,
+                "end_time": "2026-06-01T15:23:34+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 144,
+                "wait_time_ms": 150,
+                "observed": true
+              },
+              {
+                "index": 99,
+                "package_name": "com.termux",
+                "label": "Termux",
+                "categories": [
+                  "Media Codec",
+                  "Display Composition",
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298615000,
+                "start_time": "2026-06-01T15:23:35+08:00",
+                "end_wall_time_ms": 1780298615000,
+                "end_time": "2026-06-01T15:23:35+08:00",
+                "launch_state": "WARM",
+                "total_time_ms": 248,
+                "wait_time_ms": 251,
+                "observed": true
+              },
+              {
+                "index": 100,
+                "package_name": "com.topjohnwu.magisk",
+                "label": "Magisk",
+                "categories": [
+                  "Network IO"
+                ],
+                "start_wall_time_ms": 1780298615000,
+                "start_time": "2026-06-01T15:23:35+08:00",
+                "end_wall_time_ms": 1780298616000,
+                "end_time": "2026-06-01T15:23:36+08:00",
+                "launch_state": "HOT",
+                "total_time_ms": 80,
+                "wait_time_ms": 83,
+                "observed": true
+              }
+            ],
+            "ebpf_event_counts": {
+              "MEMO_STATUS": 2,
+              "MEMO_BINDER": 100,
+              "MEMO_OPENAT": 100,
+              "MEMO_MEMORY": 6,
+              "MEMO_SENDTO": 100,
+              "MEMO_RECVFROM": 100,
+              "MEMO_SCHED": 100,
+              "MEMO_PROCESS_FORK": 100,
+              "MEMO_PROCESS_EXIT": 100,
+              "MEMO_PROCESS_EXEC": 100
+            },
+            "ebpf_counter_totals": {
+              "MEMO_STATUS": 0,
+              "MEMO_BINDER": 16585,
+              "MEMO_OPENAT": 12059,
+              "MEMO_MEMORY": 6,
+              "MEMO_SENDTO": 27321,
+              "MEMO_RECVFROM": 59083,
+              "MEMO_SCHED": 289596,
+              "MEMO_PROCESS_FORK": 354,
+              "MEMO_PROCESS_EXIT": 333,
+              "MEMO_PROCESS_EXEC": 112
+            }
+          }
+        ],
+        "system_evidence": [
+          "16200 device-side eBPF records in the observed Android window",
+          "timestamped app sequence length=100 unique_apps=12 first=Chrome\/com.android.chrome last=Magisk\/com.topjohnwu.magisk",
+          "recent app order=1:Chrome -> 2:Tencent Meeting -> 3:Termux -> 4:Magisk -> 5:Photos -> 6:Settings -> 7:Google -> 8:Maps -> 9:Personal Safety -> 10:Phone -> 11:YouTube -> 12:Camera",
+          "timeline_window 1 2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00 apps=[Chrome,Tencent Meeting,Termux,Magisk,Photos] ebpf=[MEMO_SCHED=213621,MEMO_RECVFROM=34269,MEMO_SENDTO=17114]",
+          "timeline_window 2 2026-06-01T15:21:41+08:00..2026-06-01T15:21:46+08:00 apps=[Settings,Google,Maps,Personal Safety,Phone] ebpf=[MEMO_SCHED=262016,MEMO_RECVFROM=49763,MEMO_SENDTO=23522]",
+          "timeline_window 3 2026-06-01T15:21:48+08:00..2026-06-01T15:21:52+08:00 apps=[YouTube,Camera,Chrome,Tencent Meeting,Termux] ebpf=[MEMO_SCHED=262318,MEMO_RECVFROM=34737,MEMO_BINDER=16862]",
+          "timeline_window 4 2026-06-01T15:21:54+08:00..2026-06-01T15:21:58+08:00 apps=[Magisk,Photos,Settings,Google,Maps] ebpf=[MEMO_SCHED=248375,MEMO_RECVFROM=68152,MEMO_SENDTO=30185]",
+          "timeline_window 5 2026-06-01T15:22:00+08:00..2026-06-01T15:22:04+08:00 apps=[Personal Safety,Phone,YouTube,Camera,Chrome] ebpf=[MEMO_SCHED=254936,MEMO_RECVFROM=40217,MEMO_SENDTO=18910]",
+          "timeline_window 6 2026-06-01T15:22:06+08:00..2026-06-01T15:22:11+08:00 apps=[Tencent Meeting,Termux,Magisk,Photos,Settings] ebpf=[MEMO_SCHED=254788,MEMO_RECVFROM=52604,MEMO_SENDTO=23416]",
+          "event_type MEMO_BINDER: count=2000",
+          "event_type MEMO_OPENAT: count=2000",
+          "event_type MEMO_SENDTO: count=2000",
+          "event_type MEMO_RECVFROM: count=2000",
+          "event_type MEMO_SCHED: count=2000",
+          "event_type MEMO_PROCESS_FORK: count=2000",
+          "event_type MEMO_PROCESS_EXIT: count=2000",
+          "event_type MEMO_PROCESS_EXEC: count=2000",
+          "MAPLE evidence\/resource category Network IO: count=720",
+          "MAPLE evidence\/resource category Camera Service: count=420",
+          "MAPLE evidence\/resource category Media Codec: count=420"
+        ],
+        "memory_pressure": "normal: no direct reclaim pressure was observed",
+        "scheduler_goal": "Use device-side eBPF and system-state evidence to infer near-future Android app\/resource demand, then choose safe warm-launch, cache, memory, network, camera\/media, and UI scheduling actions."
+      },
+      "ebpf_summary": {
+        "event_counts": {
+          "MEMO_STATUS": 40,
+          "MEMO_BINDER": 2000,
+          "MEMO_OPENAT": 2000,
+          "MEMO_MEMORY": 160,
+          "MEMO_SENDTO": 2000,
+          "MEMO_RECVFROM": 2000,
+          "MEMO_SCHED": 2000,
+          "MEMO_PROCESS_FORK": 2000,
+          "MEMO_PROCESS_EXIT": 2000,
+          "MEMO_PROCESS_EXEC": 2000
+        },
+        "category_counts": {
+          "Other File Access": 120,
+          "Android Service IPC": 360,
+          "Memory Management": 360,
+          "Network IO": 720,
+          "App Process Runtime": 180,
+          "Camera Service": 420,
+          "Media Codec": 420,
+          "Display Composition": 420,
+          "Navigation\/Location": 240,
+          "Communication": 192
+        },
+        "observed_app_count": 100,
+        "timeline_window_count": 20,
+        "memory_pressure": "normal: no direct reclaim pressure was observed",
+        "foreground_package": null
+      }
+    }
+  ]
+}

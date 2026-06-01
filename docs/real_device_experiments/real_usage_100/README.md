@@ -28,12 +28,14 @@
 | `latest_usage_100_report.json` | 100 次真实使用实验完整报告 |
 | `usage_summary.json` | 关键指标摘要 |
 | `usage_100_raw_trace.trace` | 本次实验生成的 raw eBPF trace |
+| `latest_real_usage_maple_scenario.json` | MAPLE 实际输入的 full scenario，包含 app 时间线和 eBPF 时间窗 |
 | `latest_real_ablation_after_usage_100.json` | 基于同一次真实 eBPF scenario 的消融报告 |
 
 手机端原始路径：
 
 ```text
-/sdcard/MEMO/logs/usage_100_1780245815290.trace
+/sdcard/MEMO/logs/usage_100_1780298489375.trace
+/sdcard/MEMO/scenarios/latest_real_usage_maple_scenario.json
 /sdcard/MEMO/reports/latest_usage_100_report.json
 /sdcard/MEMO/ablations/latest_real_ablation.json
 ```
@@ -45,18 +47,41 @@
 | 计划打开 app 次数 | 100 |
 | 实际观测到的 app 打开 | 100 |
 | 覆盖真实应用 | 12 个 |
-| eBPF parsed events | 15925 条 |
-| 平均启动 TotalTime | 191.9 ms |
-| P50 启动 TotalTime | 136 ms |
-| 平均 WaitTime | 185.0 ms |
-| P50 WaitTime | 134 ms |
+| timestamped app sequence | 100 条 |
+| timeline windows | 20 个，每 5 次 app 使用一窗 |
+| eBPF parsed events | 16200 条 |
+| 平均启动 TotalTime | 148.1 ms |
+| P50 启动 TotalTime | 123 ms |
+| 平均 WaitTime | 147.3 ms |
+| P50 WaitTime | 120 ms |
 | MAPLE backend | shell |
-| MAPLE predicted app id | 280 |
+| MAPLE predicted app id | 220 |
+| MAPLE stage1 | Memory Management (100%) |
 | Top-3 真实应用 | Chrome, Messages, Camera |
-| 完整设备端耗时 | 397.6 s |
-| 前台可见处理耗时 | 16.1 s |
+| 完整设备端耗时 | 301.3 s |
+| 前台可见处理耗时 | 14.5 s |
 
-这里的 397.6 s 包括 100 次 app rotation 和 8 组消融实验。产品 UI 不再显示“过慢实时状态”，也不会因为 MAPLE 慢就跳过；状态为 `completed`。
+这里的 301.3 s 包括 100 次 app rotation、20 个分窗 eBPF 采集、MAPLE 推理和 8 组消融实验。产品 UI 不再显示“过慢实时状态”，也不会因为 MAPLE 慢就跳过；状态为 `completed`。
+
+## MAPLE 输入里的时间线
+
+这版不再只给 MAPLE 一个全局 eBPF 汇总。`latest_real_usage_maple_scenario.json` 里新增两类时间对齐字段：
+
+| 字段 | 含义 |
+| --- | --- |
+| `observed_app_sequence` | 100 条按时间排序的真实 app 使用记录，每条包含 package、label、category、start/end timestamp、launch state、TotalTime、WaitTime |
+| `timeline_windows` | 20 个时间窗，每窗包含 5 次真实 app 使用，以及同一时间窗内 raw eBPF counter totals |
+
+第一窗示例：
+
+```text
+2026-06-01T15:21:35+08:00..2026-06-01T15:21:39+08:00
+apps = Chrome -> Tencent Meeting -> Termux -> Magisk -> Photos
+eBPF = MEMO_SCHED=213621, MEMO_RECVFROM=34269, MEMO_SENDTO=17114,
+       MEMO_BINDER=12541, MEMO_OPENAT=11856
+```
+
+也就是说，MAPLE 现在同时看到“用户按时间用了哪些 app”和“同一时间窗里系统层发生了什么”，而不是只看 eBPF。
 
 ## 观测到的系统证据
 
@@ -71,19 +96,20 @@
 | `MEMO_SCHED` | 2000 |
 | `MEMO_PROCESS_FORK` | 2000 |
 | `MEMO_PROCESS_EXIT` | 2000 |
-| `MEMO_PROCESS_EXEC` | 1618 |
-| `MEMO_MEMORY` | 305 |
+| `MEMO_PROCESS_EXEC` | 2000 |
+| `MEMO_MEMORY` | 160 |
+| `MEMO_STATUS` | 40 |
 
 系统状态变化：
 
 | 指标 | 变化 |
 | --- | ---: |
-| MemAvailable | -623816 kB |
-| UDP in datagrams | +742 |
-| UDP out datagrams | +797 |
-| pgscan_direct | +544 |
-| pgscan_kswapd | +112817 |
-| 温度 | +0.2 C |
+| MemAvailable | -493228 kB |
+| UDP in datagrams | +697 |
+| UDP out datagrams | +711 |
+| pgscan_direct | 0 |
+| pgscan_kswapd | +11010 |
+| 温度 | +0.3 C |
 
 这说明实验确实覆盖了 app 切换、文件/库访问、网络收发、Binder/service、调度、内存回收等系统层信号。
 
@@ -132,11 +158,11 @@ app_sequence_baseline
 | 指标 | 结果 |
 | --- | --- |
 | MAPLE 可用配置 | 8/8 |
-| 改变 predicted app id | `no_binder_service`, `no_memory`, `app_sequence_baseline` |
+| 改变 predicted app id | `no_network`, `no_memory`, `app_sequence_baseline` |
 | 改变 Top-1 应用 | `no_network` |
 | 改变调度域 | `no_network`, `no_camera_media`, `no_display_ui`, `no_binder_service` |
-| 平均端到端耗时 | 32.3 s |
-| 最慢配置 | 79.4 s |
-| 最快配置 | 13.9 s |
+| 平均端到端耗时 | 18.5 s |
+| 最慢配置 | 58.1 s |
+| 最快配置 | 8.4 s |
 
 解读：network 证据对 Top-1 应用最敏感；binder/memory/app-sequence baseline 会改变 MAPLE 内部 app id；camera/display/binder 对调度动作域有明显影响。这说明 eBPF 的深层证据不是装饰，它会改变最终推荐或调度策略。

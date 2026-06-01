@@ -57,6 +57,7 @@
 docs/real_device_experiments/real_usage_100/latest_usage_100_report.json
 docs/real_device_experiments/real_usage_100/usage_summary.json
 docs/real_device_experiments/real_usage_100/usage_100_raw_trace.trace
+docs/real_device_experiments/real_usage_100/latest_real_usage_maple_scenario.json
 docs/real_device_experiments/real_usage_100/latest_real_ablation_after_usage_100.json
 ```
 
@@ -67,15 +68,17 @@ docs/real_device_experiments/real_usage_100/latest_real_ablation_after_usage_100
 | 请求 app 打开 | 100 |
 | 实际观测 app 打开 | 100 |
 | 覆盖真实应用 | 12 个 |
-| eBPF parsed events | 15925 |
-| 平均启动 TotalTime | 191.9 ms |
-| P50 启动 TotalTime | 136 ms |
+| timestamped app sequence | 100 条 |
+| timeline windows | 20 个 |
+| eBPF parsed events | 16200 |
+| 平均启动 TotalTime | 148.1 ms |
+| P50 启动 TotalTime | 123 ms |
 | MAPLE backend | shell |
 | Top-3 | Chrome, Messages, Camera |
-| 完整设备端耗时 | 397.6 s |
-| 前台可见处理耗时 | 16.1 s |
+| 完整设备端耗时 | 301.3 s |
+| 前台可见处理耗时 | 14.5 s |
 
-解释：397.6 s 包含 100 次真实 app rotation、MAPLE 推理、ActionExecutor、以及 8 组消融。用户看到的是 `已完成`，不会再看到“过慢实时状态”。
+解释：301.3 s 包含 100 次真实 app rotation、20 个分窗 eBPF 采集、MAPLE 推理、ActionExecutor、以及 8 组消融。用户看到的是 `已完成`，不会再看到“过慢实时状态”。MAPLE 输入已经包含 `observed_app_sequence` 和 `timeline_windows`，即真实 app 序列和同时间窗 eBPF/system evidence。
 
 ## 性能 A/B 实验结果
 
@@ -152,6 +155,6 @@ docs/real_device_experiments/button_audit/latest_button_audit_results.txt
 ```text
 Jingyi 这边已经把 MEMO-Appflow 从 host 脚本原型推进成真机端侧产品闭环。
 在 rooted Pixel 5 上，App 能从按钮启动真实 eBPF 采集、MAPLE 推理、Top-3 推荐、系统调度、Widget/报告展示。
-100 次真实 app 使用实验跑通，采到 15925 条 eBPF 事件，并产出 Chrome/Messages/Camera Top-3。
+100 次真实 app 使用实验跑通，采到 16200 条 eBPF 兼容事件行，构造出 100 条 timestamped app sequence 和 20 个 app/eBPF 对齐时间窗，并产出 Chrome/Messages/Camera Top-3。
 压力 A/B 实验显示平均综合压力改善 29.70%，启动 TotalTime 改善 12.28%，但也记录了反例，不夸大。
 ```

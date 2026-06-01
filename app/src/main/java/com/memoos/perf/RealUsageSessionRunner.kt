@@ -14,9 +14,11 @@ import com.memoos.ebpf.DeviceCollectorDeployer
 import com.memoos.ebpf.EBPFEvent
 import com.memoos.ebpf.EBPFTraceParser
 import com.memoos.maple.MapleInferenceOrchestrator
+import com.memoos.maple.MapleAppTimelineEntry
 import com.memoos.maple.MaplePrediction
 import com.memoos.maple.MapleScenario
 import com.memoos.maple.MapleScenarioBuilder
+import com.memoos.maple.MapleTimelineWindow
 import com.memoos.state.SystemStateCollector
 import com.memoos.state.SystemStateSnapshot
 import org.json.JSONArray
@@ -62,6 +64,7 @@ class RealUsageSessionRunner(private val context: Context) {
         }
         val after = timer.measure("system_state_after") { SystemStateCollector(context).collect() }
         val launchStats = parseLaunchStats(interaction.stdout, steps)
+        val appTimeline = launchStats.map { it.toMapleTimelineEntry() }
         val topInteractionCategories = interactionCategoryCounts(steps)
 
         val scenario = timer.measure("scenario_build") {
@@ -72,9 +75,12 @@ class RealUsageSessionRunner(private val context: Context) {
                 description = "User-like Android session: MEMO opened real launchable apps $iterations times, collected raw eBPF evidence, then ran MAPLE and scheduling actions on device. Raw trace: $tracePath.",
                 targetPackage = null,
                 targetCategories = topInteractionCategories.keys.take(6),
+                appTimeline = appTimeline,
+                timelineWindows = interaction.timelineWindows,
             )
         }
         File(context.getExternalFilesDir(null), "latest_maple_scenario.json").writeText(scenario.scenarioJson)
+        publishPublicScenario(scenario)
 
         val prediction = timer.measure("maple_inference") { MapleInferenceOrchestrator(context).predict(scenario) }
         require(prediction.available) {
@@ -101,6 +107,7 @@ class RealUsageSessionRunner(private val context: Context) {
             )
         }
         val ablationReport = timer.measure("ablation_analysis") { RealEbpfAblationRunner(context).run(scenario.scenarioJson) }
+        publishPublicScenario(scenario)
         val measuredLatency = timer.snapshot(events.size, mapleTimedOut = prediction.error?.contains("timed out", ignoreCase = true) == true)
         val latency = measuredLatency.copy(
             foregroundMs = measuredLatency.stages
@@ -117,6 +124,7 @@ class RealUsageSessionRunner(private val context: Context) {
             steps = steps,
             interaction = interaction,
             launches = launchStats,
+            appTimeline = appTimeline,
             events = events,
             before = before,
             after = after,
@@ -165,26 +173,52 @@ class RealUsageSessionRunner(private val context: Context) {
     private fun collectWhileRunningInteractions(tracePath: String, steps: List<UsageStep>): InteractionRun {
         RootShell.run("mkdir -p '${DevicePaths.LOG_DIR}'", requireRoot = true, timeoutMs = 3_000L)
         val collector = DevicePaths.RAW_COLLECTOR
-        val durationSec = ((steps.size * 2.2) + 40.0).toInt().coerceAtLeast(120)
-        RootShell.run(
-            "rm -f '$tracePath'; ($collector --duration-sec $durationSec --max-events $MAX_EVENTS --output '$tracePath' 2>&1) & echo \$!",
-            requireRoot = true,
-            timeoutMs = 3_000L,
-        )
-        waitForCollector(tracePath)
-        val command = buildInteractionCommand(steps)
-        val output = RootShell.run(command, requireRoot = true, timeoutMs = (durationSec * 1_000L).coerceAtLeast(240_000L))
-        RootShell.run("pkill -TERM -f memo_libbpf_collector 2>/dev/null", requireRoot = true, timeoutMs = 3_000L)
-        waitForCollectorStop(tracePath)
-        return InteractionRun(output.ok, output.stdout + "\n" + output.stderr)
+        val windows = mutableListOf<MapleTimelineWindow>()
+        val outputText = StringBuilder()
+        var allOk = true
+        RootShell.run("rm -f '$tracePath'; : > '$tracePath'", requireRoot = true, timeoutMs = 3_000L)
+        steps.chunked(TIMELINE_WINDOW_STEPS).forEachIndexed { windowIndex, windowSteps ->
+            val windowTrace = "$tracePath.window_${windowIndex + 1}"
+            val durationSec = ((windowSteps.size * 4.0) + 25.0).toInt().coerceAtLeast(40)
+            RootShell.run(
+                "rm -f '$windowTrace'; ($collector --duration-sec $durationSec --max-events $MAX_EVENTS_PER_TIMELINE_WINDOW --output '$windowTrace' 2>&1) & echo \$!",
+                requireRoot = true,
+                timeoutMs = 3_000L,
+            )
+            waitForCollector(windowTrace)
+            val startWall = System.currentTimeMillis()
+            val command = buildInteractionCommand(windowSteps)
+            val output = RootShell.run(command, requireRoot = true, timeoutMs = (durationSec * 1_000L).coerceAtLeast(60_000L))
+            val endWall = System.currentTimeMillis()
+            allOk = allOk && output.ok
+            outputText.appendLine(output.stdout)
+            outputText.appendLine(output.stderr)
+            RootShell.run("pkill -TERM -f memo_libbpf_collector 2>/dev/null", requireRoot = true, timeoutMs = 3_000L)
+            waitForCollectorStop(windowTrace)
+            RootShell.run("cat '$windowTrace' >> '$tracePath'", requireRoot = true, timeoutMs = 5_000L)
+
+            val rawLines = readMemoLines(windowTrace, maxLines = MAX_EVENTS_PER_TIMELINE_WINDOW + 32)
+            val events = EBPFTraceParser.parseLines(rawLines.asSequence())
+            val launches = parseLaunchStats(output.stdout + "\n" + output.stderr, windowSteps)
+            windows += MapleTimelineWindow(
+                index = windowIndex + 1,
+                startWallTimeMs = launches.mapNotNull { it.startWallTimeMs }.minOrNull() ?: startWall,
+                endWallTimeMs = launches.mapNotNull { it.endWallTimeMs }.maxOrNull() ?: endWall,
+                apps = launches.map { it.toMapleTimelineEntry() },
+                ebpfEventCounts = events.groupingBy { it.eventType }.eachCount(),
+                ebpfCounterTotals = counterTotals(events),
+            )
+        }
+        return InteractionRun(allOk, outputText.toString(), windows)
     }
 
     private fun buildInteractionCommand(steps: List<UsageStep>): String {
         return steps.joinToString("; ") { step ->
             buildString {
-                append("echo 'MEMO_STEP_BEGIN ${step.index} ${step.packageName}'; ")
+                append("echo MEMO_STEP_BEGIN ${step.index} ${step.packageName} ${'$'}(date +%s)000; ")
                 append("am start -W -n ").append(shellQuote(step.component)).append(" 2>&1; ")
                 append(gestureFor(step.index)).append("; ")
+                append("echo MEMO_STEP_END ${step.index} ${step.packageName} ${'$'}(date +%s)000; ")
                 append("input keyevent KEYCODE_HOME >/dev/null 2>&1; ")
                 append("sleep 0.20")
             }
@@ -218,9 +252,9 @@ class RealUsageSessionRunner(private val context: Context) {
         }
     }
 
-    private fun readMemoLines(tracePath: String): List<String> {
+    private fun readMemoLines(tracePath: String, maxLines: Int = MAX_EVENTS): List<String> {
         return RootShell.run(
-            "sed -n '/^MEMO/p' '$tracePath' 2>/dev/null | head -n $MAX_EVENTS",
+            "sed -n '/^MEMO/p' '$tracePath' 2>/dev/null | head -n $maxLines",
             requireRoot = true,
             timeoutMs = 12_000L,
         ).stdout.lineSequence().filter { it.isNotBlank() }.toList()
@@ -232,12 +266,25 @@ class RealUsageSessionRunner(private val context: Context) {
         var currentIndex: Int? = null
         output.lineSequence().forEach { raw ->
             val line = raw.trim()
-            val marker = Regex("""^MEMO_STEP_BEGIN\s+(\d+)\s+(\S+)""").find(line)
-            if (marker != null) {
-                val index = marker.groupValues[1].toIntOrNull() ?: return@forEach
+            val beginMarker = Regex("""^MEMO_STEP_BEGIN\s+(\d+)\s+(\S+)(?:\s+(\d+))?""").find(line)
+            if (beginMarker != null) {
+                val index = beginMarker.groupValues[1].toIntOrNull() ?: return@forEach
                 currentIndex = index
                 val step = byIndex[index] ?: return@forEach
-                observations.getOrPut(index) { MutableLaunchObservation(step) }.seen = true
+                observations.getOrPut(index) { MutableLaunchObservation(step) }.apply {
+                    seen = true
+                    startWallTimeMs = beginMarker.groupValues.getOrNull(3)?.toLongOrNull()
+                }
+                return@forEach
+            }
+            val endMarker = Regex("""^MEMO_STEP_END\s+(\d+)\s+(\S+)(?:\s+(\d+))?""").find(line)
+            if (endMarker != null) {
+                val index = endMarker.groupValues[1].toIntOrNull() ?: return@forEach
+                val step = byIndex[index] ?: return@forEach
+                observations.getOrPut(index) { MutableLaunchObservation(step) }.apply {
+                    seen = true
+                    endWallTimeMs = endMarker.groupValues.getOrNull(3)?.toLongOrNull()
+                }
                 return@forEach
             }
             val index = currentIndex ?: return@forEach
@@ -261,6 +308,8 @@ class RealUsageSessionRunner(private val context: Context) {
                 launchState = obs?.launchState,
                 totalTimeMs = obs?.totalTimeMs,
                 waitTimeMs = obs?.waitTimeMs,
+                startWallTimeMs = obs?.startWallTimeMs,
+                endWallTimeMs = obs?.endWallTimeMs,
                 observed = obs?.seen == true,
             )
         }
@@ -275,6 +324,7 @@ class RealUsageSessionRunner(private val context: Context) {
         steps: List<UsageStep>,
         interaction: InteractionRun,
         launches: List<LaunchObservation>,
+        appTimeline: List<MapleAppTimelineEntry>,
         events: List<EBPFEvent>,
         before: SystemStateSnapshot,
         after: SystemStateSnapshot,
@@ -306,6 +356,7 @@ class RealUsageSessionRunner(private val context: Context) {
             .put("scenario_id", scenario.scenarioId)
             .put("report_files", JSONObject()
                 .put("usage_report", "${DevicePaths.MEMO_PUBLIC_ROOT}/reports/latest_usage_${iterations}_report.json")
+                .put("scenario", "${DevicePaths.SCENARIO_DIR}/latest_real_usage_maple_scenario.json")
                 .put("ablation_report", "${DevicePaths.MEMO_PUBLIC_ROOT}/ablations/latest_real_ablation.json"))
             .put("app_usage_top", JSONArray(appCounts.entries.sortedByDescending { it.value }.map { (pkg, count) ->
                 JSONObject()
@@ -320,6 +371,8 @@ class RealUsageSessionRunner(private val context: Context) {
                 .put("avg_wait_time_ms", waitTimes.averageOrNull())
                 .put("p50_wait_time_ms", waitTimes.percentileOrNull(50))
                 .put("launch_state_counts", JSONObject(launches.mapNotNull { it.launchState }.groupingBy { it }.eachCount().mapValues { it.value })))
+            .put("app_sequence", JSONArray(appTimeline.map { it.toJsonForReport() }))
+            .put("timeline_windows", JSONArray(interaction.timelineWindows.map { it.toJsonForReport() }))
             .put("ebpf", JSONObject()
                 .put("parsed_events", events.size)
                 .put("event_counts", JSONObject(eventCounts.mapValues { it.value }))
@@ -351,6 +404,54 @@ class RealUsageSessionRunner(private val context: Context) {
             categories.take(3).forEach { category -> counts[category] = (counts[category] ?: 0) + 1 }
         }
         return counts.entries.sortedByDescending { it.value }.associate { it.key to it.value }.toMap(LinkedHashMap())
+    }
+
+    private fun counterTotals(events: List<EBPFEvent>): Map<String, Long> {
+        val totals = linkedMapOf<String, Long>()
+        events.forEach { event ->
+            val count = event.extra["arg1"]?.toLongOrNull() ?: return@forEach
+            totals[event.eventType] = maxOf(totals[event.eventType] ?: 0L, count)
+        }
+        return totals
+    }
+
+    private fun LaunchObservation.toMapleTimelineEntry(): MapleAppTimelineEntry {
+        return MapleAppTimelineEntry(
+            index = index,
+            packageName = packageName,
+            label = label,
+            categories = categories,
+            startWallTimeMs = startWallTimeMs,
+            endWallTimeMs = endWallTimeMs,
+            launchState = launchState,
+            totalTimeMs = totalTimeMs,
+            waitTimeMs = waitTimeMs,
+            observed = observed,
+        )
+    }
+
+    private fun MapleAppTimelineEntry.toJsonForReport(): JSONObject {
+        return JSONObject()
+            .put("index", index)
+            .put("package_name", packageName)
+            .put("label", label)
+            .put("categories", JSONArray(categories))
+            .put("start_wall_time_ms", startWallTimeMs ?: JSONObject.NULL)
+            .put("end_wall_time_ms", endWallTimeMs ?: JSONObject.NULL)
+            .put("launch_state", launchState ?: JSONObject.NULL)
+            .put("total_time_ms", totalTimeMs ?: JSONObject.NULL)
+            .put("wait_time_ms", waitTimeMs ?: JSONObject.NULL)
+            .put("observed", observed)
+    }
+
+    private fun MapleTimelineWindow.toJsonForReport(): JSONObject {
+        return JSONObject()
+            .put("index", index)
+            .put("start_wall_time_ms", startWallTimeMs)
+            .put("end_wall_time_ms", endWallTimeMs)
+            .put("apps", JSONArray(apps.map { it.toJsonForReport() }))
+            .put("ebpf_event_counts", JSONObject(ebpfEventCounts.mapValues { it.value }))
+            .put("ebpf_counter_totals", JSONObject(ebpfCounterTotals.mapValues { it.value }))
     }
 
     private fun SystemStateSnapshot.toJson(): JSONObject {
@@ -414,6 +515,19 @@ class RealUsageSessionRunner(private val context: Context) {
         )
     }
 
+    private fun publishPublicScenario(scenario: MapleScenario) {
+        val scenarioFile = File(context.getExternalFilesDir(null), "latest_real_usage_maple_scenario.json")
+        scenarioFile.writeText(scenario.scenarioJson)
+        RootShell.run(
+            "mkdir -p '${DevicePaths.SCENARIO_DIR}'; " +
+                "cp '${scenarioFile.absolutePath}' '${DevicePaths.SCENARIO_DIR}/latest_real_usage_maple_scenario.json'; " +
+                "cp '${scenarioFile.absolutePath}' '${DevicePaths.SCENARIO_DIR}/latest_maple_scenario.json'; " +
+                "chmod 0644 '${DevicePaths.SCENARIO_DIR}/latest_real_usage_maple_scenario.json' '${DevicePaths.SCENARIO_DIR}/latest_maple_scenario.json'",
+            requireRoot = true,
+            timeoutMs = 5_000L,
+        )
+    }
+
     private fun requireLocalMapleRuntime() {
         val required = listOf(
             DevicePaths.MAPLE_DEMO,
@@ -467,6 +581,7 @@ class RealUsageSessionRunner(private val context: Context) {
     private data class InteractionRun(
         val ok: Boolean,
         val stdout: String,
+        val timelineWindows: List<MapleTimelineWindow>,
     )
 
     private data class MutableLaunchObservation(
@@ -476,6 +591,8 @@ class RealUsageSessionRunner(private val context: Context) {
         var launchState: String? = null,
         var totalTimeMs: Long? = null,
         var waitTimeMs: Long? = null,
+        var startWallTimeMs: Long? = null,
+        var endWallTimeMs: Long? = null,
     )
 
     private data class LaunchObservation(
@@ -487,6 +604,8 @@ class RealUsageSessionRunner(private val context: Context) {
         val launchState: String?,
         val totalTimeMs: Long?,
         val waitTimeMs: Long?,
+        val startWallTimeMs: Long?,
+        val endWallTimeMs: Long?,
         val observed: Boolean,
     )
 
@@ -494,6 +613,8 @@ class RealUsageSessionRunner(private val context: Context) {
         const val DEFAULT_ITERATIONS = 100
         const val APP_POOL_SIZE = 12
         const val MAX_EVENTS = 20_000
+        const val MAX_EVENTS_PER_TIMELINE_WINDOW = 1_000
+        const val TIMELINE_WINDOW_STEPS = 5
         const val COLLECTOR_ATTACH_TIMEOUT_MS = 10_000L
         const val COLLECTOR_STOP_TIMEOUT_MS = 12_000L
         private val NON_BLOCKING_STAGES = setOf("real_app_rotation", "maple_inference", "ablation_analysis")
