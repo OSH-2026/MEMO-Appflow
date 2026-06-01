@@ -1,0 +1,564 @@
+{
+  "schema_version": "memo.free_usage_session.v1",
+  "experiment_type": "free_usage_session",
+  "session_mode": "free_usage",
+  "processing_pipeline": [
+    "app_sequence_capture:manual_foreground_app_sampler",
+    "raw_ebpf_trace:libbpf_core_collector",
+    "timeline_alignment:wall_time_windows",
+    "ebpf_compression:windowed_count_rate_signals",
+    "maple_inference:compressed_timeline_scenario",
+    "top3_mapping:installed_launchable_apps",
+    "action_execution:non_intrusive_scheduler",
+    "report_widget_update:device_side_outputs"
+  ],
+  "started_at_ms": 1780306126742,
+  "ended_at_ms": 1780306148392,
+  "duration_ms": 21650,
+  "interaction_count_requested": 4,
+  "interaction_count_observed": 4,
+  "app_sample_count": 13,
+  "unique_apps_opened": 4,
+  "interaction_command_ok": true,
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/free_usage_1780306126742.trace",
+  "app_samples_path": "\/sdcard\/MEMO\/logs\/free_usage_1780306126742_apps.tsv",
+  "scenario_id": "free_usage_1780306126742",
+  "report_files": {
+    "usage_report": "\/sdcard\/MEMO\/reports\/latest_free_usage_report.json",
+    "scenario": "\/sdcard\/MEMO\/scenarios\/latest_maple_scenario.json"
+  },
+  "app_usage_top": [
+    {
+      "package_name": "com.android.chrome",
+      "label": "Chrome",
+      "count": 1
+    },
+    {
+      "package_name": "com.google.android.apps.messaging",
+      "label": "Messages",
+      "count": 1
+    },
+    {
+      "package_name": "com.google.android.GoogleCamera",
+      "label": "Camera",
+      "count": 1
+    },
+    {
+      "package_name": "com.android.settings",
+      "label": "Settings",
+      "count": 1
+    }
+  ],
+  "category_usage": {
+    "Camera Service": 4,
+    "Media Codec": 3,
+    "Network IO": 2,
+    "App Process Runtime": 2,
+    "Communication": 1
+  },
+  "launch_metrics": {
+    "avg_total_time_ms": null,
+    "p50_total_time_ms": null,
+    "avg_wait_time_ms": null,
+    "avg_dwell_time_ms": 2491.5,
+    "p50_dwell_time_ms": 2179,
+    "launch_state_counts": {
+      "OBSERVED": 4
+    }
+  },
+  "app_sequence": [
+    {
+      "index": 1,
+      "package_name": "com.android.chrome",
+      "label": "Chrome",
+      "categories": [
+        "Network IO",
+        "App Process Runtime",
+        "Camera Service",
+        "Media Codec",
+        "Navigation\/Location",
+        "Communication",
+        "Payment\/Security"
+      ],
+      "start_wall_time_ms": 1780306132244,
+      "end_wall_time_ms": 1780306134423,
+      "launch_state": "OBSERVED",
+      "total_time_ms": null,
+      "wait_time_ms": null,
+      "observed": true
+    },
+    {
+      "index": 2,
+      "package_name": "com.google.android.apps.messaging",
+      "label": "Messages",
+      "categories": [
+        "Communication",
+        "Camera Service",
+        "Media Codec",
+        "Network IO",
+        "Navigation\/Location"
+      ],
+      "start_wall_time_ms": 1780306135528,
+      "end_wall_time_ms": 1780306137702,
+      "launch_state": "OBSERVED",
+      "total_time_ms": null,
+      "wait_time_ms": null,
+      "observed": true
+    },
+    {
+      "index": 3,
+      "package_name": "com.google.android.GoogleCamera",
+      "label": "Camera",
+      "categories": [
+        "Camera Service",
+        "Media Codec",
+        "Network IO",
+        "Navigation\/Location",
+        "Payment\/Security"
+      ],
+      "start_wall_time_ms": 1780306138780,
+      "end_wall_time_ms": 1780306142128,
+      "launch_state": "OBSERVED",
+      "total_time_ms": null,
+      "wait_time_ms": null,
+      "observed": true
+    },
+    {
+      "index": 4,
+      "package_name": "com.android.settings",
+      "label": "Settings",
+      "categories": [
+        "App Process Runtime",
+        "Camera Service",
+        "Media Codec",
+        "Network IO",
+        "Navigation\/Location",
+        "Communication",
+        "Payment\/Security"
+      ],
+      "start_wall_time_ms": 1780306143227,
+      "end_wall_time_ms": 1780306145492,
+      "launch_state": "OBSERVED",
+      "total_time_ms": null,
+      "wait_time_ms": null,
+      "observed": true
+    }
+  ],
+  "timeline_windows": [
+    {
+      "index": 1,
+      "start_wall_time_ms": 1780306132244,
+      "end_wall_time_ms": 1780306145492,
+      "apps": [
+        {
+          "index": 1,
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation\/Location",
+            "Communication",
+            "Payment\/Security"
+          ],
+          "start_wall_time_ms": 1780306132244,
+          "end_wall_time_ms": 1780306134423,
+          "launch_state": "OBSERVED",
+          "total_time_ms": null,
+          "wait_time_ms": null,
+          "observed": true
+        },
+        {
+          "index": 2,
+          "package_name": "com.google.android.apps.messaging",
+          "label": "Messages",
+          "categories": [
+            "Communication",
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation\/Location"
+          ],
+          "start_wall_time_ms": 1780306135528,
+          "end_wall_time_ms": 1780306137702,
+          "launch_state": "OBSERVED",
+          "total_time_ms": null,
+          "wait_time_ms": null,
+          "observed": true
+        },
+        {
+          "index": 3,
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation\/Location",
+            "Payment\/Security"
+          ],
+          "start_wall_time_ms": 1780306138780,
+          "end_wall_time_ms": 1780306142128,
+          "launch_state": "OBSERVED",
+          "total_time_ms": null,
+          "wait_time_ms": null,
+          "observed": true
+        },
+        {
+          "index": 4,
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "categories": [
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation\/Location",
+            "Communication",
+            "Payment\/Security"
+          ],
+          "start_wall_time_ms": 1780306143227,
+          "end_wall_time_ms": 1780306145492,
+          "launch_state": "OBSERVED",
+          "total_time_ms": null,
+          "wait_time_ms": null,
+          "observed": true
+        }
+      ],
+      "ebpf_event_counts": {
+        "MEMO_STATUS": 2,
+        "MEMO_BINDER": 2400,
+        "MEMO_OPENAT": 2400,
+        "MEMO_MEMORY": 18,
+        "MEMO_SENDTO": 2400,
+        "MEMO_RECVFROM": 2400,
+        "MEMO_SCHED": 2400,
+        "MEMO_PROCESS_FORK": 889,
+        "MEMO_PROCESS_EXIT": 766,
+        "MEMO_PROCESS_EXEC": 438
+      },
+      "ebpf_counter_totals": {
+        "MEMO_STATUS": 0,
+        "MEMO_BINDER": 23108,
+        "MEMO_OPENAT": 34711,
+        "MEMO_MEMORY": 18,
+        "MEMO_SENDTO": 7927,
+        "MEMO_RECVFROM": 15572,
+        "MEMO_SCHED": 405940,
+        "MEMO_PROCESS_FORK": 889,
+        "MEMO_PROCESS_EXIT": 766,
+        "MEMO_PROCESS_EXEC": 438
+      },
+      "compressed_ebpf": [
+        {
+          "event_type": "MEMO_SCHED",
+          "detail": "sched_switch_or_wakeup",
+          "count": 405940,
+          "rate_per_sec": 30641.60628019324
+        },
+        {
+          "event_type": "MEMO_OPENAT",
+          "detail": "openat",
+          "count": 34711,
+          "rate_per_sec": 2620.0935990338166
+        },
+        {
+          "event_type": "MEMO_BINDER",
+          "detail": "binder_transaction",
+          "count": 23108,
+          "rate_per_sec": 1744.2632850241546
+        },
+        {
+          "event_type": "MEMO_RECVFROM",
+          "detail": "recvfrom",
+          "count": 15572,
+          "rate_per_sec": 1175.4227053140098
+        },
+        {
+          "event_type": "MEMO_SENDTO",
+          "detail": "sendto",
+          "count": 7927,
+          "rate_per_sec": 598.3544685990338
+        },
+        {
+          "event_type": "MEMO_PROCESS_FORK",
+          "detail": "process_fork",
+          "count": 889,
+          "rate_per_sec": 67.10446859903382
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXIT",
+          "detail": "process_exit",
+          "count": 766,
+          "rate_per_sec": 57.820048309178745
+        },
+        {
+          "event_type": "MEMO_PROCESS_EXEC",
+          "detail": "process_exec",
+          "count": 438,
+          "rate_per_sec": 33.061594202898554
+        },
+        {
+          "event_type": "MEMO_MEMORY",
+          "detail": "reclaim_or_kswapd",
+          "count": 18,
+          "rate_per_sec": 1.358695652173913
+        }
+      ]
+    }
+  ],
+  "compression": {
+    "strategy": "windowed_count_aggregation",
+    "raw_ebpf_rows_for_audit": 14113,
+    "observed_app_sequence_rows": 4,
+    "timeline_windows": 1,
+    "compressed_ebpf_signal_rows": 9,
+    "model_input_note": "MAPLE receives per-window event_type\/detail\/count\/rate_per_sec compressed signals; raw trace remains available only for audit."
+  },
+  "ebpf": {
+    "parsed_events": 14113,
+    "compressed_signal_rows_for_maple": 9,
+    "event_counts": {
+      "MEMO_STATUS": 2,
+      "MEMO_BINDER": 2400,
+      "MEMO_OPENAT": 2400,
+      "MEMO_MEMORY": 18,
+      "MEMO_SENDTO": 2400,
+      "MEMO_RECVFROM": 2400,
+      "MEMO_SCHED": 2400,
+      "MEMO_PROCESS_FORK": 889,
+      "MEMO_PROCESS_EXIT": 766,
+      "MEMO_PROCESS_EXEC": 438
+    },
+    "top_event_types": [
+      "MEMO_BINDER:2400",
+      "MEMO_OPENAT:2400",
+      "MEMO_SENDTO:2400",
+      "MEMO_RECVFROM:2400",
+      "MEMO_SCHED:2400",
+      "MEMO_PROCESS_FORK:889",
+      "MEMO_PROCESS_EXIT:766",
+      "MEMO_PROCESS_EXEC:438"
+    ]
+  },
+  "system_before": {
+    "wall_time": "2026-06-01T17:28:49.673291+08:00",
+    "mem_available_kb": 3522376,
+    "mem_total_kb": 7640460,
+    "memory_pressure": "normal",
+    "swap_free_kb": 1060428,
+    "pgscan_direct": 28727,
+    "pgscan_kswapd": 3225803,
+    "battery_percent": 100,
+    "temperature_c": 32.4,
+    "thermal_risk": "normal",
+    "udp_in_datagrams": 37887,
+    "udp_out_datagrams": 38808,
+    "udp_socket_count": 79,
+    "foreground_package": null,
+    "surfaceflinger_pid": null,
+    "cameraserver_pid": null,
+    "mediacodec_pid": null,
+    "render_thread_observed": false
+  },
+  "system_after": {
+    "wall_time": "2026-06-01T17:29:15.535326+08:00",
+    "mem_available_kb": 3389104,
+    "mem_total_kb": 7640460,
+    "memory_pressure": "normal",
+    "swap_free_kb": 1072080,
+    "pgscan_direct": 28727,
+    "pgscan_kswapd": 3259576,
+    "battery_percent": 100,
+    "temperature_c": 32.4,
+    "thermal_risk": "normal",
+    "udp_in_datagrams": 37914,
+    "udp_out_datagrams": 38841,
+    "udp_socket_count": 79,
+    "foreground_package": null,
+    "surfaceflinger_pid": null,
+    "cameraserver_pid": null,
+    "mediacodec_pid": null,
+    "render_thread_observed": false
+  },
+  "system_delta": {
+    "mem_available_delta_kb": -133272,
+    "udp_in_delta": 27,
+    "udp_out_delta": 33,
+    "pgscan_direct_delta": 0,
+    "pgscan_kswapd_delta": 33773,
+    "battery_percent_delta": 0,
+    "temperature_c_delta": 0
+  },
+  "maple": {
+    "backend": "shell",
+    "predicted_app_id": 280,
+    "stage1": [
+      "App Process Runtime (100%)"
+    ]
+  },
+  "recommendations": [
+    {
+      "package_name": "com.android.chrome",
+      "label": "Chrome",
+      "category": "Network IO",
+      "confidence": 0.98
+    },
+    {
+      "package_name": "com.google.android.apps.messaging",
+      "label": "Messages",
+      "category": "Communication",
+      "confidence": 0.98
+    },
+    {
+      "package_name": "com.google.android.GoogleCamera",
+      "label": "Camera",
+      "category": "Camera Service",
+      "confidence": 0.9
+    }
+  ],
+  "actions": [
+    {
+      "name": "widget_update",
+      "target": "top3",
+      "status": "ok",
+      "detail": "published 3 real app recommendations",
+      "duration_ms": 5
+    },
+    {
+      "name": "latency_policy",
+      "target": "async_maple",
+      "status": "ok",
+      "detail": "MAPLE prediction ran asynchronously; completion latency=25.3s; slow runs still finish and still drive actions",
+      "duration_ms": 0
+    },
+    {
+      "name": "memory_policy",
+      "target": "preload_intensity",
+      "status": "ok",
+      "detail": "normal memory; lightweight warm launch remains enabled",
+      "duration_ms": 0
+    },
+    {
+      "name": "thermal_policy",
+      "target": "preload_intensity",
+      "status": "ok",
+      "detail": "normal battery thermal state",
+      "duration_ms": 0
+    },
+    {
+      "name": "network_candidate_priority",
+      "target": "com.android.chrome, com.google.android.apps.messaging",
+      "status": "ok",
+      "detail": "UDP sendto\/recvfrom evidence prioritizes network-capable apps",
+      "duration_ms": 0
+    },
+    {
+      "name": "network_stats_refresh",
+      "target": "netstats",
+      "status": "ok",
+      "detail": "refreshed network stats before recommendation",
+      "duration_ms": 104
+    },
+    {
+      "name": "camera_media_candidate",
+      "target": "com.google.android.GoogleCamera",
+      "status": "ok",
+      "detail": "selected Camera for camera\/media follow-up warm launch",
+      "duration_ms": 0
+    },
+    {
+      "name": "binder_service_policy",
+      "target": "system_services",
+      "status": "ok",
+      "detail": "Binder\/system-service evidence kept as MAPLE scheduling context",
+      "duration_ms": 0
+    },
+    {
+      "name": "binder_service_refresh",
+      "target": "service_manager",
+      "status": "ok",
+      "detail": "queried service manager after high Binder activity",
+      "duration_ms": 305
+    },
+    {
+      "name": "warm_launch_policy",
+      "target": "top_apps",
+      "status": "planned",
+      "detail": "background mode prepared warm-launch candidates but did not switch the screen; tap explicit prewarm to execute",
+      "duration_ms": 0
+    }
+  ],
+  "optimization_effect": {
+    "action_count": 10,
+    "executed_count": 9,
+    "prepared_count": 1,
+    "skipped_count": 0,
+    "domains": [
+      "recommendation_display",
+      "memory",
+      "network",
+      "camera_media",
+      "system_service",
+      "warm_launch"
+    ],
+    "how_performance_can_improve": "MEMO used the observed app sequence and eBPF evidence to update Top-3 recommendations, refresh network\/service state, adjust memory\/display policy, and prepare non-intrusive warm-launch candidates. This free session has no fixed off-baseline, so percentage improvement is reported by the separate A\/B experiment."
+  },
+  "latency": {
+    "mode": "free_usage_session",
+    "started_at_ms": 1780306148392,
+    "total_ms": 25791,
+    "foreground_ms": 9157,
+    "parsed_events": 14113,
+    "maple_timed_out": false,
+    "realtime_status": "completed",
+    "stages": [
+      {
+        "name": "stop_collectors",
+        "duration_ms": 1251
+      },
+      {
+        "name": "ebpf_trace_read",
+        "duration_ms": 1020
+      },
+      {
+        "name": "ebpf_parse",
+        "duration_ms": 1468
+      },
+      {
+        "name": "app_samples_read",
+        "duration_ms": 106
+      },
+      {
+        "name": "app_timeline_build",
+        "duration_ms": 166
+      },
+      {
+        "name": "timeline_window_build",
+        "duration_ms": 272
+      },
+      {
+        "name": "system_state_after",
+        "duration_ms": 2859
+      },
+      {
+        "name": "scenario_build",
+        "duration_ms": 1132
+      },
+      {
+        "name": "maple_inference",
+        "duration_ms": 16634
+      },
+      {
+        "name": "maple_app_mapping",
+        "duration_ms": 149
+      },
+      {
+        "name": "action_execution",
+        "duration_ms": 521
+      }
+    ]
+  }
+}

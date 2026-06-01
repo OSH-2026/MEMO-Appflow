@@ -348,9 +348,12 @@ class RealUsageSessionRunner(private val context: Context) {
         val launchTimes = launches.mapNotNull { it.totalTimeMs }
         val waitTimes = launches.mapNotNull { it.waitTimeMs }
         val successfulLaunches = launches.count { it.status.equals("ok", ignoreCase = true) || it.observed }
+        val compressedSignalCount = interaction.timelineWindows.sumOf { it.compressedEbpf.size }
         return JSONObject()
             .put("schema_version", "memo.real_usage_100.v1")
             .put("experiment_type", "real_user_like_100_app_rotation")
+            .put("session_mode", "fixed_100_app_rotation")
+            .put("processing_pipeline", processingPipeline("automatic_100_app_rotation"))
             .put("started_at_ms", startedAtMs)
             .put("duration_ms", durationMs)
             .put("interaction_count_requested", iterations)
@@ -379,8 +382,19 @@ class RealUsageSessionRunner(private val context: Context) {
                 .put("launch_state_counts", JSONObject(launches.mapNotNull { it.launchState }.groupingBy { it }.eachCount().mapValues { it.value })))
             .put("app_sequence", JSONArray(appTimeline.map { it.toJsonForReport() }))
             .put("timeline_windows", JSONArray(interaction.timelineWindows.map { it.toJsonForReport() }))
+            .put("compression", JSONObject()
+                .put("strategy", "windowed_count_aggregation")
+                .put("raw_ebpf_rows_for_audit", events.size)
+                .put("observed_app_sequence_rows", appTimeline.size)
+                .put("timeline_windows", interaction.timelineWindows.size)
+                .put("compressed_ebpf_signal_rows", compressedSignalCount)
+                .put(
+                    "model_input_note",
+                    "MAPLE receives per-window event_type/detail/count/rate_per_sec compressed signals; raw trace remains available only for audit.",
+                ))
             .put("ebpf", JSONObject()
                 .put("parsed_events", events.size)
+                .put("compressed_signal_rows_for_maple", compressedSignalCount)
                 .put("event_counts", JSONObject(eventCounts.mapValues { it.value }))
                 .put("top_event_types", JSONArray(eventCounts.entries.sortedByDescending { it.value }.take(8).map { "${it.key}:${it.value}" })))
             .put("system_before", before.toJson())
@@ -410,6 +424,19 @@ class RealUsageSessionRunner(private val context: Context) {
             categories.take(3).forEach { category -> counts[category] = (counts[category] ?: 0) + 1 }
         }
         return counts.entries.sortedByDescending { it.value }.associate { it.key to it.value }.toMap(LinkedHashMap())
+    }
+
+    private fun processingPipeline(appSource: String): JSONArray {
+        return JSONArray(listOf(
+            "app_sequence_capture:$appSource",
+            "raw_ebpf_trace:libbpf_core_collector",
+            "timeline_alignment:wall_time_windows",
+            "ebpf_compression:windowed_count_rate_signals",
+            "maple_inference:compressed_timeline_scenario",
+            "top3_mapping:installed_launchable_apps",
+            "action_execution:non_intrusive_scheduler",
+            "report_widget_update:device_side_outputs",
+        ))
     }
 
     private fun counterTotals(events: List<EBPFEvent>): Map<String, Long> {

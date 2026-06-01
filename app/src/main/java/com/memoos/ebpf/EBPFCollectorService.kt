@@ -21,6 +21,7 @@ import com.memoos.device.RootShell
 import com.memoos.maple.MapleInferenceOrchestrator
 import com.memoos.maple.MapleScenario
 import com.memoos.maple.MapleScenarioBuilder
+import com.memoos.perf.FreeUsageSessionRunner
 import com.memoos.perf.PipelineTimer
 import com.memoos.perf.PressureExperimentRunner
 import com.memoos.perf.RealUsageSessionRunner
@@ -48,11 +49,13 @@ class EBPFCollectorService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(NOTIFICATION_ID, notification("MEMO pipeline is running"))
         when (intent?.action) {
-            ACTION_STOP -> stopPipeline()
+            ACTION_STOP -> if (MemoStore(this).load().freeUsageSession.active) finishFreeUsageSession() else stopPipeline()
             ACTION_CHECK_SETUP -> checkDeviceSetup()
             ACTION_WARM_TOP_APP -> warmTopRecommendation()
             ACTION_FULL_LOCAL_EVALUATION -> runRealUserExperiment(RealUserExperimentPlanner.KIND_SCROLL, runAblationAfterMaple = true)
             ACTION_RUN_ONCE, null -> runPipelineOnce()
+            ACTION_FREE_USAGE_START -> startFreeUsageSession()
+            ACTION_FREE_USAGE_FINISH -> finishFreeUsageSession()
             ACTION_RECORD_CURRENT_USAGE -> runRealUserExperiment(RealUserExperimentPlanner.KIND_CURRENT)
             ACTION_EXPERIMENT_COMMUNICATION -> runRealUserExperiment(RealUserExperimentPlanner.KIND_COMMUNICATION)
             ACTION_EXPERIMENT_CAMERA -> runRealUserExperiment(RealUserExperimentPlanner.KIND_CAMERA)
@@ -323,6 +326,79 @@ class EBPFCollectorService : Service() {
         }
     }
 
+    private fun startFreeUsageSession() {
+        val existing = MemoStore(this).load().freeUsageSession
+        if (existing.active) {
+            MemoStore(this).appendAction(
+                ActionResult(
+                    "free_usage_session",
+                    "active_background_capture",
+                    "ok",
+                    "free usage session is already recording; return to MEMO and finish analysis",
+                ),
+            )
+            return
+        }
+        runningTask?.cancel(true)
+        mapleTask?.cancel(true)
+        runningTask = executor.submit {
+            try {
+                val started = FreeUsageSessionRunner(this).start()
+                MemoStore(this).saveFreeUsageSession(
+                    startedAtMs = started.startedAtMs,
+                    rawTracePath = started.rawTracePath,
+                    appSamplesPath = started.appSamplesPath,
+                    flagPath = started.flagPath,
+                    beforeStateJson = started.beforeStateJson,
+                )
+                MemoStore(this).appendAction(
+                    ActionResult(
+                        "free_usage_session",
+                        "active_background_capture",
+                        "ok",
+                        "free usage session is recording; leave MEMO, use any apps, then return and finish analysis",
+                    ),
+                )
+            } catch (exc: Exception) {
+                stopDeviceCollectors()
+                MemoStore(this).clearFreeUsageSession()
+                MemoStore(this).saveFailure("Free usage session failed to start: ${exc.message ?: exc.javaClass.simpleName}")
+                stopForeground(STOP_FOREGROUND_DETACH)
+            }
+        }
+    }
+
+    private fun finishFreeUsageSession() {
+        runningTask?.cancel(true)
+        mapleTask?.cancel(true)
+        runningTask = executor.submit {
+            try {
+                val active = MemoStore(this).load().freeUsageSession
+                val result = FreeUsageSessionRunner(this).finish(active)
+                val observed = result.usageReport.optInt("interaction_count_observed", 0)
+                val uniqueApps = result.usageReport.optInt("unique_apps_opened", 0)
+                val actions = result.actions +
+                    ActionResult(
+                        "free_usage_session",
+                        "free_usage_report",
+                        "ok",
+                        "analyzed free usage session with $observed observed app segments across $uniqueApps apps; report=${result.usageReport.optJSONObject("report_files")?.optString("usage_report") ?: "device report"}",
+                    ) +
+                    ActionResult("latency_summary", "pipeline", result.latency.realtimeStatus, result.latency.summaryLine())
+                MemoStore(this).save(result.scenario, result.prediction, result.recommendations, actions, result.latency)
+                MemoStore(this).saveUsageReport(result.usageReport)
+                MemoStore(this).clearFreeUsageSession()
+                MemoWidgetProvider.updateAll(this, result.recommendations)
+            } catch (exc: Exception) {
+                stopDeviceCollectors()
+                MemoStore(this).clearFreeUsageSession()
+                MemoStore(this).saveFailure("Free usage session analysis failed: ${exc.message ?: exc.javaClass.simpleName}")
+            } finally {
+                stopForeground(STOP_FOREGROUND_DETACH)
+            }
+        }
+    }
+
     private fun checkDeviceSetup() {
         runningTask?.cancel(true)
         mapleTask?.cancel(true)
@@ -587,6 +663,8 @@ class EBPFCollectorService : Service() {
         const val ACTION_CHECK_SETUP = "com.memoos.action.CHECK_SETUP"
         const val ACTION_WARM_TOP_APP = "com.memoos.action.WARM_TOP_APP"
         const val ACTION_FULL_LOCAL_EVALUATION = "com.memoos.action.FULL_LOCAL_EVALUATION"
+        const val ACTION_FREE_USAGE_START = "com.memoos.action.FREE_USAGE_START"
+        const val ACTION_FREE_USAGE_FINISH = "com.memoos.action.FREE_USAGE_FINISH"
         const val ACTION_RECORD_CURRENT_USAGE = "com.memoos.action.RECORD_CURRENT_USAGE"
         const val ACTION_EXPERIMENT_COMMUNICATION = "com.memoos.action.REAL_EXPERIMENT_COMMUNICATION"
         const val ACTION_EXPERIMENT_CAMERA = "com.memoos.action.REAL_EXPERIMENT_CAMERA"

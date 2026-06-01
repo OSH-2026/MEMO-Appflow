@@ -60,7 +60,7 @@ class EvidenceActivity : Activity() {
         val overview = verticalPanel()
         overview.addView(label("事件概览"))
         if (events.isEmpty()) {
-            overview.addView(body("还没有可读取的 raw eBPF 记录。请先运行“开始智能优化”，或者运行一次真实使用采集。"))
+            overview.addView(body("还没有可读取的 raw eBPF 记录。请先运行“智能优化：刷新当前推荐”，或者运行一次真实使用采集。"))
             state.evidenceLines.take(8).forEach { overview.addView(readableSummary(it)) }
         } else {
             events.groupingBy { it.eventType }.eachCount()
@@ -72,12 +72,13 @@ class EvidenceActivity : Activity() {
         root.addView(overview)
 
         val feed = verticalPanel()
-        feed.addView(label("真实收到的前 ${records.size} 条事件"))
+        val groupedRecords = aggregateRecords(records)
+        feed.addView(label("真实收到的前 ${records.size} 条事件，合并为 ${groupedRecords.size} 组"))
         if (records.isEmpty()) {
             feed.addView(body("没有可格式化的真实事件记录。"))
         } else {
-            feed.addView(body("下面每一条都来自 raw trace 文件。当前 raw collector 在采集窗口结束时读取 eBPF counter map，并把窗口内真实发生的内核事件计数展开成 MEMO 记录；这里显示文件里的前 ${records.size} 条，不手写、不随机生成。"))
-            records.forEach { record -> feed.addView(eventCard(record)) }
+            feed.addView(body("下面每一组都来自 raw trace 文件的前 ${records.size} 条真实记录。相同事件类型、进程、资源对象和细节会合并显示，并保留首次/末次收到时间和重复次数。"))
+            groupedRecords.forEach { record -> feed.addView(eventCard(record)) }
         }
         root.addView(feed)
     }
@@ -96,6 +97,46 @@ class EvidenceActivity : Activity() {
             .toList()
     }
 
+    private fun aggregateRecords(records: List<CapturedRecord>): List<AggregatedRecord> {
+        val groups = LinkedHashMap<String, MutableList<CapturedRecord>>()
+        records.forEach { record ->
+            groups.getOrPut(record.groupKey()) { mutableListOf() }.add(record)
+        }
+        return groups.values.map { group ->
+            AggregatedRecord(
+                firstIndex = group.first().index,
+                lastIndex = group.last().index,
+                occurrences = group.size,
+                firstRawLine = group.first().rawLine,
+                lastRawLine = group.last().rawLine,
+                event = group.first().event,
+                firstWallTimeMs = group.mapNotNull { it.event.wallTimeMs() }.minOrNull(),
+                lastWallTimeMs = group.mapNotNull { it.event.wallTimeMs() }.maxOrNull(),
+            )
+        }
+    }
+
+    private fun CapturedRecord.groupKey(): String {
+        val event = event
+        val process = event.comm?.takeIf { it.isNotBlank() } ?: event.traceTask ?: "unknown"
+        val target = event.path?.takeIf { it.isNotBlank() }
+            ?: event.detail?.takeIf { it.isNotBlank() }
+            ?: event.extra["raw_type"]
+            ?: ""
+        val operation = event.code?.toString()
+            ?: event.extra["arg0"]?.takeIf { it.isNotBlank() }
+            ?: ""
+        return listOf(
+            event.eventType,
+            process,
+            event.pid?.toString() ?: "",
+            event.tid?.toString() ?: event.traceTid?.toString().orEmpty(),
+            target,
+            operation,
+            event.evidenceCategory ?: "",
+        ).joinToString("|")
+    }
+
     private fun readableSummary(line: String): View {
         return TextView(this).apply {
             text = line
@@ -110,7 +151,7 @@ class EvidenceActivity : Activity() {
         }
     }
 
-    private fun eventCard(record: CapturedRecord): View {
+    private fun eventCard(record: AggregatedRecord): View {
         val event = record.event
         val panel = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
@@ -118,7 +159,13 @@ class EvidenceActivity : Activity() {
             background = rounded(Color.rgb(248, 250, 252), dp(8))
             layoutParams = LinearLayout.LayoutParams(match(), wrap()).apply { bottomMargin = dp(8) }
         }
-        panel.addView(text("第 ${record.index} 条真实记录 · ${eventName(event.eventType)}", 14f, Color.rgb(15, 23, 42), bold = true))
+        val range = if (record.firstIndex == record.lastIndex) {
+            "第 ${record.firstIndex} 条"
+        } else {
+            "第 ${record.firstIndex}-${record.lastIndex} 条"
+        }
+        panel.addView(text("$range · ${eventName(event.eventType)} · 重复 ${record.occurrences} 次", 14f, Color.rgb(15, 23, 42), bold = true))
+        panel.addView(text("收到时间: ${record.displayTime()}", 12f, Color.rgb(100, 116, 139)))
         val process = event.comm?.takeIf { it.isNotBlank() } ?: event.traceTask ?: "unknown"
         panel.addView(text("进程: $process  PID: ${event.pid ?: "-"}  TID: ${event.tid ?: event.traceTid ?: "-"}", 12f, Color.rgb(71, 85, 105)))
         panel.addView(text("资源类别: ${categoryName(event.evidenceCategory, event.eventType)}", 12f, Color.rgb(37, 99, 235)))
@@ -128,8 +175,11 @@ class EvidenceActivity : Activity() {
         event.detail?.takeIf { it.isNotBlank() && it != event.path }?.let {
             panel.addView(text("细节: ${shorten(it)}", 12f, Color.rgb(71, 85, 105)))
         }
-        panel.addView(text("内核时间戳: ${eventTime(event)}", 11f, Color.rgb(100, 116, 139)))
-        panel.addView(monoText("原始记录: ${shorten(record.rawLine, 180)}"))
+        panel.addView(text("内核时间: ${eventTime(event)}", 11f, Color.rgb(100, 116, 139)))
+        panel.addView(monoText("代表原始记录: ${shorten(record.firstRawLine, 180)}"))
+        if (record.occurrences > 1 && record.lastRawLine != record.firstRawLine) {
+            panel.addView(monoText("本组最后记录: ${shorten(record.lastRawLine, 180)}"))
+        }
         return panel
     }
 
@@ -176,14 +226,29 @@ class EvidenceActivity : Activity() {
     }
 
     private fun eventTime(event: EBPFEvent): String {
-        event.timestampNs?.let { return "%.3f s".format(Locale.US, it / 1_000_000_000.0) }
-        event.timestampS?.let { return "%.3f s".format(Locale.US, it) }
+        event.wallTimeMs()?.let { return formatWallTime(it) }
+        event.timestampNs?.let { return "相对内核时间 %.3f s".format(Locale.US, it / 1_000_000_000.0) }
+        event.timestampS?.let { return "相对内核时间 %.3f s".format(Locale.US, it) }
         return "unknown"
+    }
+
+    private fun EBPFEvent.wallTimeMs(): Long? {
+        timestampNs?.let {
+            if (it >= EPOCH_NS_THRESHOLD) return it / 1_000_000L
+        }
+        timestampS?.let {
+            if (it >= EPOCH_SECONDS_THRESHOLD) return (it * 1000.0).toLong()
+        }
+        return null
+    }
+
+    private fun formatWallTime(millis: Long): String {
+        return SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US).format(Date(millis))
     }
 
     private fun captureStartedAt(path: String): String {
         if (path.isBlank()) return "还没有记录"
-        val millis = Regex("""(?:device_window|real_user)_(\d+)""")
+        val millis = Regex("""(?:device_window|real_user|usage_100)_(\d+)""")
             .find(path)
             ?.groupValues
             ?.getOrNull(1)
@@ -263,7 +328,33 @@ class EvidenceActivity : Activity() {
         val event: EBPFEvent,
     )
 
+    private data class AggregatedRecord(
+        val firstIndex: Int,
+        val lastIndex: Int,
+        val occurrences: Int,
+        val firstRawLine: String,
+        val lastRawLine: String,
+        val event: EBPFEvent,
+        val firstWallTimeMs: Long?,
+        val lastWallTimeMs: Long?,
+    ) {
+        fun displayTime(): String {
+            val first = firstWallTimeMs
+            val last = lastWallTimeMs
+            if (first == null && last == null) return "见内核相对时间"
+            if (first == null) return formatMillis(last!!)
+            if (last == null || first == last) return formatMillis(first)
+            return "${formatMillis(first)} 到 ${formatMillis(last)}"
+        }
+
+        private fun formatMillis(millis: Long): String {
+            return SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US).format(Date(millis))
+        }
+    }
+
     private companion object {
         const val RAW_RECORD_LIMIT = 60
+        const val EPOCH_SECONDS_THRESHOLD = 946684800.0
+        const val EPOCH_NS_THRESHOLD = 946684800_000_000_000L
     }
 }

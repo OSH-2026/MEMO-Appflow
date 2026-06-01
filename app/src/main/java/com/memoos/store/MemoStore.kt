@@ -51,9 +51,11 @@ data class LatencyState(
 
 data class LastMemoState(
     val updatedAt: Long,
+    val recommendationsUpdatedAt: Long,
     val recommendations: List<RecommendationState>,
     val evidenceLines: List<String>,
     val rawTracePath: String,
+    val freeUsageSession: FreeUsageSessionState,
     val maple: MapleState,
     val actions: List<ActionState>,
     val scenarioJson: String,
@@ -64,6 +66,15 @@ data class LastMemoState(
     val usageReportJson: String,
     val ablationReportJson: String,
     val pressureReportJson: String,
+)
+
+data class FreeUsageSessionState(
+    val active: Boolean,
+    val startedAtMs: Long,
+    val rawTracePath: String,
+    val appSamplesPath: String,
+    val flagPath: String,
+    val beforeStateJson: String,
 )
 
 class MemoStore(context: Context) {
@@ -85,6 +96,7 @@ class MemoStore(context: Context) {
             .put("error", message)
         prefs.edit()
             .putLong("updated_at", System.currentTimeMillis())
+            .putLong("recommendations_updated_at", 0L)
             .putString("recommendations", "[]")
             .putString("recommendation_packages", "[]")
             .putString("recommendation_labels", "[]")
@@ -112,6 +124,7 @@ class MemoStore(context: Context) {
         )
         prefs.edit()
             .putLong("updated_at", System.currentTimeMillis())
+            .putLong("recommendations_updated_at", 0L)
             .putString("recommendations", "[]")
             .putString("recommendation_packages", "[]")
             .putString("recommendation_labels", "[]")
@@ -130,6 +143,7 @@ class MemoStore(context: Context) {
         actions: List<ActionResult>,
         latency: PipelineLatency? = null,
     ) {
+        val now = System.currentTimeMillis()
         val recArr = JSONArray(recommendations.map { app ->
             JSONObject()
                 .put("package_name", app.packageName)
@@ -153,7 +167,8 @@ class MemoStore(context: Context) {
             .put("stage1", JSONArray(prediction.stage1.map { "${it.name} (${(it.probability * 100).toInt()}%)" }))
             .put("error", prediction.error ?: JSONObject.NULL)
         prefs.edit()
-            .putLong("updated_at", System.currentTimeMillis())
+            .putLong("updated_at", now)
+            .putLong("recommendations_updated_at", now)
             .putString("recommendations", recArr.toString())
             .putString("recommendation_packages", JSONArray(recommendations.map { it.packageName }).toString())
             .putString("recommendation_labels", JSONArray(recommendations.map { it.label }).toString())
@@ -191,6 +206,37 @@ class MemoStore(context: Context) {
             .apply()
     }
 
+    fun saveFreeUsageSession(
+        startedAtMs: Long,
+        rawTracePath: String,
+        appSamplesPath: String,
+        flagPath: String,
+        beforeStateJson: String,
+    ) {
+        prefs.edit()
+            .putLong("updated_at", System.currentTimeMillis())
+            .putBoolean("free_usage_active", true)
+            .putLong("free_usage_started_at", startedAtMs)
+            .putString("free_usage_trace_path", rawTracePath)
+            .putString("free_usage_app_samples_path", appSamplesPath)
+            .putString("free_usage_flag_path", flagPath)
+            .putString("free_usage_before_state", beforeStateJson)
+            .putString("raw_trace_path", rawTracePath)
+            .apply()
+    }
+
+    fun clearFreeUsageSession() {
+        prefs.edit()
+            .putLong("updated_at", System.currentTimeMillis())
+            .putBoolean("free_usage_active", false)
+            .remove("free_usage_started_at")
+            .remove("free_usage_trace_path")
+            .remove("free_usage_app_samples_path")
+            .remove("free_usage_flag_path")
+            .remove("free_usage_before_state")
+            .apply()
+    }
+
     fun saveUsageReport(report: JSONObject) {
         prefs.edit()
             .putLong("updated_at", System.currentTimeMillis())
@@ -216,8 +262,10 @@ class MemoStore(context: Context) {
         val rawMaple = prefs.getString("maple", "{}") ?: "{}"
         val rawActions = prefs.getString("actions", "[]") ?: "[]"
         val rawLatency = prefs.getString("latency", "{}") ?: "{}"
+        val updatedAt = prefs.getLong("updated_at", 0L)
         return LastMemoState(
-            updatedAt = prefs.getLong("updated_at", 0L),
+            updatedAt = updatedAt,
+            recommendationsUpdatedAt = prefs.getLong("recommendations_updated_at", updatedAt),
             recommendations = readRecommendations(),
             evidenceLines = prefs.getString("evidence", "No evidence collected yet.")
                 .orEmpty()
@@ -226,6 +274,14 @@ class MemoStore(context: Context) {
                 .filter { it.isNotBlank() }
                 .toList(),
             rawTracePath = prefs.getString("raw_trace_path", "") ?: "",
+            freeUsageSession = FreeUsageSessionState(
+                active = prefs.getBoolean("free_usage_active", false),
+                startedAtMs = prefs.getLong("free_usage_started_at", 0L),
+                rawTracePath = prefs.getString("free_usage_trace_path", "") ?: "",
+                appSamplesPath = prefs.getString("free_usage_app_samples_path", "") ?: "",
+                flagPath = prefs.getString("free_usage_flag_path", "") ?: "",
+                beforeStateJson = prefs.getString("free_usage_before_state", "") ?: "",
+            ),
             maple = readMaple(rawMaple),
             actions = readActions(rawActions),
             scenarioJson = prefs.getString("scenario_json", "") ?: "",
