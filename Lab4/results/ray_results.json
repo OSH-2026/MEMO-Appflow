@@ -1,0 +1,592 @@
+{
+  "timestamp": "2026-06-13T18:57:55.787899",
+  "server": "http://127.0.0.1:8080",
+  "n_predict": 32,
+  "prompt_count": 25,
+  "summaries": [
+    {
+      "mode": "sequential",
+      "total_requests": 25,
+      "successful_requests": 25,
+      "wall_time_s": 17.715,
+      "avg_latency_s": 0.709,
+      "max_latency_s": 0.87,
+      "total_tokens": 789,
+      "request_throughput_rps": 1.411,
+      "token_throughput_tps": 44.539
+    },
+    {
+      "mode": "ray",
+      "total_requests": 25,
+      "successful_requests": 25,
+      "wall_time_s": 23.69,
+      "avg_latency_s": 5.352,
+      "max_latency_s": 9.474,
+      "total_tokens": 789,
+      "request_throughput_rps": 1.055,
+      "token_throughput_tps": 33.305
+    }
+  ],
+  "results": [
+    {
+      "mode": "sequential",
+      "records": [
+        {
+          "prompt": "什么是进程和线程的区别？",
+          "start_time": "2026-06-13T18:57:14.382688",
+          "end_time": "2026-06-13T18:57:15.085611",
+          "duration_s": 0.703,
+          "output_length_chars": 80,
+          "tokens_generated": 32,
+          "tokens_per_second": 53.497,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请解释虚拟内存的概念和作用。",
+          "start_time": "2026-06-13T18:57:15.085611",
+          "end_time": "2026-06-13T18:57:15.742715",
+          "duration_s": 0.657,
+          "output_length_chars": 84,
+          "tokens_generated": 32,
+          "tokens_per_second": 55.104,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是死锁？产生死锁的四个必要条件是什么？",
+          "start_time": "2026-06-13T18:57:15.742715",
+          "end_time": "2026-06-13T18:57:16.411777",
+          "duration_s": 0.669,
+          "output_length_chars": 77,
+          "tokens_generated": 32,
+          "tokens_per_second": 55.329,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请介绍三种进程间通信方式。",
+          "start_time": "2026-06-13T18:57:16.411777",
+          "end_time": "2026-06-13T18:57:17.082022",
+          "duration_s": 0.67,
+          "output_length_chars": 73,
+          "tokens_generated": 32,
+          "tokens_per_second": 54.998,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是系统调用？与普通函数调用有什么区别？",
+          "start_time": "2026-06-13T18:57:17.082022",
+          "end_time": "2026-06-13T18:57:17.754340",
+          "duration_s": 0.672,
+          "output_length_chars": 69,
+          "tokens_generated": 32,
+          "tokens_per_second": 54.698,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "简述操作系统中页表的用途和工作原理。",
+          "start_time": "2026-06-13T18:57:17.754340",
+          "end_time": "2026-06-13T18:57:18.411187",
+          "duration_s": 0.657,
+          "output_length_chars": 73,
+          "tokens_generated": 32,
+          "tokens_per_second": 55.308,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是 Docker？它与虚拟机的主要区别是什么？",
+          "start_time": "2026-06-13T18:57:18.411187",
+          "end_time": "2026-06-13T18:57:19.084072",
+          "duration_s": 0.673,
+          "output_length_chars": 64,
+          "tokens_generated": 32,
+          "tokens_per_second": 55.594,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请解释负载均衡的常见策略。",
+          "start_time": "2026-06-13T18:57:19.084072",
+          "end_time": "2026-06-13T18:57:19.752297",
+          "duration_s": 0.668,
+          "output_length_chars": 86,
+          "tokens_generated": 32,
+          "tokens_per_second": 54.776,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是 RESTful API？设计原则有哪些？",
+          "start_time": "2026-06-13T18:57:19.752297",
+          "end_time": "2026-06-13T18:57:20.440120",
+          "duration_s": 0.688,
+          "output_length_chars": 110,
+          "tokens_generated": 32,
+          "tokens_per_second": 54.094,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "简述分布式系统中的 CAP 定理。",
+          "start_time": "2026-06-13T18:57:20.440120",
+          "end_time": "2026-06-13T18:57:21.105546",
+          "duration_s": 0.665,
+          "output_length_chars": 76,
+          "tokens_generated": 32,
+          "tokens_per_second": 54.319,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请用 C 语言写一个函数，计算斐波那契数列的第 n 项。",
+          "start_time": "2026-06-13T18:57:21.105546",
+          "end_time": "2026-06-13T18:57:21.801349",
+          "duration_s": 0.696,
+          "output_length_chars": 49,
+          "tokens_generated": 32,
+          "tokens_per_second": 54.703,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "解释以下代码的作用：int x = 10; int *p = &x; printf(\"%d\", *p);",
+          "start_time": "2026-06-13T18:57:21.801349",
+          "end_time": "2026-06-13T18:57:22.522964",
+          "duration_s": 0.722,
+          "output_length_chars": 53,
+          "tokens_generated": 32,
+          "tokens_per_second": 53.742,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是二叉树的前序遍历？请给出递归实现。",
+          "start_time": "2026-06-13T18:57:22.522964",
+          "end_time": "2026-06-13T18:57:23.205024",
+          "duration_s": 0.682,
+          "output_length_chars": 55,
+          "tokens_generated": 32,
+          "tokens_per_second": 53.213,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请写一个 Python 函数，判断一个字符串是否为回文串。",
+          "start_time": "2026-06-13T18:57:23.205024",
+          "end_time": "2026-06-13T18:57:23.905901",
+          "duration_s": 0.701,
+          "output_length_chars": 42,
+          "tokens_generated": 32,
+          "tokens_per_second": 53.836,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "解释 SQL 中 LEFT JOIN 和 INNER JOIN 的区别。",
+          "start_time": "2026-06-13T18:57:23.905901",
+          "end_time": "2026-06-13T18:57:24.608441",
+          "duration_s": 0.703,
+          "output_length_chars": 78,
+          "tokens_generated": 32,
+          "tokens_per_second": 53.804,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "小明有 3 个苹果，小红比小明多 2 个，小刚比小红少 1 个，三人一共多少个？",
+          "start_time": "2026-06-13T18:57:24.608441",
+          "end_time": "2026-06-13T18:57:25.423996",
+          "duration_s": 0.816,
+          "output_length_chars": 32,
+          "tokens_generated": 32,
+          "tokens_per_second": 46.955,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "如果 3 个人 3 天吃 3 个包子，9 个人 9 天吃多少个包子？",
+          "start_time": "2026-06-13T18:57:25.423996",
+          "end_time": "2026-06-13T18:57:26.228283",
+          "duration_s": 0.804,
+          "output_length_chars": 43,
+          "tokens_generated": 32,
+          "tokens_per_second": 47.025,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "一个水池有一个进水管和一个出水管，单独开进水管 5 小时注满，单独开出水管 8 小时排空。同时打开两管，多久注满？",
+          "start_time": "2026-06-13T18:57:26.228283",
+          "end_time": "2026-06-13T18:57:27.098312",
+          "duration_s": 0.87,
+          "output_length_chars": 36,
+          "tokens_generated": 32,
+          "tokens_per_second": 46.327,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请用一句话概括：分布式系统是由多台计算机通过网络连接、协同工作来完成共同任务的系统。",
+          "start_time": "2026-06-13T18:57:27.098312",
+          "end_time": "2026-06-13T18:57:27.630211",
+          "duration_s": 0.532,
+          "output_length_chars": 55,
+          "tokens_generated": 21,
+          "tokens_per_second": 50.554,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请总结以下内容的核心思想：操作系统是计算机系统中最重要的系统软件，它管理着计算机的硬件和软件资源。",
+          "start_time": "2026-06-13T18:57:27.630211",
+          "end_time": "2026-06-13T18:57:28.422966",
+          "duration_s": 0.793,
+          "output_length_chars": 78,
+          "tokens_generated": 32,
+          "tokens_per_second": 47.482,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请简要介绍量子计算的基本原理。",
+          "start_time": "2026-06-13T18:57:28.422966",
+          "end_time": "2026-06-13T18:57:29.125608",
+          "duration_s": 0.703,
+          "output_length_chars": 82,
+          "tokens_generated": 32,
+          "tokens_per_second": 52.363,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是机器学习中的过拟合？如何避免？",
+          "start_time": "2026-06-13T18:57:29.125608",
+          "end_time": "2026-06-13T18:57:29.899995",
+          "duration_s": 0.774,
+          "output_length_chars": 74,
+          "tokens_generated": 32,
+          "tokens_per_second": 46.725,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请解释 TCP 三次握手的过程。",
+          "start_time": "2026-06-13T18:57:29.902001",
+          "end_time": "2026-06-13T18:57:30.663129",
+          "duration_s": 0.761,
+          "output_length_chars": 81,
+          "tokens_generated": 32,
+          "tokens_per_second": 47.822,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是编译器和解释器的区别？",
+          "start_time": "2026-06-13T18:57:30.663129",
+          "end_time": "2026-06-13T18:57:31.379469",
+          "duration_s": 0.716,
+          "output_length_chars": 73,
+          "tokens_generated": 32,
+          "tokens_per_second": 49.62,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请介绍区块链技术的基本原理和应用场景。",
+          "start_time": "2026-06-13T18:57:31.379469",
+          "end_time": "2026-06-13T18:57:32.097562",
+          "duration_s": 0.718,
+          "output_length_chars": 86,
+          "tokens_generated": 32,
+          "tokens_per_second": 49.387,
+          "success": true,
+          "error": ""
+        }
+      ]
+    },
+    {
+      "mode": "ray",
+      "records": [
+        {
+          "prompt": "什么是进程和线程的区别？",
+          "start_time": "2026-06-13T18:57:45.512569",
+          "end_time": "2026-06-13T18:57:46.988623",
+          "duration_s": 1.476,
+          "output_length_chars": 82,
+          "tokens_generated": 32,
+          "tokens_per_second": 27.934,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请解释虚拟内存的概念和作用。",
+          "start_time": "2026-06-13T18:57:45.544412",
+          "end_time": "2026-06-13T18:57:48.507322",
+          "duration_s": 2.963,
+          "output_length_chars": 82,
+          "tokens_generated": 32,
+          "tokens_per_second": 27.735,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是死锁？产生死锁的四个必要条件是什么？",
+          "start_time": "2026-06-13T18:57:45.524374",
+          "end_time": "2026-06-13T18:57:46.988623",
+          "duration_s": 1.464,
+          "output_length_chars": 78,
+          "tokens_generated": 32,
+          "tokens_per_second": 27.925,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请介绍三种进程间通信方式。",
+          "start_time": "2026-06-13T18:57:45.527297",
+          "end_time": "2026-06-13T18:57:46.988623",
+          "duration_s": 1.461,
+          "output_length_chars": 69,
+          "tokens_generated": 32,
+          "tokens_per_second": 27.941,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是系统调用？与普通函数调用有什么区别？",
+          "start_time": "2026-06-13T18:57:45.542401",
+          "end_time": "2026-06-13T18:57:46.990327",
+          "duration_s": 1.448,
+          "output_length_chars": 70,
+          "tokens_generated": 32,
+          "tokens_per_second": 27.948,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "简述操作系统中页表的用途和工作原理。",
+          "start_time": "2026-06-13T18:57:45.544412",
+          "end_time": "2026-06-13T18:57:48.507322",
+          "duration_s": 2.963,
+          "output_length_chars": 76,
+          "tokens_generated": 32,
+          "tokens_per_second": 27.737,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是 Docker？它与虚拟机的主要区别是什么？",
+          "start_time": "2026-06-13T18:57:45.562256",
+          "end_time": "2026-06-13T18:57:55.036211",
+          "duration_s": 9.474,
+          "output_length_chars": 64,
+          "tokens_generated": 32,
+          "tokens_per_second": 24.279,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请解释负载均衡的常见策略。",
+          "start_time": "2026-06-13T18:57:45.560244",
+          "end_time": "2026-06-13T18:57:51.761625",
+          "duration_s": 6.201,
+          "output_length_chars": 83,
+          "tokens_generated": 32,
+          "tokens_per_second": 25.264,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是 RESTful API？设计原则有哪些？",
+          "start_time": "2026-06-13T18:57:45.562256",
+          "end_time": "2026-06-13T18:57:50.153008",
+          "duration_s": 4.591,
+          "output_length_chars": 105,
+          "tokens_generated": 32,
+          "tokens_per_second": 25.807,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "简述分布式系统中的 CAP 定理。",
+          "start_time": "2026-06-13T18:57:45.566022",
+          "end_time": "2026-06-13T18:57:51.761625",
+          "duration_s": 6.196,
+          "output_length_chars": 120,
+          "tokens_generated": 32,
+          "tokens_per_second": 25.235,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请用 C 语言写一个函数，计算斐波那契数列的第 n 项。",
+          "start_time": "2026-06-13T18:57:45.566022",
+          "end_time": "2026-06-13T18:57:54.508129",
+          "duration_s": 8.942,
+          "output_length_chars": 49,
+          "tokens_generated": 32,
+          "tokens_per_second": 22.324,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "解释以下代码的作用：int x = 10; int *p = &x; printf(\"%d\", *p);",
+          "start_time": "2026-06-13T18:57:45.544412",
+          "end_time": "2026-06-13T18:57:48.507322",
+          "duration_s": 2.963,
+          "output_length_chars": 62,
+          "tokens_generated": 32,
+          "tokens_per_second": 27.731,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是二叉树的前序遍历？请给出递归实现。",
+          "start_time": "2026-06-13T18:57:45.550187",
+          "end_time": "2026-06-13T18:57:53.423180",
+          "duration_s": 7.873,
+          "output_length_chars": 80,
+          "tokens_generated": 32,
+          "tokens_per_second": 24.658,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请写一个 Python 函数，判断一个字符串是否为回文串。",
+          "start_time": "2026-06-13T18:57:45.570042",
+          "end_time": "2026-06-13T18:57:53.423180",
+          "duration_s": 7.853,
+          "output_length_chars": 46,
+          "tokens_generated": 32,
+          "tokens_per_second": 24.646,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "解释 SQL 中 LEFT JOIN 和 INNER JOIN 的区别。",
+          "start_time": "2026-06-13T18:57:45.552200",
+          "end_time": "2026-06-13T18:57:50.153008",
+          "duration_s": 4.601,
+          "output_length_chars": 79,
+          "tokens_generated": 32,
+          "tokens_per_second": 25.795,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "小明有 3 个苹果，小红比小明多 2 个，小刚比小红少 1 个，三人一共多少个？",
+          "start_time": "2026-06-13T18:57:45.550187",
+          "end_time": "2026-06-13T18:57:48.507322",
+          "duration_s": 2.957,
+          "output_length_chars": 32,
+          "tokens_generated": 32,
+          "tokens_per_second": 27.733,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "如果 3 个人 3 天吃 3 个包子，9 个人 9 天吃多少个包子？",
+          "start_time": "2026-06-13T18:57:45.568033",
+          "end_time": "2026-06-13T18:57:53.423180",
+          "duration_s": 7.855,
+          "output_length_chars": 43,
+          "tokens_generated": 32,
+          "tokens_per_second": 24.633,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "一个水池有一个进水管和一个出水管，单独开进水管 5 小时注满，单独开出水管 8 小时排空。同时打开两管，多久注满？",
+          "start_time": "2026-06-13T18:57:45.562256",
+          "end_time": "2026-06-13T18:57:51.761625",
+          "duration_s": 6.199,
+          "output_length_chars": 36,
+          "tokens_generated": 32,
+          "tokens_per_second": 25.251,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请用一句话概括：分布式系统是由多台计算机通过网络连接、协同工作来完成共同任务的系统。",
+          "start_time": "2026-06-13T18:57:45.552200",
+          "end_time": "2026-06-13T18:57:49.659613",
+          "duration_s": 4.107,
+          "output_length_chars": 55,
+          "tokens_generated": 21,
+          "tokens_per_second": 27.946,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请总结以下内容的核心思想：操作系统是计算机系统中最重要的系统软件，它管理着计算机的硬件和软件资源。",
+          "start_time": "2026-06-13T18:57:45.560244",
+          "end_time": "2026-06-13T18:57:50.153008",
+          "duration_s": 4.593,
+          "output_length_chars": 61,
+          "tokens_generated": 32,
+          "tokens_per_second": 25.826,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请简要介绍量子计算的基本原理。",
+          "start_time": "2026-06-13T18:57:45.560244",
+          "end_time": "2026-06-13T18:57:51.269703",
+          "duration_s": 5.709,
+          "output_length_chars": 83,
+          "tokens_generated": 32,
+          "tokens_per_second": 22.021,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是机器学习中的过拟合？如何避免？",
+          "start_time": "2026-06-13T18:57:45.568033",
+          "end_time": "2026-06-13T18:57:52.886519",
+          "duration_s": 7.318,
+          "output_length_chars": 76,
+          "tokens_generated": 32,
+          "tokens_per_second": 21.823,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请解释 TCP 三次握手的过程。",
+          "start_time": "2026-06-13T18:57:46.993618",
+          "end_time": "2026-06-13T18:57:55.036211",
+          "duration_s": 8.043,
+          "output_length_chars": 67,
+          "tokens_generated": 32,
+          "tokens_per_second": 24.307,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "什么是编译器和解释器的区别？",
+          "start_time": "2026-06-13T18:57:46.993618",
+          "end_time": "2026-06-13T18:57:55.036211",
+          "duration_s": 8.043,
+          "output_length_chars": 87,
+          "tokens_generated": 32,
+          "tokens_per_second": 24.375,
+          "success": true,
+          "error": ""
+        },
+        {
+          "prompt": "请介绍区块链技术的基本原理和应用场景。",
+          "start_time": "2026-06-13T18:57:46.993618",
+          "end_time": "2026-06-13T18:57:55.510169",
+          "duration_s": 8.517,
+          "output_length_chars": 88,
+          "tokens_generated": 32,
+          "tokens_per_second": 38.669,
+          "success": true,
+          "error": ""
+        }
+      ]
+    }
+  ]
+}
