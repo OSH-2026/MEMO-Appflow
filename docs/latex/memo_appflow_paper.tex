@@ -1,117 +1,46 @@
 \documentclass[UTF8,zihao=-4]{ctexart}
-\usepackage[a4paper,margin=2.4cm]{geometry}
+\usepackage[a4paper,margin=2.35cm]{geometry}
 \usepackage{fontspec}
 \usepackage{xcolor}
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{array}
-\usepackage{calc}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
 \usepackage{tikz}
+\usepackage{caption}
 \usetikzlibrary{arrows.meta,positioning,fit,calc,shapes.geometric}
 
 \setCJKmainfont{Microsoft YaHei}
 \setmainfont{Times New Roman}
 \hypersetup{colorlinks=true,linkcolor=blue!50!black,urlcolor=blue!60!black}
-\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setlist[itemize]{leftmargin=2em}
-\setlist[enumerate]{leftmargin=2em}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em}
+\setlist[enumerate]{leftmargin=2em,itemsep=0.25em}
+\setlength{\parskip}{0.45em}
+\setlength{\parindent}{2em}
 \pagestyle{fancy}
 \setlength{\headheight}{15pt}
 \fancyhf{}
 \lhead{MEMO-Appflow}
-\rhead{端侧 eBPF + MAPLE 实时调度}
+\rhead{Android 端侧应用预测与系统调度}
 \cfoot{\thepage}
 
-\title{\textbf{MEMO-Appflow：基于真实 eBPF 证据与端侧大模型的 Android 实时应用预测和系统调度}}
+\title{\textbf{MEMO-Appflow：从 App 与操作系统证据到真实应用推荐和系统调度}}
 \author{Jingyi Guo}
-\date{2026-07-01}
+\date{2026-07-02}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-MEMO-Appflow 是面向 Android 的端侧、基于本地大模型推理的应用预测与系统调度软件。它从 app 与操作系统两侧获取信息：在手机内持续采集真实 app 序列、eBPF 内核证据和系统状态，每 3 分钟压缩成 MAPLE 场景输入。大模型据此预测接下来可能使用的 Top-3 应用，并用 bitmask 选择调度动作，形成“从 app + OS 到 app + OS”的闭环：既更新桌面 Widget、优化 app 推荐体验，也执行预热、内存整理和服务刷新，改善 OS 状态。最新 9 分钟真机实验显示，Top-3 会随窗口刷新，\texttt{scheduler\_bits} 已触发 warm launch、memory trim 和 service manager 调度。
+MEMO-Appflow 是面向 Android 的端侧应用预测与系统调度系统。它不只观察用户打开了哪些应用，也在手机内部持续采集 eBPF 内核证据和系统状态，将 app 序列、网络、Binder、内存、显示、媒体和进程信号按时间窗口压缩为 MAPLE 场景输入。端侧 MAPLE 模型据此预测接下来可能使用的 Top-3 真实应用，并输出 \texttt{scheduler\_bits} 选择预先实现的系统调度动作。Android 端随后更新桌面 Widget，并执行 warm launch、memory trim、service manager refresh 等动作。本文按照最终成功的系统版本组织，说明端侧流水线、数据结构、模型接口、动作执行和实验结果。真实 Pixel 5 实验显示，Top-3 推荐可以随 3 分钟窗口更新；30 条真实记录预测实验中，app+OS/eBPF 配置在 Top-3 Hit、F1@3 和 MRR 上高于 app-only baseline；系统调度性能实验中，Stage 3 调度使同一 Top-1 应用 QQ 的 Launch TotalTime 从 433 ms 降至 168 ms，WaitTime 从 440 ms 降至 173 ms，综合压力分数从 422.56 降至 9.71。
 \end{abstract}
 
 \tableofcontents
 \newpage
 
-\section{实时任务队列设计}
-
-MEMO-Appflow 的实时模式不是“收完一段数据后停止等待推理”，而是把手机端采集和 MAPLE 推理解耦成一个有界流水线。系统持续运行一个采集流，每 3 分钟生成一个窗口。窗口结束后，当前窗口被压缩为 MAPLE scenario，并提交给唯一的 MAPLE worker；与此同时，下一个 3 分钟窗口立即继续采集。这样用户继续使用手机时，采集不会因为上一轮模型推理而暂停。
-
-为了避免长期后台运行时线程或任务无限堆积，实时模式只保留三类运行单元：一个 collector loop、一个 MAPLE worker、一个 latest pending slot。如果 MAPLE 推理慢于窗口节奏，系统不会给每个窗口新开线程，也不会无限排队历史窗口，而是只保留最新待推理窗口。新窗口仍然以自己的 3 分钟 app/eBPF/system evidence 为主输入；EMA memory 只作为有界历史辅助信息，不替代当前窗口。
-
-\begin{figure}[htbp]
-\centering
-\resizebox{\textwidth}{!}{
-\begin{tikzpicture}[
-  font=\small,
-  node distance=0.9cm and 0.9cm,
-  win/.style={draw, rounded corners, fill=blue!8, minimum width=3.2cm, minimum height=1.0cm, align=center},
-  proc/.style={draw, rounded corners, fill=green!9, minimum width=3.1cm, minimum height=0.9cm, align=center},
-  model/.style={draw, rounded corners, fill=orange!14, minimum width=3.2cm, minimum height=0.9cm, align=center},
-  action/.style={draw, rounded corners, fill=purple!10, minimum width=3.2cm, minimum height=0.9cm, align=center},
-  arrow/.style={-{Latex[length=2.2mm]}, thick}
-]
-\node[win] (w1) {窗口 1\\0--3 min\\采集 app + eBPF + OS};
-\node[win, right=of w1] (w2) {窗口 2\\3--6 min\\继续采集};
-\node[win, right=of w2] (w3) {窗口 3\\6--9 min\\继续采集};
-
-\node[proc, below=of w1] (c1) {压缩窗口 1\\构造 scenario};
-\node[proc, below=of w2] (c2) {压缩窗口 2\\构造 scenario};
-\node[proc, below=of w3] (c3) {压缩窗口 3\\构造 scenario};
-
-\node[model, below=of c1, xshift=1.55cm] (m1) {MAPLE worker\\推理窗口 1};
-\node[model, below=of c2, xshift=1.55cm] (m2) {MAPLE worker\\推理窗口 2};
-\node[model, below=of c3] (m3) {MAPLE worker\\推理窗口 3};
-
-\node[action, below=of m1] (a1) {Top-3 + bitmask\\执行调度 1};
-\node[action, below=of m2] (a2) {Top-3 + bitmask\\执行调度 2};
-\node[action, below=of m3] (a3) {Top-3 + bitmask\\执行调度 3};
-
-\draw[arrow] (w1) -- (w2);
-\draw[arrow] (w2) -- (w3);
-\draw[arrow] (w1) -- (c1);
-\draw[arrow] (w2) -- (c2);
-\draw[arrow] (w3) -- (c3);
-\draw[arrow] (c1) -- (m1);
-\draw[arrow] (c2) -- (m2);
-\draw[arrow] (c3) -- (m3);
-\draw[arrow] (m1) -- (a1);
-\draw[arrow] (m2) -- (a2);
-\draw[arrow] (m3) -- (a3);
-
-\draw[arrow, dashed] ($(m1.north)+(0.7,0.1)$) -- node[above, sloped]{推理时窗口 2 不停采集} ($(w2.south)+(-0.4,-0.1)$);
-\draw[arrow, dashed] ($(m2.north)+(0.7,0.1)$) -- node[above, sloped]{推理时窗口 3 不停采集} ($(w3.south)+(-0.4,-0.1)$);
-
-\node[draw, dashed, rounded corners, fit=(m1)(m2)(m3), inner sep=0.25cm, label={[font=\small]below:单 MAPLE worker + latest pending slot，避免线程和任务爆炸}] {};
-\end{tikzpicture}
-}
-\caption{3 分钟窗口采集与 MAPLE 异步推理流水线}
-\end{figure}
-
-\begin{table}[htbp]
-\centering
-\caption{实时任务队列的关键约束}
-\begin{tabular}{p{0.25\textwidth}p{0.65\textwidth}}
-\toprule
-设计点 & 作用 \\
-\midrule
-3 分钟窗口 & 固定节奏聚合真实 app 序列、eBPF 事件和系统状态，避免每个事件都触发推理。\\
-单 MAPLE worker & 控制端侧推理并发，避免本地小模型占用过多 CPU 和内存。\\
-latest pending slot & 当 MAPLE 慢于采集节奏时只保留最新窗口，避免历史任务无限排队。\\
-EMA memory & 保留有界历史偏好，但当前窗口仍然是主输入。\\
-ActionExecutor & 把 Top-3 与 \texttt{scheduler\_bits} 转化为受控系统动作。\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\newpage
 \input{memo_appflow_full_paper_body.tex}
 
 \end{document}
