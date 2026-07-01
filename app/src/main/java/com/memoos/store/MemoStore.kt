@@ -67,6 +67,7 @@ data class LastMemoState(
     val usageReportJson: String,
     val ablationReportJson: String,
     val pressureReportJson: String,
+    val realtime: RealtimeState,
 )
 
 data class FreeUsageSessionState(
@@ -76,6 +77,19 @@ data class FreeUsageSessionState(
     val appSamplesPath: String,
     val flagPath: String,
     val beforeStateJson: String,
+)
+
+data class RealtimeState(
+    val active: Boolean,
+    val startedAtMs: Long,
+    val lastWindowStartMs: Long,
+    val lastWindowEndMs: Long,
+    val lastInferenceMs: Long,
+    val nextWindowAtMs: Long,
+    val windowCount: Long,
+    val memoryJson: String,
+    val lastWindowJson: String,
+    val lastSchedulerPlanJson: String,
 )
 
 class MemoStore(context: Context) {
@@ -168,6 +182,19 @@ class MemoStore(context: Context) {
             .put("backend", prediction.backend)
             .put("predicted_app_id", prediction.predictedAppId)
             .put("stage1", JSONArray(prediction.stage1.map { "${it.name} (${(it.probability * 100).toInt()}%)" }))
+            .put("scheduler_bits", prediction.schedulerBits)
+            .put(
+                "scheduler_plan",
+                JSONArray(prediction.schedulerPlan.map { decision ->
+                    JSONObject()
+                        .put("action_id", decision.actionId)
+                        .put("target", decision.target)
+                        .put("target_rank", decision.targetRank)
+                        .put("execute", decision.execute)
+                        .put("reason", decision.reason)
+                }),
+            )
+            .put("pressure_analysis", JSONObject(prediction.pressureAnalysis))
             .put("error", prediction.error ?: JSONObject.NULL)
         prefs.edit()
             .putLong("updated_at", now)
@@ -241,6 +268,47 @@ class MemoStore(context: Context) {
             .apply()
     }
 
+    fun saveRealtimeActive(startedAtMs: Long, nextWindowAtMs: Long) {
+        prefs.edit()
+            .putLong("updated_at", System.currentTimeMillis())
+            .putBoolean("realtime_active", true)
+            .putLong("realtime_started_at", startedAtMs)
+            .putLong("realtime_next_window_at", nextWindowAtMs)
+            .apply()
+    }
+
+    fun saveRealtimeStopped() {
+        prefs.edit()
+            .putLong("updated_at", System.currentTimeMillis())
+            .putBoolean("realtime_active", false)
+            .putLong("realtime_next_window_at", 0L)
+            .apply()
+    }
+
+    fun saveRealtimeCycle(
+        windowStartMs: Long,
+        windowEndMs: Long,
+        inferenceMs: Long,
+        nextWindowAtMs: Long,
+        windowCount: Long,
+        memoryJson: String,
+        windowJson: String,
+        schedulerPlanJson: String,
+    ) {
+        prefs.edit()
+            .putLong("updated_at", System.currentTimeMillis())
+            .putBoolean("realtime_active", true)
+            .putLong("realtime_last_window_start", windowStartMs)
+            .putLong("realtime_last_window_end", windowEndMs)
+            .putLong("realtime_last_inference", inferenceMs)
+            .putLong("realtime_next_window_at", nextWindowAtMs)
+            .putLong("realtime_window_count", windowCount)
+            .putString("realtime_memory", memoryJson)
+            .putString("realtime_last_window", windowJson)
+            .putString("realtime_last_scheduler_plan", schedulerPlanJson)
+            .apply()
+    }
+
     fun saveUsageReport(report: JSONObject) {
         prefs.edit()
             .putLong("updated_at", System.currentTimeMillis())
@@ -296,6 +364,18 @@ class MemoStore(context: Context) {
             usageReportJson = prefs.getString("usage_report", "") ?: "",
             ablationReportJson = prefs.getString("ablation_report", "") ?: "",
             pressureReportJson = prefs.getString("pressure_report", "") ?: "",
+            realtime = RealtimeState(
+                active = prefs.getBoolean("realtime_active", false),
+                startedAtMs = prefs.getLong("realtime_started_at", 0L),
+                lastWindowStartMs = prefs.getLong("realtime_last_window_start", 0L),
+                lastWindowEndMs = prefs.getLong("realtime_last_window_end", 0L),
+                lastInferenceMs = prefs.getLong("realtime_last_inference", 0L),
+                nextWindowAtMs = prefs.getLong("realtime_next_window_at", 0L),
+                windowCount = prefs.getLong("realtime_window_count", 0L),
+                memoryJson = prefs.getString("realtime_memory", "") ?: "",
+                lastWindowJson = prefs.getString("realtime_last_window", "") ?: "",
+                lastSchedulerPlanJson = prefs.getString("realtime_last_scheduler_plan", "") ?: "",
+            ),
         )
     }
 

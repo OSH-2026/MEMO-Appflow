@@ -7,6 +7,14 @@ data class Stage1Category(
     val probability: Double,
 )
 
+data class MapleSchedulerDecision(
+    val actionId: String,
+    val target: String,
+    val targetRank: Int,
+    val execute: Boolean,
+    val reason: String,
+)
+
 data class MaplePrediction(
     val stage1: List<Stage1Category>,
     val predictedAppId: Int,
@@ -16,6 +24,9 @@ data class MaplePrediction(
     val backend: String,
     val available: Boolean,
     val error: String? = null,
+    val schedulerBits: String = "",
+    val schedulerPlan: List<MapleSchedulerDecision> = emptyList(),
+    val pressureAnalysis: Map<String, String> = emptyMap(),
 ) {
     companion object {
         fun unavailable(reason: String): MaplePrediction {
@@ -53,7 +64,34 @@ data class MaplePrediction(
                 rawStage2 = stage2Obj.optString("raw_output", stage2Json),
                 backend = backend,
                 available = true,
+                schedulerBits = parseSchedulerBits(stage2Obj),
+                schedulerPlan = parseSchedulerPlan(stage2Obj),
+                pressureAnalysis = parsePressureAnalysis(stage2Obj),
             )
+        }
+
+        fun parseSchedulerBits(obj: JSONObject): String {
+            val raw = obj.optString("scheduler_bits", obj.optString("scheduler_bitmask", ""))
+            return raw.filter { it == '0' || it == '1' }
+        }
+
+        fun parseSchedulerPlan(obj: JSONObject): List<MapleSchedulerDecision> {
+            val arr = obj.optJSONArray("scheduler_plan") ?: return emptyList()
+            return (0 until arr.length()).mapNotNull { idx ->
+                val item = arr.optJSONObject(idx) ?: return@mapNotNull null
+                MapleSchedulerDecision(
+                    actionId = item.optString("action_id", item.optString("action")).trim(),
+                    target = item.optString("target").trim(),
+                    targetRank = item.optInt("target_rank", -1),
+                    execute = item.optBoolean("execute", false),
+                    reason = item.optString("reason").trim(),
+                ).takeIf { it.actionId.isNotBlank() }
+            }
+        }
+
+        fun parsePressureAnalysis(obj: JSONObject): Map<String, String> {
+            val pressure = obj.optJSONObject("pressure_analysis") ?: return emptyMap()
+            return pressure.keys().asSequence().associateWith { key -> pressure.optString(key) }
         }
     }
 }

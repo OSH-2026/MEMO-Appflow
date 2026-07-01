@@ -276,6 +276,11 @@ std::string MAPLEEngine::preview_next_app_prompt(const UserContext& ctx, const A
     return prompt_builder_->build_next_app_prompt(ctx, stage1);
 }
 
+std::string MAPLEEngine::generate_text(const std::string& prompt) {
+    if (!is_ready()) return "";
+    return backend_->generate(prompt);
+}
+
 bool MAPLEEngine::is_ready() const {
     return backend_ && backend_->is_loaded();
 }

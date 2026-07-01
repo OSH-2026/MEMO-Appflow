@@ -1,0 +1,397 @@
+{
+  "schema_version": "memo.maple_scenarios.v1",
+  "generated_at": "2026-07-01T22:17:37.298034+08:00",
+  "scenarios": [
+    {
+      "id": "synthetic_user_30_media_7_1782915430763",
+      "description": "Short real-device experiment sample 8. Input app sequence is visible to MAPLE; future ground-truth apps are masked and used only for evaluation. Persona=media_browsing.",
+      "source": "android_device_side",
+      "context": {
+        "historical_app_categories": [
+          "Media Codec",
+          "Network IO",
+          "Navigation/Location",
+          "Payment/Security",
+          "Communication",
+          "Display Composition"
+        ],
+        "task": "Predict the next three real Android apps the user is likely to use. Use eBPF/OS evidence as context, but do not predict OS-only labels such as Memory Management or Android Service IPC as apps. Also analyze pressure and scheduler_bits.",
+        "historical_app_ids": [
+          260,
+          245,
+          270,
+          255,
+          110,
+          115
+        ],
+        "prediction_time": "2026-07-01T22:17:36.226138+08:00",
+        "points_of_interest": [
+          "video/audio playback workflow",
+          "active network communication"
+        ],
+        "installed_apps": {
+          "Media Codec": [
+            260
+          ],
+          "Network IO": [
+            245
+          ],
+          "Navigation/Location": [
+            270
+          ],
+          "Payment/Security": [
+            255
+          ],
+          "Communication": [
+            110
+          ],
+          "Display Composition": [
+            115
+          ]
+        },
+        "app_catalog": {
+          "com.google.android.apps.nexuslauncher": {
+            "label": "nexuslauncher",
+            "categories": [
+              "App Process Runtime"
+            ]
+          },
+          "com.google.android.apps.youtube.music": {
+            "label": "YouTube Music",
+            "categories": [
+              "Media Codec",
+              "Network IO",
+              "Payment/Security"
+            ]
+          },
+          "com.termux": {
+            "label": "Termux",
+            "categories": [
+              "Media Codec",
+              "Display Composition",
+              "Network IO"
+            ]
+          }
+        },
+        "observed_app_sequence": [
+          {
+            "index": 1,
+            "package_name": "com.google.android.apps.nexuslauncher",
+            "label": "nexuslauncher",
+            "start_wall_time_ms": 1782915433995,
+            "start_time": "2026-07-01T22:17:13.995+08:00",
+            "end_wall_time_ms": 1782915435200,
+            "end_time": "2026-07-01T22:17:15.2+08:00",
+            "launch_state": "OBSERVED_REALTIME",
+            "total_time_ms": null,
+            "wait_time_ms": null,
+            "observed": true
+          },
+          {
+            "index": 2,
+            "package_name": "com.google.android.apps.youtube.music",
+            "label": "YouTube Music",
+            "start_wall_time_ms": 1782915435200,
+            "start_time": "2026-07-01T22:17:15.2+08:00",
+            "end_wall_time_ms": 1782915438429,
+            "end_time": "2026-07-01T22:17:18.429+08:00",
+            "launch_state": "OBSERVED_REALTIME",
+            "total_time_ms": null,
+            "wait_time_ms": null,
+            "observed": true
+          },
+          {
+            "index": 3,
+            "package_name": "com.google.android.apps.nexuslauncher",
+            "label": "nexuslauncher",
+            "start_wall_time_ms": 1782915439509,
+            "start_time": "2026-07-01T22:17:19.509+08:00",
+            "end_wall_time_ms": 1782915440577,
+            "end_time": "2026-07-01T22:17:20.577+08:00",
+            "launch_state": "OBSERVED_REALTIME",
+            "total_time_ms": null,
+            "wait_time_ms": null,
+            "observed": true
+          },
+          {
+            "index": 4,
+            "package_name": "com.termux",
+            "label": "Termux",
+            "start_wall_time_ms": 1782915440577,
+            "start_time": "2026-07-01T22:17:20.577+08:00",
+            "end_wall_time_ms": 1782915442736,
+            "end_time": "2026-07-01T22:17:22.736+08:00",
+            "launch_state": "OBSERVED_REALTIME",
+            "total_time_ms": null,
+            "wait_time_ms": null,
+            "observed": true
+          },
+          {
+            "index": 5,
+            "package_name": "com.google.android.apps.nexuslauncher",
+            "label": "nexuslauncher",
+            "start_wall_time_ms": 1782915443810,
+            "start_time": "2026-07-01T22:17:23.81+08:00",
+            "end_wall_time_ms": 1782915447066,
+            "end_time": "2026-07-01T22:17:27.066+08:00",
+            "launch_state": "OBSERVED_REALTIME",
+            "total_time_ms": null,
+            "wait_time_ms": null,
+            "observed": true
+          }
+        ],
+        "timeline_windows": [
+          {
+            "index": 1,
+            "start_wall_time_ms": 1782915433995,
+            "start_time": "2026-07-01T22:17:13.995+08:00",
+            "end_wall_time_ms": 1782915447066,
+            "end_time": "2026-07-01T22:17:27.066+08:00",
+            "app_sequence_indexes": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "app_labels": [
+              "nexuslauncher",
+              "YouTube Music",
+              "nexuslauncher",
+              "Termux",
+              "nexuslauncher"
+            ],
+            "app_packages": [
+              "com.google.android.apps.nexuslauncher",
+              "com.google.android.apps.youtube.music",
+              "com.google.android.apps.nexuslauncher",
+              "com.termux",
+              "com.google.android.apps.nexuslauncher"
+            ],
+            "compressed_ebpf": [
+              {
+                "event_type": "MEMO_SCHED",
+                "detail": "sched_switch_or_wakeup",
+                "count": 226145,
+                "rate_per_sec": 17301.27763751817
+              },
+              {
+                "event_type": "MEMO_RECVFROM",
+                "detail": "recvfrom",
+                "count": 30650,
+                "rate_per_sec": 2344.8856246652895
+              },
+              {
+                "event_type": "MEMO_OPENAT",
+                "detail": "openat",
+                "count": 18740,
+                "rate_per_sec": 1433.7082090123174
+              },
+              {
+                "event_type": "MEMO_SENDTO",
+                "detail": "sendto",
+                "count": 13110,
+                "rate_per_sec": 1002.9837043837504
+              },
+              {
+                "event_type": "MEMO_BINDER",
+                "detail": "binder_transaction",
+                "count": 12707,
+                "rate_per_sec": 972.1520924183307
+              },
+              {
+                "event_type": "MEMO_PROCESS_EXIT",
+                "detail": "process_exit",
+                "count": 444,
+                "rate_per_sec": 33.96832683038788
+              },
+              {
+                "event_type": "MEMO_PROCESS_FORK",
+                "detail": "process_fork",
+                "count": 435,
+                "rate_per_sec": 33.279779664907046
+              },
+              {
+                "event_type": "MEMO_PROCESS_EXEC",
+                "detail": "process_exec",
+                "count": 225,
+                "rate_per_sec": 17.213679137020886
+              },
+              {
+                "event_type": "MEMO_MEMORY",
+                "detail": "reclaim_or_kswapd",
+                "count": 8,
+                "rate_per_sec": 0.6120419248718537
+              }
+            ]
+          }
+        ],
+        "system_evidence": [
+          "13114 device-side eBPF records in the observed Android window",
+          "timestamped app sequence length=5 unique_apps=3 first=nexuslauncher/com.google.android.apps.nexuslauncher last=nexuslauncher/com.google.android.apps.nexuslauncher",
+          "recent app order=1:nexuslauncher -> 2:YouTube Music -> 3:nexuslauncher -> 4:Termux -> 5:nexuslauncher",
+          "timeline_window 1 2026-07-01T22:17:13.995+08:00..2026-07-01T22:17:27.066+08:00 apps=[nexuslauncher,YouTube Music,nexuslauncher,Termux,nexuslauncher] ebpf=[MEMO_SCHED=226145,MEMO_RECVFROM=30650,MEMO_OPENAT=18740]",
+          "event_type MEMO_BINDER: count=2400",
+          "event_type MEMO_OPENAT: count=2400",
+          "event_type MEMO_SENDTO: count=2400",
+          "event_type MEMO_RECVFROM: count=2400",
+          "event_type MEMO_SCHED: count=2400",
+          "event_type MEMO_PROCESS_EXIT: count=444",
+          "event_type MEMO_PROCESS_FORK: count=435",
+          "event_type MEMO_PROCESS_EXEC: count=225",
+          "MAPLE evidence/resource category Android Service IPC: count=420",
+          "MAPLE evidence/resource category Network IO: count=420",
+          "MAPLE evidence/resource category App Process Runtime: count=180",
+          "MAPLE evidence/resource category Other File Access: count=120",
+          "MAPLE evidence/resource category Memory Management: count=64",
+          "MAPLE evidence/resource category Media Codec: count=48",
+          "MAPLE evidence/resource category Payment/Security: count=24",
+          "MAPLE evidence/resource category Display Composition: count=24"
+        ],
+        "compression": {
+          "strategy": "windowed_count_aggregation",
+          "raw_ebpf_rows_for_audit": 13114,
+          "observed_app_sequence_rows": 5,
+          "timeline_windows": 1,
+          "compressed_ebpf_signal_rows": 9,
+          "model_input_note": "MAPLE receives repeated eBPF activity as per-window event_type/detail/count/rate_per_sec instead of expanded raw rows."
+        },
+        "memory_pressure": "normal: no direct reclaim pressure was observed",
+        "realtime_recent_window": {
+          "started_at_ms": 1782915430763,
+          "ended_at_ms": 1782915452000,
+          "duration_ms": 21237,
+          "raw_trace_path": "/sdcard/MEMO/logs/realtime_1782915430763.trace",
+          "app_samples_path": "/sdcard/MEMO/logs/realtime_1782915430763_apps.tsv",
+          "raw_ebpf_events": 13114,
+          "app_segments": 5,
+          "timeline_windows": 1,
+          "compressed_ebpf_signals": 9,
+          "summary": {
+            "start_ms": 1782915430763,
+            "end_ms": 1782915452000,
+            "app_labels": [
+              "nexuslauncher",
+              "YouTube Music",
+              "Termux"
+            ],
+            "top_ebpf_signals": [
+              "MEMO_SCHED:226145",
+              "MEMO_RECVFROM:30650",
+              "MEMO_OPENAT:18740",
+              "MEMO_SENDTO:13110",
+              "MEMO_BINDER:12707",
+              "MEMO_PROCESS_EXIT:444",
+              "MEMO_PROCESS_FORK:435",
+              "MEMO_PROCESS_EXEC:225"
+            ],
+            "top_categories": [
+              "App Process Runtime",
+              "Media Codec",
+              "Network IO",
+              "Payment/Security",
+              "Display Composition"
+            ]
+          }
+        },
+        "realtime_memory": null,
+        "available_scheduler_actions": [
+          {
+            "bit_index": 0,
+            "action_id": "warm_launch_top1",
+            "description": "Warm launch the top predicted app, then return HOME, when memory and thermal state are safe.",
+            "bit_value_contract": "scheduler_bits[0] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 1,
+            "action_id": "warm_launch_top2_if_idle",
+            "description": "Warm launch the second predicted app only when the current foreground context is idle enough.",
+            "bit_value_contract": "scheduler_bits[1] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 2,
+            "action_id": "trim_memory_low_priority_apps",
+            "description": "Ask lower-priority candidate apps to trim memory.",
+            "bit_value_contract": "scheduler_bits[2] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 3,
+            "action_id": "kill_selected_background_package",
+            "description": "Stop one safe, non-foreground, non-system, non-recommended background package only under memory pressure.",
+            "bit_value_contract": "scheduler_bits[3] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 4,
+            "action_id": "drop_cache_if_critical_memory",
+            "description": "Drop page cache only under critical memory pressure and root availability.",
+            "bit_value_contract": "scheduler_bits[4] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 5,
+            "action_id": "refresh_network_stats",
+            "description": "Refresh network stats when sendto/recvfrom evidence is high.",
+            "bit_value_contract": "scheduler_bits[5] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 6,
+            "action_id": "refresh_service_manager",
+            "description": "Refresh service-manager context when Binder evidence is high.",
+            "bit_value_contract": "scheduler_bits[6] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 7,
+            "action_id": "reduce_prewarm_when_display_busy",
+            "description": "Reduce warm-launch aggressiveness when SurfaceFlinger/RenderThread/UI evidence is busy.",
+            "bit_value_contract": "scheduler_bits[7] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 8,
+            "action_id": "skip_camera_prewarm_when_thermal_high",
+            "description": "Avoid camera/media warmup under elevated thermal state.",
+            "bit_value_contract": "scheduler_bits[8] == 1 executes this exact pre-programmed action; 0 skips it."
+          }
+        ],
+        "scheduler_bit_count": 9,
+        "scheduler_bit_contract": "Return scheduler_bits as exactly 9 characters. Character i controls available_scheduler_actions[i]. Use 1 to execute the pre-programmed action and 0 to skip it.",
+        "required_output": "Return strict JSON with top3_apps, pressure_analysis, scheduler_bits. Top-3 must be user-facing app categories from historical_app_categories or installed_apps, not OS-only labels.",
+        "scheduler_goal": "Use device-side eBPF and system-state evidence to infer near-future Android app/resource demand, then choose safe warm-launch, cache, memory, network, camera/media, and UI scheduling actions.",
+        "scheduler_evidence_categories": [
+          "Android Service IPC",
+          "Network IO",
+          "App Process Runtime",
+          "Other File Access",
+          "Memory Management",
+          "Media Codec"
+        ]
+      },
+      "ebpf_summary": {
+        "event_counts": {
+          "MEMO_STATUS": 2,
+          "MEMO_BINDER": 2400,
+          "MEMO_OPENAT": 2400,
+          "MEMO_MEMORY": 8,
+          "MEMO_SENDTO": 2400,
+          "MEMO_RECVFROM": 2400,
+          "MEMO_SCHED": 2400,
+          "MEMO_PROCESS_FORK": 435,
+          "MEMO_PROCESS_EXIT": 444,
+          "MEMO_PROCESS_EXEC": 225
+        },
+        "category_counts": {
+          "Other File Access": 120,
+          "Android Service IPC": 420,
+          "Memory Management": 64,
+          "Network IO": 420,
+          "App Process Runtime": 180,
+          "Media Codec": 48,
+          "Payment/Security": 24,
+          "Display Composition": 24
+        },
+        "observed_app_count": 5,
+        "timeline_window_count": 1,
+        "memory_pressure": "normal: no direct reclaim pressure was observed",
+        "foreground_package": null
+      }
+    }
+  ]
+}

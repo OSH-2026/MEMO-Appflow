@@ -1,0 +1,405 @@
+{
+  "schema_version": "memo.maple_scenarios.v1",
+  "generated_at": "2026-07-01T22:40:09.877926+08:00",
+  "scenarios": [
+    {
+      "id": "synthetic_user_30_social_5_1782916782611",
+      "description": "Short real-device experiment sample 26. Input app sequence is visible to MAPLE; future ground-truth apps are masked and used only for evaluation. Persona=social_sharing.",
+      "source": "android_device_side",
+      "context": {
+        "historical_app_categories": [
+          "Media Codec",
+          "Display Composition",
+          "Camera Service",
+          "Network IO",
+          "Navigation/Location",
+          "Communication"
+        ],
+        "task": "Predict the next three real Android apps the user is likely to use. Use eBPF/OS evidence as context, but do not predict OS-only labels such as Memory Management or Android Service IPC as apps. Also analyze pressure and scheduler_bits.",
+        "historical_app_ids": [
+          260,
+          115,
+          250,
+          245,
+          270,
+          110
+        ],
+        "prediction_time": "2026-07-01T22:40:08.872612+08:00",
+        "points_of_interest": [
+          "camera or photo workflow",
+          "video/audio playback workflow",
+          "active network communication"
+        ],
+        "installed_apps": {
+          "Media Codec": [
+            260
+          ],
+          "Display Composition": [
+            115
+          ],
+          "Camera Service": [
+            250
+          ],
+          "Network IO": [
+            245
+          ],
+          "Navigation/Location": [
+            270
+          ],
+          "Communication": [
+            110
+          ]
+        },
+        "app_catalog": {
+          "com.google.android.apps.nexuslauncher": {
+            "label": "nexuslauncher",
+            "categories": [
+              "App Process Runtime"
+            ]
+          },
+          "com.tencent.wemeet.app": {
+            "label": "Tencent Meeting",
+            "categories": [
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation/Location",
+              "Communication"
+            ]
+          },
+          "com.tencent.mm": {
+            "label": "WeChat",
+            "categories": [
+              "Display Composition",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation/Location",
+              "Communication",
+              "Payment/Security"
+            ]
+          }
+        },
+        "observed_app_sequence": [
+          {
+            "index": 1,
+            "package_name": "com.google.android.apps.nexuslauncher",
+            "label": "nexuslauncher",
+            "start_wall_time_ms": 1782916786267,
+            "start_time": "2026-07-01T22:39:46.267+08:00",
+            "end_wall_time_ms": 1782916787381,
+            "end_time": "2026-07-01T22:39:47.381+08:00",
+            "launch_state": "OBSERVED_REALTIME",
+            "total_time_ms": null,
+            "wait_time_ms": null,
+            "observed": true
+          },
+          {
+            "index": 2,
+            "package_name": "com.tencent.wemeet.app",
+            "label": "Tencent Meeting",
+            "start_wall_time_ms": 1782916787381,
+            "start_time": "2026-07-01T22:39:47.381+08:00",
+            "end_wall_time_ms": 1782916789540,
+            "end_time": "2026-07-01T22:39:49.54+08:00",
+            "launch_state": "OBSERVED_REALTIME",
+            "total_time_ms": null,
+            "wait_time_ms": null,
+            "observed": true
+          },
+          {
+            "index": 3,
+            "package_name": "com.google.android.apps.nexuslauncher",
+            "label": "nexuslauncher",
+            "start_wall_time_ms": 1782916790605,
+            "start_time": "2026-07-01T22:39:50.605+08:00",
+            "end_wall_time_ms": 1782916791711,
+            "end_time": "2026-07-01T22:39:51.711+08:00",
+            "launch_state": "OBSERVED_REALTIME",
+            "total_time_ms": null,
+            "wait_time_ms": null,
+            "observed": true
+          },
+          {
+            "index": 4,
+            "package_name": "com.tencent.mm",
+            "label": "WeChat",
+            "start_wall_time_ms": 1782916791711,
+            "start_time": "2026-07-01T22:39:51.711+08:00",
+            "end_wall_time_ms": 1782916794925,
+            "end_time": "2026-07-01T22:39:54.925+08:00",
+            "launch_state": "OBSERVED_REALTIME",
+            "total_time_ms": null,
+            "wait_time_ms": null,
+            "observed": true
+          },
+          {
+            "index": 5,
+            "package_name": "com.google.android.apps.nexuslauncher",
+            "label": "nexuslauncher",
+            "start_wall_time_ms": 1782916795991,
+            "start_time": "2026-07-01T22:39:55.991+08:00",
+            "end_wall_time_ms": 1782916800299,
+            "end_time": "2026-07-01T22:40:00.299+08:00",
+            "launch_state": "OBSERVED_REALTIME",
+            "total_time_ms": null,
+            "wait_time_ms": null,
+            "observed": true
+          }
+        ],
+        "timeline_windows": [
+          {
+            "index": 1,
+            "start_wall_time_ms": 1782916786267,
+            "start_time": "2026-07-01T22:39:46.267+08:00",
+            "end_wall_time_ms": 1782916800299,
+            "end_time": "2026-07-01T22:40:00.299+08:00",
+            "app_sequence_indexes": [
+              1,
+              2,
+              3,
+              4,
+              5
+            ],
+            "app_labels": [
+              "nexuslauncher",
+              "Tencent Meeting",
+              "nexuslauncher",
+              "WeChat",
+              "nexuslauncher"
+            ],
+            "app_packages": [
+              "com.google.android.apps.nexuslauncher",
+              "com.tencent.wemeet.app",
+              "com.google.android.apps.nexuslauncher",
+              "com.tencent.mm",
+              "com.google.android.apps.nexuslauncher"
+            ],
+            "compressed_ebpf": [
+              {
+                "event_type": "MEMO_SCHED",
+                "detail": "sched_switch_or_wakeup",
+                "count": 279341,
+                "rate_per_sec": 19907.425883694414
+              },
+              {
+                "event_type": "MEMO_OPENAT",
+                "detail": "openat",
+                "count": 22001,
+                "rate_per_sec": 1567.9161915621437
+              },
+              {
+                "event_type": "MEMO_BINDER",
+                "detail": "binder_transaction",
+                "count": 14154,
+                "rate_per_sec": 1008.6944127708095
+              },
+              {
+                "event_type": "MEMO_RECVFROM",
+                "detail": "recvfrom",
+                "count": 10973,
+                "rate_per_sec": 781.9982896237173
+              },
+              {
+                "event_type": "MEMO_SENDTO",
+                "detail": "sendto",
+                "count": 4498,
+                "rate_per_sec": 320.5530216647662
+              },
+              {
+                "event_type": "MEMO_PROCESS_FORK",
+                "detail": "process_fork",
+                "count": 678,
+                "rate_per_sec": 48.31812998859749
+              },
+              {
+                "event_type": "MEMO_PROCESS_EXIT",
+                "detail": "process_exit",
+                "count": 518,
+                "rate_per_sec": 36.91562143671608
+              },
+              {
+                "event_type": "MEMO_PROCESS_EXEC",
+                "detail": "process_exec",
+                "count": 233,
+                "rate_per_sec": 16.60490307867731
+              },
+              {
+                "event_type": "MEMO_MEMORY",
+                "detail": "reclaim_or_kswapd",
+                "count": 6,
+                "rate_per_sec": 0.427594070695553
+              }
+            ]
+          }
+        ],
+        "system_evidence": [
+          "13437 device-side eBPF records in the observed Android window",
+          "timestamped app sequence length=5 unique_apps=3 first=nexuslauncher/com.google.android.apps.nexuslauncher last=nexuslauncher/com.google.android.apps.nexuslauncher",
+          "recent app order=1:nexuslauncher -> 2:Tencent Meeting -> 3:nexuslauncher -> 4:WeChat -> 5:nexuslauncher",
+          "timeline_window 1 2026-07-01T22:39:46.267+08:00..2026-07-01T22:40:00.299+08:00 apps=[nexuslauncher,Tencent Meeting,nexuslauncher,WeChat,nexuslauncher] ebpf=[MEMO_SCHED=279341,MEMO_OPENAT=22001,MEMO_BINDER=14154]",
+          "event_type MEMO_BINDER: count=2400",
+          "event_type MEMO_OPENAT: count=2400",
+          "event_type MEMO_SENDTO: count=2400",
+          "event_type MEMO_RECVFROM: count=2400",
+          "event_type MEMO_SCHED: count=2400",
+          "event_type MEMO_PROCESS_FORK: count=678",
+          "event_type MEMO_PROCESS_EXIT: count=518",
+          "event_type MEMO_PROCESS_EXEC: count=233",
+          "MAPLE evidence/resource category Android Service IPC: count=420",
+          "MAPLE evidence/resource category Network IO: count=420",
+          "MAPLE evidence/resource category App Process Runtime: count=180",
+          "MAPLE evidence/resource category Other File Access: count=120",
+          "MAPLE evidence/resource category Memory Management: count=48",
+          "MAPLE evidence/resource category Camera Service: count=48",
+          "MAPLE evidence/resource category Media Codec: count=48",
+          "MAPLE evidence/resource category Display Composition: count=24"
+        ],
+        "compression": {
+          "strategy": "windowed_count_aggregation",
+          "raw_ebpf_rows_for_audit": 13437,
+          "observed_app_sequence_rows": 5,
+          "timeline_windows": 1,
+          "compressed_ebpf_signal_rows": 9,
+          "model_input_note": "MAPLE receives repeated eBPF activity as per-window event_type/detail/count/rate_per_sec instead of expanded raw rows."
+        },
+        "memory_pressure": "normal: no direct reclaim pressure was observed",
+        "realtime_recent_window": {
+          "started_at_ms": 1782916782611,
+          "ended_at_ms": 1782916804311,
+          "duration_ms": 21700,
+          "raw_trace_path": "/sdcard/MEMO/logs/realtime_1782916782611.trace",
+          "app_samples_path": "/sdcard/MEMO/logs/realtime_1782916782611_apps.tsv",
+          "raw_ebpf_events": 13437,
+          "app_segments": 5,
+          "timeline_windows": 1,
+          "compressed_ebpf_signals": 9,
+          "summary": {
+            "start_ms": 1782916782611,
+            "end_ms": 1782916804311,
+            "app_labels": [
+              "nexuslauncher",
+              "Tencent Meeting",
+              "WeChat"
+            ],
+            "top_ebpf_signals": [
+              "MEMO_SCHED:279341",
+              "MEMO_OPENAT:22001",
+              "MEMO_BINDER:14154",
+              "MEMO_RECVFROM:10973",
+              "MEMO_SENDTO:4498",
+              "MEMO_PROCESS_FORK:678",
+              "MEMO_PROCESS_EXIT:518",
+              "MEMO_PROCESS_EXEC:233"
+            ],
+            "top_categories": [
+              "App Process Runtime",
+              "Camera Service",
+              "Media Codec",
+              "Network IO",
+              "Navigation/Location",
+              "Communication"
+            ]
+          }
+        },
+        "realtime_memory": null,
+        "available_scheduler_actions": [
+          {
+            "bit_index": 0,
+            "action_id": "warm_launch_top1",
+            "description": "Warm launch the top predicted app, then return HOME, when memory and thermal state are safe.",
+            "bit_value_contract": "scheduler_bits[0] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 1,
+            "action_id": "warm_launch_top2_if_idle",
+            "description": "Warm launch the second predicted app only when the current foreground context is idle enough.",
+            "bit_value_contract": "scheduler_bits[1] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 2,
+            "action_id": "trim_memory_low_priority_apps",
+            "description": "Ask lower-priority candidate apps to trim memory.",
+            "bit_value_contract": "scheduler_bits[2] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 3,
+            "action_id": "kill_selected_background_package",
+            "description": "Stop one safe, non-foreground, non-system, non-recommended background package only under memory pressure.",
+            "bit_value_contract": "scheduler_bits[3] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 4,
+            "action_id": "drop_cache_if_critical_memory",
+            "description": "Drop page cache only under critical memory pressure and root availability.",
+            "bit_value_contract": "scheduler_bits[4] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 5,
+            "action_id": "refresh_network_stats",
+            "description": "Refresh network stats when sendto/recvfrom evidence is high.",
+            "bit_value_contract": "scheduler_bits[5] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 6,
+            "action_id": "refresh_service_manager",
+            "description": "Refresh service-manager context when Binder evidence is high.",
+            "bit_value_contract": "scheduler_bits[6] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 7,
+            "action_id": "reduce_prewarm_when_display_busy",
+            "description": "Reduce warm-launch aggressiveness when SurfaceFlinger/RenderThread/UI evidence is busy.",
+            "bit_value_contract": "scheduler_bits[7] == 1 executes this exact pre-programmed action; 0 skips it."
+          },
+          {
+            "bit_index": 8,
+            "action_id": "skip_camera_prewarm_when_thermal_high",
+            "description": "Avoid camera/media warmup under elevated thermal state.",
+            "bit_value_contract": "scheduler_bits[8] == 1 executes this exact pre-programmed action; 0 skips it."
+          }
+        ],
+        "scheduler_bit_count": 9,
+        "scheduler_bit_contract": "Return scheduler_bits as exactly 9 characters. Character i controls available_scheduler_actions[i]. Use 1 to execute the pre-programmed action and 0 to skip it.",
+        "required_output": "Return strict JSON with top3_apps, pressure_analysis, scheduler_bits. Top-3 must be user-facing app categories from historical_app_categories or installed_apps, not OS-only labels.",
+        "scheduler_goal": "Use device-side eBPF and system-state evidence to infer near-future Android app/resource demand, then choose safe warm-launch, cache, memory, network, camera/media, and UI scheduling actions.",
+        "scheduler_evidence_categories": [
+          "Android Service IPC",
+          "Network IO",
+          "App Process Runtime",
+          "Other File Access",
+          "Camera Service",
+          "Media Codec"
+        ]
+      },
+      "ebpf_summary": {
+        "event_counts": {
+          "MEMO_STATUS": 2,
+          "MEMO_BINDER": 2400,
+          "MEMO_OPENAT": 2400,
+          "MEMO_MEMORY": 6,
+          "MEMO_SENDTO": 2400,
+          "MEMO_RECVFROM": 2400,
+          "MEMO_SCHED": 2400,
+          "MEMO_PROCESS_FORK": 678,
+          "MEMO_PROCESS_EXIT": 518,
+          "MEMO_PROCESS_EXEC": 233
+        },
+        "category_counts": {
+          "Other File Access": 120,
+          "Android Service IPC": 420,
+          "Memory Management": 48,
+          "Network IO": 420,
+          "App Process Runtime": 180,
+          "Camera Service": 48,
+          "Media Codec": 48,
+          "Display Composition": 24
+        },
+        "observed_app_count": 5,
+        "timeline_window_count": 1,
+        "memory_pressure": "normal: no direct reclaim pressure was observed",
+        "foreground_package": null
+      }
+    }
+  ]
+}

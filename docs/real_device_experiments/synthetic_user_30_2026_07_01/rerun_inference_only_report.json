@@ -1,0 +1,2689 @@
+{
+  "schema_version": "memo.synthetic_user_30.rerun.v2",
+  "design": "Inference-only rerun. Reused 30 real eBPF/app-context records; no new app launching, eBPF collection, or scheduler A/B. MAPLE was rerun on-device after prompt/category-boundary fix; host scoring reuses Android-produced app_only/app_os candidate lists from the original run to approximate AppIdMapping without reusing future labels for model input.",
+  "summary": {
+    "n": 30,
+    "top1_accuracy": 0.23333333333333334,
+    "hit_top3_rate": 0.5,
+    "precision_at_3": 0.5222222222222223,
+    "recall_at_3": 0.5222222222222223,
+    "f1_at_3": 0.5222222222222223,
+    "mrr": 0.34444444444444444,
+    "exact_order_top3_rate": 0.06666666666666667,
+    "predicted_categories": {
+      "Media Codec": 6,
+      "Communication": 14,
+      "": 5,
+      "Camera Service": 3,
+      "Display Composition": 2
+    },
+    "scheduler_bits": {
+      "100000000": 28,
+      "101010100": 1,
+      "100100000": 1
+    },
+    "old_full_memo": {
+      "n": 30,
+      "top1_accuracy": 0.03333333333333333,
+      "hit_top3_rate": 0.26666666666666666,
+      "precision_at_3": 0.2777777777777778,
+      "recall_at_3": 0.2777777777777778,
+      "f1_at_3": 0.2777777777777778,
+      "mrr": 0.14444444444444443,
+      "exact_order_top3_rate": 0
+    },
+    "old_app_only_baseline": {
+      "n": 30,
+      "top1_accuracy": 0.2,
+      "hit_top3_rate": 0.4666666666666667,
+      "precision_at_3": 0.4777777777777777,
+      "recall_at_3": 0.4777777777777777,
+      "f1_at_3": 0.4777777777777777,
+      "mrr": 0.3111111111111111,
+      "exact_order_top3_rate": 0
+    },
+    "delta_vs_old_full_pct_points": {
+      "hit_top3": 23.333333333333332,
+      "f1_at_3": 24.444444444444446,
+      "top1_accuracy": 20.0
+    },
+    "delta_vs_app_only_pct_points": {
+      "hit_top3": 3.3333333333333326,
+      "f1_at_3": 4.444444444444456,
+      "top1_accuracy": 3.3333333333333326
+    }
+  },
+  "samples": [
+    {
+      "sample_id": "media_1",
+      "persona": "media_browsing",
+      "predicted_category": "Media Codec",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.termux",
+          "label": "Termux",
+          "category": "Display Composition",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Display Composition"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/01_media_1_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "media_10",
+      "persona": "media_browsing",
+      "predicted_category": "Communication",
+      "predicted_app_id": 260,
+      "scheduler_bits": "101010100",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": true,
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "f1_at_3": 1.0,
+        "mrr": 0.3333333333333333,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/02_media_10_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "media_2",
+      "persona": "media_browsing",
+      "predicted_category": "Communication",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": true,
+        "hit_top3": true,
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "f1_at_3": 1.0,
+        "mrr": 1.0,
+        "exact_order_top3": true
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/03_media_2_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "media_3",
+      "persona": "media_browsing",
+      "predicted_category": "Communication",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": true,
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "f1_at_3": 1.0,
+        "mrr": 0.5,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/04_media_3_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "media_4",
+      "persona": "media_browsing",
+      "predicted_category": "Communication",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": true,
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "f1_at_3": 1.0,
+        "mrr": 0.3333333333333333,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/05_media_4_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "media_5",
+      "persona": "media_browsing",
+      "predicted_category": "Media Codec",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.termux",
+          "label": "Termux",
+          "category": "Display Composition",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Display Composition"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": true,
+        "hit_top3": true,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 1.0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/06_media_5_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "media_6",
+      "persona": "media_browsing",
+      "predicted_category": "Communication",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": true,
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "f1_at_3": 1.0,
+        "mrr": 0.5,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/07_media_6_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "media_7",
+      "persona": "media_browsing",
+      "predicted_category": "Communication",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": true,
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "f1_at_3": 1.0,
+        "mrr": 0.3333333333333333,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/08_media_7_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "media_8",
+      "persona": "media_browsing",
+      "predicted_category": "Communication",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": true,
+        "hit_top3": true,
+        "precision_at_3": 1.0,
+        "recall_at_3": 1.0,
+        "f1_at_3": 1.0,
+        "mrr": 1.0,
+        "exact_order_top3": true
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/09_media_8_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "media_9",
+      "persona": "media_browsing",
+      "predicted_category": "Media Codec",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.termux",
+          "label": "Termux",
+          "category": "Display Composition",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Display Composition"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": true,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 0.5,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/10_media_9_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "productivity_1",
+      "persona": "productivity_learning",
+      "predicted_category": "",
+      "predicted_app_id": 255,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "Payment/Security",
+          "confidence": 0.62,
+          "reason": "matched phone-local app to predicted category: Payment/Security"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        },
+        {
+          "package_name": "com.google.android.gm",
+          "label": "Gmail",
+          "category": "App Process Runtime",
+          "confidence": 0.84,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.google.android.calculator",
+          "label": "Calculator",
+          "component": "com.google.android.calculator/com.android.calculator2.Calculator",
+          "categories": [
+            "App Process Runtime",
+            "Network IO"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.google.android.apps.nbu.files",
+          "label": "Files by Google",
+          "component": "com.google.android.apps.nbu.files/.home.HomeActivity",
+          "categories": [
+            "Network IO",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.topjohnwu.magisk",
+          "label": "Magisk",
+          "component": "com.topjohnwu.magisk/.ui.MainActivity",
+          "categories": [
+            "Network IO",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.0,
+        "recall_at_3": 0.0,
+        "f1_at_3": 0,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/11_productivity_1_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "productivity_10",
+      "persona": "productivity_learning",
+      "predicted_category": "Communication",
+      "predicted_app_id": 255,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.google.android.contacts",
+          "label": "Contacts",
+          "category": "Payment/Security",
+          "confidence": 0.62,
+          "reason": "matched phone-local app to predicted category: Payment/Security"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        },
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "App Process Runtime",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.google.android.calculator",
+          "label": "Calculator",
+          "component": "com.google.android.calculator/com.android.calculator2.Calculator",
+          "categories": [
+            "App Process Runtime",
+            "Network IO"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.google.android.apps.nbu.files",
+          "label": "Files by Google",
+          "component": "com.google.android.apps.nbu.files/.home.HomeActivity",
+          "categories": [
+            "Network IO",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.topjohnwu.magisk",
+          "label": "Magisk",
+          "component": "com.topjohnwu.magisk/.ui.MainActivity",
+          "categories": [
+            "Network IO",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.0,
+        "recall_at_3": 0.0,
+        "f1_at_3": 0,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/12_productivity_10_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "productivity_2",
+      "persona": "productivity_learning",
+      "predicted_category": "Communication",
+      "predicted_app_id": 255,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.google.android.contacts",
+          "label": "Contacts",
+          "category": "Payment/Security",
+          "confidence": 0.62,
+          "reason": "matched phone-local app to predicted category: Payment/Security"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        },
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "App Process Runtime",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.google.android.apps.nbu.files",
+          "label": "Files by Google",
+          "component": "com.google.android.apps.nbu.files/.home.HomeActivity",
+          "categories": [
+            "Network IO",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.topjohnwu.magisk",
+          "label": "Magisk",
+          "component": "com.topjohnwu.magisk/.ui.MainActivity",
+          "categories": [
+            "Network IO",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.calculator",
+          "label": "Calculator",
+          "component": "com.google.android.calculator/com.android.calculator2.Calculator",
+          "categories": [
+            "App Process Runtime",
+            "Network IO"
+          ],
+          "user_installed": false
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.0,
+        "recall_at_3": 0.0,
+        "f1_at_3": 0,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/13_productivity_2_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "productivity_3",
+      "persona": "productivity_learning",
+      "predicted_category": "Communication",
+      "predicted_app_id": 255,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.google.android.contacts",
+          "label": "Contacts",
+          "category": "Payment/Security",
+          "confidence": 0.62,
+          "reason": "matched phone-local app to predicted category: Payment/Security"
+        },
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "App Process Runtime",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.topjohnwu.magisk",
+          "label": "Magisk",
+          "component": "com.topjohnwu.magisk/.ui.MainActivity",
+          "categories": [
+            "Network IO",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.calculator",
+          "label": "Calculator",
+          "component": "com.google.android.calculator/com.android.calculator2.Calculator",
+          "categories": [
+            "App Process Runtime",
+            "Network IO"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.google.android.apps.nbu.files",
+          "label": "Files by Google",
+          "component": "com.google.android.apps.nbu.files/.home.HomeActivity",
+          "categories": [
+            "Network IO",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": false
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.0,
+        "recall_at_3": 0.0,
+        "f1_at_3": 0,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/14_productivity_3_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "productivity_4",
+      "persona": "productivity_learning",
+      "predicted_category": "",
+      "predicted_app_id": 255,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "Payment/Security",
+          "confidence": 0.62,
+          "reason": "matched phone-local app to predicted category: Payment/Security"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        },
+        {
+          "package_name": "com.google.android.gm",
+          "label": "Gmail",
+          "category": "App Process Runtime",
+          "confidence": 0.84,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.google.android.calculator",
+          "label": "Calculator",
+          "component": "com.google.android.calculator/com.android.calculator2.Calculator",
+          "categories": [
+            "App Process Runtime",
+            "Network IO"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.google.android.apps.nbu.files",
+          "label": "Files by Google",
+          "component": "com.google.android.apps.nbu.files/.home.HomeActivity",
+          "categories": [
+            "Network IO",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.topjohnwu.magisk",
+          "label": "Magisk",
+          "component": "com.topjohnwu.magisk/.ui.MainActivity",
+          "categories": [
+            "Network IO",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.0,
+        "recall_at_3": 0.0,
+        "f1_at_3": 0,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/15_productivity_4_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "productivity_5",
+      "persona": "productivity_learning",
+      "predicted_category": "",
+      "predicted_app_id": 255,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "Payment/Security",
+          "confidence": 0.62,
+          "reason": "matched phone-local app to predicted category: Payment/Security"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        },
+        {
+          "package_name": "com.google.android.gm",
+          "label": "Gmail",
+          "category": "App Process Runtime",
+          "confidence": 0.84,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.google.android.apps.nbu.files",
+          "label": "Files by Google",
+          "component": "com.google.android.apps.nbu.files/.home.HomeActivity",
+          "categories": [
+            "Network IO",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.topjohnwu.magisk",
+          "label": "Magisk",
+          "component": "com.topjohnwu.magisk/.ui.MainActivity",
+          "categories": [
+            "Network IO",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.calculator",
+          "label": "Calculator",
+          "component": "com.google.android.calculator/com.android.calculator2.Calculator",
+          "categories": [
+            "App Process Runtime",
+            "Network IO"
+          ],
+          "user_installed": false
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.0,
+        "recall_at_3": 0.0,
+        "f1_at_3": 0,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/16_productivity_5_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "productivity_6",
+      "persona": "productivity_learning",
+      "predicted_category": "Communication",
+      "predicted_app_id": 255,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.google.android.contacts",
+          "label": "Contacts",
+          "category": "Payment/Security",
+          "confidence": 0.62,
+          "reason": "matched phone-local app to predicted category: Payment/Security"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        },
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "App Process Runtime",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.topjohnwu.magisk",
+          "label": "Magisk",
+          "component": "com.topjohnwu.magisk/.ui.MainActivity",
+          "categories": [
+            "Network IO",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.calculator",
+          "label": "Calculator",
+          "component": "com.google.android.calculator/com.android.calculator2.Calculator",
+          "categories": [
+            "App Process Runtime",
+            "Network IO"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.google.android.apps.nbu.files",
+          "label": "Files by Google",
+          "component": "com.google.android.apps.nbu.files/.home.HomeActivity",
+          "categories": [
+            "Network IO",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": false
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.0,
+        "recall_at_3": 0.0,
+        "f1_at_3": 0,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/17_productivity_6_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "productivity_7",
+      "persona": "productivity_learning",
+      "predicted_category": "Communication",
+      "predicted_app_id": 255,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.google.android.contacts",
+          "label": "Contacts",
+          "category": "Payment/Security",
+          "confidence": 0.62,
+          "reason": "matched phone-local app to predicted category: Payment/Security"
+        },
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "App Process Runtime",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.google.android.calculator",
+          "label": "Calculator",
+          "component": "com.google.android.calculator/com.android.calculator2.Calculator",
+          "categories": [
+            "App Process Runtime",
+            "Network IO"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.google.android.apps.nbu.files",
+          "label": "Files by Google",
+          "component": "com.google.android.apps.nbu.files/.home.HomeActivity",
+          "categories": [
+            "Network IO",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.topjohnwu.magisk",
+          "label": "Magisk",
+          "component": "com.topjohnwu.magisk/.ui.MainActivity",
+          "categories": [
+            "Network IO",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.0,
+        "recall_at_3": 0.0,
+        "f1_at_3": 0,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/18_productivity_7_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "productivity_8",
+      "persona": "productivity_learning",
+      "predicted_category": "",
+      "predicted_app_id": 255,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "Payment/Security",
+          "confidence": 0.62,
+          "reason": "matched phone-local app to predicted category: Payment/Security"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        },
+        {
+          "package_name": "com.google.android.gm",
+          "label": "Gmail",
+          "category": "App Process Runtime",
+          "confidence": 0.84,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.google.android.apps.nbu.files",
+          "label": "Files by Google",
+          "component": "com.google.android.apps.nbu.files/.home.HomeActivity",
+          "categories": [
+            "Network IO",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.topjohnwu.magisk",
+          "label": "Magisk",
+          "component": "com.topjohnwu.magisk/.ui.MainActivity",
+          "categories": [
+            "Network IO",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.calculator",
+          "label": "Calculator",
+          "component": "com.google.android.calculator/com.android.calculator2.Calculator",
+          "categories": [
+            "App Process Runtime",
+            "Network IO"
+          ],
+          "user_installed": false
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.0,
+        "recall_at_3": 0.0,
+        "f1_at_3": 0,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/19_productivity_8_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "productivity_9",
+      "persona": "productivity_learning",
+      "predicted_category": "",
+      "predicted_app_id": 255,
+      "scheduler_bits": "100100000",
+      "top3": [
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "Payment/Security",
+          "confidence": 0.62,
+          "reason": "matched phone-local app to predicted category: Payment/Security"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        },
+        {
+          "package_name": "com.google.android.gm",
+          "label": "Gmail",
+          "category": "App Process Runtime",
+          "confidence": 0.84,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.topjohnwu.magisk",
+          "label": "Magisk",
+          "component": "com.topjohnwu.magisk/.ui.MainActivity",
+          "categories": [
+            "Network IO",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.calculator",
+          "label": "Calculator",
+          "component": "com.google.android.calculator/com.android.calculator2.Calculator",
+          "categories": [
+            "App Process Runtime",
+            "Network IO"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.google.android.apps.nbu.files",
+          "label": "Files by Google",
+          "component": "com.google.android.apps.nbu.files/.home.HomeActivity",
+          "categories": [
+            "Network IO",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": false
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.0,
+        "recall_at_3": 0.0,
+        "f1_at_3": 0,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/20_productivity_9_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "social_1",
+      "persona": "social_sharing",
+      "predicted_category": "Media Codec",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true,
+          "category": "Network IO"
+        },
+        {
+          "package_name": "com.termux",
+          "label": "Termux",
+          "category": "Display Composition",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Display Composition"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "component": "com.google.android.GoogleCamera/com.android.camera.CameraLauncher",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Payment/Security"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": true,
+        "hit_top3": true,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 1.0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/21_social_1_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "social_10",
+      "persona": "social_sharing",
+      "predicted_category": "Camera Service",
+      "predicted_app_id": 250,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "category": "Camera Service",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Camera Service"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "component": "com.google.android.GoogleCamera/com.android.camera.CameraLauncher",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Payment/Security"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": true,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 0.3333333333333333,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/22_social_10_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "social_2",
+      "persona": "social_sharing",
+      "predicted_category": "Camera Service",
+      "predicted_app_id": 250,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "category": "Camera Service",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Camera Service"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "component": "com.google.android.GoogleCamera/com.android.camera.CameraLauncher",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Payment/Security"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": true,
+        "hit_top3": true,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 1.0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/23_social_2_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "social_3",
+      "persona": "social_sharing",
+      "predicted_category": "Display Composition",
+      "predicted_app_id": 115,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Display Composition",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Display Composition"
+        },
+        {
+          "package_name": "com.tencent.mm",
+          "label": "WeChat",
+          "component": "com.tencent.mm/.ui.LauncherUI",
+          "categories": [
+            "Display Composition",
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Display Composition"
+        },
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "category": "Camera Service",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Camera Service"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "component": "com.google.android.GoogleCamera/com.android.camera.CameraLauncher",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Payment/Security"
+          ],
+          "user_installed": false
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/24_social_3_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "social_4",
+      "persona": "social_sharing",
+      "predicted_category": "Communication",
+      "predicted_app_id": null,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Media Codec"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        },
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "App Process Runtime",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "component": "com.google.android.GoogleCamera/com.android.camera.CameraLauncher",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Payment/Security"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": true,
+        "hit_top3": true,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 1.0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/25_social_4_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "social_5",
+      "persona": "social_sharing",
+      "predicted_category": "Media Codec",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true,
+          "category": "Network IO"
+        },
+        {
+          "package_name": "com.termux",
+          "label": "Termux",
+          "category": "Display Composition",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Display Composition"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "component": "com.google.android.GoogleCamera/com.android.camera.CameraLauncher",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Payment/Security"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/26_social_5_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "social_6",
+      "persona": "social_sharing",
+      "predicted_category": "Camera Service",
+      "predicted_app_id": 250,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "category": "Camera Service",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Camera Service"
+        },
+        {
+          "package_name": "com.tencent.wemeet.app",
+          "label": "Tencent Meeting",
+          "component": "com.tencent.wemeet.app/.StartupActivity",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Camera Service"
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "component": "com.google.android.GoogleCamera/com.android.camera.CameraLauncher",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Payment/Security"
+          ],
+          "user_installed": false
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/27_social_6_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "social_7",
+      "persona": "social_sharing",
+      "predicted_category": "Display Composition",
+      "predicted_app_id": 115,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Display Composition",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Display Composition"
+        },
+        {
+          "package_name": "com.tencent.mm",
+          "label": "WeChat",
+          "component": "com.tencent.mm/.ui.LauncherUI",
+          "categories": [
+            "Display Composition",
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Display Composition"
+        },
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "category": "Camera Service",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Camera Service"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "component": "com.google.android.GoogleCamera/com.android.camera.CameraLauncher",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Payment/Security"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": true,
+        "hit_top3": true,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 1.0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/28_social_7_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "social_8",
+      "persona": "social_sharing",
+      "predicted_category": "Communication",
+      "predicted_app_id": null,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true,
+          "category": "Media Codec"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "category": "Network IO",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: Network IO"
+        },
+        {
+          "package_name": "com.android.settings",
+          "label": "Settings",
+          "category": "App Process Runtime",
+          "confidence": 0.98,
+          "reason": "matched phone-local app to predicted category: App Process Runtime"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "component": "com.google.android.GoogleCamera/com.android.camera.CameraLauncher",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Payment/Security"
+          ],
+          "user_installed": false
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": false,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 0,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/29_social_8_scenario_maple_output.txt"
+    },
+    {
+      "sample_id": "social_9",
+      "persona": "social_sharing",
+      "predicted_category": "Media Codec",
+      "predicted_app_id": 260,
+      "scheduler_bits": "100000000",
+      "top3": [
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "category": "Media Codec",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Media Codec"
+        },
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true,
+          "category": "Network IO"
+        },
+        {
+          "package_name": "com.termux",
+          "label": "Termux",
+          "category": "Display Composition",
+          "confidence": 0.9,
+          "reason": "matched phone-local app to predicted category: Display Composition"
+        }
+      ],
+      "ground_truth_top3": [
+        {
+          "package_name": "com.android.chrome",
+          "label": "Chrome",
+          "component": "com.android.chrome/com.google.android.apps.chrome.Main",
+          "categories": [
+            "Network IO",
+            "App Process Runtime",
+            "Camera Service",
+            "Media Codec",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.tencent.mobileqq",
+          "label": "QQ",
+          "component": "com.tencent.mobileqq/.activity.SplashActivity",
+          "categories": [
+            "Media Codec",
+            "Display Composition",
+            "Camera Service",
+            "Network IO",
+            "Navigation/Location",
+            "Communication",
+            "Payment/Security",
+            "App Process Runtime"
+          ],
+          "user_installed": true
+        },
+        {
+          "package_name": "com.google.android.GoogleCamera",
+          "label": "Camera",
+          "component": "com.google.android.GoogleCamera/com.android.camera.CameraLauncher",
+          "categories": [
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Navigation/Location",
+            "Payment/Security"
+          ],
+          "user_installed": false
+        }
+      ],
+      "metrics": {
+        "hit_top1": false,
+        "hit_top3": true,
+        "precision_at_3": 0.6666666666666666,
+        "recall_at_3": 0.6666666666666666,
+        "f1_at_3": 0.6666666666666666,
+        "mrr": 0.5,
+        "exact_order_top3": false
+      },
+      "output_file": "docs/real_device_experiments/synthetic_user_30_2026_07_01/rerun_maple_outputs/outputs/30_social_9_scenario_maple_output.txt"
+    }
+  ]
+}

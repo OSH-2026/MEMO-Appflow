@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+﻿cmake_minimum_required(VERSION 3.16)
 project(maple_engine LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -6,11 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # llama.cpp paths
-# set(LLAMA_CPP_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../llama.cpp)
-# set(LLAMA_BUILD ${LLAMA_CPP_ROOT}/build-andorid CACHE PATH "Path to the llama.cpp build directory")
-set(LLAMA_CPP_ROOT /home/javaherobrine/桌面/osh-2026/MEMO-OS/llm/maple/llama.cpp)
-set(LLAMA_BUILD ${LLAMA_CPP_ROOT}/build-andorid CACHE PATH "Path to the llama.cpp build directory")
-
+set(LLAMA_CPP_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/../llama.cpp CACHE PATH "Path to llama.cpp source")
+set(LLAMA_BUILD ${LLAMA_CPP_ROOT}/build-android-arm64 CACHE PATH "Path to the llama.cpp build directory")
 
 
 # Include directories
@@ -30,10 +27,10 @@ set(SOURCES
 
 # Static libraries from llama.cpp build
 set(LLAMA_LIBS
-    /home/javaherobrine/桌面/osh-2026/MEMO-OS/llm/maple/llama.cpp/build-android/src/libllama.a
-    /home/javaherobrine/桌面/osh-2026/MEMO-OS/llm/maple/llama.cpp/build-android/ggml/src/libggml.a
-    /home/javaherobrine/桌面/osh-2026/MEMO-OS/llm/maple/llama.cpp/build-android/ggml/src/libggml-base.a
-    /home/javaherobrine/桌面/osh-2026/MEMO-OS/llm/maple/llama.cpp/build-android/ggml/src/libggml-cpu.a
+    ${LLAMA_BUILD}/src/libllama.a
+    ${LLAMA_BUILD}/ggml/src/libggml.a
+    ${LLAMA_BUILD}/ggml/src/libggml-base.a
+    ${LLAMA_BUILD}/ggml/src/libggml-cpu.a
 )
 if(EXISTS ${LLAMA_BUILD}/ggml/src/ggml-cuda/libggml-cuda.a)
     list(APPEND LLAMA_LIBS ${LLAMA_BUILD}/ggml/src/ggml-cuda/libggml-cuda.a)
@@ -91,6 +88,6 @@ else()
     endif()
 endif()
 
-# Demo executable
-# add_executable(maple_demo ../demo/maple_demo.cpp)
-# target_link_libraries(maple_demo PRIVATE maple_engine_static)
+# Demo executable used by the Android shell backend.
+add_executable(maple_demo ../demo/maple_demo.cpp)
+target_link_libraries(maple_demo PRIVATE maple_engine_static)

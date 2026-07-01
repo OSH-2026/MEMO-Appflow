@@ -1,0 +1,38 @@
+{
+  "started_at_ms": 1782916943994,
+  "ended_at_ms": 1782916965155,
+  "duration_ms": 21161,
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782916943994.trace",
+  "app_samples_path": "\/sdcard\/MEMO\/logs\/realtime_1782916943994_apps.tsv",
+  "raw_ebpf_events": 13106,
+  "app_segments": 4,
+  "timeline_windows": 1,
+  "compressed_ebpf_signals": 9,
+  "summary": {
+    "start_ms": 1782916943994,
+    "end_ms": 1782916965155,
+    "app_labels": [
+      "nexuslauncher",
+      "Chrome",
+      "QQ"
+    ],
+    "top_ebpf_signals": [
+      "MEMO_SCHED:301317",
+      "MEMO_RECVFROM:31473",
+      "MEMO_OPENAT:19111",
+      "MEMO_BINDER:13672",
+      "MEMO_SENDTO:13558",
+      "MEMO_PROCESS_FORK:467",
+      "MEMO_PROCESS_EXIT:413",
+      "MEMO_PROCESS_EXEC:222"
+    ],
+    "top_categories": [
+      "App Process Runtime",
+      "Network IO",
+      "Camera Service",
+      "Media Codec",
+      "Navigation\/Location",
+      "Communication"
+    ]
+  }
+}

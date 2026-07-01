@@ -1,0 +1,35 @@
+{
+  "started_at_ms": 1782915716123,
+  "ended_at_ms": 1782915737445,
+  "duration_ms": 21322,
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782915716123.trace",
+  "app_samples_path": "\/sdcard\/MEMO\/logs\/realtime_1782915716123_apps.tsv",
+  "raw_ebpf_events": 13139,
+  "app_segments": 5,
+  "timeline_windows": 1,
+  "compressed_ebpf_signals": 9,
+  "summary": {
+    "start_ms": 1782915716123,
+    "end_ms": 1782915737445,
+    "app_labels": [
+      "nexuslauncher",
+      "Calculator",
+      "Files by Google"
+    ],
+    "top_ebpf_signals": [
+      "MEMO_SCHED:378497",
+      "MEMO_RECVFROM:53311",
+      "MEMO_OPENAT:23786",
+      "MEMO_SENDTO:22414",
+      "MEMO_BINDER:19608",
+      "MEMO_PROCESS_FORK:490",
+      "MEMO_PROCESS_EXIT:415",
+      "MEMO_PROCESS_EXEC:224"
+    ],
+    "top_categories": [
+      "App Process Runtime",
+      "Network IO",
+      "Payment\/Security"
+    ]
+  }
+}

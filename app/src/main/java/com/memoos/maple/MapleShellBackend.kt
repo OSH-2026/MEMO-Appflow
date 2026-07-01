@@ -3,6 +3,7 @@ package com.memoos.maple
 import android.content.Context
 import com.memoos.device.DevicePaths
 import com.memoos.device.RootShell
+import org.json.JSONObject
 import java.io.File
 
 class MapleShellBackend(private val context: Context) {
@@ -31,6 +32,7 @@ class MapleShellBackend(private val context: Context) {
     }
 
     private fun parseDemoOutput(output: String): MaplePrediction {
+        val structured = parseStructuredOutput(output)
         val appId = Regex("""->\s*Predicted specific app:\s*App\s+(\d+)""")
             .find(output)
             ?.groupValues
@@ -62,7 +64,85 @@ class MapleShellBackend(private val context: Context) {
             backend = "shell",
             available = appId > 0 || categories.isNotEmpty(),
             error = if (appId > 0 || categories.isNotEmpty()) null else "Could not parse MAPLE demo output",
+            schedulerBits = structured?.let { MaplePrediction.parseSchedulerBits(it) }.orEmpty(),
+            schedulerPlan = structured?.let { MaplePrediction.parseSchedulerPlan(it) }.orEmpty(),
+            pressureAnalysis = structured?.let { MaplePrediction.parsePressureAnalysis(it) }.orEmpty(),
         )
+    }
+
+    private fun parseStructuredOutput(output: String): JSONObject? {
+        parseJsonAfterMarker(output, "MAPLE_STRUCTURED_OUTPUT:")?.let { return it }
+        val markerIndex = listOf("scheduler_bits", "scheduler_bitmask", "scheduler_plan", "pressure_analysis")
+            .map { output.indexOf(it) }
+            .filter { it >= 0 }
+            .minOrNull()
+            ?: return null
+        val start = output.lastIndexOf('{', markerIndex).takeIf { it >= 0 } ?: return null
+        var depth = 0
+        var inString = false
+        var escaped = false
+        for (idx in start until output.length) {
+            val ch = output[idx]
+            if (escaped) {
+                escaped = false
+                continue
+            }
+            if (ch == '\\' && inString) {
+                escaped = true
+                continue
+            }
+            if (ch == '"') inString = !inString
+            if (inString) continue
+            if (ch == '{') depth++
+            if (ch == '}') {
+                depth--
+                if (depth == 0) {
+                    return try {
+                        JSONObject(output.substring(start, idx + 1))
+                    } catch (_: Exception) {
+                        null
+                    }
+                }
+            }
+        }
+        return null
+    }
+
+    private fun parseJsonAfterMarker(output: String, marker: String): JSONObject? {
+        val markerIndex = output.lastIndexOf(marker).takeIf { it >= 0 } ?: return null
+        val start = output.indexOf('{', markerIndex).takeIf { it >= 0 } ?: return null
+        return parseJsonObjectAt(output, start)
+    }
+
+    private fun parseJsonObjectAt(output: String, start: Int): JSONObject? {
+        var depth = 0
+        var inString = false
+        var escaped = false
+        for (idx in start until output.length) {
+            val ch = output[idx]
+            if (escaped) {
+                escaped = false
+                continue
+            }
+            if (ch == '\\' && inString) {
+                escaped = true
+                continue
+            }
+            if (ch == '"') inString = !inString
+            if (inString) continue
+            if (ch == '{') depth++
+            if (ch == '}') {
+                depth--
+                if (depth == 0) {
+                    return try {
+                        JSONObject(output.substring(start, idx + 1))
+                    } catch (_: Exception) {
+                        null
+                    }
+                }
+            }
+        }
+        return null
     }
 
     private companion object {

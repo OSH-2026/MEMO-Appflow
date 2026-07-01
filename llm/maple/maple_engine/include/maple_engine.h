@@ -47,6 +47,7 @@ public:
     // Get the prompt that would be sent to the model (for debugging/demo)
     std::string preview_app_type_prompt(const UserContext& ctx) const;
     std::string preview_next_app_prompt(const UserContext& ctx, const AppTypeResult& stage1) const;
+    std::string generate_text(const std::string& prompt);
 
     bool is_ready() const;
 

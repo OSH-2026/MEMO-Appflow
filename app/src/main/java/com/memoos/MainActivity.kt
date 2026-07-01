@@ -2,6 +2,8 @@ package com.memoos
 
 import android.Manifest
 import android.app.Activity
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -19,6 +21,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
+import android.widget.Toast
 import com.memoos.action.AppIdMapping
 import com.memoos.device.RootShell
 import com.memoos.ebpf.EBPFCollectorService
@@ -27,6 +30,7 @@ import com.memoos.store.ActionState
 import com.memoos.store.LastMemoState
 import com.memoos.store.MemoStore
 import com.memoos.store.RecommendationState
+import com.memoos.widget.MemoWidgetProvider
 import org.json.JSONArray
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -137,9 +141,9 @@ class MainActivity : Activity() {
             panel.addView(statusText("需要处理 root 授权", Color.rgb(185, 28, 28)))
             panel.addView(body("Magisk 当前拒绝了 MEMO-Appflow 的 superuser 权限。没有这个权限，eBPF 采集、系统状态读取和调度动作都会失败。"))
             panel.addView(openMagiskButton())
-        } else if (state.freeUsageSession.active) {
-            panel.addView(statusText("正在记录自由体验", Color.rgb(37, 99, 235)))
-            panel.addView(body("可以离开 MEMO 正常打开任意应用。回来点“结束体验并分析”，这里会生成刚才这段使用的 app 序列、系统证据、Top-3 推荐和调度动作。"))
+        } else if (state.realtime.active) {
+            panel.addView(statusText("实时模式运行中", Color.rgb(37, 99, 235)))
+            panel.addView(body("MEMO 正在后台持续收集 app 序列和 eBPF 证据，每 3 分钟刷新一次 Top-3 桌面 Widget，并执行一次 MAPLE 指定的系统调度动作。"))
         } else if (state.maple.backend == "pending") {
             panel.addView(statusText("正在后台推理", Color.rgb(180, 83, 9)))
             panel.addView(body("你可以继续正常使用手机。MAPLE 完成后，Top-3 应用和系统动作会自动刷新。"))
@@ -148,9 +152,13 @@ class MainActivity : Activity() {
             panel.addView(body("MEMO 已根据真实系统证据生成 Top-3 应用，并执行了非侵入式调度策略。"))
         } else {
             panel.addView(statusText("等待开始", Color.rgb(37, 99, 235)))
-            panel.addView(body("先点“检查设备授权”，确认 root、eBPF collector 和 MAPLE 模型可用；然后点“智能优化：刷新当前推荐”。"))
+            panel.addView(body("先点“检查设备授权”，确认 root、eBPF collector 和 MAPLE 模型可用；然后可以开启“实时模式”。"))
         }
         panel.addView(kv("上次更新", updated))
+        if (state.realtime.active) {
+            panel.addView(kv("实时窗口", "${formatTimestamp(state.realtime.lastWindowStartMs)} - ${formatTimestamp(state.realtime.lastWindowEndMs)}"))
+            panel.addView(kv("下次刷新", formatTimestamp(state.realtime.nextWindowAtMs)))
+        }
         panel.addView(kv("当前证据", friendlyEvidence(evidenceHeadline(state))))
         return panel
     }
@@ -181,19 +189,20 @@ class MainActivity : Activity() {
     private fun controlPanel(state: LastMemoState): View {
         val panel = verticalPanel()
         panel.addView(label("开始使用"))
-        panel.addView(smallCaption("两个入口的区别"))
-        panel.addView(body("智能优化是短窗口刷新：MEMO 立刻采集当前几秒的 eBPF 和系统状态，不主动切换其他应用，然后用 MAPLE 更新 Top-3 和调度动作。适合刚刚打开聊天、浏览器、相机、视频等场景后快速刷新推荐。"))
-        panel.addView(body("自由体验是一段完整记录：先开始记录，离开 MEMO 打开若干真实应用，回到 MEMO 结束分析；MEMO 会生成这段时间的 app 序列、压缩 eBPF、MAPLE 结果、Top-3 和调度报告。"))
+        panel.addView(smallCaption("实时模式"))
+        panel.addView(body("实时模式是产品主入口：MEMO 会常驻后台，每 3 分钟读取最近 app 序列、eBPF 和系统状态，结合固定大小的 EMA memory 调用 MAPLE，自动刷新桌面 Widget 的 Top-3，并执行智能调度动作。"))
+        panel.addView(body("智能优化是手动短窗口刷新：立刻采集当前几秒的 eBPF 和系统状态，不主动切换其他应用，然后用 MAPLE 更新 Top-3 和调度动作。"))
         panel.addView(smallCaption("辅助入口"))
         panel.addView(body("记录当前窗口：不主动打开其他应用，只对当前屏幕做一次短时真实 eBPF 采集、MAPLE 判断和调度更新。适合检查“现在这个页面”到底产生了什么系统证据。"))
-        panel.addView(body("停止后台任务：取消正在运行的采集、MAPLE 推理或自由体验记录，释放后台 collector；它不会生成新的分析报告。"))
+        panel.addView(body("停止后台任务：取消正在运行的采集、MAPLE 推理或实时模式，释放后台 collector；它不会生成新的分析报告。"))
         panel.addView(rowButton("检查设备授权", EBPFCollectorService.ACTION_CHECK_SETUP, primary = false))
-        panel.addView(rowButton("智能优化：刷新当前推荐", EBPFCollectorService.ACTION_RUN_ONCE, primary = true))
-        if (state.freeUsageSession.active) {
-            panel.addView(rowButton("结束体验并分析", EBPFCollectorService.ACTION_FREE_USAGE_FINISH, primary = true))
+        if (state.realtime.active) {
+            panel.addView(rowButton("关闭实时模式", EBPFCollectorService.ACTION_REALTIME_STOP, primary = true))
         } else {
-            panel.addView(rowButton("开始自由体验", EBPFCollectorService.ACTION_FREE_USAGE_START, primary = false))
+            panel.addView(rowButton("开启实时模式", EBPFCollectorService.ACTION_REALTIME_START, primary = true))
         }
+        panel.addView(pinWidgetButton())
+        panel.addView(rowButton("智能优化：刷新当前推荐", EBPFCollectorService.ACTION_RUN_ONCE, primary = true))
         panel.addView(rowButton("记录当前窗口", EBPFCollectorService.ACTION_RECORD_CURRENT_USAGE, primary = false))
         panel.addView(rowButton("停止后台任务", EBPFCollectorService.ACTION_STOP, primary = false))
 
@@ -203,7 +212,12 @@ class MainActivity : Activity() {
     private fun immediateOperationPanel(state: LastMemoState): View {
         val panel = verticalPanel()
         panel.addView(label("即时操作状态"))
-        panel.addView(body("这里显示“记录当前窗口”和“停止后台任务”的最近执行结果。点完按钮后，如果功能真的执行了，这里的时间和状态会更新。"))
+        panel.addView(body("这里显示实时模式、记录当前窗口和停止后台任务的最近执行结果。点完按钮后，如果功能真的执行了，这里的时间和状态会更新。"))
+        panel.addView(operationStatusCard(
+            title = "实时模式",
+            description = "后台常驻观察，每 3 分钟刷新 Top-3 桌面 Widget 并执行一次智能调度。",
+            action = state.actions.lastOrNull { it.name == "realtime_mode" || it.name == "realtime_cycle" },
+        ))
         panel.addView(operationStatusCard(
             title = "记录当前窗口",
             description = "短时采集当前前台窗口，随后进入 MAPLE、Top-3 和系统动作流程。",
@@ -211,7 +225,7 @@ class MainActivity : Activity() {
         ))
         panel.addView(operationStatusCard(
             title = "停止后台任务",
-            description = "取消后台采集/推理/自由体验记录，释放设备侧 collector。",
+            description = "取消后台采集/推理/实时模式，释放设备侧 collector。",
             action = state.actions.lastOrNull { it.name == "pipeline_stop" },
         ))
         return panel
@@ -221,12 +235,12 @@ class MainActivity : Activity() {
         val panel = verticalPanel()
         panel.addView(label("实验和报告"))
         panel.addView(body("这些入口用于复现实验、生成报告和做消融分析；普通使用时只需要上面的智能优化和 Top-3 推荐。"))
-        panel.addView(experimentDesign("100 次真实使用分析", "在手机本地连续打开真实可启动应用，同步采集 eBPF，再让 MAPLE 生成 Top-3 和调度动作。看的是产品闭环是否真实跑通。"))
-        panel.addView(experimentDesign("手机压力 A/B 实验", "同一批真实 app workload 分别在 MEMO 关闭和开启后运行，比较启动耗时、CPU、内存回收和综合压力。看的是 MEMO 对手机整体使用压力的影响。"))
+        panel.addView(experimentDesign("9 分钟实时 Top-3 变化实验", "按网络/相机/媒体通信三个阶段连续使用真实应用，每段完整 3 分钟，验证 Widget 推荐是否会随使用序列改变。"))
+        panel.addView(experimentDesign("系统调度性能实验", "同一个真实 app、一模一样的 1 分钟动作序列，比较无 MEMO 和 MEMO Stage1/2/3 调度后的启动耗时、CPU、内存回收和综合压力。只看系统指标，不看预测准确率。"))
         panel.addView(experimentDesign("真实证据消融", "固定同一次真实使用 scenario，逐项删掉网络、内存、显示、Binder 等证据。看的是每类 eBPF 证据对预测和调度有多重要。"))
-        panel.addView(rowButton("100 次真实使用分析", EBPFCollectorService.ACTION_USAGE_100_ANALYSIS, primary = false))
+        panel.addView(rowButton("9 分钟实时 Top-3 变化实验", EBPFCollectorService.ACTION_REALTIME_TOP3_SHIFT_EXPERIMENT, primary = false))
         panel.addView(rowButton("滚动场景完整评估", EBPFCollectorService.ACTION_FULL_LOCAL_EVALUATION, primary = false))
-        panel.addView(rowButton("手机压力 A/B 实验", EBPFCollectorService.ACTION_PRESSURE_EXPERIMENT, primary = false))
+        panel.addView(rowButton("系统调度性能实验", EBPFCollectorService.ACTION_PRESSURE_EXPERIMENT, primary = false))
         panel.addView(rowButton("滚动/显示场景采集", EBPFCollectorService.ACTION_EXPERIMENT_SCROLL, primary = false))
         panel.addView(rowButton("通信场景采集", EBPFCollectorService.ACTION_EXPERIMENT_COMMUNICATION, primary = false))
         panel.addView(rowButton("相机/图片场景采集", EBPFCollectorService.ACTION_EXPERIMENT_CAMERA, primary = false))
@@ -242,13 +256,13 @@ class MainActivity : Activity() {
         panel.addView(kv("最近更新", formatTimestamp(state.recommendationsUpdatedAt)))
         if (state.recommendations.isEmpty()) {
             panel.addView(body("还没有推荐。运行“智能优化：刷新当前推荐”后，这里只会显示手机上真实可打开的应用，不会显示进程名或系统服务。"))
-            panel.addView(body("每次完成智能优化或自由体验分析后，MEMO 都会用最新系统证据重新计算这里的三个应用。"))
+            panel.addView(body("开启实时模式后，MEMO 会每 3 分钟用最新系统证据和固定大小历史 memory 重新计算这里的三个应用。"))
             return panel
         }
         state.recommendations.forEachIndexed { index, app ->
             panel.addView(appRow(index + 1, app))
         }
-        panel.addView(body("Top-3 来自最近一次 MAPLE 推理。每次智能优化或自由体验结束都会重新计算；如果最近场景相似，应用和顺序可能保持不变，更新时间会继续刷新。"))
+        panel.addView(body("Top-3 来自最近一次 MAPLE 推理。实时模式会每 3 分钟自动重新计算；如果最近场景相似，应用和顺序可能保持不变，更新时间会继续刷新。"))
         panel.addView(rowButton("立即预热第 1 个推荐", EBPFCollectorService.ACTION_WARM_TOP_APP, primary = false))
         return panel
     }
@@ -288,9 +302,10 @@ class MainActivity : Activity() {
         val panel = verticalPanel()
         val report = jsonOrNull(state.usageReportJson)
         val isFreeSession = report?.optString("session_mode") == "free_usage" || report?.optString("experiment_type") == "free_usage_session"
+        val isRealtimeShift = report?.optString("experiment_type") == "realtime_top3_shift_7min"
         panel.addView(label("本次观察与分析"))
         if (report == null) {
-            panel.addView(body("还没有完整使用分析。可以点“开始自由体验”，打开几个应用后回来点“结束体验并分析”；也可以点“100 次真实使用分析”跑固定实验。"))
+            panel.addView(body("还没有完整使用分析。可以开启实时模式让 MEMO 持续按 3 分钟窗口分析，也可以点“9 分钟实时 Top-3 变化实验”验证推荐是否会随使用序列改变。"))
             appendObservationSummary(panel, state)
             panel.addView(detailButton("查看 eBPF 证据详情") {
                 startActivity(Intent(this, EvidenceActivity::class.java))
@@ -301,17 +316,33 @@ class MainActivity : Activity() {
         val ebpf = report.optJSONObject("ebpf")
         val delta = report.optJSONObject("system_delta")
         panel.addView(smallCaption("实验设计"))
-        if (isFreeSession) {
-            panel.addView(body("开始自由体验后，MEMO 在后台记录前台应用变化并采集 eBPF。结束体验时，手机本地把这段真实使用整理成 app 序列、系统证据、MAPLE 推荐和调度动作。"))
+        if (isRealtimeShift) {
+            panel.addView(body("MEMO 在手机本地按网络/相机/媒体通信三个阶段驱动真实应用使用，每阶段用完整 3 分钟窗口采集 app 序列和 eBPF，再用 MAPLE 更新 Top-3 桌面 Widget。"))
+            panel.addView(metricRow("阶段数量", "${report.optInt("phase_count")} 个", "实验覆盖的连续使用阶段。这里用分段极端场景让推荐更容易发生变化。", Color.rgb(37, 99, 235)))
+            panel.addView(metricRow("Top-3 改变次数", "${report.optInt("top3_changed_transitions")} 次", "验证指标。大于 0 表示至少有一个实时窗口后推荐列表发生变化。", Color.rgb(22, 101, 52)))
+            report.optJSONArray("phases").takeObjects(4).forEach { phase ->
+                panel.addView(text("${phase.optString("name")}：${joinArray(phase.optJSONArray("top3"))}",
+                    13f,
+                    Color.rgb(51, 65, 85),
+                    bottom = 5,
+                ))
+            }
+            appendObservationSummary(panel, state)
+            panel.addView(detailButton("查看完整使用报告") {
+                openReport("usage")
+            })
+            return panel
+        } else if (isFreeSession) {
+            panel.addView(body("实时模式下，MEMO 在后台持续记录前台应用变化并采集 eBPF。每个 3 分钟窗口结束后，手机本地把这段真实使用整理成 app 序列、系统证据、MAPLE 推荐和调度动作。"))
         } else {
-            panel.addView(body("MEMO 在手机本地轮流打开真实应用 100 次，每 5 次作为一个时间窗同步采集 eBPF。MAPLE 看到的是按时间对齐的 app 使用序列和压缩后的系统证据。"))
+            panel.addView(body("MEMO 在手机本地运行固定真实应用使用实验，同步采集 eBPF。MAPLE 看到的是按时间对齐的 app 使用序列和压缩后的系统证据。"))
         }
         val observed = report.optInt("interaction_count_observed")
         val requested = report.optInt("interaction_count_requested", observed)
         val openGuide = if (isFreeSession) {
-            "完整性指标。这里表示刚才自由体验里观察到的连续 app 片段数。"
+            "完整性指标。这里表示最近实时窗口里观察到的连续 app 片段数。"
         } else {
-            "完整性指标。越接近 100/100，说明实验越完整。"
+            "完整性指标。越接近请求次数，说明实验越完整。"
         }
         panel.addView(metricRow("真实 app 打开", "$observed/$requested 次", openGuide, Color.rgb(37, 99, 235)))
         panel.addView(metricRow("覆盖应用", "${report.optInt("unique_apps_opened")} 个", "多样性指标。越大说明覆盖的真实 app 场景越多，不直接代表性能更好。", Color.rgb(37, 99, 235)))
@@ -321,7 +352,7 @@ class MainActivity : Activity() {
             panel.addView(metricRow("模型输入信号", "$compressedSignals 条", "压缩后的 eBPF 信号。它把重复事件合成 count 和 rate，让小模型更容易读。", Color.rgb(37, 99, 235)))
         }
         if (isFreeSession) {
-            panel.addView(metricRow("平均停留时长", formatNumberMs(launch?.opt("avg_dwell_time_ms")), "体验描述指标。表示这段自由体验里每个 app 片段大概停留多久，不是越大越好。", Color.rgb(37, 99, 235)))
+            panel.addView(metricRow("平均停留时长", formatNumberMs(launch?.opt("avg_dwell_time_ms")), "体验描述指标。表示窗口里每个 app 片段大概停留多久，不是越大越好。", Color.rgb(37, 99, 235)))
             panel.addView(metricRow("P50 停留时长", formatNumberMs(launch?.opt("p50_dwell_time_ms")), "一半 app 片段不超过这个时长，用来理解刚才是否频繁切换。", Color.rgb(37, 99, 235)))
         } else {
             panel.addView(metricRow("平均启动耗时", formatNumberMs(launch?.opt("avg_total_time_ms")), "性能指标。越小越好，表示这段 app 打开平均更快。", Color.rgb(22, 101, 52)))
@@ -375,7 +406,7 @@ class MainActivity : Activity() {
         panel.addView(label("手机性能 A/B 实验"))
         val report = jsonOrNull(state.pressureReportJson)
         if (report == null) {
-            panel.addView(body("还没有性能 A/B 报告。点“手机压力 A/B 实验”后，MEMO 会比较同一批真实 app workload 在 MEMO 关闭和 MEMO 开启后的启动耗时、CPU、内存回收、PSI 和综合压力分数。"))
+            panel.addView(body("还没有系统调度性能报告。点“系统调度性能实验”后，MEMO 会比较同一个真实 app 的两段 1 分钟相同动作序列：第一段不启用 MEMO，第二段先运行 Stage1/2/3 并执行调度，再测启动耗时、CPU、内存回收、PSI 和综合压力分数。"))
             return panel
         }
         val summary = report.optJSONObject("summary")
@@ -457,6 +488,40 @@ class MainActivity : Activity() {
                 bottomMargin = dp(5)
             }
         }
+    }
+
+    private fun pinWidgetButton(): View {
+        return Button(this).apply {
+            text = "添加桌面 Widget"
+            isAllCaps = false
+            setTextColor(Color.rgb(15, 23, 42))
+            background = rounded(Color.rgb(226, 232, 240), dp(8))
+            setOnClickListener { requestPinMemoWidget() }
+            layoutParams = LinearLayout.LayoutParams(match(), dp(48)).apply {
+                topMargin = dp(5)
+                bottomMargin = dp(5)
+            }
+        }
+    }
+
+    private fun requestPinMemoWidget() {
+        if (Build.VERSION.SDK_INT < 26) {
+            Toast.makeText(this, "请长按桌面空白处，在小组件里添加 MEMO Top-3。", Toast.LENGTH_LONG).show()
+            return
+        }
+        val manager = getSystemService(AppWidgetManager::class.java)
+        val provider = ComponentName(this, MemoWidgetProvider::class.java)
+        if (manager == null || !manager.isRequestPinAppWidgetSupported) {
+            Toast.makeText(this, "当前桌面不支持一键添加；请长按桌面空白处，在小组件里添加 MEMO Top-3。", Toast.LENGTH_LONG).show()
+            return
+        }
+        val requested = manager.requestPinAppWidget(provider, null, null)
+        val message = if (requested) {
+            "请在桌面弹窗里确认添加 MEMO Top-3。"
+        } else {
+            "没有收到桌面添加请求，请长按桌面空白处手动添加。"
+        }
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }
 
     private fun handleCommandIntent(intent: Intent?) {
@@ -716,10 +781,23 @@ class MainActivity : Activity() {
             "maple_runtime" -> "MAPLE 模型环境"
             "current_window_record" -> "当前窗口记录"
             "pipeline_stop" -> "停止后台任务"
-            "free_usage_session" -> "自由体验分析"
+            "realtime_mode" -> "实时模式"
+            "realtime_cycle" -> "实时窗口"
+            "maple_scheduler_plan" -> "MAPLE 调度计划"
+            "maple_warm_launch_top1" -> "Top-1 预热计划"
+            "maple_warm_launch_top2_if_idle" -> "Top-2 空闲预热"
+            "maple_trim_memory" -> "MAPLE 内存回收"
+            "maple_kill_background" -> "MAPLE 后台关闭"
+            "maple_drop_cache" -> "MAPLE 缓存响应"
+            "maple_network_stats_refresh" -> "MAPLE 网络刷新"
+            "maple_service_manager_refresh" -> "MAPLE 服务刷新"
+            "maple_reduce_prewarm_display" -> "显示忙碌降级"
+            "maple_skip_camera_thermal" -> "相机热保护"
+            "free_usage_session" -> "实时窗口分析"
             "real_usage_100_analysis" -> "100 次真实使用分析"
+            "realtime_top3_shift_experiment" -> "9 分钟 Top-3 变化实验"
             "real_ebpf_ablation" -> "真实 eBPF 消融"
-            "user_app_pressure_ab" -> "手机压力 A/B 实验"
+            "user_app_pressure_ab", "system_scheduler_performance" -> "系统调度性能实验"
             else -> name.replace('_', ' ').replaceFirstChar { it.uppercase() }
         }
     }
@@ -753,8 +831,10 @@ class MainActivity : Activity() {
             state.usageReportJson.length,
             state.ablationReportJson.length,
             state.pressureReportJson.length,
-            state.freeUsageSession.active,
-            state.freeUsageSession.startedAtMs,
+            state.realtime.active,
+            state.realtime.lastWindowEndMs,
+            state.realtime.lastInferenceMs,
+            state.realtime.windowCount,
         ).joinToString("|")
     }
 
@@ -896,8 +976,18 @@ class MainActivity : Activity() {
             "maple_runtime" -> "本地模型"
             "current_window_record" -> "当前前台窗口"
             "pipeline_stop" -> "后台任务"
-            "free_usage_session" -> "自由体验流程"
+            "realtime_mode" -> "实时后台预测"
+            "realtime_cycle" -> "3 分钟窗口"
+            "maple_scheduler_plan" -> "预定义动作"
+            "maple_warm_launch_top1", "maple_warm_launch_top2_if_idle" -> "候选应用预热"
+            "maple_trim_memory", "maple_kill_background", "maple_drop_cache" -> "内存和后台压力"
+            "maple_network_stats_refresh" -> "网络状态"
+            "maple_service_manager_refresh" -> "系统服务"
+            "maple_reduce_prewarm_display" -> "显示/UI 压力"
+            "maple_skip_camera_thermal" -> "相机/温度"
+            "free_usage_session" -> "实时窗口流程"
             "real_usage_100_analysis" -> "真实使用报告"
+            "realtime_top3_shift_experiment" -> "实时窗口报告"
             "real_ebpf_ablation" -> "消融报告"
             else -> action.target
         }
@@ -906,6 +996,15 @@ class MainActivity : Activity() {
     private fun friendlyActionDetail(value: String): String {
         return friendlyError(value)
             .replace("published 3 real app recommendations", "已经把 3 个真实可打开应用发布到推荐区和 Widget。")
+            .replace("realtime mode started; MEMO will collect app/eBPF/system evidence every 3 minutes, update bounded memory, run MAPLE, refresh Top-3 widget, and execute scheduler actions", "实时模式已开启。MEMO 会每 3 分钟采集 app/eBPF/系统状态，更新固定大小 memory，运行 MAPLE，刷新桌面 Widget，并执行调度动作。")
+            .replace("realtime mode is already running; Top-3 and scheduler actions refresh every 3 minutes", "实时模式已经在运行。Top-3 和调度动作会每 3 分钟刷新。")
+            .replace("realtime mode stopped; MEMO will no longer refresh Top-3 or scheduler actions every 3 minutes", "实时模式已关闭。MEMO 不会继续每 3 分钟刷新 Top-3 和调度动作。")
+            .replace("realtime mode published ", "实时模式已发布 ")
+            .replace(" predicted apps to the desktop widget", " 个预测应用到桌面 Widget。")
+            .replace("MAPLE selected ", "MAPLE 选择了 ")
+            .replace(" executable scheduler actions from ", " 个要执行的调度动作，总候选数 ")
+            .replace(" decisions", "。")
+            .replace("MAPLE did not return structured scheduler_plan; rule-based safety actions are used for this cycle", "MAPLE 没有返回结构化调度计划，本轮使用规则安全动作。")
             .replace("normal memory; lightweight warm launch remains enabled", "当前内存状态正常，可以保留轻量预热能力。")
             .replace("normal memory; warm launch budget allowed", "当前内存状态正常，可以保留轻量预热能力。")
             .replace("normal battery thermal state", "当前电池温度正常，不需要降低预热强度。")
@@ -918,13 +1017,13 @@ class MainActivity : Activity() {
             .replace("root am start + HOME; label=", "已经启动并回到桌面完成预热：")
             .replace("no Top-3 recommendation yet; run smart optimization first", "还没有 Top-3 推荐，请先运行“智能优化：刷新当前推荐”。")
             .replace("no launchable activity", "这个应用没有可启动入口。")
-            .replace("canceled active free usage session and stopped eBPF collector, MAPLE process, and MEMO background work on this device", "已经取消正在记录的自由体验，并停止 eBPF 采集器、MAPLE 进程和 MEMO 后台任务。")
+            .replace("canceled active free usage session and stopped eBPF collector, MAPLE process, and MEMO background work on this device", "已经停止 eBPF 采集器、MAPLE 进程和 MEMO 后台任务。")
             .replace("stopped eBPF collector, MAPLE process, and MEMO background work on this device", "已经停止 eBPF 采集器、MAPLE 进程和 MEMO 后台任务。")
             .replace("recorded current foreground window; parsed_events=", "已记录当前前台窗口；系统事件=")
             .replace("; interaction=record_current_usage only; no app launch or synthetic evidence was injected", "；没有主动打开其他应用，也没有注入伪造证据。")
-            .replace("free usage session is recording; leave MEMO, use any apps, then return and finish analysis", "自由体验正在记录。可以离开 MEMO 打开任意应用，回来点“结束体验并分析”。")
-            .replace("free usage session is already recording; return to MEMO and finish analysis", "自由体验已经在记录。回来点“结束体验并分析”即可。")
-            .replace("analyzed free usage session with ", "已经分析自由体验：")
+            .replace("free usage session is recording; leave MEMO, use any apps, then return and finish analysis", "实时模式正在记录。MEMO 会自动按 3 分钟窗口分析。")
+            .replace("free usage session is already recording; return to MEMO and finish analysis", "实时模式已经在记录。")
+            .replace("analyzed free usage session with ", "已经分析实时窗口：")
             .replace(" observed app segments across ", " 个连续 app 片段，覆盖 ")
             .replace("Strict 100-use real analysis failed", "100 次真实使用分析失败")
             .replace("analyzed ", "已经分析 ")
@@ -933,7 +1032,8 @@ class MainActivity : Activity() {
             .replace("ran ", "已经运行 ")
             .replace(" MAPLE ablations on the latest Android-side real eBPF scenario", " 组 MAPLE 消融，使用的是最新一次 Android 端真实 eBPF scenario。")
             .replace("latest real MAPLE scenario is missing; run a real eBPF experiment first", "还没有最新真实 MAPLE scenario，请先运行一次“智能优化：刷新当前推荐”或真实场景采集。")
-            .replace("MEMO off/on real app pressure A/B finished; avg_pressure_score_improvement_pct=", "手机压力 A/B 实验完成；综合压力改善=")
+            .replace("system scheduler performance finished; avg_pressure_score_improvement_pct=", "系统调度性能实验完成；综合压力改善=")
+            .replace("MEMO off/on real app pressure A/B finished; avg_pressure_score_improvement_pct=", "系统调度性能实验完成；综合压力改善=")
             .replace("full local one-tap run completed ", "滚动场景完整评估已经完成 ")
             .replace(" MAPLE ablations on device in ", " 组设备端 MAPLE 消融，用时 ")
             .replace("full local one-tap ablation failed: ", "滚动场景完整评估里的消融步骤失败：")
@@ -1195,10 +1295,10 @@ class MainActivity : Activity() {
             EBPFCollectorService.ACTION_RUN_ONCE,
             EBPFCollectorService.ACTION_STOP,
             EBPFCollectorService.ACTION_CHECK_SETUP,
+            EBPFCollectorService.ACTION_REALTIME_START,
+            EBPFCollectorService.ACTION_REALTIME_STOP,
             EBPFCollectorService.ACTION_WARM_TOP_APP,
             EBPFCollectorService.ACTION_FULL_LOCAL_EVALUATION,
-            EBPFCollectorService.ACTION_FREE_USAGE_START,
-            EBPFCollectorService.ACTION_FREE_USAGE_FINISH,
             EBPFCollectorService.ACTION_RECORD_CURRENT_USAGE,
             EBPFCollectorService.ACTION_EXPERIMENT_COMMUNICATION,
             EBPFCollectorService.ACTION_EXPERIMENT_CAMERA,
@@ -1207,7 +1307,8 @@ class MainActivity : Activity() {
             EBPFCollectorService.ACTION_EXPERIMENT_SCROLL,
             EBPFCollectorService.ACTION_REAL_ABLATION_LATEST,
             EBPFCollectorService.ACTION_PRESSURE_EXPERIMENT,
-            EBPFCollectorService.ACTION_USAGE_100_ANALYSIS,
+            EBPFCollectorService.ACTION_REALTIME_TOP3_SHIFT_EXPERIMENT,
+            EBPFCollectorService.ACTION_SYNTHETIC_USER_30_EXPERIMENT,
         )
     }
 }

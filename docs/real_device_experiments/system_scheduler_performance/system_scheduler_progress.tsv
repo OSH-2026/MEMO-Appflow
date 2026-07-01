@@ -1,0 +1,10 @@
+1782930211743	start	system scheduler performance experiment started
+1782930213214	preflight_ok	collector, BPF object, MAPLE binary, libraries and GGUF model are readable on phone
+1782930213892	maple_target_selection	collect real eBPF and run MAPLE once to select the shared target app
+1782930235083	maple_inference	scenario_events=1392; scenario=/storage/emulated/0/Android/data/com.memoos/files/latest_pressure_scenario.json
+1782930259881	target_selected	target=QQ/com.tencent.mobileqq; scheduler_bits=101010100
+1782930259986	baseline_measure	measure selected target without Stage 3 scheduler actions
+1782930320073	stage3_prepare	force-stop target, execute scheduler_bits, then measure same target
+1782930322499	stage3_execute	scheduler_bits=101010100; top1=com.tencent.mobileqq
+1782930329123	scheduler_done	actions=7; target=com.tencent.mobileqq
+1782930392236	done	report=/sdcard/MEMO/pressure/latest_pressure_experiment.json

@@ -1,0 +1,36 @@
+{
+  "started_at_ms": 1782915575097,
+  "ended_at_ms": 1782915596378,
+  "duration_ms": 21281,
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782915575097.trace",
+  "app_samples_path": "\/sdcard\/MEMO\/logs\/realtime_1782915575097_apps.tsv",
+  "raw_ebpf_events": 13240,
+  "app_segments": 6,
+  "timeline_windows": 2,
+  "compressed_ebpf_signals": 9,
+  "summary": {
+    "start_ms": 1782915575097,
+    "end_ms": 1782915596378,
+    "app_labels": [
+      "nexuslauncher",
+      "Clock",
+      "android",
+      "gms"
+    ],
+    "top_ebpf_signals": [
+      "MEMO_SCHED:362738",
+      "MEMO_RECVFROM:58278",
+      "MEMO_OPENAT:23045",
+      "MEMO_SENDTO:21142",
+      "MEMO_BINDER:19544",
+      "MEMO_PROCESS_FORK:507",
+      "MEMO_PROCESS_EXIT:495",
+      "MEMO_PROCESS_EXEC:232"
+    ],
+    "top_categories": [
+      "App Process Runtime",
+      "Media Codec",
+      "Network IO"
+    ]
+  }
+}

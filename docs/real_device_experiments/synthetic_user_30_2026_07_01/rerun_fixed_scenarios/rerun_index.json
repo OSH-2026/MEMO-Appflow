@@ -1,0 +1,602 @@
+[
+  {
+    "sample_id": "media_1",
+    "persona": "media_browsing",
+    "scenario": "01_media_1_scenario.json",
+    "ground_truth": [
+      "com.android.chrome",
+      "com.tencent.mobileqq",
+      "com.tencent.wemeet.app"
+    ],
+    "ground_truth_labels": [
+      "Chrome",
+      "QQ",
+      "Tencent Meeting"
+    ],
+    "input_labels": [
+      "Termux",
+      "Clock",
+      "Google Play Movies & TV"
+    ]
+  },
+  {
+    "sample_id": "media_10",
+    "persona": "media_browsing",
+    "scenario": "02_media_10_scenario.json",
+    "ground_truth": [
+      "com.android.chrome",
+      "com.tencent.mobileqq",
+      "com.tencent.wemeet.app"
+    ],
+    "ground_truth_labels": [
+      "Chrome",
+      "QQ",
+      "Tencent Meeting"
+    ],
+    "input_labels": [
+      "Clock",
+      "Google Play Movies & TV",
+      "YouTube Music"
+    ]
+  },
+  {
+    "sample_id": "media_2",
+    "persona": "media_browsing",
+    "scenario": "03_media_2_scenario.json",
+    "ground_truth": [
+      "com.tencent.mobileqq",
+      "com.tencent.wemeet.app",
+      "com.android.chrome"
+    ],
+    "ground_truth_labels": [
+      "QQ",
+      "Tencent Meeting",
+      "Chrome"
+    ],
+    "input_labels": [
+      "Clock",
+      "Google Play Movies & TV",
+      "YouTube Music"
+    ]
+  },
+  {
+    "sample_id": "media_3",
+    "persona": "media_browsing",
+    "scenario": "04_media_3_scenario.json",
+    "ground_truth": [
+      "com.tencent.wemeet.app",
+      "com.android.chrome",
+      "com.tencent.mobileqq"
+    ],
+    "ground_truth_labels": [
+      "Tencent Meeting",
+      "Chrome",
+      "QQ"
+    ],
+    "input_labels": [
+      "Google Play Movies & TV",
+      "YouTube Music",
+      "Termux"
+    ]
+  },
+  {
+    "sample_id": "media_4",
+    "persona": "media_browsing",
+    "scenario": "05_media_4_scenario.json",
+    "ground_truth": [
+      "com.android.chrome",
+      "com.tencent.mobileqq",
+      "com.tencent.wemeet.app"
+    ],
+    "ground_truth_labels": [
+      "Chrome",
+      "QQ",
+      "Tencent Meeting"
+    ],
+    "input_labels": [
+      "YouTube Music",
+      "Termux",
+      "Clock"
+    ]
+  },
+  {
+    "sample_id": "media_5",
+    "persona": "media_browsing",
+    "scenario": "06_media_5_scenario.json",
+    "ground_truth": [
+      "com.tencent.mobileqq",
+      "com.tencent.wemeet.app",
+      "com.android.chrome"
+    ],
+    "ground_truth_labels": [
+      "QQ",
+      "Tencent Meeting",
+      "Chrome"
+    ],
+    "input_labels": [
+      "Termux",
+      "Clock",
+      "Google Play Movies & TV"
+    ]
+  },
+  {
+    "sample_id": "media_6",
+    "persona": "media_browsing",
+    "scenario": "07_media_6_scenario.json",
+    "ground_truth": [
+      "com.tencent.wemeet.app",
+      "com.android.chrome",
+      "com.tencent.mobileqq"
+    ],
+    "ground_truth_labels": [
+      "Tencent Meeting",
+      "Chrome",
+      "QQ"
+    ],
+    "input_labels": [
+      "Clock",
+      "Google Play Movies & TV",
+      "YouTube Music"
+    ]
+  },
+  {
+    "sample_id": "media_7",
+    "persona": "media_browsing",
+    "scenario": "08_media_7_scenario.json",
+    "ground_truth": [
+      "com.android.chrome",
+      "com.tencent.mobileqq",
+      "com.tencent.wemeet.app"
+    ],
+    "ground_truth_labels": [
+      "Chrome",
+      "QQ",
+      "Tencent Meeting"
+    ],
+    "input_labels": [
+      "Google Play Movies & TV",
+      "YouTube Music",
+      "Termux"
+    ]
+  },
+  {
+    "sample_id": "media_8",
+    "persona": "media_browsing",
+    "scenario": "09_media_8_scenario.json",
+    "ground_truth": [
+      "com.tencent.mobileqq",
+      "com.tencent.wemeet.app",
+      "com.android.chrome"
+    ],
+    "ground_truth_labels": [
+      "QQ",
+      "Tencent Meeting",
+      "Chrome"
+    ],
+    "input_labels": [
+      "YouTube Music",
+      "Termux",
+      "Clock"
+    ]
+  },
+  {
+    "sample_id": "media_9",
+    "persona": "media_browsing",
+    "scenario": "10_media_9_scenario.json",
+    "ground_truth": [
+      "com.tencent.wemeet.app",
+      "com.android.chrome",
+      "com.tencent.mobileqq"
+    ],
+    "ground_truth_labels": [
+      "Tencent Meeting",
+      "Chrome",
+      "QQ"
+    ],
+    "input_labels": [
+      "Termux",
+      "Clock",
+      "Google Play Movies & TV"
+    ]
+  },
+  {
+    "sample_id": "productivity_1",
+    "persona": "productivity_learning",
+    "scenario": "11_productivity_1_scenario.json",
+    "ground_truth": [
+      "com.google.android.calculator",
+      "com.google.android.apps.nbu.files",
+      "com.topjohnwu.magisk"
+    ],
+    "ground_truth_labels": [
+      "Calculator",
+      "Files by Google",
+      "Magisk"
+    ],
+    "input_labels": [
+      "Pixel Tips",
+      "Magisk",
+      "Calculator"
+    ]
+  },
+  {
+    "sample_id": "productivity_10",
+    "persona": "productivity_learning",
+    "scenario": "12_productivity_10_scenario.json",
+    "ground_truth": [
+      "com.google.android.calculator",
+      "com.google.android.apps.nbu.files",
+      "com.topjohnwu.magisk"
+    ],
+    "ground_truth_labels": [
+      "Calculator",
+      "Files by Google",
+      "Magisk"
+    ],
+    "input_labels": [
+      "Magisk",
+      "Calculator",
+      "Files by Google"
+    ]
+  },
+  {
+    "sample_id": "productivity_2",
+    "persona": "productivity_learning",
+    "scenario": "13_productivity_2_scenario.json",
+    "ground_truth": [
+      "com.google.android.apps.nbu.files",
+      "com.topjohnwu.magisk",
+      "com.google.android.calculator"
+    ],
+    "ground_truth_labels": [
+      "Files by Google",
+      "Magisk",
+      "Calculator"
+    ],
+    "input_labels": [
+      "Magisk",
+      "Calculator",
+      "Files by Google"
+    ]
+  },
+  {
+    "sample_id": "productivity_3",
+    "persona": "productivity_learning",
+    "scenario": "14_productivity_3_scenario.json",
+    "ground_truth": [
+      "com.topjohnwu.magisk",
+      "com.google.android.calculator",
+      "com.google.android.apps.nbu.files"
+    ],
+    "ground_truth_labels": [
+      "Magisk",
+      "Calculator",
+      "Files by Google"
+    ],
+    "input_labels": [
+      "Calculator",
+      "Files by Google",
+      "Pixel Tips"
+    ]
+  },
+  {
+    "sample_id": "productivity_4",
+    "persona": "productivity_learning",
+    "scenario": "15_productivity_4_scenario.json",
+    "ground_truth": [
+      "com.google.android.calculator",
+      "com.google.android.apps.nbu.files",
+      "com.topjohnwu.magisk"
+    ],
+    "ground_truth_labels": [
+      "Calculator",
+      "Files by Google",
+      "Magisk"
+    ],
+    "input_labels": [
+      "Files by Google",
+      "Pixel Tips",
+      "Magisk"
+    ]
+  },
+  {
+    "sample_id": "productivity_5",
+    "persona": "productivity_learning",
+    "scenario": "16_productivity_5_scenario.json",
+    "ground_truth": [
+      "com.google.android.apps.nbu.files",
+      "com.topjohnwu.magisk",
+      "com.google.android.calculator"
+    ],
+    "ground_truth_labels": [
+      "Files by Google",
+      "Magisk",
+      "Calculator"
+    ],
+    "input_labels": [
+      "Pixel Tips",
+      "Magisk",
+      "Calculator"
+    ]
+  },
+  {
+    "sample_id": "productivity_6",
+    "persona": "productivity_learning",
+    "scenario": "17_productivity_6_scenario.json",
+    "ground_truth": [
+      "com.topjohnwu.magisk",
+      "com.google.android.calculator",
+      "com.google.android.apps.nbu.files"
+    ],
+    "ground_truth_labels": [
+      "Magisk",
+      "Calculator",
+      "Files by Google"
+    ],
+    "input_labels": [
+      "Magisk",
+      "Calculator",
+      "Files by Google"
+    ]
+  },
+  {
+    "sample_id": "productivity_7",
+    "persona": "productivity_learning",
+    "scenario": "18_productivity_7_scenario.json",
+    "ground_truth": [
+      "com.google.android.calculator",
+      "com.google.android.apps.nbu.files",
+      "com.topjohnwu.magisk"
+    ],
+    "ground_truth_labels": [
+      "Calculator",
+      "Files by Google",
+      "Magisk"
+    ],
+    "input_labels": [
+      "Calculator",
+      "Files by Google",
+      "Pixel Tips"
+    ]
+  },
+  {
+    "sample_id": "productivity_8",
+    "persona": "productivity_learning",
+    "scenario": "19_productivity_8_scenario.json",
+    "ground_truth": [
+      "com.google.android.apps.nbu.files",
+      "com.topjohnwu.magisk",
+      "com.google.android.calculator"
+    ],
+    "ground_truth_labels": [
+      "Files by Google",
+      "Magisk",
+      "Calculator"
+    ],
+    "input_labels": [
+      "Files by Google",
+      "Pixel Tips",
+      "Magisk"
+    ]
+  },
+  {
+    "sample_id": "productivity_9",
+    "persona": "productivity_learning",
+    "scenario": "20_productivity_9_scenario.json",
+    "ground_truth": [
+      "com.topjohnwu.magisk",
+      "com.google.android.calculator",
+      "com.google.android.apps.nbu.files"
+    ],
+    "ground_truth_labels": [
+      "Magisk",
+      "Calculator",
+      "Files by Google"
+    ],
+    "input_labels": [
+      "Pixel Tips",
+      "Magisk",
+      "Calculator"
+    ]
+  },
+  {
+    "sample_id": "social_1",
+    "persona": "social_sharing",
+    "scenario": "21_social_1_scenario.json",
+    "ground_truth": [
+      "com.tencent.mobileqq",
+      "com.google.android.GoogleCamera",
+      "com.android.chrome"
+    ],
+    "ground_truth_labels": [
+      "QQ",
+      "Camera",
+      "Chrome"
+    ],
+    "input_labels": [
+      "QQ",
+      "Tencent Meeting",
+      "WeChat"
+    ]
+  },
+  {
+    "sample_id": "social_10",
+    "persona": "social_sharing",
+    "scenario": "22_social_10_scenario.json",
+    "ground_truth": [
+      "com.tencent.mobileqq",
+      "com.google.android.GoogleCamera",
+      "com.android.chrome"
+    ],
+    "ground_truth_labels": [
+      "QQ",
+      "Camera",
+      "Chrome"
+    ],
+    "input_labels": [
+      "Tencent Meeting",
+      "WeChat",
+      "Chrome"
+    ]
+  },
+  {
+    "sample_id": "social_2",
+    "persona": "social_sharing",
+    "scenario": "23_social_2_scenario.json",
+    "ground_truth": [
+      "com.google.android.GoogleCamera",
+      "com.android.chrome",
+      "com.tencent.mobileqq"
+    ],
+    "ground_truth_labels": [
+      "Camera",
+      "Chrome",
+      "QQ"
+    ],
+    "input_labels": [
+      "Tencent Meeting",
+      "WeChat",
+      "Chrome"
+    ]
+  },
+  {
+    "sample_id": "social_3",
+    "persona": "social_sharing",
+    "scenario": "24_social_3_scenario.json",
+    "ground_truth": [
+      "com.android.chrome",
+      "com.tencent.mobileqq",
+      "com.google.android.GoogleCamera"
+    ],
+    "ground_truth_labels": [
+      "Chrome",
+      "QQ",
+      "Camera"
+    ],
+    "input_labels": [
+      "WeChat",
+      "Chrome",
+      "QQ"
+    ]
+  },
+  {
+    "sample_id": "social_4",
+    "persona": "social_sharing",
+    "scenario": "25_social_4_scenario.json",
+    "ground_truth": [
+      "com.tencent.mobileqq",
+      "com.google.android.GoogleCamera",
+      "com.android.chrome"
+    ],
+    "ground_truth_labels": [
+      "QQ",
+      "Camera",
+      "Chrome"
+    ],
+    "input_labels": [
+      "Chrome",
+      "QQ",
+      "Tencent Meeting"
+    ]
+  },
+  {
+    "sample_id": "social_5",
+    "persona": "social_sharing",
+    "scenario": "26_social_5_scenario.json",
+    "ground_truth": [
+      "com.google.android.GoogleCamera",
+      "com.android.chrome",
+      "com.tencent.mobileqq"
+    ],
+    "ground_truth_labels": [
+      "Camera",
+      "Chrome",
+      "QQ"
+    ],
+    "input_labels": [
+      "QQ",
+      "Tencent Meeting",
+      "WeChat"
+    ]
+  },
+  {
+    "sample_id": "social_6",
+    "persona": "social_sharing",
+    "scenario": "27_social_6_scenario.json",
+    "ground_truth": [
+      "com.android.chrome",
+      "com.tencent.mobileqq",
+      "com.google.android.GoogleCamera"
+    ],
+    "ground_truth_labels": [
+      "Chrome",
+      "QQ",
+      "Camera"
+    ],
+    "input_labels": [
+      "Tencent Meeting",
+      "WeChat",
+      "Chrome"
+    ]
+  },
+  {
+    "sample_id": "social_7",
+    "persona": "social_sharing",
+    "scenario": "28_social_7_scenario.json",
+    "ground_truth": [
+      "com.tencent.mobileqq",
+      "com.google.android.GoogleCamera",
+      "com.android.chrome"
+    ],
+    "ground_truth_labels": [
+      "QQ",
+      "Camera",
+      "Chrome"
+    ],
+    "input_labels": [
+      "WeChat",
+      "Chrome",
+      "QQ"
+    ]
+  },
+  {
+    "sample_id": "social_8",
+    "persona": "social_sharing",
+    "scenario": "29_social_8_scenario.json",
+    "ground_truth": [
+      "com.google.android.GoogleCamera",
+      "com.android.chrome",
+      "com.tencent.mobileqq"
+    ],
+    "ground_truth_labels": [
+      "Camera",
+      "Chrome",
+      "QQ"
+    ],
+    "input_labels": [
+      "Chrome",
+      "QQ",
+      "Tencent Meeting"
+    ]
+  },
+  {
+    "sample_id": "social_9",
+    "persona": "social_sharing",
+    "scenario": "30_social_9_scenario.json",
+    "ground_truth": [
+      "com.android.chrome",
+      "com.tencent.mobileqq",
+      "com.google.android.GoogleCamera"
+    ],
+    "ground_truth_labels": [
+      "Chrome",
+      "QQ",
+      "Camera"
+    ],
+    "input_labels": [
+      "QQ",
+      "Tencent Meeting",
+      "WeChat"
+    ]
+  }
+]

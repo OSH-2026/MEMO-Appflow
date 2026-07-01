@@ -102,11 +102,13 @@ adb install -r app\build\outputs\apk\debug\app-debug.apk
 ## 文档
 
 - `docs/ebpf_report.md`：当前 Android 端 eBPF、系统状态、MAPLE、Top-3 与动作闭环说明。
+- `docs/realtime_mode_scheduler.md`：实时模式、3 分钟窗口、EMA 历史 memory、MAPLE `scheduler_bits` 与系统调度动作表。
 - `docs/raw_libbpf_collector.md`：raw eBPF collector、BPF object、设备部署和真实运行验证说明。
 - `docs/next_steps_roadmap_2026-05-06.md`：本轮端侧迁移后的下一步工程路线。
 - `docs/theoretical_ablation_experiment/`：Chengyu Fan 的理论/合成消融实验。
 - `docs/real_device_experiments/real_ebpf_ablation/`：Jingyi Guo 的 Android 真实 eBPF 消融实验与结果解读。
 - `docs/real_device_experiments/user_app_pressure/`：Jingyi Guo 的真实用户 app 压力 A/B 实验，衡量 MEMO 开/关对手机整体压力的影响。
+- `docs/real_device_experiments/system_scheduler_performance/`：Jingyi Guo 的 2026-07-02 系统调度性能实验，固定同一个 MAPLE Top-1 app，对比无调度与 Stage 3 `scheduler_bits` 调度后的系统指标。
 - `docs/real_device_experiments/real_usage_100/`：Jingyi Guo 的 100 次真实 app 使用、eBPF 时间窗压缩、MAPLE 与调度闭环实验。
 - `docs/real_device_experiments/free_usage_session/`：Jingyi Guo 的自由体验实验，记录一段真实 app 使用并在设备内完成分析。
 - `docs/real_device_experiments/button_audit/`：App 主要按钮与产品入口的功能核验记录。
@@ -125,6 +127,20 @@ docs/real_device_experiments/user_app_pressure/latest_pressure_experiment.json
 ```
 
 最新 6 个 A/B 对照的结论：MEMO-on 平均综合压力分数改善 37.19%，启动 TotalTime 改善 9.69%，WaitTime 改善 9.46%，CPU busy 改善 1.45%，iowait 改善 35.77%，reclaim 改善 68.14%；但 MemAvailable 下降量平均变差 51.75%，crowded Tencent Meeting 是反例。因此当前版本不能宣称全面提升手机性能，比较准确的说法是：这次真机实验支持 MEMO 能降低平均系统压力并改善部分启动体验，但不是所有场景都提升。
+
+## 2026-07-02 系统调度性能实验更新
+
+为验证 Stage 3 智能调度本身是否有用，新增并重跑 `system_scheduler_performance` 实验。新版实验先在 Pixel 5 真机内用真实 eBPF + MAPLE 选出同一个 Top-1 目标 app，然后分别测量“无 Stage 3 调度”和“执行 `scheduler_bits` 后”的同一目标 app。这样避免旧实验里“预热 A、测量 B”的口径问题。
+
+本次 MAPLE 选择的目标是 QQ（`com.tencent.mobileqq`），输出 `scheduler_bits=101010100`，ActionExecutor 实际执行了 Top-1 warm launch、memory trim 和 service manager refresh，并安全跳过非 critical 内存条件下的 drop cache。结果见：
+
+```text
+docs/real_device_experiments/system_scheduler_performance/README.md
+docs/real_device_experiments/system_scheduler_performance/latest_pressure_experiment.json
+docs/real_device_experiments/system_scheduler_performance/system_scheduler_progress.tsv
+```
+
+关键结果：Launch TotalTime 从 433ms 降到 168ms（改善 61.20%），WaitTime 从 440ms 降到 173ms（改善 60.68%），综合压力分数从 422.56 降到 9.71（改善 97.70%）。该结果证明 `scheduler_bits -> ActionExecutor -> 系统动作 -> 可测系统指标` 链路已经在真机上生效；结论范围限定为本次 Pixel 5 单次系统调度实验。
 
 ## 会议记录
 

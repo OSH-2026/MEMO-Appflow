@@ -103,10 +103,6 @@ object AppIdMapping {
             .map { normalizeCategory(it) }
             .filter { it.isNotBlank() }
             .distinct()
-            .sortedWith(
-                compareByDescending<String> { isUserFacingCategory(it) }
-                    .thenByDescending { categoryPriority(it) },
-            )
 
         val scored = profiles.map { profile ->
             val categoryScore = desiredCategories

@@ -1,0 +1,38 @@
+{
+  "started_at_ms": 1782916456968,
+  "ended_at_ms": 1782916479697,
+  "duration_ms": 22729,
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782916456968.trace",
+  "app_samples_path": "\/sdcard\/MEMO\/logs\/realtime_1782916456968_apps.tsv",
+  "raw_ebpf_events": 13566,
+  "app_segments": 4,
+  "timeline_windows": 1,
+  "compressed_ebpf_signals": 9,
+  "summary": {
+    "start_ms": 1782916456968,
+    "end_ms": 1782916479697,
+    "app_labels": [
+      "WeChat",
+      "nexuslauncher",
+      "Chrome"
+    ],
+    "top_ebpf_signals": [
+      "MEMO_SCHED:360558",
+      "MEMO_RECVFROM:29684",
+      "MEMO_OPENAT:22341",
+      "MEMO_BINDER:19997",
+      "MEMO_SENDTO:13682",
+      "MEMO_PROCESS_FORK:728",
+      "MEMO_PROCESS_EXIT:581",
+      "MEMO_PROCESS_EXEC:243"
+    ],
+    "top_categories": [
+      "App Process Runtime",
+      "Camera Service",
+      "Media Codec",
+      "Network IO",
+      "Navigation\/Location",
+      "Communication"
+    ]
+  }
+}

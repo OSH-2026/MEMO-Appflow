@@ -61,6 +61,8 @@ class MapleScenarioBuilder(private val context: Context) {
         targetCategories: List<String> = emptyList(),
         appTimeline: List<MapleAppTimelineEntry> = emptyList(),
         timelineWindows: List<MapleTimelineWindow> = emptyList(),
+        realtimeMemory: JSONObject? = null,
+        realtimeWindow: JSONObject? = null,
     ): MapleScenario {
         val eventCounts = events.groupingBy { it.eventType }.eachCount()
         val categoryCounts = mutableMapOf<String, Int>()
@@ -94,6 +96,13 @@ class MapleScenarioBuilder(private val context: Context) {
             .map { it.key }
             .ifEmpty { listOf("Android Service IPC") }
             .take(6)
+        val userFacingTopCategories = categoryCounts.entries
+            .filter { isUserFacingPredictionCategory(it.key) }
+            .sortedWith(compareByDescending<Map.Entry<String, Int>> { it.value }.thenBy { it.key })
+            .map { it.key }
+            .ifEmpty { topCategories.mapNotNull { followUpUserFacingCategory(it) }.ifEmpty { listOf("Communication", "Network IO", "Camera Service") } }
+            .distinct()
+            .take(6)
         val evidenceLines = buildEvidenceLines(
             events = events,
             state = state,
@@ -104,11 +113,16 @@ class MapleScenarioBuilder(private val context: Context) {
             appTimeline = appTimeline,
             timelineWindows = timelineWindows,
         )
-        val installedApps = AppIdMapping.installedAppsForMaple(context, topCategories)
-        val historicalIds = topCategories.map { AppIdMapping.categoryId(it) }
+        val installedApps = AppIdMapping.installedAppsForMaple(context, userFacingTopCategories)
+        val historicalIds = userFacingTopCategories.map { AppIdMapping.categoryId(it) }
 
         val contextObj = JSONObject()
-            .put("historical_app_categories", JSONArray(topCategories))
+            .put("historical_app_categories", JSONArray(userFacingTopCategories))
+            .put("scheduler_evidence_categories", JSONArray(topCategories))
+            .put(
+                "task",
+                "Predict the next three real Android apps the user is likely to use. Use eBPF/OS evidence as context, but do not predict OS-only labels such as Memory Management or Android Service IPC as apps. Also analyze current system pressure and choose scheduler actions by outputting a fixed 0/1 bit string.",
+            )
             .put("historical_app_ids", JSONArray(historicalIds))
             .put("prediction_time", state.wallTime.ifBlank { ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME) })
             .put("points_of_interest", JSONArray(pointsOfInterest(state, topCategories)))
@@ -119,6 +133,18 @@ class MapleScenarioBuilder(private val context: Context) {
             .put("system_evidence", JSONArray(compactEvidenceForMaple(evidenceLines)))
             .put("compression", compressionSummary(events, appTimeline, timelineWindows))
             .put("memory_pressure", memoryPressure(events, state))
+            .put("realtime_recent_window", realtimeWindow ?: JSONObject.NULL)
+            .put("realtime_memory", realtimeMemory ?: JSONObject.NULL)
+            .put("available_scheduler_actions", schedulerActionsJson())
+            .put("scheduler_bit_count", SCHEDULER_ACTIONS.size)
+            .put(
+                "scheduler_bit_contract",
+                "Return scheduler_bits as exactly ${SCHEDULER_ACTIONS.size} characters. Character i controls available_scheduler_actions[i]. Use 1 to execute the pre-programmed action and 0 to skip it.",
+            )
+            .put(
+                "required_output",
+                "Return strict JSON with top3_apps, pressure_analysis, scheduler_bits, and optional scheduler_plan. Top-3 must be user-facing app intent/category from historical_app_categories or installed_apps, not Memory Management, Binder, process names, or system services. Do not invent shell commands.",
+            )
             .put(
                 "scheduler_goal",
                 "Use device-side eBPF and system-state evidence to infer near-future Android app/resource demand, then choose safe warm-launch, cache, memory, network, camera/media, and UI scheduling actions.",
@@ -127,6 +153,7 @@ class MapleScenarioBuilder(private val context: Context) {
         val summary = JSONObject()
             .put("event_counts", JSONObject(eventCounts.mapValues { it.value }))
             .put("category_counts", JSONObject(categoryCounts.mapValues { it.value }))
+            .put("user_facing_prediction_categories", JSONArray(userFacingTopCategories))
             .put("observed_app_count", appTimeline.size)
             .put("timeline_window_count", timelineWindows.size)
             .put("memory_pressure", contextObj.getString("memory_pressure"))
@@ -242,8 +269,7 @@ class MapleScenarioBuilder(private val context: Context) {
             "App Process Runtime" -> 180
             "Native Runtime Loading", "Framework Loading", "System Property Access", "APEX Runtime Loading" -> 180
             "Other File Access", "Process State Inspection", "Kernel Trace Setup" -> 120
-            "Network IO" -> 720
-            "Android Service IPC", "Android System Services" -> 360
+            "Network IO", "Android Service IPC", "Android System Services" -> 420
             "Display Composition", "Input Interaction", "Camera Service", "Media Codec" -> 420
             "Memory Management", "Power/Thermal Management" -> 360
             else -> 240
@@ -306,6 +332,29 @@ class MapleScenarioBuilder(private val context: Context) {
         if (state.battery.thermalRisk != "normal") points += "thermal-sensitive scheduling"
         if (state.memory.pressureLevel != "normal") points += "memory-pressure-aware scheduling"
         return points.take(6)
+    }
+
+    private fun isUserFacingPredictionCategory(category: String): Boolean {
+        return category in setOf(
+            "Communication",
+            "Camera Service",
+            "Media Codec",
+            "Network IO",
+            "Payment/Security",
+            "Navigation/Location",
+            "Display Composition",
+        )
+    }
+
+    private fun followUpUserFacingCategory(category: String): String? {
+        return when (category) {
+            "Android Service IPC", "Android System Services" -> "Communication"
+            "Memory Management" -> "Network IO"
+            "App Process Runtime" -> "Communication"
+            "Input Interaction" -> "Display Composition"
+            "Power/Thermal Management" -> "Media Codec"
+            else -> category.takeIf { isUserFacingPredictionCategory(it) }
+        }
     }
 
     private fun MapleAppTimelineEntry.toCompactJson(): JSONObject {
@@ -372,6 +421,16 @@ class MapleScenarioBuilder(private val context: Context) {
             .put("model_input_note", "MAPLE receives repeated eBPF activity as per-window event_type/detail/count/rate_per_sec instead of expanded raw rows.")
     }
 
+    private fun schedulerActionsJson(): JSONArray {
+        return JSONArray(SCHEDULER_ACTIONS.mapIndexed { index, action ->
+            JSONObject()
+                .put("bit_index", index)
+                .put("action_id", action.first)
+                .put("description", action.second)
+                .put("bit_value_contract", "scheduler_bits[$index] == 1 executes this exact pre-programmed action; 0 skips it.")
+        })
+    }
+
     private fun JSONObject.putNullable(name: String, value: Any?): JSONObject {
         put(name, value ?: JSONObject.NULL)
         return this
@@ -380,6 +439,17 @@ class MapleScenarioBuilder(private val context: Context) {
     private companion object {
         const val MAX_APP_SEQUENCE_FOR_MAPLE = 120
         const val MAX_TIMELINE_WINDOWS_FOR_MAPLE = 32
+        val SCHEDULER_ACTIONS = listOf(
+            "warm_launch_top1" to "Warm launch the top predicted app, then return HOME, when memory and thermal state are safe.",
+            "warm_launch_top2_if_idle" to "Warm launch the second predicted app only when the current foreground context is idle enough.",
+            "trim_memory_low_priority_apps" to "Ask lower-priority candidate apps to trim memory.",
+            "kill_selected_background_package" to "Stop one safe, non-foreground, non-system, non-recommended background package only under memory pressure.",
+            "drop_cache_if_critical_memory" to "Drop page cache only under critical memory pressure and root availability.",
+            "refresh_network_stats" to "Refresh network stats when sendto/recvfrom evidence is high.",
+            "refresh_service_manager" to "Refresh service-manager context when Binder evidence is high.",
+            "reduce_prewarm_when_display_busy" to "Reduce warm-launch aggressiveness when SurfaceFlinger/RenderThread/UI evidence is busy.",
+            "skip_camera_prewarm_when_thermal_high" to "Avoid camera/media warmup under elevated thermal state.",
+        )
 
         fun isoTime(wallTimeMs: Long): String {
             return Instant.ofEpochMilli(wallTimeMs)

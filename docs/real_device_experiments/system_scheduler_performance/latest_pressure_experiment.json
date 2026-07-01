@@ -1,0 +1,510 @@
+{
+  "schema_version": "memo.system_scheduler_performance.v2",
+  "experiment_type": "system_scheduler_performance",
+  "started_at_ms": 1782930211743,
+  "duration_ms": 179869,
+  "device": {
+    "model": "Pixel 5",
+    "device": "redfin",
+    "release": "14",
+    "kernel": "Linux localhost 4.19.278 #1 SMP PREEMPT Thu Sep 7 05:43:03 UTC 2023 aarch64 Toybox"
+  },
+  "metric_definitions": {
+    "launch_total_time_ms": "Android am start -W TotalTime for the measured app launch; lower is better.",
+    "wait_time_ms": "Android am start -W WaitTime; lower is better.",
+    "cpu_busy_pct": "CPU busy jiffy share during the workload window; lower means less global CPU pressure.",
+    "iowait_pct": "CPU iowait jiffy share during the workload; lower means less storage\/blocking pressure.",
+    "mem_available_drop_kb": "MemAvailable before minus after; lower means the workload consumed less available memory.",
+    "reclaim_delta": "pgscan_direct plus pgscan_kswapd delta from \/proc\/vmstat; lower means less memory reclaim.",
+    "psi_some_avg10_delta": "Change in memory PSI some avg10; lower means less memory pressure.",
+    "jank_rate_pct": "dumpsys gfxinfo janky frames \/ total frames for the target app when available; lower is smoother.",
+    "pressure_score_lower_is_better": "Composite score from memory drop, reclaim, PSI, CPU, iowait, thermal, and UDP error pressure. It is only for same-device A\/B ranking."
+  },
+  "workload_count": 1,
+  "repeats_per_workload": 1,
+  "conditions": [
+    "normal_recent_usage"
+  ],
+  "design": {
+    "name": "system_scheduler_performance",
+    "goal": "Validate whether MAPLE Stage 3 scheduler_bits improve system metrics for the same MAPLE-selected Top-1 app.",
+    "setup": "Collect real eBPF during a real context app action, run MAPLE Stage 1\/2\/3 once, and choose a real launchable Top-1 app. The chosen target is shared by both measured arms.",
+    "baseline": "Force-stop the selected target and run the one-minute action sequence without executing scheduler_bits.",
+    "memo_stage123_scheduler": "Force-stop the selected target, execute scheduler_bits through ActionExecutor, then run the same one-minute action sequence without force-stopping again so warm-launch\/cache actions can affect the measurement.",
+    "context_package": "com.android.chrome",
+    "context_label": "Chrome",
+    "target_package": "com.tencent.mobileqq",
+    "target_label": "QQ",
+    "sequence_duration_sec": 60,
+    "metrics": [
+      "TotalTime",
+      "WaitTime",
+      "pressure_score_lower_is_better",
+      "cpu_busy_pct",
+      "iowait_pct",
+      "mem_available_drop_kb",
+      "reclaim_delta",
+      "jank_rate_pct"
+    ],
+    "prediction_metrics_included": false
+  },
+  "workloads": [
+    {
+      "mode": "same_target_no_scheduler",
+      "condition": "normal_recent_usage",
+      "plan_id": "maple_top1_com_tencent_mobileqq",
+      "title": "MAPLE-selected Top-1 app workload: QQ",
+      "target_package": "com.tencent.mobileqq",
+      "target_label": "QQ",
+      "launch": {
+        "total_time_ms": 433,
+        "wait_time_ms": 440,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "COLD"
+      },
+      "gfx": {
+        "total_frames": 3871,
+        "janky_frames": 48,
+        "jank_rate_pct": 1.239989666752777,
+        "p90_ms": 16,
+        "p95_ms": 18,
+        "p99_ms": 26
+      },
+      "before": {
+        "wall_time_ms": 1782930261849,
+        "elapsed_ms": 58082196,
+        "mem_available_kb": 3482832,
+        "swap_free_kb": 1029244,
+        "pgscan_direct": 73994,
+        "pgscan_kswapd": 9444868,
+        "compact_stall": 71,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 25757,
+        "udp_out_datagrams": 25249,
+        "udp_in_errors": 3,
+        "battery_level_pct": 100,
+        "battery_temp_c": 28,
+        "battery_current_ua": -18005,
+        "cpu": {
+          "total_jiffies": 28125511,
+          "busy_jiffies": 5437524,
+          "idle_jiffies": 22682681,
+          "iowait_jiffies": 5306,
+          "procs_running": 10,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1782930318637,
+        "elapsed_ms": 58138984,
+        "mem_available_kb": 3317940,
+        "swap_free_kb": 1051928,
+        "pgscan_direct": 73994,
+        "pgscan_kswapd": 9454914,
+        "compact_stall": 71,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 25806,
+        "udp_out_datagrams": 25308,
+        "udp_in_errors": 3,
+        "battery_level_pct": 100,
+        "battery_temp_c": 28.2,
+        "battery_current_ua": 1525,
+        "cpu": {
+          "total_jiffies": 28170329,
+          "busy_jiffies": 5449492,
+          "idle_jiffies": 22715489,
+          "iowait_jiffies": 5348,
+          "procs_running": 22,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 56788,
+        "mem_available_drop_kb": 164892,
+        "swap_free_drop_kb": -22684,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 10046,
+        "reclaim_delta": 10046,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": 0,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 49,
+        "udp_out_delta": 59,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0.1999999999999993,
+        "cpu_busy_pct": 26.703556606720515,
+        "iowait_pct": 0.09371234771743496,
+        "pressure_score_lower_is_better": 422.56034025461315
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.tencent.mobileqq\/.activity.SplashActivity }\nStatus: ok\nLaunchState: COLD\nActivity: com.tencent.mobileqq\/.activity.SplashActivity\nTotalTime: 433\nWaitTime: 440\nComplete\n",
+      "memo_preparation": {
+        "type": "same_maple_target_without_stage3_scheduler_actions",
+        "condition": "normal_recent_usage",
+        "selected_target_package": "com.tencent.mobileqq",
+        "selected_target_label": "QQ",
+        "target_selection": {
+          "raw_trace_path": "\/sdcard\/MEMO\/logs\/pressure_scroll_display_usage_1782930218859.trace",
+          "type": "same_maple_target_with_stage3_scheduler_actions",
+          "condition": "normal_recent_usage",
+          "scheduler_executed": true,
+          "interaction_result": "executed real Android interaction plan target=com.android.chrome",
+          "parsed_events": 1392,
+          "scenario_id": "pressure_scroll_display_usage",
+          "scenario_file": "\/storage\/emulated\/0\/Android\/data\/com.memoos\/files\/latest_pressure_scenario.json",
+          "top_categories": [
+            "Network IO",
+            "Android Service IPC",
+            "App Process Runtime",
+            "Display Composition",
+            "Media Codec",
+            "Other File Access"
+          ],
+          "maple_backend": "shell",
+          "predicted_app_id": 115,
+          "scheduler_bits": "101010100",
+          "stage1": [
+            "Display Composition:0.3"
+          ],
+          "recommendations": [
+            {
+              "package_name": "com.tencent.mobileqq",
+              "label": "QQ",
+              "category": "Display Composition",
+              "confidence": 0.9
+            },
+            {
+              "package_name": "com.android.chrome",
+              "label": "Chrome",
+              "category": "Network IO",
+              "confidence": 0.98
+            },
+            {
+              "package_name": "com.google.android.apps.messaging",
+              "label": "Messages",
+              "category": "Communication",
+              "confidence": 0.98
+            }
+          ],
+          "actions": [
+            {
+              "name": "widget_update",
+              "target": "top3",
+              "status": "ok",
+              "detail": "realtime mode published 3 predicted apps to the desktop widget",
+              "duration_ms": 121,
+              "timestamp_ms": 1782930322738
+            },
+            {
+              "name": "latency_policy",
+              "target": "async_maple",
+              "status": "ok",
+              "detail": "MAPLE prediction ran asynchronously; completion latency=44.7s; slow runs still finish and still drive actions",
+              "duration_ms": 0,
+              "timestamp_ms": 1782930322738
+            },
+            {
+              "name": "maple_scheduler_plan",
+              "target": "predefined_actions",
+              "status": "ok",
+              "detail": "MAPLE selected 4 executable scheduler actions from 9 predefined decisions; source=scheduler_bits=101010100",
+              "duration_ms": 0,
+              "timestamp_ms": 1782930322738
+            },
+            {
+              "name": "maple_warm_launch_top1",
+              "target": "com.tencent.mobileqq",
+              "status": "ok",
+              "detail": "MAPLE bit requested Top-1 preload; QQ was warm-launched and MEMO returned to HOME",
+              "duration_ms": 1710,
+              "timestamp_ms": 1782930324449
+            },
+            {
+              "name": "maple_trim_memory",
+              "target": "com.android.chrome, com.google.android.apps.messaging",
+              "status": "ok",
+              "detail": "MAPLE scheduler_bits[2]=1",
+              "duration_ms": 4469,
+              "timestamp_ms": 1782930328918
+            },
+            {
+              "name": "maple_drop_cache",
+              "target": "drop_caches",
+              "status": "skipped",
+              "detail": "MAPLE requested cache drop but memory is not critical",
+              "duration_ms": 1,
+              "timestamp_ms": 1782930328918
+            },
+            {
+              "name": "maple_service_manager_refresh",
+              "target": "service_manager",
+              "status": "ok",
+              "detail": "MAPLE scheduler_bits[6]=1",
+              "duration_ms": 203,
+              "timestamp_ms": 1782930329122
+            }
+          ],
+          "duration_ms": 44675,
+          "stage3_target_package": "com.tencent.mobileqq",
+          "stage3_target_label": "QQ",
+          "repeat_index": 1,
+          "force_stop_before_launch": false
+        },
+        "reason": "The same MAPLE-selected Top-1 app is cold-started without executing scheduler_bits.",
+        "repeat_index": 1,
+        "force_stop_before_launch": true
+      }
+    },
+    {
+      "mode": "same_target_stage3_scheduler",
+      "condition": "normal_recent_usage",
+      "plan_id": "maple_top1_com_tencent_mobileqq",
+      "title": "MAPLE-selected Top-1 app workload: QQ",
+      "target_package": "com.tencent.mobileqq",
+      "target_label": "QQ",
+      "launch": {
+        "total_time_ms": 168,
+        "wait_time_ms": 173,
+        "this_time_ms": null,
+        "status": "ok",
+        "launch_state": "HOT"
+      },
+      "gfx": {
+        "total_frames": 3951,
+        "janky_frames": 35,
+        "jank_rate_pct": 0.885851683118198,
+        "p90_ms": 16,
+        "p95_ms": 18,
+        "p99_ms": 23
+      },
+      "before": {
+        "wall_time_ms": 1782930329770,
+        "elapsed_ms": 58150117,
+        "mem_available_kb": 3138224,
+        "swap_free_kb": 1049220,
+        "pgscan_direct": 73994,
+        "pgscan_kswapd": 9454914,
+        "compact_stall": 71,
+        "psi_some_avg10": 0.08,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 25824,
+        "udp_out_datagrams": 25333,
+        "udp_in_errors": 3,
+        "battery_level_pct": 100,
+        "battery_temp_c": 28.2,
+        "battery_current_ua": 610,
+        "cpu": {
+          "total_jiffies": 28179057,
+          "busy_jiffies": 5453181,
+          "idle_jiffies": 22720524,
+          "iowait_jiffies": 5352,
+          "procs_running": 12,
+          "procs_blocked": 0
+        }
+      },
+      "after": {
+        "wall_time_ms": 1782930390178,
+        "elapsed_ms": 58210525,
+        "mem_available_kb": 3222672,
+        "swap_free_kb": 1029128,
+        "pgscan_direct": 73994,
+        "pgscan_kswapd": 9454914,
+        "compact_stall": 71,
+        "psi_some_avg10": 0,
+        "psi_full_avg10": 0,
+        "udp_in_datagrams": 25835,
+        "udp_out_datagrams": 25347,
+        "udp_in_errors": 3,
+        "battery_level_pct": 100,
+        "battery_temp_c": 28.5,
+        "battery_current_ua": 305,
+        "cpu": {
+          "total_jiffies": 28226809,
+          "busy_jiffies": 5463111,
+          "idle_jiffies": 22758335,
+          "iowait_jiffies": 5363,
+          "procs_running": 4,
+          "procs_blocked": 0
+        }
+      },
+      "delta": {
+        "duration_ms": 60408,
+        "mem_available_drop_kb": -84448,
+        "swap_free_drop_kb": 20092,
+        "pgscan_direct_delta": 0,
+        "pgscan_kswapd_delta": 0,
+        "reclaim_delta": 0,
+        "compact_stall_delta": 0,
+        "psi_some_avg10_delta": -0.08,
+        "psi_full_avg10_delta": 0,
+        "udp_in_delta": 11,
+        "udp_out_delta": 14,
+        "udp_error_delta": 0,
+        "battery_temp_delta_c": 0.3000000000000007,
+        "cpu_busy_pct": 20.794940526051263,
+        "iowait_pct": 0.02303568436924108,
+        "pressure_score_lower_is_better": 9.705872005361037
+      },
+      "command_ok": true,
+      "command_summary": "Starting: Intent { cmp=com.tencent.mobileqq\/.activity.SplashActivity }\nWarning: Activity not started, its current task has been brought to the front\nStatus: ok\nLaunchState: HOT\nActivity: com.tencent.mobileqq\/.activity.SplashActivity\nTotalTime: 168\nWaitTime: 173\nComplete\n",
+      "memo_preparation": {
+        "raw_trace_path": "\/sdcard\/MEMO\/logs\/pressure_scroll_display_usage_1782930218859.trace",
+        "type": "same_maple_target_with_stage3_scheduler_actions",
+        "condition": "normal_recent_usage",
+        "scheduler_executed": true,
+        "interaction_result": "executed real Android interaction plan target=com.android.chrome",
+        "parsed_events": 1392,
+        "scenario_id": "pressure_scroll_display_usage",
+        "scenario_file": "\/storage\/emulated\/0\/Android\/data\/com.memoos\/files\/latest_pressure_scenario.json",
+        "top_categories": [
+          "Network IO",
+          "Android Service IPC",
+          "App Process Runtime",
+          "Display Composition",
+          "Media Codec",
+          "Other File Access"
+        ],
+        "maple_backend": "shell",
+        "predicted_app_id": 115,
+        "scheduler_bits": "101010100",
+        "stage1": [
+          "Display Composition:0.3"
+        ],
+        "recommendations": [
+          {
+            "package_name": "com.tencent.mobileqq",
+            "label": "QQ",
+            "category": "Display Composition",
+            "confidence": 0.9
+          },
+          {
+            "package_name": "com.android.chrome",
+            "label": "Chrome",
+            "category": "Network IO",
+            "confidence": 0.98
+          },
+          {
+            "package_name": "com.google.android.apps.messaging",
+            "label": "Messages",
+            "category": "Communication",
+            "confidence": 0.98
+          }
+        ],
+        "actions": [
+          {
+            "name": "widget_update",
+            "target": "top3",
+            "status": "ok",
+            "detail": "realtime mode published 3 predicted apps to the desktop widget",
+            "duration_ms": 121,
+            "timestamp_ms": 1782930322738
+          },
+          {
+            "name": "latency_policy",
+            "target": "async_maple",
+            "status": "ok",
+            "detail": "MAPLE prediction ran asynchronously; completion latency=44.7s; slow runs still finish and still drive actions",
+            "duration_ms": 0,
+            "timestamp_ms": 1782930322738
+          },
+          {
+            "name": "maple_scheduler_plan",
+            "target": "predefined_actions",
+            "status": "ok",
+            "detail": "MAPLE selected 4 executable scheduler actions from 9 predefined decisions; source=scheduler_bits=101010100",
+            "duration_ms": 0,
+            "timestamp_ms": 1782930322738
+          },
+          {
+            "name": "maple_warm_launch_top1",
+            "target": "com.tencent.mobileqq",
+            "status": "ok",
+            "detail": "MAPLE bit requested Top-1 preload; QQ was warm-launched and MEMO returned to HOME",
+            "duration_ms": 1710,
+            "timestamp_ms": 1782930324449
+          },
+          {
+            "name": "maple_trim_memory",
+            "target": "com.android.chrome, com.google.android.apps.messaging",
+            "status": "ok",
+            "detail": "MAPLE scheduler_bits[2]=1",
+            "duration_ms": 4469,
+            "timestamp_ms": 1782930328918
+          },
+          {
+            "name": "maple_drop_cache",
+            "target": "drop_caches",
+            "status": "skipped",
+            "detail": "MAPLE requested cache drop but memory is not critical",
+            "duration_ms": 1,
+            "timestamp_ms": 1782930328918
+          },
+          {
+            "name": "maple_service_manager_refresh",
+            "target": "service_manager",
+            "status": "ok",
+            "detail": "MAPLE scheduler_bits[6]=1",
+            "duration_ms": 203,
+            "timestamp_ms": 1782930329122
+          }
+        ],
+        "duration_ms": 44675,
+        "stage3_target_package": "com.tencent.mobileqq",
+        "stage3_target_label": "QQ",
+        "repeat_index": 1,
+        "force_stop_before_launch": false
+      }
+    }
+  ],
+  "comparisons": [
+    {
+      "comparison_type": "stage3_scheduler_vs_no_scheduler",
+      "plan_id": "maple_top1_com_tencent_mobileqq",
+      "condition": "normal_recent_usage",
+      "target_package": "com.tencent.mobileqq",
+      "target_label": "QQ",
+      "reference_mode": "same_target_no_scheduler",
+      "candidate_mode": "same_target_stage3_scheduler",
+      "interpretation": "Positive percentages mean the Stage 3 scheduler reduced pressure or latency against the same selected app without scheduler actions.",
+      "launch_total_time_improvement_pct": 61.20092378752887,
+      "wait_time_improvement_pct": 60.68181818181818,
+      "pressure_score_improvement_pct": 97.7030802276634,
+      "cpu_busy_improvement_pct": 22.126700827492854,
+      "iowait_improvement_pct": 75.41873090331792,
+      "memory_drop_improvement_pct": 151.2141280353201,
+      "reclaim_improvement_pct": 100,
+      "jank_rate_improvement_pct": 28.559752805196993,
+      "reference_pressure_score": 422.56034025461315,
+      "candidate_pressure_score": 9.705872005361037,
+      "reference_launch_total_ms": 433,
+      "candidate_launch_total_ms": 168,
+      "reference_jank_rate_pct": 1.239989666752777,
+      "candidate_jank_rate_pct": 0.885851683118198
+    }
+  ],
+  "summary": {
+    "workloads_compared": 1,
+    "avg_launch_total_time_improvement_pct": 61.20092378752887,
+    "avg_wait_time_improvement_pct": 60.68181818181818,
+    "avg_pressure_score_improvement_pct": 97.7030802276634,
+    "avg_cpu_busy_improvement_pct": 22.126700827492854,
+    "avg_iowait_improvement_pct": 75.41873090331792,
+    "avg_memory_drop_improvement_pct": 151.2141280353201,
+    "avg_reclaim_improvement_pct": 100,
+    "primary_comparison": {
+      "comparison_type": "stage3_scheduler_vs_no_scheduler",
+      "avg_launch_total_time_improvement_pct": 61.20092378752887,
+      "avg_wait_time_improvement_pct": 60.68181818181818,
+      "avg_pressure_score_improvement_pct": 97.7030802276634,
+      "avg_cpu_busy_improvement_pct": 22.126700827492854,
+      "avg_iowait_improvement_pct": 75.41873090331792,
+      "avg_memory_drop_improvement_pct": 151.2141280353201,
+      "avg_reclaim_improvement_pct": 100,
+      "claim_scope": "This comparison uses only system metrics. It isolates the value of executing Stage 3 scheduler_bits on the same MAPLE-selected app."
+    },
+    "claim_scope": "The experiment first selects a real Top-1 app using eBPF+MAPLE, then compares cold start without Stage 3 against the same target after Stage 3 scheduler actions. Only system metrics are reported."
+  }
+}

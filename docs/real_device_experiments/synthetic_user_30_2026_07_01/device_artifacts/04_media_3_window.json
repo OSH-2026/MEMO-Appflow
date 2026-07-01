@@ -1,0 +1,37 @@
+{
+  "started_at_ms": 1782915151444,
+  "ended_at_ms": 1782915172708,
+  "duration_ms": 21264,
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782915151444.trace",
+  "app_samples_path": "\/sdcard\/MEMO\/logs\/realtime_1782915151444_apps.tsv",
+  "raw_ebpf_events": 13486,
+  "app_segments": 5,
+  "timeline_windows": 1,
+  "compressed_ebpf_signals": 9,
+  "summary": {
+    "start_ms": 1782915151444,
+    "end_ms": 1782915172708,
+    "app_labels": [
+      "nexuslauncher",
+      "YouTube Music",
+      "Termux"
+    ],
+    "top_ebpf_signals": [
+      "MEMO_SCHED:215101",
+      "MEMO_RECVFROM:31556",
+      "MEMO_OPENAT:26188",
+      "MEMO_SENDTO:13510",
+      "MEMO_BINDER:11991",
+      "MEMO_PROCESS_FORK:577",
+      "MEMO_PROCESS_EXIT:568",
+      "MEMO_PROCESS_EXEC:329"
+    ],
+    "top_categories": [
+      "App Process Runtime",
+      "Media Codec",
+      "Network IO",
+      "Payment\/Security",
+      "Display Composition"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "started_at_ms": 1782916297828,
+  "ended_at_ms": 1782916319073,
+  "duration_ms": 21245,
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782916297828.trace",
+  "app_samples_path": "\/sdcard\/MEMO\/logs\/realtime_1782916297828_apps.tsv",
+  "raw_ebpf_events": 13060,
+  "app_segments": 5,
+  "timeline_windows": 1,
+  "compressed_ebpf_signals": 9,
+  "summary": {
+    "start_ms": 1782916297828,
+    "end_ms": 1782916319073,
+    "app_labels": [
+      "Pixel Tips",
+      "Magisk",
+      "nexuslauncher",
+      "Calculator"
+    ],
+    "top_ebpf_signals": [
+      "MEMO_SCHED:281009",
+      "MEMO_RECVFROM:53765",
+      "MEMO_SENDTO:22593",
+      "MEMO_OPENAT:18807",
+      "MEMO_BINDER:13270",
+      "MEMO_PROCESS_FORK:418",
+      "MEMO_PROCESS_EXIT:403",
+      "MEMO_PROCESS_EXEC:225"
+    ],
+    "top_categories": [
+      "Network IO",
+      "App Process Runtime",
+      "Payment\/Security"
+    ]
+  }
+}

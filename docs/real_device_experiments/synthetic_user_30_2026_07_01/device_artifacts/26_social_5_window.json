@@ -1,0 +1,38 @@
+{
+  "started_at_ms": 1782916782611,
+  "ended_at_ms": 1782916804311,
+  "duration_ms": 21700,
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782916782611.trace",
+  "app_samples_path": "\/sdcard\/MEMO\/logs\/realtime_1782916782611_apps.tsv",
+  "raw_ebpf_events": 13437,
+  "app_segments": 5,
+  "timeline_windows": 1,
+  "compressed_ebpf_signals": 9,
+  "summary": {
+    "start_ms": 1782916782611,
+    "end_ms": 1782916804311,
+    "app_labels": [
+      "nexuslauncher",
+      "Tencent Meeting",
+      "WeChat"
+    ],
+    "top_ebpf_signals": [
+      "MEMO_SCHED:279341",
+      "MEMO_OPENAT:22001",
+      "MEMO_BINDER:14154",
+      "MEMO_RECVFROM:10973",
+      "MEMO_SENDTO:4498",
+      "MEMO_PROCESS_FORK:678",
+      "MEMO_PROCESS_EXIT:518",
+      "MEMO_PROCESS_EXEC:233"
+    ],
+    "top_categories": [
+      "App Process Runtime",
+      "Camera Service",
+      "Media Codec",
+      "Network IO",
+      "Navigation\/Location",
+      "Communication"
+    ]
+  }
+}

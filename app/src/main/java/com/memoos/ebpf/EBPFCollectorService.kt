@@ -25,6 +25,9 @@ import com.memoos.perf.FreeUsageSessionRunner
 import com.memoos.perf.PipelineTimer
 import com.memoos.perf.PressureExperimentRunner
 import com.memoos.perf.RealUsageSessionRunner
+import com.memoos.perf.RealtimeTop3ShiftExperimentRunner
+import com.memoos.perf.SyntheticUser30ExperimentRunner
+import com.memoos.realtime.RealtimePreloadController
 import com.memoos.state.SystemStateCollector
 import com.memoos.state.SystemStateSnapshot
 import com.memoos.store.MemoStore
@@ -36,8 +39,11 @@ import java.util.concurrent.Future
 class EBPFCollectorService : Service() {
     private val executor = Executors.newSingleThreadExecutor()
     private val mapleExecutor = Executors.newSingleThreadExecutor()
+    private val realtimeExecutor = Executors.newSingleThreadExecutor()
     private var runningTask: Future<*>? = null
     private var mapleTask: Future<*>? = null
+    private var realtimeTask: Future<*>? = null
+    private var realtimeController: RealtimePreloadController? = null
 
     override fun onCreate() {
         super.onCreate()
@@ -51,11 +57,14 @@ class EBPFCollectorService : Service() {
         when (intent?.action) {
             ACTION_STOP -> stopPipeline()
             ACTION_CHECK_SETUP -> checkDeviceSetup()
+            ACTION_REALTIME_START -> startRealtimeMode()
+            ACTION_REALTIME_STOP -> stopRealtimeMode()
             ACTION_WARM_TOP_APP -> warmTopRecommendation()
             ACTION_FULL_LOCAL_EVALUATION -> runRealUserExperiment(RealUserExperimentPlanner.KIND_SCROLL, runAblationAfterMaple = true)
-            ACTION_RUN_ONCE, null -> runPipelineOnce()
-            ACTION_FREE_USAGE_START -> startFreeUsageSession()
-            ACTION_FREE_USAGE_FINISH -> finishFreeUsageSession()
+            ACTION_RUN_ONCE -> runPipelineOnce()
+            null -> {
+                if (MemoStore(this).load().realtime.active) startRealtimeMode() else runPipelineOnce()
+            }
             ACTION_RECORD_CURRENT_USAGE -> runRealUserExperiment(RealUserExperimentPlanner.KIND_CURRENT)
             ACTION_EXPERIMENT_COMMUNICATION -> runRealUserExperiment(RealUserExperimentPlanner.KIND_COMMUNICATION)
             ACTION_EXPERIMENT_CAMERA -> runRealUserExperiment(RealUserExperimentPlanner.KIND_CAMERA)
@@ -65,6 +74,8 @@ class EBPFCollectorService : Service() {
             ACTION_REAL_ABLATION_LATEST -> runRealAblationOnLatestScenario()
             ACTION_PRESSURE_EXPERIMENT -> runAppPressureExperiment()
             ACTION_USAGE_100_ANALYSIS -> runUsage100Analysis()
+            ACTION_REALTIME_TOP3_SHIFT_EXPERIMENT -> runRealtimeTop3ShiftExperiment()
+            ACTION_SYNTHETIC_USER_30_EXPERIMENT -> runSyntheticUser30Experiment()
             else -> runPipelineOnce()
         }
         return START_STICKY
@@ -76,7 +87,49 @@ class EBPFCollectorService : Service() {
         stopPipeline()
         executor.shutdownNow()
         mapleExecutor.shutdownNow()
+        realtimeExecutor.shutdownNow()
         super.onDestroy()
+    }
+
+    private fun startRealtimeMode() {
+        if (realtimeTask?.isDone == false) {
+            MemoStore(this).appendAction(
+                ActionResult(
+                    "realtime_mode",
+                    "background_prediction",
+                    "ok",
+                    "realtime mode is already running; Top-3 and scheduler actions refresh every 3 minutes",
+                ),
+            )
+            stopForeground(STOP_FOREGROUND_DETACH)
+            return
+        }
+        runningTask?.cancel(true)
+        mapleTask?.cancel(true)
+        realtimeController = RealtimePreloadController(this, mapleExecutor)
+        realtimeTask = realtimeExecutor.submit {
+            try {
+                realtimeController?.runForever()
+            } finally {
+                stopForeground(STOP_FOREGROUND_DETACH)
+            }
+        }
+    }
+
+    private fun stopRealtimeMode() {
+        realtimeController?.stop()
+        realtimeTask?.cancel(true)
+        realtimeTask = null
+        MemoStore(this).appendAction(
+            ActionResult(
+                "realtime_mode",
+                "background_prediction",
+                "ok",
+                "realtime mode stopped; MEMO will no longer refresh Top-3 or scheduler actions every 3 minutes",
+            ),
+        )
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
     }
 
     private fun runPipelineOnce() {
@@ -284,16 +337,16 @@ class EBPFCollectorService : Service() {
                 MemoStore(this).savePressureReport(report)
                 MemoStore(this).appendAction(
                     ActionResult(
-                        "user_app_pressure_ab",
+                        "system_scheduler_performance",
                         "${DevicePaths.MEMO_PUBLIC_ROOT}/pressure/latest_pressure_experiment.json",
                         "ok",
-                        "MEMO off/on real app pressure A/B finished; avg_pressure_score_improvement_pct=${summary.optDouble("avg_pressure_score_improvement_pct", Double.NaN)}",
+                        "system scheduler performance finished; avg_pressure_score_improvement_pct=${summary.optDouble("avg_pressure_score_improvement_pct", Double.NaN)}",
                     ),
                 )
             } catch (exc: Exception) {
                 MemoStore(this).appendAction(
                     ActionResult(
-                        "user_app_pressure_ab",
+                        "system_scheduler_performance",
                         "real_app_workloads",
                         "blocked",
                         exc.message ?: exc.javaClass.simpleName,
@@ -333,6 +386,48 @@ class EBPFCollectorService : Service() {
                 MemoWidgetProvider.updateAll(this, result.recommendations)
             } catch (exc: Exception) {
                 MemoStore(this).saveFailure("Strict 100-use real analysis failed: ${exc.message ?: exc.javaClass.simpleName}")
+            } finally {
+                stopForeground(STOP_FOREGROUND_DETACH)
+            }
+        }
+    }
+
+    private fun runRealtimeTop3ShiftExperiment() {
+        runningTask?.cancel(true)
+        mapleTask?.cancel(true)
+        realtimeController?.stop()
+        realtimeTask?.cancel(true)
+        realtimeTask = null
+        runningTask = executor.submit {
+            try {
+                val result = RealtimeTop3ShiftExperimentRunner(this).run()
+                MemoStore(this).saveUsageReport(result.report)
+                result.finalActions.forEach { MemoStore(this).appendAction(it) }
+            } catch (exc: Exception) {
+                stopDeviceCollectors(killMaple = true)
+                MemoStore(this).saveRealtimeStopped()
+                MemoStore(this).saveFailure("9-minute realtime Top-3 shift experiment failed: ${exc.message ?: exc.javaClass.simpleName}")
+            } finally {
+                stopForeground(STOP_FOREGROUND_DETACH)
+            }
+        }
+    }
+
+    private fun runSyntheticUser30Experiment() {
+        runningTask?.cancel(true)
+        mapleTask?.cancel(true)
+        realtimeController?.stop()
+        realtimeTask?.cancel(true)
+        realtimeTask = null
+        runningTask = executor.submit {
+            try {
+                val result = SyntheticUser30ExperimentRunner(this).run()
+                MemoStore(this).saveUsageReport(result.report)
+                result.finalActions.forEach { MemoStore(this).appendAction(it) }
+            } catch (exc: Exception) {
+                stopDeviceCollectors(killMaple = true)
+                MemoStore(this).saveRealtimeStopped()
+                MemoStore(this).saveFailure("Synthetic 3x10 real-eBPF experiment failed: ${exc.message ?: exc.javaClass.simpleName}")
             } finally {
                 stopForeground(STOP_FOREGROUND_DETACH)
             }
@@ -555,6 +650,9 @@ class EBPFCollectorService : Service() {
 
     private fun stopPipeline() {
         val activeFreeUsage = MemoStore(this).load().freeUsageSession.active
+        realtimeController?.stop()
+        realtimeTask?.cancel(true)
+        realtimeTask = null
         runningTask?.cancel(true)
         mapleTask?.cancel(true)
         runningTask = null
@@ -686,6 +784,8 @@ class EBPFCollectorService : Service() {
         const val ACTION_RUN_ONCE = "com.memoos.action.RUN_ONCE"
         const val ACTION_STOP = "com.memoos.action.STOP"
         const val ACTION_CHECK_SETUP = "com.memoos.action.CHECK_SETUP"
+        const val ACTION_REALTIME_START = "com.memoos.action.REALTIME_START"
+        const val ACTION_REALTIME_STOP = "com.memoos.action.REALTIME_STOP"
         const val ACTION_WARM_TOP_APP = "com.memoos.action.WARM_TOP_APP"
         const val ACTION_FULL_LOCAL_EVALUATION = "com.memoos.action.FULL_LOCAL_EVALUATION"
         const val ACTION_FREE_USAGE_START = "com.memoos.action.FREE_USAGE_START"
@@ -699,6 +799,8 @@ class EBPFCollectorService : Service() {
         const val ACTION_REAL_ABLATION_LATEST = "com.memoos.action.REAL_EBPF_ABLATION_LATEST"
         const val ACTION_PRESSURE_EXPERIMENT = "com.memoos.action.USER_APP_PRESSURE_EXPERIMENT"
         const val ACTION_USAGE_100_ANALYSIS = "com.memoos.action.REAL_USAGE_100_ANALYSIS"
+        const val ACTION_REALTIME_TOP3_SHIFT_EXPERIMENT = "com.memoos.action.REALTIME_TOP3_SHIFT_EXPERIMENT"
+        const val ACTION_SYNTHETIC_USER_30_EXPERIMENT = "com.memoos.action.SYNTHETIC_USER_30_EXPERIMENT"
         private const val NOTIFICATION_ID = 42
         private const val CHANNEL_ID = "memo_pipeline"
         private const val WINDOW_MS = 8_000L

@@ -1,0 +1,141 @@
+
+============================================================
+  MAPLE Inference Demo
+============================================================
+Model:     /data/local/tmp/memo/models/Qwen3.5-0.8B-Q4_K_M.gguf
+Scenarios: /sdcard/MEMO/reports/synthetic_user_30_rerun/inputs/rerun_fixed_scenarios/24_social_3_scenario.json
+[MAPLE] Model loaded successfully.
+
+============================================================
+  Scenario: synthetic_user_30_social_3_1782916615209
+============================================================
+Description: Short real-device experiment sample 24. Input app sequence is visible to MAPLE; future ground-truth apps are masked and used only for evaluation. Persona=social_sharing.
+
+>>> Stage 1: App Type Prediction (ATP)
+------------------------------------------------------------
+[1] INPUT INFO:
+    Historical app categories: Display Composition, Camera Service, Media Codec, Network IO, Navigation/Location, Communication
+    Historical app IDs:        115, 250, 260, 245, 270, 110
+    Prediction time:           2026-07-01T22:37:20.915942+08:00
+    Points of interest:        camera or photo workflow, active network communication
+    MAPLE candidate IDs:
+      - Camera Service: 250
+      - Communication: 110
+      - Display Composition: 115
+      - Media Codec: 260
+      - Navigation/Location: 270
+      - Network IO: 245
+    eBPF memory pressure:      normal: no direct reclaim pressure was observed
+    Low-level eBPF evidence:
+      - 13786 device-side eBPF records in the observed Android window
+      - timestamped app sequence length=5 unique_apps=3 first=nexuslauncher/com.google.android.apps.nexuslauncher last=nexuslauncher/com.google.android.apps.nexuslauncher
+      - recent app order=1:nexuslauncher -> 2:Chrome -> 3:nexuslauncher -> 4:QQ -> 5:nexuslauncher
+    Scheduler goal:            Use device-side eBPF and system-state evidence to infer near-future Android app/resource demand, then choose safe warm-launch, cache, memory, network, camera/media, and UI scheduling actions.
+
+[2] PROMPT sent to model:
+Pick the next user-facing Android app category from real MEMO app history plus eBPF/OS context.
+Answer exactly: <Category> (<percent>%).
+Use only one category name from Candidates.
+Do not answer Memory Management, Binder, service manager, process runtime, or other OS-only labels as the app category.
+Candidates: Display Composition, Camera Service, Media Codec, Network IO, Navigation/Location, and Communication.
+Counts: .
+Memory is scheduler context, not an app category: normal: no direct reclaim pressure was observed.
+Prediction:
+
+[prompt_chars] 536
+
+[3] MODEL RAW OUTPUT:
+    "<Category> Display Composition (100%)"
+
+[4] PARSED RESULT:
+    -> Predicted category: "Display Composition"  (confidence: 100%)
+
+>>> Stage 2: Next App Prediction (NTP)
+------------------------------------------------------------
+[1] INPUT INFO:
+    Stage 1 predicted category:Display Composition (100%)
+    Historical app IDs:        115, 250, 260, 245, 270, 110
+    MAPLE candidate IDs:
+      - Camera Service: 250
+      - Communication: 110
+      - Display Composition: 115
+      - Media Codec: 260
+      - Navigation/Location: 270
+      - Network IO: 245
+
+[2] PROMPT sent to model:
+Choose one MAPLE candidate ID for this eBPF category.
+Return one complete valid answer. Do not print the literal string <id>.
+Predicted category: Display Composition.
+Candidate IDs: 115.
+Recent IDs: 115, 250, 260, 245, 270, and 110.
+Valid answers:
+- This user will use App 115.
+Prediction:
+
+[prompt_chars] 290
+
+[3] MODEL RAW OUTPUT:
+    "This user will use App 115."
+
+[4] PARSED RESULT:
+    -> Predicted specific app: App 115
+
+>>> Stage 3: Scheduler Decision (SDP)
+------------------------------------------------------------
+[1] INPUT INFO:
+    Scheduler bit count:       9
+    Fixed action table:
+      - 0 warm_launch_top1
+      - 1 warm_launch_top2_if_idle
+      - 2 trim_memory_low_priority_apps
+      - 3 kill_selected_background_package
+      - 4 drop_cache_if_critical_memory
+      - 5 refresh_network_stats
+      - 6 refresh_service_manager
+      - 7 reduce_prewarm_when_display_busy
+      - 8 skip_camera_prewarm_when_thermal_high
+
+[2] PROMPT sent to model:
+Choose MEMO scheduler_bits for the next 3 minutes.
+Output exactly 9 characters, only 0 or 1. No JSON. No words.
+Bit meaning: 1 execute, 0 skip.
+If network evidence is active, bit5 should be 1. If service/app switching is active, bit6 should be 1. If UI/display is busy, bit7 should be 1. If memory is normal, bit0 may be 1. If memory is high, bits2 or 4 may be 1.
+Actions:
+- 0 warm_launch_top1
+- 1 warm_launch_top2_if_idle
+- 2 trim_memory_low_priority_apps
+- 3 kill_selected_background_package
+- 4 drop_cache_if_critical_memory
+- 5 refresh_network_stats
+- 6 refresh_service_manager
+- 7 reduce_prewarm_when_display_busy
+- 8 skip_camera_prewarm_when_thermal_high
+Category: Display Composition.
+App id: 115.
+Memory: normal: no direct reclaim pressure was observed.
+Hints: camera or photo workflow.
+Evidence:
+- 13786 device-side eBPF records in the observed Android window
+- timestamped app sequence length=5 unique_apps=3 first=nexuslauncher/com.google.android.apps.nexuslauncher last=nexuslauncher/com.google.android.apps.nexuslauncher
+- recent app order=1:nexuslauncher -> 2:Chrome -> 3:nexuslauncher -> 4:QQ -> 5:nexuslauncher
+Bits:
+
+[prompt_chars] 1133
+
+[3] MODEL RAW OUTPUT:
+    "10"
+
+[4] PARSED RESULT:
+    -> scheduler_bits: 100000000
+
+MAPLE_STRUCTURED_OUTPUT:
+{"top3_apps":["App 115"],"pressure_analysis":"normal: no direct reclaim pressure was observed","scheduler_bits":"100000000","scheduler_plan":[],"raw_scheduler_output":"10"}
+
+============================================================
+  FINAL PREDICTION SUMMARY
+============================================================
+  Scenario:  Short real-device experiment sample 24. Input app sequence is visible to MAPLE; future ground-truth apps are masked and used only for evaluation. Persona=social_sharing.
+  App Type:  "Display Composition"
+  App ID:    115
+============================================================

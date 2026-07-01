@@ -1,0 +1,35 @@
+{
+  "started_at_ms": 1782915871412,
+  "ended_at_ms": 1782915892618,
+  "duration_ms": 21206,
+  "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782915871412.trace",
+  "app_samples_path": "\/sdcard\/MEMO\/logs\/realtime_1782915871412_apps.tsv",
+  "raw_ebpf_events": 13088,
+  "app_segments": 5,
+  "timeline_windows": 1,
+  "compressed_ebpf_signals": 9,
+  "summary": {
+    "start_ms": 1782915871412,
+    "end_ms": 1782915892618,
+    "app_labels": [
+      "nexuslauncher",
+      "Files by Google",
+      "Pixel Tips"
+    ],
+    "top_ebpf_signals": [
+      "MEMO_SCHED:266154",
+      "MEMO_RECVFROM:51811",
+      "MEMO_SENDTO:21686",
+      "MEMO_OPENAT:18673",
+      "MEMO_BINDER:12865",
+      "MEMO_PROCESS_FORK:427",
+      "MEMO_PROCESS_EXIT:419",
+      "MEMO_PROCESS_EXEC:227"
+    ],
+    "top_categories": [
+      "App Process Runtime",
+      "Network IO",
+      "Payment\/Security"
+    ]
+  }
+}

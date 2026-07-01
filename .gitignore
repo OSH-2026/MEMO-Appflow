@@ -27,3 +27,14 @@ llm/maple/**/CMakeCache.txt
 dataset_synthetic/
 docs/ablation_results*.md
 app/src/main/jniLibs/
+tmp/
+docs/latex/*.aux
+docs/latex/*.log
+docs/latex/*.nav
+docs/latex/*.out
+docs/latex/*.snm
+docs/latex/*.toc
+docs/latex/*.vrb
+docs/latex/*.xdv
+docs/latex/*.fls
+docs/latex/*.fdb_latexmk

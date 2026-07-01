@@ -166,9 +166,10 @@ std::string PromptBuilder::build_app_type_prompt(const UserContext& ctx) const {
     std::ostringstream oss;
     const bool evidence_driven = is_evidence_driven(ctx);
     if (evidence_driven) {
-        oss << "Pick the next Android resource-demand category from real MEMO eBPF evidence.\n";
+        oss << "Pick the next user-facing Android app category from real MEMO app history plus eBPF/OS context.\n";
         oss << "Answer exactly: <Category> (<percent>%).\n";
         oss << "Use only one category name from Candidates.\n";
+        oss << "Do not answer Memory Management, Binder, service manager, process runtime, or other OS-only labels as the app category.\n";
         oss << "Candidates: " << join_categories(ctx.historical_app_categories) << ".\n";
         oss << "Counts: ";
         bool emitted = false;
@@ -186,7 +187,7 @@ std::string PromptBuilder::build_app_type_prompt(const UserContext& ctx) const {
             oss << "Observed action: " << target << ".\n";
         }
         if (!ctx.memory_pressure.empty()) {
-            oss << "Memory: " << ctx.memory_pressure << ".\n";
+            oss << "Memory is scheduler context, not an app category: " << ctx.memory_pressure << ".\n";
         }
         oss << "Prediction:\n";
         return oss.str();

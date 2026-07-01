@@ -10,7 +10,7 @@ namespace maple {
 // Known MAPLE bridge category IDs to names. Small local models sometimes output
 // "280 (75%)" or "App 110" instead of the category name.
 static const std::map<int, std::string> ID_TO_CATEGORY = {
-    {110, "Android Service IPC"},
+    {110, "Communication"},
     {115, "Display Composition"},
     {120, "Native Runtime Loading"},
     {130, "Framework Loading"},
@@ -94,7 +94,7 @@ AppTypeResult ResultParser::parse_app_type(const std::string& raw) const {
 
     // Pattern 1: "Name (XX%)", "Name (XX)", or "App 110".
     {
-        std::regex re(R"(\b([A-Za-z][A-Za-z0-9_/\-]*(?:\s+[A-Za-z][A-Za-z0-9_/\-]*){0,4})\s*\(\s*(\d+)\s*(?:%|records)?\s*\))");
+        std::regex re(R"((?:<Category>\s*)?\b([A-Za-z][A-Za-z0-9_/\-]*(?:\s+[A-Za-z][A-Za-z0-9_/\-]*){0,4})\s*\(\s*<?\s*(\d+)\s*(?:%|records)?\s*\)+)");
         std::sregex_iterator it(text.begin(), text.end(), re);
         std::sregex_iterator end;
         for (; it != end; ++it) {

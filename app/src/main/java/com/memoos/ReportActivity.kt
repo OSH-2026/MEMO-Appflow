@@ -69,9 +69,9 @@ class ReportActivity : Activity() {
         val panel = verticalPanel()
         val isFreeSession = report?.optString("session_mode") == "free_usage" ||
             report?.optString("experiment_type") == "free_usage_session"
-        panel.addView(label(if (isFreeSession) "自由体验分析" else "100 次真实使用分析"))
+        panel.addView(label(if (isFreeSession) "实时窗口使用分析" else "真实使用分析"))
         if (report == null) {
-            panel.addView(body("还没有报告。请先回首页运行“开始自由体验”或“100 次真实使用分析”。"))
+            panel.addView(body("还没有报告。请先回首页开启实时模式，或运行“9 分钟实时 Top-3 变化实验”。"))
             root.addView(panel)
             return
         }
@@ -80,9 +80,9 @@ class ReportActivity : Activity() {
         val delta = report.optJSONObject("system_delta")
         panel.addView(smallCaption("实验设计"))
         if (isFreeSession) {
-            panel.addView(body("点击“开始自由体验”后，MEMO 在后台记录前台应用变化并采集 eBPF；点击“结束体验并分析”后，手机本地把刚才这段自由使用整理成应用序列、系统证据、MAPLE 推荐和调度动作。"))
+            panel.addView(body("实时模式在后台记录前台应用变化并采集 eBPF；手机本地把最近窗口整理成应用序列、系统证据、MAPLE 推荐和调度动作。"))
         } else {
-            panel.addView(body("手机本地自动打开 100 次真实应用，每 5 次作为一个时间窗同步采集 eBPF。报告把应用使用序列、系统事件、MAPLE 推荐和调度动作放在一起看。"))
+            panel.addView(body("手机本地运行真实应用使用实验，同步采集 eBPF。报告把应用使用序列、系统事件、MAPLE 推荐和调度动作放在一起看。"))
         }
         panel.addView(kv("实验类型", friendlyExperimentType(report.optString("experiment_type"))))
         panel.addView(kv(if (isFreeSession) "连续 app 片段" else "真实 app 打开", "${report.optInt("interaction_count_observed")}/${report.optInt("interaction_count_requested")} 次"))
@@ -121,7 +121,7 @@ class ReportActivity : Activity() {
         val panel = verticalPanel()
         panel.addView(label("消融实验报告"))
         if (report == null) {
-            panel.addView(body("还没有消融报告。请先运行“最新真实证据消融”或“100 次真实使用分析”。"))
+            panel.addView(body("还没有消融报告。请先运行“最新真实证据消融”，或先完成一次实时 Top-3 变化实验生成真实 scenario。"))
             root.addView(panel)
             return
         }
@@ -147,7 +147,7 @@ class ReportActivity : Activity() {
         val panel = verticalPanel()
         panel.addView(label("手机性能 A/B 报告"))
         if (report == null) {
-            panel.addView(body("还没有性能报告。请先回首页运行“手机压力 A/B 实验”。"))
+            panel.addView(body("还没有性能报告。请先回首页运行“系统调度性能实验”。"))
             root.addView(panel)
             return
         }
@@ -211,9 +211,10 @@ class ReportActivity : Activity() {
 
     private fun friendlyExperimentType(value: String): String {
         return when (value) {
-            "free_usage_session" -> "自由体验"
+            "free_usage_session" -> "实时窗口使用"
             "real_usage_100_app_rotation" -> "100 次真实应用使用"
-            "user_app_pressure_ab" -> "真实应用压力 A/B"
+            "realtime_top3_shift_9min" -> "9 分钟实时 Top-3 变化实验"
+            "user_app_pressure_ab", "system_scheduler_performance" -> "系统调度性能实验"
             else -> value.replace('_', ' ')
         }
     }

@@ -1,0 +1,324 @@
+{
+  "schema_version": "memo.realtime_top3_shift.v1",
+  "experiment_type": "realtime_top3_shift_9min",
+  "session_mode": "realtime_window_shift",
+  "started_at_ms": 1782910803696,
+  "duration_ms": 633993,
+  "experiment_design": {
+    "goal": "Show that MEMO Top-3 can change after realtime 3-minute windows when the observed app sequence changes sharply.",
+    "windowing": "Three full 3-minute realtime windows: network\/browser, camera\/photo, then media\/communication.",
+    "realtime_overlap": "Collection does not pause for MAPLE. After each 3-minute window is structured, MAPLE inference and ActionExecutor run on a background executor while the next window keeps collecting app\/eBPF\/system evidence.",
+    "bounded_runtime": "The experiment uses one collection flow and one MAPLE worker. It never creates one thread per window; raw traces stay on disk and MAPLE receives compressed window evidence plus bounded EMA memory.",
+    "evidence_balance": "Network, Binder, Camera, Media, Display and related user-facing evidence caps are kept at the same scale before MAPLE scenario construction.",
+    "transparency": "Each phase stores the exact MAPLE scenario\/prompt input and raw MAPLE output, plus inference latency.",
+    "extreme_condition": "Each phase repeatedly launches apps from a different user-facing category so app timeline and eBPF evidence are deliberately dominated by one behavior class."
+  },
+  "initial_top3": [
+    "Settings",
+    "Messages",
+    "Chrome"
+  ],
+  "final_top3": [
+    "Messages",
+    "Camera",
+    "QQ"
+  ],
+  "top3_changed_transitions": 2,
+  "phase_count": 3,
+  "phases": [
+    {
+      "index": 1,
+      "phase_id": "network",
+      "name": "Network\/browser window",
+      "duration_ms": 180000,
+      "target_categories": [
+        "Network IO"
+      ],
+      "scripted_apps": [
+        "Chrome\/com.android.chrome",
+        "Magisk\/com.topjohnwu.magisk",
+        "QQ\/com.tencent.mobileqq"
+      ],
+      "window_start_ms": 1782910812440,
+      "window_end_ms": 1782910999698,
+      "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782910812440.trace",
+      "raw_ebpf_events": 19263,
+      "observed_app_segments": 52,
+      "observed_app_labels": [
+        "Magisk",
+        "nexuslauncher",
+        "QQ",
+        "Chrome"
+      ],
+      "window_top_categories": [
+        "App Process Runtime",
+        "Network IO",
+        "Media Codec",
+        "Camera Service",
+        "Navigation\/Location",
+        "Communication"
+      ],
+      "maple_started_at_ms": 1782911012406,
+      "maple_duration_ms": 29106,
+      "maple_completed_at_ms": 1782911043748,
+      "maple_backend": "shell",
+      "maple_predicted_app_id": 220,
+      "maple_stage1": [
+        "Memory Management (80%)"
+      ],
+      "top3": [
+        "Messages",
+        "Camera",
+        "Chrome"
+      ],
+      "top3_packages": [
+        "com.google.android.apps.messaging",
+        "com.google.android.GoogleCamera",
+        "com.android.chrome"
+      ],
+      "scheduler_bits": "100000000",
+      "executed_actions": [
+        {
+          "name": "widget_update",
+          "target": "top3",
+          "status": "ok",
+          "detail": "realtime mode published 3 predicted apps to the desktop widget",
+          "duration_ms": 39
+        },
+        {
+          "name": "latency_policy",
+          "target": "async_maple",
+          "status": "ok",
+          "detail": "MAPLE prediction ran asynchronously; completion latency=29.1s; slow runs still finish and still drive actions",
+          "duration_ms": 0
+        },
+        {
+          "name": "maple_scheduler_plan",
+          "target": "predefined_actions",
+          "status": "ok",
+          "detail": "MAPLE selected 1 executable scheduler actions from 9 predefined decisions; source=scheduler_bits=100000000",
+          "duration_ms": 0
+        },
+        {
+          "name": "maple_warm_launch_top1",
+          "target": "com.google.android.apps.messaging",
+          "status": "ok",
+          "detail": "MAPLE bit requested Top-1 preload; Messages was warm-launched and MEMO returned to HOME",
+          "duration_ms": 1715
+        }
+      ],
+      "artifacts": {
+        "scenario_prompt_input": "\/sdcard\/MEMO\/reports\/realtime_top3_shift\/phase_1_network_scenario_prompt.json",
+        "raw_maple_output": "\/sdcard\/MEMO\/reports\/realtime_top3_shift\/phase_1_network_maple_output.txt",
+        "context_json": "\/sdcard\/MEMO\/reports\/realtime_top3_shift\/phase_1_network_context.json"
+      },
+      "foreground_after": null
+    },
+    {
+      "index": 2,
+      "phase_id": "camera",
+      "name": "Camera\/photo window",
+      "duration_ms": 180000,
+      "target_categories": [
+        "Camera Service"
+      ],
+      "scripted_apps": [
+        "Chrome\/com.android.chrome",
+        "QQ\/com.tencent.mobileqq",
+        "Tencent Meeting\/com.tencent.wemeet.app"
+      ],
+      "window_start_ms": 1782911016663,
+      "window_end_ms": 1782911204154,
+      "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782911016663.trace",
+      "raw_ebpf_events": 19289,
+      "observed_app_segments": 55,
+      "observed_app_labels": [
+        "QQ",
+        "nexuslauncher",
+        "Tencent Meeting",
+        "Chrome",
+        "Messages",
+        "Camera"
+      ],
+      "window_top_categories": [
+        "App Process Runtime",
+        "Media Codec",
+        "Camera Service",
+        "Network IO",
+        "Navigation\/Location",
+        "Communication"
+      ],
+      "maple_started_at_ms": 1782911210787,
+      "maple_duration_ms": 37196,
+      "maple_completed_at_ms": 1782911249674,
+      "maple_backend": "shell",
+      "maple_predicted_app_id": 115,
+      "maple_stage1": [
+        "Android Service IPC (80%)"
+      ],
+      "top3": [
+        "QQ",
+        "Messages",
+        "Camera"
+      ],
+      "top3_packages": [
+        "com.tencent.mobileqq",
+        "com.google.android.apps.messaging",
+        "com.google.android.GoogleCamera"
+      ],
+      "scheduler_bits": "100000000",
+      "executed_actions": [
+        {
+          "name": "widget_update",
+          "target": "top3",
+          "status": "ok",
+          "detail": "realtime mode published 3 predicted apps to the desktop widget",
+          "duration_ms": 35
+        },
+        {
+          "name": "latency_policy",
+          "target": "async_maple",
+          "status": "ok",
+          "detail": "MAPLE prediction ran asynchronously; completion latency=37.2s; slow runs still finish and still drive actions",
+          "duration_ms": 0
+        },
+        {
+          "name": "maple_scheduler_plan",
+          "target": "predefined_actions",
+          "status": "ok",
+          "detail": "MAPLE selected 1 executable scheduler actions from 9 predefined decisions; source=scheduler_bits=100000000",
+          "duration_ms": 0
+        },
+        {
+          "name": "maple_warm_launch_top1",
+          "target": "com.tencent.mobileqq",
+          "status": "ok",
+          "detail": "MAPLE bit requested Top-1 preload; QQ was warm-launched and MEMO returned to HOME",
+          "duration_ms": 1312
+        }
+      ],
+      "artifacts": {
+        "scenario_prompt_input": "\/sdcard\/MEMO\/reports\/realtime_top3_shift\/phase_2_camera_scenario_prompt.json",
+        "raw_maple_output": "\/sdcard\/MEMO\/reports\/realtime_top3_shift\/phase_2_camera_maple_output.txt",
+        "context_json": "\/sdcard\/MEMO\/reports\/realtime_top3_shift\/phase_2_camera_context.json"
+      },
+      "foreground_after": null
+    },
+    {
+      "index": 3,
+      "phase_id": "media_comm",
+      "name": "Media\/communication window",
+      "duration_ms": 180000,
+      "target_categories": [
+        "Media Codec",
+        "Communication"
+      ],
+      "scripted_apps": [
+        "Chrome\/com.android.chrome",
+        "QQ\/com.tencent.mobileqq",
+        "Tencent Meeting\/com.tencent.wemeet.app"
+      ],
+      "window_start_ms": 1782911215471,
+      "window_end_ms": 1782911404520,
+      "raw_trace_path": "\/sdcard\/MEMO\/logs\/realtime_1782911215471.trace",
+      "raw_ebpf_events": 19260,
+      "observed_app_segments": 54,
+      "observed_app_labels": [
+        "QQ",
+        "nexuslauncher",
+        "Tencent Meeting",
+        "Chrome",
+        "Messages"
+      ],
+      "window_top_categories": [
+        "App Process Runtime",
+        "Media Codec",
+        "Camera Service",
+        "Network IO",
+        "Navigation\/Location",
+        "Communication"
+      ],
+      "maple_started_at_ms": 1782911411367,
+      "maple_duration_ms": 23839,
+      "maple_completed_at_ms": 1782911437675,
+      "maple_backend": "shell",
+      "maple_predicted_app_id": 220,
+      "maple_stage1": [
+        "Memory Management (80%)"
+      ],
+      "top3": [
+        "Messages",
+        "Camera",
+        "QQ"
+      ],
+      "top3_packages": [
+        "com.google.android.apps.messaging",
+        "com.google.android.GoogleCamera",
+        "com.tencent.mobileqq"
+      ],
+      "scheduler_bits": "101010100",
+      "executed_actions": [
+        {
+          "name": "widget_update",
+          "target": "top3",
+          "status": "ok",
+          "detail": "realtime mode published 3 predicted apps to the desktop widget",
+          "duration_ms": 49
+        },
+        {
+          "name": "latency_policy",
+          "target": "async_maple",
+          "status": "ok",
+          "detail": "MAPLE prediction ran asynchronously; completion latency=23.8s; slow runs still finish and still drive actions",
+          "duration_ms": 0
+        },
+        {
+          "name": "maple_scheduler_plan",
+          "target": "predefined_actions",
+          "status": "ok",
+          "detail": "MAPLE selected 4 executable scheduler actions from 9 predefined decisions; source=scheduler_bits=101010100",
+          "duration_ms": 0
+        },
+        {
+          "name": "maple_warm_launch_top1",
+          "target": "com.google.android.apps.messaging",
+          "status": "ok",
+          "detail": "MAPLE bit requested Top-1 preload; Messages was warm-launched and MEMO returned to HOME",
+          "duration_ms": 1310
+        },
+        {
+          "name": "maple_trim_memory",
+          "target": "com.google.android.GoogleCamera, com.tencent.mobileqq",
+          "status": "ok",
+          "detail": "MAPLE scheduler_bits[2]=1",
+          "duration_ms": 414
+        },
+        {
+          "name": "maple_drop_cache",
+          "target": "drop_caches",
+          "status": "skipped",
+          "detail": "MAPLE requested cache drop but memory is not critical",
+          "duration_ms": 0
+        },
+        {
+          "name": "maple_service_manager_refresh",
+          "target": "service_manager",
+          "status": "ok",
+          "detail": "MAPLE scheduler_bits[6]=1",
+          "duration_ms": 304
+        }
+      ],
+      "artifacts": {
+        "scenario_prompt_input": "\/sdcard\/MEMO\/reports\/realtime_top3_shift\/phase_3_media_comm_scenario_prompt.json",
+        "raw_maple_output": "\/sdcard\/MEMO\/reports\/realtime_top3_shift\/phase_3_media_comm_maple_output.txt",
+        "context_json": "\/sdcard\/MEMO\/reports\/realtime_top3_shift\/phase_3_media_comm_context.json"
+      },
+      "foreground_after": null
+    }
+  ],
+  "report_files": {
+    "usage_report": "\/sdcard\/MEMO\/reports\/latest_realtime_top3_shift_report.json",
+    "artifact_dir": "\/sdcard\/MEMO\/reports\/realtime_top3_shift"
+  },
+  "interpretation": "Top-3 changed across 2 realtime window boundary\/boundaries. Network\/browser window: Messages -> Camera -> Chrome | Camera\/photo window: QQ -> Messages -> Camera | Media\/communication window: Messages -> Camera -> QQ"
+}

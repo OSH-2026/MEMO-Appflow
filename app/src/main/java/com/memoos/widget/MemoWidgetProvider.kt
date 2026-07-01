@@ -16,6 +16,9 @@ import com.memoos.MainActivity
 import com.memoos.R
 import com.memoos.action.RecommendedApp
 import com.memoos.store.MemoStore
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MemoWidgetProvider : AppWidgetProvider() {
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
@@ -38,8 +41,10 @@ class MemoWidgetProvider : AppWidgetProvider() {
         }
 
         private fun buildViews(context: Context, apps: List<WidgetApp>): RemoteViews {
+            val state = MemoStore(context).load()
             val views = RemoteViews(context.packageName, R.layout.widget_memo_recommend)
             views.setTextViewText(R.id.widget_title, "MEMO Top-3")
+            views.setTextViewText(R.id.widget_updated_at, widgetSubtitle(state.recommendationsUpdatedAt, state.realtime.active))
             val slots = listOf(
                 Triple(R.id.widget_app_1_icon, R.id.widget_app_1_label, R.id.widget_app_1_container),
                 Triple(R.id.widget_app_2_icon, R.id.widget_app_2_label, R.id.widget_app_2_container),
@@ -88,6 +93,13 @@ class MemoWidgetProvider : AppWidgetProvider() {
 
         private fun openMainPendingIntent(context: Context, requestCode: Int): PendingIntent {
             return PendingIntent.getActivity(context, requestCode, Intent(context, MainActivity::class.java), flags())
+        }
+
+        private fun widgetSubtitle(updatedAtMs: Long, realtimeActive: Boolean): String {
+            val prefix = if (realtimeActive) "实时模式" else "最近预测"
+            if (updatedAtMs <= 0L) return "$prefix：等待更新"
+            val time = SimpleDateFormat("HH:mm", Locale.US).format(Date(updatedAtMs))
+            return "$prefix：$time 更新"
         }
 
         private fun flags(): Int {
